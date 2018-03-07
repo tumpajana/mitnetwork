@@ -152,7 +152,10 @@ button.ant-btn.cnclbtn {
 form.formsinput label.gendervalue.ant-radio-wrapper span {
     color: #cccccc;
 }
-
+form.formsinput input.ant-input {
+    font-size: 14px;
+    font-family: Lato;
+}
 .registerbtn {
     margin: 3em 0 4em 0;
 }
@@ -174,7 +177,14 @@ form.formsinput label.gendervalue.ant-radio-wrapper span {
      background: rgba(255, 255, 255, 0.66);
      width: 15%;
  }
-
- form.formsigninmit {
+.formsigninmit {
     margin-left: 4em;
+}
+
+button.ant-btn.sbmtbtn:hover {
+    background: #533392;
+}
+
+button.ant-btn.cnclbtn:hover {
+    background: #f7f7f7;
 }
