@@ -47,7 +47,7 @@ class Signup extends Component {
               
             </Col>
             <Col span={15}>
-            <form className="formsigninmit">
+            <div className="formsigninmit">
               <div className="formarea">
                 <div className="formheading">
                   <p className="signfont">Sign Up </p>
@@ -114,7 +114,10 @@ class Signup extends Component {
                     </div>
                   </div>
                 </Col>
-                <Col span={10}></Col>
+                <Col span={10}>
+                
+                <div ></div>
+                </Col>
 
                 <div className="registerbtn">
                       <Button className="sbmtbtn">Submit</Button>
@@ -122,7 +125,7 @@ class Signup extends Component {
                     </div>
 
               </Row>
-              </form>
+              </div>
             </Col>
 
           </Row>
