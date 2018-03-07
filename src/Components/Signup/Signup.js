@@ -38,93 +38,104 @@ class Signup extends Component {
         <div className="signupcard">
           <Row type="flex" justify="center">
             <Col span={9}>
-             
+
               <div className="sidesection">
-                  <img src={ mitlogo } /> 
-                  <h2>Welcome To MIT Social</h2>
-                  <hr/>
-                </div>
-              
+                <img src={mitlogo} />
+                <h2>Welcome To MIT Social</h2>
+                <hr />
+              </div>
+
             </Col>
             <Col span={15}>
-            <div class="formsigninmit">
-              <div className="formarea">
-                <div className="formheading">
-                  <p className="signfont">Sign Up </p>
-               </div>
-              </div>
-              <Row type="flex" justify="center">
+              <div className="formsigninmit">
+                <div className="formarea">
+                  <div className="formheading">
+                    <p className="signfont">Sign Up </p>
+                  </div>
+                </div>
+                <Row type="flex" justify="center">
 
-                <Col span={10}>
-                  <form className="formsinput">
-                    <Input
-                      placeholder="Your Name"
-                      prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                      suffix={suffix}
-                      value={userName}
-                      onChange={this.onChangeUserName}
-                      ref={node => this.userNameInput = node}
-                    />
-                    <Input
-                      placeholder="Username"
-                      prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    
-                    />
-                     {/* <Input
+                  <Col span={10}>
+                    <form className="formsinput">
+                      <Input
+                        placeholder="Your Name"
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        suffix={suffix}
+                        value={userName}
+                        onChange={this.onChangeUserName}
+                        ref={node => this.userNameInput = node}
+                      />
+                      <Input
+                        placeholder="Username"
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
+                      />
+                      {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     
                     /> */}
-                    {/* <p class="genderchoose"> Gender</p>
+                      {/* <p class="genderchoose"> Gender</p>
                     <RadioGroup onChange={this.onChange} value={this.state.value}>
                       <Radio value={1} className="gendervalue">Male</Radio>
                       <Radio value={2} className="gendervalue">Female</Radio>
 
                     </RadioGroup> */}
-                    <Input
-                      placeholder=" Email"
-                      prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      <Input
+                        placeholder=" Email"
+                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                    />
-                    <Input
-                      placeholder=" Phone Number"
-                      prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      />
+                      <Input
+                        placeholder=" Phone Number"
+                        prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                    />
-                    <Input
-                      placeholder=" Password"
-                      prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      />
+                      <Input
+                        placeholder=" Password"
+                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                    />
-                    <Input
-                      placeholder="Confirm Password"
-                      prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      />
+                      <Input
+                        placeholder="Confirm Password"
+                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                    />
+                      />
 
-                 
-                  </form>
-                </Col>
-                <Col span={4}>
 
-                  <div className="wrapper">
-                    <div className="line"></div>
-                    <div className="wordwrapper">
-                      <div className="ordivider">OR</div>
+                    </form>
+                  </Col>
+                  <Col span={2}>
+
+                    <div className="wrapper">
+                      <div className="line"></div>
+                      <div className="wordwrapper">
+                        <div className="ordivider">OR</div>
+                      </div>
                     </div>
+                  </Col>
+                  <Col span={12} className="sociallogin">
+                  
+                      <div className="signupwithsocial">
+                        <Button className="facebooklogin">Sign in with facebook
+                        <Icon type="facebook" />
+                        </Button>
+                        <Button className="googlepluslogin">Sign in with facebook
+                        <Icon type="google-plus" />
+                        </Button>
+                       
+                      </div>
+                  
+                  </Col>
+
+                  <div className="registerbtn">
+                    <Button className="sbmtbtn">Submit</Button>
+                    <Button className="cnclbtn">Cancel</Button>
+                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink">Login</a> &nbsp;here</p>
                   </div>
-                </Col>
-                <Col span={10}>
-                
-                <div ></div>
-                </Col>
+               
 
-                <div className="registerbtn">
-                      <Button className="sbmtbtn">Submit</Button>
-                      <Button className="cnclbtn">Cancel</Button>
-                    </div>
-
-              </Row>
+                </Row>
               </div>
             </Col>
 
