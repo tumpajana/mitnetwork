@@ -1,0 +1,16 @@
+.signupcard {
+    box-shadow: 4px 1px 25px 2px rgba(221, 221, 221, 0.86);
+    width: 60%;
+}
+
+.signuparea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+p.signfont {
+    text-align: center;
+    font-size: 30px;
+}
