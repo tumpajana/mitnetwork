@@ -10,7 +10,10 @@ const Routes=()=>(
         <Switch>
         <Route exact path='/' component= {Header} />
         <Route  path='/header' component= {Header} />
-       
+        <Route  path='/Profile' component= {Profile} />
+        <Route  path='/Signin' component= {Signin} />
+        <Route  path='/Signup' component= {Signup} />
+
         </Switch>
         </BrowserRouter>
     );
