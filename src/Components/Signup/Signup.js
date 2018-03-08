@@ -56,16 +56,16 @@ class Signup extends Component {
   register() {
 
     console.log('submit button');
-    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-      PostData('signup', this.state).then((result) => {
-        let response = result;
-        if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
-          this.setState({ redirectToReferrer: true });
-        }
+    // if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+    //   PostData('signup', this.state).then((result) => {
+    //     let response = result;
+    //     if (response.userData) {
+    //       sessionStorage.setItem('userData', JSON.stringify(response));
+    //       this.setState({ redirectToReferrer: true });
+    //     }
 
-      });
-    }
+    //   });
+    // }
   }
   render() {
 
