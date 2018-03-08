@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Routes from './routes';
 import Signup from './Components/Signup/Signup.js';
+import Header from './Components/Header/Header.js';
 import Signin from './Components/Signin/Signin.js';
 
 import { Row, Col } from 'antd';
@@ -20,7 +21,8 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p> */}
         {/* <Signup></Signup> */}
-        <Signin></Signin>
+        {/* <Signin></Signin> */}
+        <Header></Header>
       </div>
     );
   }
