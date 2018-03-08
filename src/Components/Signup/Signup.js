@@ -80,7 +80,7 @@ class Signup extends Component {
       <div className="signuparea">
         <div className="signupcard">
           <Row type="flex" justify="center">
-            <Col span={9}>
+            <Col lg={9} sm={0} xs={0}>
 
               <div className="sidesection">
                 <img src={mitlogo} />
@@ -89,8 +89,8 @@ class Signup extends Component {
               </div>
 
             </Col>
-            <Col span={15}>
-              <div className="formsigninmit">
+            <Col lg={15} sm={24}  xs={24} className="centercontent">
+              <div className="formsigninmit1">
                 <div className="formarea">
                   <div className="formheading">
                     <p className="signfont">Sign Up </p>
@@ -98,7 +98,7 @@ class Signup extends Component {
                 </div>
                 <Row type="flex" justify="center">
 
-                  <Col span={10}>
+                  <Col lg={10} sm={10}  xs={24}>
                     <form className="formsinput">
                       <Input
                         placeholder="Your Name"
@@ -161,7 +161,7 @@ class Signup extends Component {
 
                     </form>
                   </Col>
-                  <Col span={2}>
+                  <Col lg={2} sm={2} xs={0}>
 
                     <div className="wrapper">
                       <div className="line"></div>
@@ -170,13 +170,14 @@ class Signup extends Component {
                       </div>
                     </div>
                   </Col>
-                  <Col span={12} className="sociallogin">
+                  <Col lg={12} sm={12} xs={24} className="sociallogin">
                   
                   <div className="signupwithsocial">
-                  <Button className="facebooklogin">Sign in with Facebook
+                  <p className="ordividerres">OR</p>
+                  <Button className="facebooklogin">Sign in 
                   <Icon type="facebook" />
                   </Button>
-                  <Button className="googlepluslogin">Sign in with Google Plus
+                  <Button className="googlepluslogin">Sign in 
                   <Icon type="google-plus" />
                   </Button>
                  
