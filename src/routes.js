@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 const Routes=()=>(
     <BrowserRouter>
         <Switch>
-        <Route exact path='/' component= {Header} />
+        <Route exact path='/' component= {Signin} />
         <Route  path='/header' component= {Header} />
         <Route  path='/Profile' component= {Profile} />
         <Route  path='/Signin' component= {Signin} />
