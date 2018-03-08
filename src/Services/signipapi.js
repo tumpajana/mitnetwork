@@ -1,6 +1,6 @@
-  function PostData( userData) {
+ function loginData( userData) {
     //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
-    let BaseURL =' http://mitapi.memeinfotech.com:5000/user/registration';
+    let BaseURL =' http://mitapi.memeinfotech.com:5000/user/login';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
    method: 'POST',
@@ -15,6 +15,4 @@
    });
    });
    }
-   
-   
-   export default PostData
+   export default loginData
