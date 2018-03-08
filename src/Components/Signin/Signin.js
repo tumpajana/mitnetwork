@@ -4,7 +4,9 @@ import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
+import loginData from '../../Services/signipapi'
 const RadioGroup = Radio.Group;
+
 class Signin extends Component {
   state = {
     value: 1,
@@ -12,8 +14,13 @@ class Signin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',
+      email: '',
+      Password:'',
+      redirectToReferrer:false
     };
+
+    this.login = this.login.bind(this);
+    this.onChangeLoginName = this.onChangeLoginName.bind(this);
   }
   emitEmpty = () => {
     this.userNameInput.focus();
@@ -27,6 +34,27 @@ class Signin extends Component {
     this.setState({
       value: e.target.value,
     });
+  }
+
+
+  onChangeLoginName(e){
+  this.setState({[e.target.name]:e.target.value});
+  console.log('onchangeusername', e.target.value,'+', e.target.name)
+
+ }
+
+  login = () => {
+    // console.log('submit button');
+    if (this.state.email && this.state.Password) {
+     loginData(this.state).then((result) => {
+        let response = result;
+        if (response.userData) {
+          sessionStorage.setItem('loginData', JSON.stringify(response));
+          this.setState({ redirectToReferrer: true });
+        }
+
+      });
+    }
   }
   render() {
 
@@ -60,14 +88,16 @@ class Signin extends Component {
                      
                       <Input
                         placeholder="Username"
+                        name="email"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                        onChange={this.onChangeLoginName}
                       />
                       
                       <Input
                         placeholder=" Password"
+                        name="Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                        onChange={this.onChangeLoginName}
                       />
                     
 
@@ -98,9 +128,9 @@ class Signin extends Component {
                   </Col>
 
                   <div className="registerbtn">
-                    <Button className="sbmtbtn">Submit</Button>
+                    <Button className="sbmtbtn" onClick={this.login}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p class="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink">Register</a> &nbsp;here</p>
+                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register</a> &nbsp;here</p>
                   </div>
                
 
@@ -115,4 +145,4 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+export default Signin
