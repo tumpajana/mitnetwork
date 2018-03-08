@@ -56,16 +56,16 @@ class Signup extends Component {
   register() {
 
     console.log('submit button');
-    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-      PostData('signup', this.state).then((result) => {
-        let response = result;
-        if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
-          this.setState({ redirectToReferrer: true });
-        }
+    // if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+    //   PostData('signup', this.state).then((result) => {
+    //     let response = result;
+    //     if (response.userData) {
+    //       sessionStorage.setItem('userData', JSON.stringify(response));
+    //       this.setState({ redirectToReferrer: true });
+    //     }
 
-      });
-    }
+    //   });
+    // }
   }
   render() {
 
@@ -76,7 +76,7 @@ class Signup extends Component {
       <div className="signuparea">
         <div className="signupcard">
           <Row type="flex" justify="center">
-            <Col span={9}>
+            <Col lg={9} sm={0} xs={0}>
 
               <div className="sidesection">
                 <img src={mitlogo} />
@@ -85,8 +85,8 @@ class Signup extends Component {
               </div>
 
             </Col>
-            <Col span={15}>
-              <div className="formsigninmit">
+            <Col lg={15} sm={24}  xs={24} className="centercontent">
+              <div className="formsigninmit1">
                 <div className="formarea">
                   <div className="formheading">
                     <p className="signfont">Sign Up </p>
@@ -94,12 +94,14 @@ class Signup extends Component {
                 </div>
                 <Row type="flex" justify="center">
 
-                  <Col span={10}>
+                  <Col lg={10} sm={10}  xs={24}>
                     <form className="formsinput">
                       <Input
                         placeholder="Your Name"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         suffix={suffix}
+                        value={userName}
+                        onChange={this.onChangeUserName}
 
                         onChange={this.onChangeValue}
                         ref={node => this.userNameInput = node}
@@ -107,6 +109,7 @@ class Signup extends Component {
                       <Input
                         placeholder="Username"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
                         onChange={this.onChangeValue}
                       />
                       {/* <Input
@@ -123,28 +126,32 @@ class Signup extends Component {
                       <Input
                         placeholder=" Email"
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
                         onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder=" Phone Number"
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
                         onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder=" Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
                         onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
                         onChange={this.onChangeValue}
                       />
 
 
                     </form>
                   </Col>
-                  <Col span={4}>
+                  <Col lg={2} sm={2} xs={0}>
 
                     <div className="wrapper">
                       <div className="line"></div>
@@ -153,15 +160,27 @@ class Signup extends Component {
                       </div>
                     </div>
                   </Col>
-                  <Col span={10}>
-
-                    <div ></div>
+                  <Col lg={12} sm={12} xs={24} className="sociallogin">
+                  
+                  <div className="signupwithsocial">
+                  <p className="ordividerres">OR</p>
+                  <Button className="facebooklogin">Sign in 
+                  <Icon type="facebook" />
+                  </Button>
+                  <Button className="googlepluslogin">Sign in 
+                  <Icon type="google-plus" />
+                  </Button>
+                 
+                </div>
+                  
                   </Col>
 
                   <div className="registerbtn">
-                    <Button className="sbmtbtn" onClick={this.register}>Submit</Button>
+                    <Button className="sbmtbtn">Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
+                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink">Login</a> &nbsp;here</p>
                   </div>
+               
 
                 </Row>
               </div>

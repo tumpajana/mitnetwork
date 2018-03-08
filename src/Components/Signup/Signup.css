@@ -157,12 +157,12 @@ form.formsinput input.ant-input {
     font-family: Lato;
 }
 .registerbtn {
-    margin: 3em 0 4em 0;
+    margin: 3em 0 1em 0;
 }
 
 .sidesection{
     background: rgb(105, 64, 186);
-    height:77vh;
+    height:81vh;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -177,8 +177,8 @@ form.formsinput input.ant-input {
      background: rgba(255, 255, 255, 0.66);
      width: 15%;
  }
-.formsigninmit {
-    margin-left: 4em;
+.formsigninmit1 {
+    margin-left: 3em;
 }
 
 button.ant-btn.sbmtbtn:hover {
@@ -187,4 +187,86 @@ button.ant-btn.sbmtbtn:hover {
 
 button.ant-btn.cnclbtn:hover {
     background: #f7f7f7;
+}
+
+button.ant-btn.facebooklogin {
+    background: #4267b2;
+    color: #ffffff;
+    font-family: Lato;
+    height: 47px;
+    border: none;
+    width: 60%;
+    margin-bottom: 2em;
+    
+}
+button.ant-btn.googlepluslogin {
+    background:#dd4b39;
+    color: #ffffff;
+    font-family: Lato;
+    height: 47px;
+    border: none;
+    width: 60%;
+}
+
+.formsigninmit1 .sociallogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.signupwithsocial .ant-btn > .anticon + span, .ant-btn > span + .anticon {
+    margin-left: 8px;
+    font-size: 15px;
+    width: 20px;
+}
+
+button.ant-btn.googlepluslogin i {
+    font-size: 19px;
+    vertical-align: text-bottom
+}
+p.regtext {
+    margin-top: 20px;
+    margin-bottom: 2em;
+    font-family: Lato;
+    font-weight: 400;
+    font-size: 14px;
+    color: #8e8b8b;
+}
+a.loginlink {
+    font-size: 16px;
+    color: #6940ba;
+    font-family: Lato;
+    font-weight: 500;
+}
+
+.ant-col-15.centercontent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media only screen and (min-width: 320px) and (max-width:767px){
+
+.signupcard {
+   
+    width: 95%;
+    margin-top: 8em;
+    margin-bottom: 2em;
+    box-shadow: none;
+}
+.formsigninmit1 {
+    margin: 0 2em;
+}
+}
+
+
+@media only screen and (min-width: 768px) and (max-width:1920px){
+ .ordividerres
+  {
+  display:none;
+       
+  }
+
 }
