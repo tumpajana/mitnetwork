@@ -162,7 +162,7 @@ form.formsinput input.ant-input {
 
 .sidesection{
     background: rgb(105, 64, 186);
-    height:81vh;
+    height: 100%;
     display: flex;
     flex-flow: column;
     justify-content: center;
