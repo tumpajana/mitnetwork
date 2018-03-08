@@ -1,5 +1,5 @@
 
-.signupcard {
+/* .signupcard {
     box-shadow: 4px 1px 25px 2px rgba(221, 221, 221, 0.86);
     width: 65%;
 }
@@ -53,7 +53,7 @@ form.formsinput i.anticon.anticon-phone {
 }
 
 form.formsinput span.ant-input-affix-wrapper {
-    width: 92%;
+    width:100%;
     display: block;
 }
 
@@ -142,8 +142,8 @@ button.ant-btn.sbmtbtn {
     border: none;
     border-radius: 0px;
     margin-right: 16px;
-}
-button.ant-btn.cnclbtn {
+} */
+/* button.ant-btn.cnclbtn {
    border:1px solid  rgb(105, 64, 186);
     color: rgb(105, 64, 186);
     padding: 0 31px;
@@ -159,11 +159,11 @@ form.formsinput input.ant-input {
 }
 .registerbtn {
     margin: 3em 0 1em 0;
-}
+} */
 
-.sidesection{
+/* .sidesection{
     background: rgb(105, 64, 186);
-    height:77vh;
+    height: 100%;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -177,36 +177,36 @@ form.formsinput input.ant-input {
  .sidesection hr{
      background: rgba(255, 255, 255, 0.66);
      width: 15%;
- }
+ } */
 .formsigninmit {
    padding:0 2em;
 }
-
+/* 
 button.ant-btn.sbmtbtn:hover {
     background: #533392;
 }
 
 button.ant-btn.cnclbtn:hover {
     background: #f7f7f7;
-}
+} */
 
-button.ant-btn.facebooklogin {
+button.ant-btn.facebooksignin {
     background: #4267b2;
     color: #ffffff;
     font-family: Lato;
     height: 47px;
     border: none;
-    width: 210px;
-    margin-bottom: 3em;
+    width: 60%;
+    margin-bottom: 2em;
     
 }
-button.ant-btn.googlepluslogin {
+button.ant-btn.googleplussign {
     background:#dd4b39;
     color: #ffffff;
     font-family: Lato;
     height: 47px;
     border: none;
-    width: 210px;
+    width: 60%;
 }
 
 .formsigninmit .sociallogin {
@@ -218,15 +218,7 @@ button.ant-btn.googlepluslogin {
     margin-left: -17px;
 }
 
-.signupwithsocial .ant-btn > .anticon + span, .ant-btn > span + .anticon {
-    margin-left: 8px;
-    font-size: 17px;
-    width: 20px;
-}
 
-button.ant-btn.googlepluslogin i {
-    font-size: 18px;
-}
 
 p.regtext {
     margin-top: 23px;
@@ -243,7 +235,16 @@ a.loginlink {
     font-weight: 500;
 }
 
-.ant-col-10.signinarea {
+
+
+.signinarea {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+}
+
+.centercontent {
     display: flex;
     justify-content: center;
     align-items: center;
