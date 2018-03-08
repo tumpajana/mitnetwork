@@ -4,29 +4,68 @@ import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
+import { Redirect } from 'react-router-dom';
+import PostData from '../../Services/signupapi'
 const RadioGroup = Radio.Group;
+
 class Signup extends Component {
-  state = {
-    value: 1,
-  }
+  // state = {
+  //   userName: '',
+  //   firstName:'',
+  //   lastName:'',
+  //   phoneNumber:''
+  // }
   constructor(props) {
     super(props);
     this.state = {
       userName: '',
+      email: '',
+      name: '',
+      password: '',
+      phoneNumber: ''
+
     };
+
+    this.register = this.register.bind(this);
+    this.onChangeValue = this.onChangeValue.bind(this);
   }
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ userName: '' });
   }
   onChangeUserName = (e) => {
+    // this.setState({[e.target.name]:e.target.value});
     this.setState({ userName: e.target.value });
+
   }
+
   onChange = (e) => {
     console.log('radio checked', e.target.value);
     this.setState({
       value: e.target.value,
     });
+  }
+
+
+  //onchange of input feild binding
+  onChangeValue = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+    console.log('onchangeusername', e.target.value)
+  }
+  //submit registration form
+  register() {
+
+    console.log('submit button');
+    // if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+    //   PostData('signup', this.state).then((result) => {
+    //     let response = result;
+    //     if (response.userData) {
+    //       sessionStorage.setItem('userData', JSON.stringify(response));
+    //       this.setState({ redirectToReferrer: true });
+    //     }
+
+    //   });
+    // }
   }
   render() {
 
@@ -47,7 +86,7 @@ class Signup extends Component {
 
             </Col>
             <Col span={15}>
-              <div className="formsigninmit1">
+              <div className="formsigninmit">
                 <div className="formarea">
                   <div className="formheading">
                     <p className="signfont">Sign Up </p>
@@ -63,12 +102,15 @@ class Signup extends Component {
                         suffix={suffix}
                         value={userName}
                         onChange={this.onChangeUserName}
+
+                        onChange={this.onChangeValue}
                         ref={node => this.userNameInput = node}
                       />
                       <Input
                         placeholder="Username"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
+                        onChange={this.onChangeValue}
                       />
                       {/* <Input
                       placeholder="Username"
@@ -85,21 +127,25 @@ class Signup extends Component {
                         placeholder=" Email"
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
+                        onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder=" Phone Number"
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
+                        onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder=" Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
+                        onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
+                        onChange={this.onChangeValue}
                       />
 
 
