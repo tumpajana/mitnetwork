@@ -34,7 +34,7 @@ p.signfont {
     color: #666;
   }
   form.formsinput .ant-input {
-    margin-bottom: 22px;
+    margin-bottom: 25px;
     border: none;
     border-bottom: 1px solid #dad4d4 !important;
     border-radius: 0px;
@@ -163,7 +163,7 @@ form.formsinput input.ant-input {
 
 .sidesection{
     background: rgb(105, 64, 186);
-    height:81vh;
+    height:77vh;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -179,7 +179,7 @@ form.formsinput input.ant-input {
      width: 15%;
  }
 .formsigninmit {
-    margin-left: 4em;
+   padding:0 2em;
 }
 
 button.ant-btn.sbmtbtn:hover {
@@ -241,4 +241,10 @@ a.loginlink {
     color: #6940ba;
     font-family: Lato;
     font-weight: 500;
+}
+
+.ant-col-10.signinarea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

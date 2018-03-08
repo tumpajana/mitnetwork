@@ -6,7 +6,7 @@ const user = require('./user.model');
 var Cryptr = require('cryptr'),
     cryptr = new Cryptr('myTotalySecretKey');
 
-    /*Api for User Registration 
+/*Api for User Registration 
 fields:- userName,firstName,lastName,phoneNumber,email,password
 */
 router.post('/registration', (request, response) => {
@@ -17,10 +17,9 @@ router.post('/registration', (request, response) => {
 
     let data = new user({
         userName: request.body.userName,
-        firstName: request.body.firstName,
-        lastName: request.body.lastName,
+        name: request.body.name,
         phoneNumber: request.body.phoneNumber
-       
+
     });
     if (request.body.email) {
         data.email = (request.body.email).toLowerCase();
@@ -48,4 +47,38 @@ router.post('/registration', (request, response) => {
     });
 
 });
+
+/* this is the login API for user 
+using provider as user credential 
+In respect of email and password user may logged in
+
+*/
+router.post('/login', (request, response) => {
+    console.log("user login ");
+    console.log(request.body);
+    let email = (request.body.email).toLowerCase();
+    let password = cryptr.encrypt(request.body.password);
+    // let phoneNumber=request.body.phoneNumber;
+    // let userName=request.body.userName
+    let userLoginResponse = {};
+    // { $or: [{ createdBy: request.query.userId }, { "member.userId": request.query.userId }] }
+    user.findOne({ email: email, password: password }, (error, result) => {
+        console.log(error);
+        console.log(result);
+        if (error || result === null) {
+            userLoginResponse.error = true;
+            userLoginResponse.message = "User does not exist";
+            response.status(200).json(userLoginResponse);
+        }
+        else {
+
+            userLoginResponse.error = false;
+            userLoginResponse.user = result;
+            userLoginResponse.message = `User login successfully .`;
+            response.status(200).json(userLoginResponse);
+        }
+
+    });
+});
+
 module.exports = router;

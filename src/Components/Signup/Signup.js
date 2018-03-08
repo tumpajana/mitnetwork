@@ -47,7 +47,7 @@ class Signup extends Component {
 
             </Col>
             <Col span={15}>
-              <div className="formsigninmit">
+              <div className="formsigninmit1">
                 <div className="formarea">
                   <div className="formheading">
                     <p className="signfont">Sign Up </p>
@@ -116,15 +116,15 @@ class Signup extends Component {
                   </Col>
                   <Col span={12} className="sociallogin">
                   
-                      <div className="signupwithsocial">
-                        <Button className="facebooklogin">Sign in with facebook
-                        <Icon type="facebook" />
-                        </Button>
-                        <Button className="googlepluslogin">Sign in with facebook
-                        <Icon type="google-plus" />
-                        </Button>
-                       
-                      </div>
+                  <div className="signupwithsocial">
+                  <Button className="facebooklogin">Sign in with Facebook
+                  <Icon type="facebook" />
+                  </Button>
+                  <Button className="googlepluslogin">Sign in with Google Plus
+                  <Icon type="google-plus" />
+                  </Button>
+                 
+                </div>
                   
                   </Col>
 

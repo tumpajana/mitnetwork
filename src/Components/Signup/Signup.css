@@ -177,8 +177,8 @@ form.formsinput input.ant-input {
      background: rgba(255, 255, 255, 0.66);
      width: 15%;
  }
-.formsigninmit {
-    margin-left: 4em;
+.formsigninmit1 {
+    margin-left: 3em;
 }
 
 button.ant-btn.sbmtbtn:hover {
@@ -208,14 +208,12 @@ button.ant-btn.googlepluslogin {
     width: 210px;
 }
 
-.formsigninmit .sociallogin {
+.formsigninmit1 .sociallogin {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.signupwithsocial {
-    margin-left: -17px;
-}
+
 
 .signupwithsocial .ant-btn > .anticon + span, .ant-btn > span + .anticon {
     margin-left: 8px;

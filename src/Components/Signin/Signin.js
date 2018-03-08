@@ -50,57 +50,26 @@ class Signin extends Component {
               <div className="formsigninmit">
                 <div className="formarea">
                   <div className="formheading">
-                    <p className="signfont">Sign Up </p>
+                    <p className="signfont">Sign In </p>
                   </div>
                 </div>
                 <Row type="flex" justify="center">
 
-                  <Col span={10}>
+                  <Col span={10} className="signinarea">
                     <form className="formsinput">
-                      <Input
-                        placeholder="Your Name"
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        suffix={suffix}
-                        value={userName}
-                        onChange={this.onChangeUserName}
-                        ref={node => this.userNameInput = node}
-                      />
+                     
                       <Input
                         placeholder="Username"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                       />
-                      {/* <Input
-                      placeholder="Username"
-                      prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    
-                    /> */}
-                      {/* <p class="genderchoose"> Gender</p>
-                    <RadioGroup onChange={this.onChange} value={this.state.value}>
-                      <Radio value={1} className="gendervalue">Male</Radio>
-                      <Radio value={2} className="gendervalue">Female</Radio>
-
-                    </RadioGroup> */}
-                      <Input
-                        placeholder=" Email"
-                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
-                      />
-                      <Input
-                        placeholder=" Phone Number"
-                        prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
-                      />
+                      
                       <Input
                         placeholder=" Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                       />
-                      <Input
-                        placeholder="Confirm Password"
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
-                      />
+                    
 
 
                     </form>
@@ -117,10 +86,10 @@ class Signin extends Component {
                   <Col span={12} className="sociallogin">
                   
                       <div className="signupwithsocial">
-                        <Button className="facebooklogin">Sign in with facebook
+                        <Button className="facebooklogin">Sign in with Facebook
                         <Icon type="facebook" />
                         </Button>
-                        <Button className="googlepluslogin">Sign in with facebook
+                        <Button className="googlepluslogin">Sign in with Google Plus
                         <Icon type="google-plus" />
                         </Button>
                        
@@ -131,7 +100,7 @@ class Signin extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn">Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink">Login</a> &nbsp;here</p>
+                    <p class="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink">Register</a> &nbsp;here</p>
                   </div>
                
 
