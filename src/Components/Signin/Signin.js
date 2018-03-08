@@ -37,7 +37,7 @@ class Signin extends Component {
       <div className="signuparea">
         <div className="signupcard">
           <Row type="flex" justify="center" >
-            <Col span={9}>
+            <Col lg={9} sm={0} xs={0}>
 
               <div className="sidesection">
                 <img src={mitlogo} />
@@ -46,7 +46,7 @@ class Signin extends Component {
               </div>
 
             </Col>
-            <Col lg={15} sm={24}  xs={24} className="centercontent">
+            <Col lg={15} sm={24} xs={24} className="centercontent">
               <div className="formsigninmit">
                 <div className="formarea">
                   <div className="formheading">
@@ -55,26 +55,26 @@ class Signin extends Component {
                 </div>
                 <Row type="flex" justify="center">
 
-                  <Col span={10} className="signinarea">
+                  <Col lg={10} sm={10} xs={24} className="signinarea">
                     <form className="formsinput">
-                     
+
                       <Input
                         placeholder="Username"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                       />
-                      
+
                       <Input
                         placeholder=" Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                       />
-                    
+
 
 
                     </form>
                   </Col>
-                  <Col span={2}>
+                  <Col lg={2} sm={2} xs={0}>
 
                     <div className="wrapper">
                       <div className="line"></div>
@@ -83,18 +83,19 @@ class Signin extends Component {
                       </div>
                     </div>
                   </Col>
-                  <Col span={12} className="sociallogin">
-                  
-                      <div className="signupwithsocial">
-                        <Button className="facebooksignin">Sign in 
+                  <Col lg={12} sm={12} xs={24} className="sociallogin">
+
+                    <div className="signupwithsocial">
+                      <p className="ordividerres">OR</p>
+                      <Button className="facebooksignin">Sign in
                         <Icon type="facebook" />
-                        </Button>
-                        <Button className="googleplussign">Sign in 
+                      </Button>
+                      <Button className="googleplussign">Sign in
                         <Icon type="google-plus" />
-                        </Button>
-                       
-                      </div>
-                  
+                      </Button>
+
+                    </div>
+
                   </Col>
 
                   <div className="registerbtn">
@@ -102,7 +103,7 @@ class Signin extends Component {
                     <Button className="cnclbtn">Cancel</Button>
                     <p class="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink">Register</a> &nbsp;here</p>
                   </div>
-               
+
 
                 </Row>
               </div>
