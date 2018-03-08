@@ -36,7 +36,7 @@ class Signin extends Component {
     return (
       <div className="signuparea">
         <div className="signupcard">
-          <Row type="flex" justify="center">
+          <Row type="flex" justify="center" >
             <Col span={9}>
 
               <div className="sidesection">
@@ -86,10 +86,10 @@ class Signin extends Component {
                   <Col span={12} className="sociallogin">
                   
                       <div className="signupwithsocial">
-                        <Button className="facebooklogin">Sign in with Facebook
+                        <Button className="facebooksignin">Sign in 
                         <Icon type="facebook" />
                         </Button>
-                        <Button className="googlepluslogin">Sign in with Google Plus
+                        <Button className="googleplussign">Sign in 
                         <Icon type="google-plus" />
                         </Button>
                        
