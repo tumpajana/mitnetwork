@@ -195,8 +195,8 @@ button.ant-btn.facebooklogin {
     font-family: Lato;
     height: 47px;
     border: none;
-    width: 210px;
-    margin-bottom: 3em;
+    width: 60%;
+    margin-bottom: 2em;
     
 }
 button.ant-btn.googlepluslogin {
@@ -205,7 +205,7 @@ button.ant-btn.googlepluslogin {
     font-family: Lato;
     height: 47px;
     border: none;
-    width: 210px;
+    width: 60%;
 }
 
 .formsigninmit1 .sociallogin {
@@ -217,12 +217,13 @@ button.ant-btn.googlepluslogin {
 
 .signupwithsocial .ant-btn > .anticon + span, .ant-btn > span + .anticon {
     margin-left: 8px;
-    font-size: 17px;
+    font-size: 15px;
     width: 20px;
 }
 
 button.ant-btn.googlepluslogin i {
-    font-size: 18px;
+    font-size: 19px;
+    vertical-align: text-bottom
 }
 p.regtext {
     margin-top: 20px;
@@ -237,4 +238,35 @@ a.loginlink {
     color: #6940ba;
     font-family: Lato;
     font-weight: 500;
+}
+
+.ant-col-15.centercontent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media only screen and (min-width: 320px) and (max-width:767px){
+
+.signupcard {
+   
+    width: 95%;
+    margin-top: 8em;
+    margin-bottom: 2em;
+    box-shadow: none;
+}
+.formsigninmit1 {
+    margin: 0 2em;
+}
+}
+
+
+@media only screen and (min-width: 768px) and (max-width:1920px){
+ .ordividerres
+  {
+  display:none;
+       
+  }
+
 }

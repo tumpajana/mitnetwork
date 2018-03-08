@@ -46,7 +46,7 @@ class Signin extends Component {
               </div>
 
             </Col>
-            <Col span={15}>
+            <Col lg={15} sm={24}  xs={24} className="centercontent">
               <div className="formsigninmit">
                 <div className="formarea">
                   <div className="formheading">
