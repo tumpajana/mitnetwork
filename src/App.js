@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Routes from './routes';
-import Signup from './Components/Signup/Signup.js';
-import Header from './Components/Header/Header.js';
-import Signin from './Components/Signin/Signin.js';
+
+import Header from './Components/Header/Header';
+
+import Signup from './Components/Signup/Signup';
+import Signin from './Components/Signin/Signin';
+import Profile from './Components/Profile/Profile';
 
 import { Row, Col } from 'antd';
 
@@ -22,7 +25,9 @@ class App extends Component {
         </p> */}
         {/* <Signup></Signup> */}
         {/* <Signin></Signin> */}
-        <Header></Header>
+        {/* <Header></Header> */}
+        {/* <Profile></Profile> */}
+                <Routes/>
       </div>
     );
   }

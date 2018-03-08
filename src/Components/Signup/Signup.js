@@ -22,7 +22,8 @@ class Signup extends Component {
       email: '',
       name: '',
       password: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      redirectToReferrer: false
 
     };
 
@@ -49,23 +50,26 @@ class Signup extends Component {
 
   //onchange of input feild binding
   onChangeValue = (e) => {
+    console.log(e)
     this.setState({ [e.target.name]: e.target.value });
-    console.log('onchangeusername', e.target.value)
+    console.log('onchangeusername', e.target.value,'+', e.target.name)
   }
+
   //submit registration form
-  register() {
+  register=() =>{
 
     console.log('submit button');
-    // if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-    //   PostData('signup', this.state).then((result) => {
-    //     let response = result;
-    //     if (response.userData) {
-    //       sessionStorage.setItem('userData', JSON.stringify(response));
-    //       this.setState({ redirectToReferrer: true });
-    //     }
+    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+      PostData( this.state).then((result) => {
+        let response = result;
+        console.log(result)
+        if (response.userData) {
+          sessionStorage.setItem('userData', JSON.stringify(response));
+          this.setState({ redirectToReferrer: true });
+        }
 
-    //   });
-    // }
+      });
+    }
   }
   render() {
 
@@ -98,16 +102,18 @@ class Signup extends Component {
                     <form className="formsinput">
                       <Input
                         placeholder="Your Name"
+                        name="name"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         suffix={suffix}
-                        value={userName}
-                        onChange={this.onChangeUserName}
+                        // value={userName}
+                        // onChange={this.onChangeUserName}
 
                         onChange={this.onChangeValue}
                         ref={node => this.userNameInput = node}
                       />
                       <Input
                         placeholder="Username"
+                        name="userName"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -125,28 +131,32 @@ class Signup extends Component {
                     </RadioGroup> */}
                       <Input
                         placeholder=" Email"
+                        name="email"
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder=" Phone Number"
+                        name="phoneNumber"
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
                       />
                       <Input
                         placeholder=" Password"
+                        name="password"
+                        name ="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
                       />
-                      <Input
+                      {/* <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                      />
+                      /> */}
 
 
                     </form>
@@ -176,9 +186,9 @@ class Signup extends Component {
                   </Col>
 
                   <div className="registerbtn">
-                    <Button className="sbmtbtn">Submit</Button>
+                    <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink">Login</a> &nbsp;here</p>
+                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
 
