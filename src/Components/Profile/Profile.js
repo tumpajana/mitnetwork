@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Row, Col, Button } from 'antd';
 import './Profile.css';
+import Header from '../Header/Header.js';
 
 import User from '../../Images/user10.jpg';
 import Userback from '../../Images/male.png';
@@ -11,6 +12,11 @@ class Profile extends Component {
   render() {
     return (
       <div className="App">
+
+       {/* navbar section start */}
+          <Header></Header>
+       {/* navbar section end */}
+
         <section className="profilesec">
           <img src={backprofile} />
           <div className="procard">
