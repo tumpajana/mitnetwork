@@ -33,7 +33,7 @@ router.post('/registration', (request, response) => {
         if (error) {
             console.log(error);
             registrationResponse.error = true;
-            registrationResponse.message = `Error :` + error.code == 11000 ? error.message : "phone number already exist";
+            registrationResponse.message = `Error :` + error.code == 11000 ? error.message : "phone number or email already exist";
             response.status(500).json(registrationResponse);
         } else {
             console.log(result);
