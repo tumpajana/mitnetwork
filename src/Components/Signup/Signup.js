@@ -63,9 +63,10 @@ class Signup extends Component {
       PostData( this.state).then((result) => {
         let response = result;
         console.log(result)
-        if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+        if (response.user) {
+          sessionStorage.setItem('userId', response.user._id);
           this.setState({ redirectToReferrer: true });
+          return <Redirect to ='/Profile' />
         }
 
       });
@@ -188,7 +189,7 @@ class Signup extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
 

@@ -25,7 +25,7 @@ class App extends Component {
         {/* <Signup></Signup> */}
         {/* <Signin></Signin> */}
         {/* <Header></Header> */}
-        {/* <Profile></Profile> */}
+         {/*<Profile></Profile> */}
                 <Routes/>
       </div>
     );
