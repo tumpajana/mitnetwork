@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
@@ -25,6 +26,10 @@ class Signin extends Component {
   }
 
   responseFacebook = (response) => {
+    console.log(response);
+  }
+
+  responseGoogle = (response) => {
     console.log(response);
   }
   emitEmpty = () => {
@@ -133,10 +138,18 @@ class Signin extends Component {
                         callback={this.responseFacebook}
                         className="facebooksignin"
                         icon="fa-facebook" />
-                      <Button className="googleplussign">Sign in
+                      {/* <Button className="googleplussign">Sign in
                         <Icon type="google-plus" />
-                      </Button>
-
+                      </Button> */}
+                      <GoogleLogin
+                        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                        buttonText="Login"
+                        className="googleplussign"
+                        icon="google-plus"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        
+                      />
                     </div>
 
                   </Col>
