@@ -23,6 +23,18 @@ const userSchema = mongoose.Schema({
     password: {
         type: String
     },
+    providerName:{
+        type:String
+    },
+    providerId:{
+        type:String
+    },
+    providerPic:{
+        type:String
+    },
+    token:{
+        type:String
+    },
     createdDate: {
         type: Date,
         default: Date.now
