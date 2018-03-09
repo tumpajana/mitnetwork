@@ -15,7 +15,7 @@ class Signin extends Component {
     super(props);
     this.state = {
       email: '',
-      Password:'',
+      password:'',
       redirectToReferrer:false
     };
 
@@ -44,10 +44,10 @@ class Signin extends Component {
  }
 
   login = () => {
-    // console.log('submit button');
-    if (this.state.email && this.state.Password) {
+    if (this.state.email && this.state.password) {
      loginData(this.state).then((result) => {
         let response = result;
+        console.log(response)
         if (response.userData) {
           sessionStorage.setItem('loginData', JSON.stringify(response));
           this.setState({ redirectToReferrer: true });
@@ -95,7 +95,7 @@ class Signin extends Component {
 
                       <Input
                         placeholder=" Password"
-                        name="Password"
+                        name="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />

@@ -60,7 +60,7 @@ class Signup extends Component {
 
     console.log('submit button');
     if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-      PostData( this.state).then((result) => {
+      PostData(this.state).then((result) => {
         let response = result;
         console.log(result)
         if (response.userData) {
@@ -188,7 +188,7 @@ class Signup extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
 
