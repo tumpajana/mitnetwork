@@ -117,6 +117,12 @@ if(typeof fields["password"] !== "undefined"){
         errors["password"] = "Only letters";
     }          
 }
+//phonenumber
+
+if(!fields["phoneNumber"]){
+  formIsValid = false;
+  errors["phoneNumber"] = "Cannot be empty";
+}
 
 
  this.setState({errors: errors});
@@ -185,7 +191,8 @@ if(typeof fields["password"] !== "undefined"){
                         // onChange={this.onChangeUserName}
 
                         onChange={this.onChangeValue}
-                        ref={node => this.userNameInput = node}
+                        // ref={node => this.userNameInput = node}
+                        value={this.state.fields["name"]}
                       />
                          <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                       <Input
@@ -194,6 +201,7 @@ if(typeof fields["password"] !== "undefined"){
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
+                        value={this.state.fields["userName"]}
                       />
                         <span style={{color: "red"}}>{this.state.errors["userName"]}</span>
                       {/* <Input
@@ -213,6 +221,7 @@ if(typeof fields["password"] !== "undefined"){
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
+                        value={this.state.fields["email"]}
                       />
                          <span style={{color: "red"}}>{this.state.errors["email"]}</span>
                       <Input
@@ -221,6 +230,7 @@ if(typeof fields["password"] !== "undefined"){
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
+                        value={this.state.fields["phoneNumber"]}
                       />
                         <span style={{color: "red"}}>{this.state.errors["phoneNumber"]}</span>
                       <Input
@@ -230,6 +240,7 @@ if(typeof fields["password"] !== "undefined"){
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
+                        value={this.state.fields["password"]}
                       />
                         <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                       {/* <Input

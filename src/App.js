@@ -4,7 +4,6 @@ import './App.css';
 import Routes from './routes';
 
 import Header from './Components/Header/Header';
-
 import Signup from './Components/Signup/Signup';
 import Signin from './Components/Signin/Signin';
 import Profile from './Components/Profile/Profile';
