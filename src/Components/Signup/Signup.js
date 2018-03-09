@@ -23,12 +23,14 @@ class Signup extends Component {
       name: '',
       password: '',
       phoneNumber: '',
-      redirectToReferrer: false
-
+      redirectToReferrer: false,
+      fields: {},
+      errors: {},
     };
 
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
+    this. handleValidation = this. handleValidation.bind(this);
   }
   emitEmpty = () => {
     this.userNameInput.focus();
@@ -55,11 +57,81 @@ class Signup extends Component {
     console.log('onchangeusername', e.target.value,'+', e.target.name)
   }
 
+ //validation
+ handleValidation()  {
+  //  debugger;
+  let fields = this.state.fields;
+  let errors = {};
+  let formIsValid = true;
+
+  //Name
+  if(!fields["name"]){
+     formIsValid = false;
+     errors["name"] = "Cannot be empty";
+  }
+
+  if(typeof fields["name"] !== "undefined"){
+       if(!fields["name"].match(/^[a-zA-Z]+$/)){
+           formIsValid = false;
+           errors["name"] = "Only letters";
+       }          
+  }
+//UserName
+
+  if(!fields["userName"]){
+    formIsValid = false;
+    errors["userName"] = "Cannot be empty";
+ }
+
+ if(typeof fields["userName"] !== "undefined"){
+      if(!fields["userName"].match(/^[a-zA-Z]+$/)){
+          formIsValid = false;
+          errors["userName"] = "Only letters";
+      }          
+ }
+
+  //Email
+  if(!fields["email"]){
+     formIsValid = false;
+     errors["email"] = "Cannot be empty";
+  }
+
+  if(typeof fields["email"] !== "undefined"){
+      let lastAtPos = fields["email"].lastIndexOf('@');
+      let lastDotPos = fields["email"].lastIndexOf('.');
+
+      if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
+        formIsValid = false;
+        errors["email"] = "Email is not valid";
+      }
+ }
+//password
+if(!fields["password"]){
+  formIsValid = false;
+  errors["password"] = "Cannot be empty";
+}
+
+if(typeof fields["password"] !== "undefined"){
+    if(!fields["password"].match(/^[a-zA-Z]+$/)){
+        formIsValid = false;
+        errors["password"] = "Only letters";
+    }          
+}
+
+
+ this.setState({errors: errors});
+ return formIsValid;
+}
+
+
   //submit registration form
   register=() =>{
-
+// debugger;
     console.log('submit button');
-    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+    console.log(this.state.name)
+    if(this.handleValidation()){
+      // debugger;
+    // if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
       PostData( this.state).then((result) => {
         let response = result;
         console.log(result)
@@ -69,7 +141,11 @@ class Signup extends Component {
         }
 
       });
-    }
+    // }
+   }else{
+      alert("Form has errors.")
+   }
+    
   }
   render() {
 
@@ -111,6 +187,7 @@ class Signup extends Component {
                         onChange={this.onChangeValue}
                         ref={node => this.userNameInput = node}
                       />
+                         <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                       <Input
                         placeholder="Username"
                         name="userName"
@@ -118,6 +195,7 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
+                        <span style={{color: "red"}}>{this.state.errors["userName"]}</span>
                       {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -136,6 +214,7 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
+                         <span style={{color: "red"}}>{this.state.errors["email"]}</span>
                       <Input
                         placeholder=" Phone Number"
                         name="phoneNumber"
@@ -143,6 +222,7 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
+                        <span style={{color: "red"}}>{this.state.errors["phoneNumber"]}</span>
                       <Input
                         placeholder=" Password"
                         name="password"
@@ -151,6 +231,7 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
+                        <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                       {/* <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -188,7 +269,7 @@ class Signup extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p class="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
 
