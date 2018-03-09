@@ -82,3 +82,152 @@ body{
 .editprofileform .anticon.anticon-phone{
    transform: rotate(90deg);
 }
+
+
+
+
+.profilesec{
+    background: rgb(225, 233, 238);
+    height: 87vh;
+    position: relative;
+}
+.profilesec img{
+    height: 214px;
+    width:100%;
+    filter: blur(1px);
+}
+.userpic{
+    background-image: url('../../Images/male.png');
+    margin: 0 auto;
+    height: 120px;
+    width: 120px;
+    top: -60px;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.95);
+    background-repeat:no-repeat; 
+    box-shadow: 0 1px 15px 2px rgba(0,0,0,.08);
+}
+.userdetail{
+    /* position: relative; */
+    margin-bottom: 3.5em;
+    margin-top: 3em;
+}
+.userdetail p{
+    font-size: 26px;
+    font-weight: 500;
+    font-family: lato;
+    margin: 0;
+}
+.userdetail h4{
+    font-size: 15px;
+    font-weight: 500;
+    font-family: lato;
+}
+.userpic img{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid white;
+    /* box-shadow: 0 -1px 10px 4px rgba(0,0,0,.1); */
+    filter: none;
+}
+.vieweditbtn{
+    float: right;
+    cursor: pointer;
+    position: absolute;
+    top: 25px;
+    right: 45px;
+    width:50px;
+    height:50px;
+    background: rgb(24, 144, 255);
+    border-radius: 50%;
+    padding:10px;
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+}
+.vieweditbtn:hover{
+    background: rgb(24, 144, 255);
+}
+.vieweditbtn.ant-btn:focus{
+    background: rgb(24, 144, 255);
+}
+.vieweditbtn:active{
+    background: rgb(24, 144, 255);
+}
+.vieweditbtn .anticon.anticon-edit{
+    color:#ffffff;
+    font-size: 25px;
+}
+
+
+
+
+.prodetail p{
+   text-align: left;
+   font-size: 16px;
+   font-family: lato;
+   word-break: break-all;
+}
+/* .maildetail{
+    margin-top: 2em;
+} */
+/* .prodetail {
+    padding: 10px 0;
+} */
+.prodetail{
+    position: relative;
+}
+.prodetail:before{
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    content:"";
+    width:0.5px;
+    height: 75%;
+    top: 14px;
+    background: #dedede;
+}
+.procard{
+    height: auto;
+    padding: 30px 30px 4em;
+    background: white;
+    box-shadow: 0 2px 10px 2px rgba(0,0,0,.05);
+    width: 65%;
+    margin: 0 auto;
+    position: absolute;
+    top: 145px;
+    left:0;
+    right: 0;
+
+}
+
+.prodetail .anticon:before {
+    color: rgb(24, 144, 255);
+    font-size: 18px;
+
+}
+.profilesec .anticon{
+    vertical-align: middle !important;
+}
+
+/* responsive css */
+@media only screen 
+and (min-width: 320px) 
+and (max-width: 767px) {
+
+    .procard {
+     padding: 30px 0;
+        width: 90%;
+    }
+}
+@media only screen 
+and (width: 1920px)  {
+    .profilesec{
+        height:92vh;
+    }
+}
