@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import FacebookLogin from 'react-facebook-login';
 import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
@@ -15,12 +16,16 @@ class Signin extends Component {
     super(props);
     this.state = {
       email: '',
-      Password:'',
-      redirectToReferrer:false
+      password: '',
+      redirectToReferrer: false
     };
 
     this.login = this.login.bind(this);
     this.onChangeLoginName = this.onChangeLoginName.bind(this);
+  }
+
+  responseFacebook = (response) => {
+    console.log(response);
   }
   emitEmpty = () => {
     this.userNameInput.focus();
@@ -37,17 +42,17 @@ class Signin extends Component {
   }
 
 
-  onChangeLoginName(e){
-  this.setState({[e.target.name]:e.target.value});
-  console.log('onchangeusername', e.target.value,'+', e.target.name)
+  onChangeLoginName(e) {
+    this.setState({ [e.target.name]: e.target.value });
+    console.log('onchangeusername', e.target.value, '+', e.target.name)
 
- }
+  }
 
   login = () => {
-    // console.log('submit button');
-    if (this.state.email && this.state.Password) {
-     loginData(this.state).then((result) => {
+    if (this.state.email && this.state.password) {
+      loginData(this.state).then((result) => {
         let response = result;
+        console.log(response)
         if (response.userData) {
           sessionStorage.setItem('loginData', JSON.stringify(response));
           this.setState({ redirectToReferrer: true });
@@ -95,7 +100,7 @@ class Signin extends Component {
 
                       <Input
                         placeholder=" Password"
-                        name="Password"
+                        name="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
@@ -117,9 +122,17 @@ class Signin extends Component {
 
                     <div className="signupwithsocial">
                       <p className="ordividerres">OR</p>
-                      <Button className="facebooksignin">Sign in
+                      {/* <Button className="facebooksignin">Sign in
                         <Icon type="facebook" />
-                      </Button>
+                      </Button> */}
+                      <FacebookLogin
+                        appId="1003222123164561"
+                        autoLoad={true}
+                        fields="name,email,picture"
+                        // onClick={componentClicked}
+                        callback={this.responseFacebook}
+                        className="facebooksignin"
+                        icon="fa-facebook" />
                       <Button className="googleplussign">Sign in
                         <Icon type="google-plus" />
                       </Button>

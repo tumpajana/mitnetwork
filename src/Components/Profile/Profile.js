@@ -47,13 +47,15 @@ class Profile extends Component {
   }
 
   //  //show profile
+  
   show=() =>{
-
+    
     console.log('submit button');
-   
+
       getUserProfile( sessionStorage.getItem("userId")).then((result) => {
         let response = result;
-        console.log(result)
+        this.userProfile=result.result;
+        console.log('userData...',this.userProfile)
         // if (response.userData) {
         //   sessionStorage.setItem('userData', JSON.stringify(response));
         //   this.setState({ redirectToReferrer: true });
@@ -66,7 +68,7 @@ class Profile extends Component {
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
-
+this.show();
     function handleChange(value) {
       console.log(`selected ${value}`);
     }

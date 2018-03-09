@@ -46,12 +46,11 @@ class Header extends Component {
                 <Icon type="wechat" />Messaging
              </Menu.Item>
             
-              <SubMenu title={<span><img type="setting" className="leftalign" src={userpic}/>Me</span>}>
+              <SubMenu title={<span><img type="setting" className="leftalign" src={userpic}/>Me</span>} className="headersubmenu">
                 <MenuItemGroup title="">
                   <Menu.Item key="setting:1" className="linkprfl">Edit Profile</Menu.Item>
                   <Menu.Item key="setting:2" className="linkprfl">Log out</Menu.Item>
                 </MenuItemGroup>
-              
               </SubMenu>
             
             </Menu>

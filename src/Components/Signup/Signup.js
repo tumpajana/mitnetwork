@@ -60,7 +60,7 @@ class Signup extends Component {
 
     console.log('submit button');
     if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-      PostData( this.state).then((result) => {
+      PostData(this.state).then((result) => {
         let response = result;
         console.log(result)
         if (response.user) {
