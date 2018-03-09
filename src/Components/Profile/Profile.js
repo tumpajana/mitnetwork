@@ -59,7 +59,7 @@ class Profile extends Component {
      
        {/* profile view section start */}
           <section className="profilesec">
-            <img src={backprofile} />
+            {/* <img src={backprofile} /> */}
             <div className="procard">
               <div className="userdetail">
                 <div className="userpic">
@@ -151,8 +151,8 @@ class Profile extends Component {
                       onOk={this.handleOk}
                       onCancel={this.handleCancel}
                       footer={[
-                        <Button key="back" onClick={this.handleCancel}>Back</Button>,
-                        <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                        <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
+                        <Button key="submit" loading={loading} onClick={this.handleOk} className="savebtn">
                           Save
                         </Button>,
                       ]}
@@ -161,7 +161,7 @@ class Profile extends Component {
                       <Row>
                         <Col span={24}>
                           <div className="mitedituserback">
-                            <img src={editprofileimg} />
+                            {/* <img src={editprofileimg} /> */}
                             <div className="userimage">
                                 {/* <img src={placegholderimg} /> */}
                                 <Button className="editbtn" title="Edit Profile Image">
