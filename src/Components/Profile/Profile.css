@@ -1,32 +1,122 @@
-.profilesec{
-    background: rgb(247, 247, 247);
+body{
+    font-family: Lato;
+    background: #f7f7f7;
+}
+
+.ant-modal-wrap {
+    display: flex;
     height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.ant-modal{
+    top:0;
+    width:50% !important;
+}
+.ant-modal-body{
+    padding:0;
+}
+.editprofileform{
+    padding:25px;
+}
+.mitedituserback img{
+    width:100%;
+    height:auto;
+}
+.mitedituserback{
+    position: relative;
+    overflow: visible;
+    margin-bottom: 4em;
+}
+.userimage{
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    top:48%;
+    border:2px solid #ffffff;
+    border-radius: 50%;
+    width:110px;
+    height:110px;
+    background: #ffffff;
+    background: #ffffff url(../../Images/avatar.png) no-repeat;
+    background-size: 65px 65px;
+    background-position: center;
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+}
+.editbtn{
+    position: absolute;
+    right: -7px;
+    bottom: 0;
+    border-radius: 50%;
+    padding: 5px 8px;
+    background: rgb(24, 144, 255);
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+}
+.editbtn:hover{
+    background: rgb(24, 144, 255);
+}
+.editbtn.ant-btn:focus{
+    background: rgb(24, 144, 255);
+}
+.editbtn:active{
+    background: rgb(24, 144, 255);
+}
+
+.editbtn .anticon-edit{
+    color:#ffffff;
+    font-size: 15px;
+}
+.userimage img{
+    width:100%;
+    height:100%;
+    border-radius: 50%;
+}
+
+
+.editprofileform .ant-row{
+   margin-bottom:16px;
+}
+
+
+.editprofileform .anticon.anticon-phone{
+   transform: rotate(90deg);
+}
+
+
+
+
+.profilesec{
+    background: rgb(225, 233, 238);
+    /* height: 87vh; */
     position: relative;
 }
 .profilesec img{
-    height: 214px;
+    height: 40%;
     width:100%;
-    filter: blur(1px);
+    /* filter: blur(1px); */
 }
 .userpic{
     background-image: url('../../Images/male.png');
     margin: 0 auto;
-    height: 120px;
-    width: 120px;
-    top: -60px;
+    height: 130px;
+    width: 130px;
+    top: -65px;
     border-radius: 50%;
     position: absolute;
     left: 0;
     right: 0;
     margin: 0 auto;
     background-position: center;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 1);
     background-repeat:no-repeat; 
     box-shadow: 0 1px 15px 2px rgba(0,0,0,.08);
 }
 .userdetail{
     /* position: relative; */
-    margin-top: 3.5em;
+    margin-bottom: 3.5em;
+    margin-top: 3em;
 }
 .userdetail p{
     font-size: 26px;
@@ -35,30 +125,49 @@
     margin: 0;
 }
 .userdetail h4{
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 500;
     font-family: lato;
+    margin: 0;
+    color: rgb(89, 89, 89);
 }
 .userpic img{
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    border: 3px solid white;
+    border: 4px solid white;
     /* box-shadow: 0 -1px 10px 4px rgba(0,0,0,.1); */
     filter: none;
 }
-i.anticon.anticon-edit{
+.vieweditbtn{
     float: right;
     cursor: pointer;
     position: absolute;
     top: 25px;
     right: 45px;
+    width:50px;
+    height:50px;
+    background: rgb(24, 144, 255);
+    border-radius: 50%;
+    padding:10px;
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
 }
-.userdetail .anticon:before {
-    color: rgb(105, 64, 186);
-    font-size: 28px;
-    font-weight: 500;
+.vieweditbtn:hover{
+    background: rgb(24, 144, 255);
 }
+.vieweditbtn.ant-btn:focus{
+    background: rgb(24, 144, 255);
+}
+.vieweditbtn:active{
+    background: rgb(24, 144, 255);
+}
+.vieweditbtn .anticon.anticon-edit{
+    color:#ffffff;
+    font-size: 25px;
+}
+
+
+
 
 .prodetail p{
    text-align: left;
@@ -66,17 +175,31 @@ i.anticon.anticon-edit{
    font-family: lato;
    word-break: break-all;
 }
-.maildetail{
+/* .maildetail{
     margin-top: 2em;
-}
-.prodetail {
+} */
+/* .prodetail {
     padding: 10px 0;
+} */
+.prodetail{
+    position: relative;
+}
+.prodetail:before{
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    content:"";
+    width:1px;
+    height: 75%;
+    top: 14px;
+    background: #dedede;
 }
 .procard{
     height: auto;
-    padding: 30px;
+    padding: 30px 30px 4em;
     background: white;
-    box-shadow: 0 2px 10px 2px rgba(0,0,0,.05);
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.01);
     width: 60%;
     margin: 0 auto;
     position: absolute;
@@ -86,12 +209,12 @@ i.anticon.anticon-edit{
 
 }
 
-.anticon:before {
-    color: rgb(105, 64, 186);
+.prodetail .anticon:before {
+    color: rgb(24, 144, 255);
     font-size: 18px;
 
 }
-.anticon{
+.profilesec .anticon{
     vertical-align: middle !important;
 }
 
@@ -103,5 +226,11 @@ and (max-width: 767px) {
     .procard {
      padding: 30px 0;
         width: 90%;
+    }
+}
+@media only screen 
+and (width: 1920px)  {
+    .profilesec{
+        height:92vh;
     }
 }

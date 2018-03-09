@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Routes from './routes';
+
+import Header from './Components/Header/Header';
 import Signup from './Components/Signup/Signup';
 import Signin from './Components/Signin/Signin';
 import Profile from './Components/Profile/Profile';
@@ -22,6 +24,7 @@ class App extends Component {
         </p> */}
         {/* <Signup></Signup> */}
         {/* <Signin></Signin> */}
+        {/* <Header></Header> */}
         {/* <Profile></Profile> */}
                 <Routes/>
       </div>

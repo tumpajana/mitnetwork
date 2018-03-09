@@ -1,6 +1,7 @@
 .signupcard {
     box-shadow: 4px 1px 25px 2px rgba(221, 221, 221, 0.86);
     width: 65%;
+    background: #ffffff;
 }
 
 .signuparea {
@@ -179,6 +180,8 @@ form.formsinput input.ant-input {
  }
 .formsigninmit1 {
     margin-left: 3em;
+    background: #ffffff;
+
 }
 
 button.ant-btn.sbmtbtn:hover {
