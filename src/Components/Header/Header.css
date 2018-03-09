@@ -2,10 +2,10 @@
 .navbarsocial ul {
     background: #283e4a;
     color: #ffffff;
-    line-height: 2em;
+    line-height: 20px;
     border: none;
     /* padding: 0 5em; */
-    padding: 8px 5em;
+    padding:0 5em;
     font-family: Lato;
     font-size: 13px;
     font-weight: 400;
@@ -20,7 +20,7 @@
     display: block;
     font-size: 22px;
     margin-top: 10px;
-   
+    margin-right:0 !important;
     margin-bottom: 0px;
 }
 .navbarright {
@@ -28,18 +28,9 @@
 }
 .navlogo {
     float: left;
-    padding-top: 8px;
+    padding-top: 2px;
 }
-img.leftalign {
-    width: 24px;
-    height: 24px;
-    display: block;
-    border: 0px solid white;
-    padding: 1px;
-    border-radius: 50%;
-    outline: none;
-    margin-top: 13px
-}
+
 .navbarright .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
     /* border-bottom: 2px solid #ffffff; */
     border:none;
@@ -84,5 +75,44 @@ li.ant-menu-item.linkprfl:hover {
     border:none !important;
 }
 .navbarright li.ant-menu-item {
+    padding-top: 0px;
+    font-size: 12px;
+    line-height: 21px;
+    font-weight: 400;
+    color: #c7d1d8;
+}
+
+
+.headersubmenu{
     padding-top: 4px;
+    font-size: 12px;
+    line-height: 21px;
+    font-weight: 400;
+    color: #c7d1d8;
+}
+.headersubmenu .ant-menu-submenu-arrow{
+   position: absolute;
+   top:0;
+   right:0;
+   display: inline-block !important;
+}
+.ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
+    border-bottom: 0 !important;
+    color: #1890ff;
+}
+img.leftalign {
+    width: 24px;
+    height: 24px;
+    display: block;
+    border: 0px solid white;
+    padding: 1px;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+
+
+
+.ant-menu-item-group-title{
+    padding-top:0;
+    line-height: 10px;
 }
