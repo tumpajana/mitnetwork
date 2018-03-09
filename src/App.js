@@ -4,7 +4,7 @@ import './App.css';
 import Routes from './routes';
 import Signup from './Components/Signup/Signup.js';
 import Profile from './Components/Profile/Profile.js';
-
+import Signin from './Components/Signin/Signin.js';
 
 import { Row, Col } from 'antd';
 
@@ -20,8 +20,9 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p> */}
-        <Signup></Signup>
-        {/* <Profile></Profile> */}
+        {/* <Signup></Signup> */}
+        <Profile></Profile>
+        {/* <Signin></Signin> */}
       </div>
     );
   }

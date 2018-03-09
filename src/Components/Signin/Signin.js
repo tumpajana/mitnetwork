@@ -1,12 +1,115 @@
 import React, { Component } from 'react';
-
+import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
-
+import { Row, Col } from 'antd';
+import 'antd/dist/antd.css';
+import mitlogo from '../../Images/mitlogo.png';
+const RadioGroup = Radio.Group;
 class Signin extends Component {
+  state = {
+    value: 1,
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: '',
+    };
+  }
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ userName: '' });
+  }
+  onChangeUserName = (e) => {
+    this.setState({ userName: e.target.value });
+  }
+  onChange = (e) => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
+  }
   render() {
+
+    const { userName } = this.state;
+
+    const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
-      <div className="App">
-       
+      <div className="signuparea">
+        <div className="signupcard">
+          <Row type="flex" justify="center" >
+            <Col span={9}>
+
+              <div className="sidesection">
+                <img src={mitlogo} />
+                <h2>Welcome To MIT Social</h2>
+                <hr />
+              </div>
+
+            </Col>
+            <Col lg={15} sm={24}  xs={24} className="centercontent">
+              <div className="formsigninmit">
+                <div className="formarea">
+                  <div className="formheading">
+                    <p className="signfont">Sign In </p>
+                  </div>
+                </div>
+                <Row type="flex" justify="center">
+
+                  <Col span={10} className="signinarea">
+                    <form className="formsinput">
+                     
+                      <Input
+                        placeholder="Username"
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
+                      />
+                      
+                      <Input
+                        placeholder=" Password"
+                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+
+                      />
+                    
+
+
+                    </form>
+                  </Col>
+                  <Col span={2}>
+
+                    <div className="wrapper">
+                      <div className="line"></div>
+                      <div className="wordwrapper">
+                        <div className="ordivider">OR</div>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col span={12} className="sociallogin">
+                  
+                      <div className="signupwithsocial">
+                        <Button className="facebooksignin">Sign in 
+                        <Icon type="facebook" />
+                        </Button>
+                        <Button className="googleplussign">Sign in 
+                        <Icon type="google-plus" />
+                        </Button>
+                       
+                      </div>
+                  
+                  </Col>
+
+                  <div className="registerbtn">
+                    <Button className="sbmtbtn">Submit</Button>
+                    <Button className="cnclbtn">Cancel</Button>
+                    <p class="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink">Register</a> &nbsp;here</p>
+                  </div>
+               
+
+                </Row>
+              </div>
+            </Col>
+
+          </Row>
+        </div>
       </div>
     );
   }

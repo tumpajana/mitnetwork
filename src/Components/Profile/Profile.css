@@ -1,0 +1,84 @@
+body{
+    font-family: Lato;
+}
+
+.ant-modal-wrap {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.ant-modal{
+    top:0;
+    width:50% !important;
+}
+.ant-modal-body{
+    padding:0;
+}
+.editprofileform{
+    padding:25px;
+}
+.mitedituserback img{
+    width:100%;
+    height:auto;
+}
+.mitedituserback{
+    position: relative;
+    overflow: visible;
+    margin-bottom: 4em;
+}
+.userimage{
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    top:48%;
+    border:2px solid #ffffff;
+    border-radius: 50%;
+    width:110px;
+    height:110px;
+    background: #ffffff;
+    background: #ffffff url(../../Images/avatar.png) no-repeat;
+    background-size: 65px 65px;
+    background-position: center;
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+}
+.editbtn{
+    position: absolute;
+    right: -7px;
+    bottom: 0;
+    border-radius: 50%;
+    padding: 5px 8px;
+    background: rgb(24, 144, 255);
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+}
+.editbtn:hover{
+    background: rgb(24, 144, 255);
+}
+.editbtn.ant-btn:focus{
+    background: rgb(24, 144, 255);
+}
+.editbtn:active{
+    background: rgb(24, 144, 255);
+}
+
+.editbtn .anticon-edit{
+    color:#ffffff;
+    font-size: 15px;
+}
+.userimage img{
+    width:100%;
+    height:100%;
+    border-radius: 50%;
+}
+
+
+.editprofileform .ant-row{
+   margin-bottom:16px;
+}
+
+
+.editprofileform .anticon.anticon-phone{
+   transform: rotate(90deg);
+}
