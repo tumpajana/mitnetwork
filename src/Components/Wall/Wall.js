@@ -44,7 +44,7 @@ class Wall extends Component {
         <div className="wallcard">
           <div className="postsec">
             <p>Share an Article, Photo, Video or Idea</p>
-            <hr></hr>
+      
 
             <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button>
             <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button>
