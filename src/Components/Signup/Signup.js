@@ -132,12 +132,11 @@ if(!fields["phoneNumber"]){
 
   //submit registration form
   register=() =>{
-// debugger;
     console.log('submit button');
     console.log(this.state.name)
-    if(this.handleValidation()){
-      // debugger;
-    // if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+    // if(this.handleValidation()){     // validation function
+      
+    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
       PostData( this.state).then((result) => {
         let response = result;
         console.log(result)
@@ -147,10 +146,10 @@ if(!fields["phoneNumber"]){
         }
 
       });
-    // }
-   }else{
-      alert("Form has errors.")
-   }
+    }
+  //  }else{
+  //     alert("Form has errors.")
+  //  }
     
   }
   render() {
@@ -192,7 +191,7 @@ if(!fields["phoneNumber"]){
 
                         onChange={this.onChangeValue}
                         // ref={node => this.userNameInput = node}
-                        value={this.state.fields["name"]}
+                      
                       />
                          <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                       <Input
@@ -201,7 +200,7 @@ if(!fields["phoneNumber"]){
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                        value={this.state.fields["userName"]}
+                        
                       />
                         <span style={{color: "red"}}>{this.state.errors["userName"]}</span>
                       {/* <Input
@@ -221,7 +220,7 @@ if(!fields["phoneNumber"]){
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                        value={this.state.fields["email"]}
+                        
                       />
                          <span style={{color: "red"}}>{this.state.errors["email"]}</span>
                       <Input
@@ -230,7 +229,7 @@ if(!fields["phoneNumber"]){
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                        value={this.state.fields["phoneNumber"]}
+                        // value={this.state.fields["phoneNumber"]}
                       />
                         <span style={{color: "red"}}>{this.state.errors["phoneNumber"]}</span>
                       <Input
@@ -240,7 +239,7 @@ if(!fields["phoneNumber"]){
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                        value={this.state.fields["password"]}
+                       
                       />
                         <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                       {/* <Input

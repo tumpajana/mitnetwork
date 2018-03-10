@@ -12,12 +12,27 @@ class Header extends Component {
   state = {
     current: 'mail',
   }
+  constructor(props) {
+    super(props);
+    this. logout = this.logout.bind(this);
+  }
+
+ 
   handleClick = (e) => {
     console.log('click ', e);
     this.setState({
       current: e.key,
     });
+   
   }
+
+  // toclear session storage and redirect to signin page
+logout(){
+  console.log('logout')
+  sessionStorage.clear();
+  this.history.push(`/Signin`);
+}
+
   render() {
     return (
       <div className="navbarsocial">
@@ -49,7 +64,7 @@ class Header extends Component {
               <SubMenu title={<span><img type="setting" className="leftalign" src={userpic}/>Me</span>} className="headersubmenu">
                 <MenuItemGroup title="">
                   <Menu.Item key="setting:1" className="linkprfl">Edit Profile</Menu.Item>
-                  <Menu.Item key="setting:2" className="linkprfl">Log out</Menu.Item>
+                  <Menu.Item key="setting:2" className="linkprfl" onItemTouchTap={this.logout} >Log out</Menu.Item>
                 </MenuItemGroup>
               </SubMenu>
             
@@ -64,3 +79,4 @@ class Header extends Component {
 }
 
 export default Header;
+// onClick={this.logout}
