@@ -32,7 +32,7 @@ router.post('/upload', (request, response) => {
             cb(null, true)
         }
     }).single('file');
-
+    
     upload(request, response, function (error) {
         console.log('......body....',request.body);
 
@@ -104,40 +104,144 @@ router.get('/getImage', (request, response) => {
 });
 //  Api for post
 
-// router.post('/socialPost', (request, response) => {
-//     console.log("user create ");
-//     console.log(request.body);
+router.post('/socialPost', (request, response) => {
+    console.log("post upload ");
+    console.log(request.body);
 
-//     let postResponse = {};
-//     let data = new user({
-//         userName: request.body.userName,
-//         name: request.body.name,
-//         phoneNumber: request.body.phoneNumber
+    let postResponse = {};
+    let data = new file({
+        title: request.body.title,
+        content:request.body.content,
+        userId:request.body.userId,
+        imageId:request.body.imageId
 
-//     });
-//     if (request.body.email) {
-//         data.email = (request.body.email).toLowerCase();
+    });
 
-//     };
-//     if (request.body.password) {
-//         data.password = cryptr.encrypt(request.body.password)
-//     };
-//     console.log(data);
-//     data.save((error, result) => {
+    console.log(data);
+    data.save((error, result) => {
+        if (error) {
+            console.log(error);
+            postResponse.error = true;
+            postResponse.message =  `Error :` + error.message;
+            response.status(500).json(postResponse);
+        } else {
+            console.log(result);
+            postResponse.error = false;
+            postResponse.user = result;
+            postResponse.message = ` Post upload is  successfull.`;
+            response.status(200).json(postResponse);
+
+        }
+
+    });
+});
+// Api for get  all Social post
+
+router.get('/getAllPost', (request, response) => {
+    console.log(" single project detail");
+
+    let getResponse = {};
+
+    file.find({}, (error, result) => {
+        if (error) {
+            getResponse.error = true;
+            getResponse.message = `Error :` + error.message;
+            response.status(500).json(getResponse);
+        } else {
+            getResponse.error = false;
+            getResponse.result = result;
+            getResponse.message = ` all  post getting  successfully .`;
+            response.status(200).json(getResponse);
+        }
+    });
+});
+// Api for get particular  Social post
+
+// router.get('/getPost', (request, response) => {
+//     console.log(" single project detail");
+//     let postId = request.query.postId;
+
+//     let getResponse = {};
+
+//     file.findOne({ _id: postId }, (error, result) => {
 //         if (error) {
-//             console.log(error);
-//             registrationResponse.error = true;
-//             registrationResponse.message = `Error :` + error.code == 11000 ? error.message : "phone number or email already exist";
-//             response.status(500).json(registrationResponse);
+//             getResponse.error = true;
+//             getResponse.message = `Error :` + error.message;
+//             response.status(500).json(getResponse);
 //         } else {
-//             console.log(result);
-//             registrationResponse.error = false;
-//             registrationResponse.user = result;
-//             registrationResponse.message = `registration is  successfull.`;
-//             response.status(200).json(registrationResponse);
-
+//             getResponse.error = false;
+//             getResponse.result = result;
+//             getResponse.message = `  post getting  successfully .`;
+//             response.status(200).json(getResponse);
 //         }
+//     });
+// }); 
+//Api to All comment through userId
+// router.get('/getAllByUserId', (request, response) => {
+//     console.log(" project detail through clientId");
+//     let clientId = request.query.clientId;
 
+//     let getResponse = {};
+
+//     file.find({ clientId: clientId }, (error, result) => {
+//         if (error) {
+//             getResponse.error = true;
+//             getResponse.message = `Error :` + error.message;
+//             response.status(500).json(getResponse);
+//         } else {
+//             getResponse.error = false;
+//             getResponse.result = result;
+//             getResponse.message = `  all comment  getting through userId successfully .`;
+//             response.status(200).json(getResponse);
+//         }
 //     });
 // });
+// Api for comment
+router.post('/comment', (request, response) => {
+    console.log("comment upload ");
+    console.log(request.body);
+
+    let postResponse = {};
+    let data = new file({
+        comment: request.body.comment,
+        userId:request.body.userId,
+        postId:request.body.postId
+    });
+
+    console.log(data);
+    data.save((error, result) => {
+        if (error) {
+            console.log(error);
+            postResponse.error = true;
+            postResponse.message =  `getAllCommentError :` + error.message;
+            response.status(500).json(postResponse);
+        } else {
+            console.log(result);
+            postResponse.error = false;
+            postResponse.user = result;
+            postResponse.message = ` comment uploaded  successfully.`;
+            response.status(200).json(postResponse);
+
+        }
+
+    });
+});
+// Api for getting all  comment through postId
+router.get('/getAllComment', (request, response) => {
+    let getResponse = {};
+    let postId = request.query.postId;
+    file.find({postId:postId}, (error, result) => {
+        if (error) {
+            getResponse.error = true;
+            getResponse.message = `Error :` + error.message;
+            response.status(500).json(getResponse);
+        } else {
+            getResponse.error = false;
+            getResponse.result = result;
+            getResponse.message = ` getting all comment   successfully .`;
+            response.status(200).json(getResponse);
+        }
+    });
+});
+
 module.exports = router;
