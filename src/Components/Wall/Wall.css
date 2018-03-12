@@ -1,10 +1,10 @@
 .postsec{
     background:rgb(255, 255, 255);
-    padding: 20px 15px 10px;
+    padding: 20px 15px 15px;
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
     width: 50%;
     margin: 30px auto 15px;
-    height: 125px;
+    height: auto;
 
 }
 .postsec hr{
@@ -12,7 +12,7 @@
     margin-bottom: 1em;
 }
 button.ant-btn.postedit {
-    width: 25%;
+    width: auto;
     text-align: center;
     line-height: 0;
     height: 36px;
@@ -23,13 +23,31 @@ button.ant-btn.postedit {
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
+
+button.ant-btn.upldbtnwall {
+    width: auto;
+    text-align: center;
+    line-height: 0;
+    height: 36px;
+    float: left;
+    margin-right: 5px;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-left: 12px;
+    font-size: 13px;
+    border-color: rgba(0, 0, 0, 0.42);
+}
+.showpostall {
+    float: left;
+    text-align: left;
+}
 button.ant-btn.postedit:hover{
     border-color: rgb(0, 132, 191);
     color:rgb(0, 132, 191);
 }
 
 button.ant-btn.postimg {
-    width: 16%;
+    width: auto;
     text-align: center;
     line-height: 0;
     height: 36px;
@@ -40,18 +58,24 @@ button.ant-btn.postimg {
     border-color: rgba(0, 0, 0, 0.42);
 }
 button.ant-btn.post {
-    width: 12%;
+    width: auto;
     text-align: center;
     line-height: 0;
     height: 31px;
     float: right;
+    padding: 0 19px;
     margin-right: 5px;
     margin-top: 4px;
-    border-radius: 4px;
     background: rgb(0, 115, 177);
-    color:rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
+    font-family: Lato;
+    border-radius: 2px;
+    border: none;
+}
+button.ant-btn.post:hover {
+    background: rgb(2, 102, 156);
 }
 .postsec i.anticon.anticon-edit{
     vertical-align: middle;
@@ -133,7 +157,7 @@ margin: 0;
     color:rgba(0,0,0,.6);
  }
 .postedimg img{
-    height:300px;
+    height:auto;
     width:100%;
     margin-bottom: 8px;
 }
@@ -141,6 +165,12 @@ margin: 0;
     border: 1px solid rgb(230, 233, 236);
     margin: 15px 0 0 0;
     padding-bottom: 2px;
+}
+textarea.ant-input.showpost {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    resize: none;
 }
 .likecomment{
     padding: 10px 0 5px;
@@ -167,4 +197,102 @@ color: rgba(0,0,0,.6);
 }
 .likecomment button:focus .anticon-like-o:before{
 content:'\E64C';
+}
+
+.textareawall {
+    height: 115px;
+    margin-bottom: 28px;
+}
+.textareawall .ql-container.ql-snow {
+    /* border: none; */
+}
+
+.quill.textareheadng {
+    margin-bottom: 20px;
+}
+
+.textareheadng .ql-editor.ql-blank::before {
+    color: rgba(0,0,0,0.4);
+    content: attr(data-placeholder);
+    font-style: normal;
+    pointer-events: none;
+    position: absolute;
+    font-size: 15px;
+    font-family: lato;
+    line-height: 15px;
+}
+.userprflimg img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 2px solid #c7c6c6;
+    background-size: cover;
+    float: left;
+}
+h4.usrnamewall {
+    text-align: left;
+    font-family: Lato;
+    font-size: 15px;
+    margin-bottom: 2px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.81);
+    margin-top: 4px;
+}
+hr.dividerwall {
+    border-top: 1px solid #e2e2e2;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.usrview {
+    margin-left: 7px;
+}
+p.degignationwall {
+    padding-bottom: 11px;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(0,0,0,.6);
+    font-family: Lato;
+    border:none;
+}
+.textareawall .ql-editor.ql-blank::before {
+    color: rgba(0,0,0,0.4);
+    content: attr(data-placeholder);
+    font-style: normal;
+    pointer-events: none;
+    position: absolute;
+    font-family: Lato;
+    font-size: 14px;
+}
+@media only screen 
+and (min-width: 320px) 
+and (max-width: 767px) {
+    .postsec {
+        width: 95%;
+    }
+    button.ant-btn.postedit {
+        width: auto;
+        font-size: 12px;
+        padding: 0 10px 0 10px;
+    }
+    button.ant-btn.postimg {
+        width: 30%;
+        font-size: 12px;
+    }
+    button.ant-btn.post {
+        width: 21%;
+        margin-right: 0;
+    }
+    .postedpartcard {
+        width: 95%;
+    }
+    .postedpartcard h3 {
+        padding-left: 20px;
+    }
+    .postedpartcard p {
+        padding-left: 20px;
+    }
+    .likecomment h3 {
+        padding: 0 0 10px 4px;
+    }
+
 }

@@ -5,8 +5,11 @@ import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
+import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
+
 import loginData from '../../Services/signipapi'
+import FacebookloginData from '../../Services/socialapi'
 const RadioGroup = Radio.Group;
 
 class Signin extends Component {
@@ -18,20 +21,56 @@ class Signin extends Component {
     this.state = {
       email: '',
       password: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      facebookInfo: {
+        name: '',
+        providerName: '',
+        providerPic: '',
+        providerId: '',
+        email: '',
+        phoneNumber: '',
+        token: ''
+      }
+
     };
 
     this.login = this.login.bind(this);
     this.onChangeLoginName = this.onChangeLoginName.bind(this);
+    this.facebookLogin = this.facebookLogin.bind(this);
+
   }
 
   responseFacebook = (response) => {
     console.log(response);
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.name,
+      providerName: 'Facebook',
+      providerPic: response.picture.data.url,
+      providerId: response.userID,
+      email: response.email,
+      phoneNumber: '999999999',
+      token: response.accessToken
+    }
+    this.facebookLogin(response, 'facebook')
   }
 
   responseGoogle = (response) => {
-    console.log(response);
+    console.log(response, 'google');
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.w3.ig,
+      providerName: 'Google',
+      providerPic: response.w3.Paa,
+      providerId: response.El,
+      email: response.profileObj.email,
+      token: response.tokenObj.access_token
+    }
+    this.facebookLogin(response, 'google')
   }
+ 
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ userName: '' });
@@ -58,6 +97,19 @@ class Signin extends Component {
       loginData(this.state).then((result) => {
         let response = result;
         console.log(response)
+        if (response.user) {
+          sessionStorage.setItem('userId',response.user._id);
+          this.setState({ redirectToReferrer: true });
+        }
+
+      });
+    }
+  }
+
+  facebookLogin =(res,type) => { 
+    FacebookloginData(this.state.facebookInfo).then((result) => {
+        let response = result;
+        console.log(response)
         if (response.userData) {
           sessionStorage.setItem('loginData', JSON.stringify(response));
           this.setState({ redirectToReferrer: true });
@@ -65,12 +117,15 @@ class Signin extends Component {
 
       });
     }
-  }
+  
   render() {
-
+    if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
+
     return (
       <div className="signuparea">
         <div className="signupcard">
@@ -131,7 +186,7 @@ class Signin extends Component {
                         <Icon type="facebook" />
                       </Button> */}
                       <FacebookLogin
-                        appId="1003222123164561"
+                        appId="312775355854012"
                         autoLoad={true}
                         fields="name,email,picture"
                         // onClick={componentClicked}
@@ -142,12 +197,12 @@ class Signin extends Component {
                         <Icon type="google-plus" />
                       </Button> */}
                       <GoogleLogin
-                        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                        clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
                         buttonText="Login"
                         className="googleplussign"
-                        icon="google-plus"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
+                        icon="google-plus"
                         
                       />
                     </div>
