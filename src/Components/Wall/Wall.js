@@ -85,7 +85,7 @@ class Wall extends Component {
 
                 <Upload >
                   <Button className="upldbtnwall">
-                    <Icon type="upload" /> Click to Upload
+                    <Icon type="upload" />Upload Image
               </Button>
                 </Upload>
               </Col>
