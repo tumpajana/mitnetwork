@@ -99,7 +99,7 @@ class Profile extends Component {
 
         {/* profile view section start */}
         <section className="profilesec">
-          {/* <img src={backprofile} /> */}
+         
           <div className="procard">
             <div className="userdetail">
               <div className="userpic">
