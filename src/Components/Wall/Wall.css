@@ -169,6 +169,39 @@ color: rgba(0,0,0,.6);
 .likecomment button:focus .anticon-like-o:before{
 content:'\E64C';
 }
+
+.textareawall {
+    height: 115px;
+    margin-bottom: 28px;
+}
+.textareawall .ql-container.ql-snow {
+    /* border: none; */
+}
+
+.quill.textareheadng {
+    margin-bottom: 20px;
+}
+
+.textareheadng .ql-editor.ql-blank::before {
+    color: rgba(0,0,0,0.4);
+    content: attr(data-placeholder);
+    font-style: normal;
+    pointer-events: none;
+    position: absolute;
+    font-size: 15px;
+    font-family: lato;
+    line-height: 15px;
+}
+
+.textareawall .ql-editor.ql-blank::before {
+    color: rgba(0,0,0,0.4);
+    content: attr(data-placeholder);
+    font-style: normal;
+    pointer-events: none;
+    position: absolute;
+    font-family: Lato;
+    font-size: 14px;
+}
 @media only screen 
 and (min-width: 320px) 
 and (max-width: 767px) {

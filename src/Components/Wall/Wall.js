@@ -6,8 +6,12 @@ import './Wall.css';
 import User from '../../Images/user10.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 
 class Wall extends Component {
+
   state = {
     loading: false,
     visible: false,
@@ -44,7 +48,7 @@ class Wall extends Component {
         <div className="wallcard">
           <div className="postsec">
             <p>Share an Article, Photo, Video or Idea</p>
-      
+
 
             <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button>
             <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button>
@@ -84,15 +88,15 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-        <Modal
+        <Modal className="artlhead"
           visible={visible}
-          title="Jessica Willam"
+          title="Share Article"
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
-            <Button key="back" onClick={this.handleCancel}>Back</Button>,
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
             <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              Done
+              Post
            </Button>,
           ]}
           className="mitprofileEditmodal"
@@ -102,18 +106,19 @@ class Wall extends Component {
 
           {/* ----------------edit profile form start--------------- */}
           <form className="editprofileform">
-            {/* name and username input start*/}
+
             <Row gutter={24}>
               <Col span={24}>
-                <Input
-                  placeholder="Write Something here"
-                  prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
-                  ref={node => this.userNameInput = node}
-                />
+                <form>
+                
+
+                <ReactQuill value="" className="textareheadng" placeholder="Headline"/>
+                  <ReactQuill  placeholder="Write here .." className="textareawall" />
+
+                </form>
               </Col>
             </Row>
-            {/* name and username input end*/}
+
           </form>
         </Modal>
         {/* ----------MODAL SECTION FOR write something end------------- */}
