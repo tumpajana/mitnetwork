@@ -5,6 +5,7 @@ import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
+import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
 import {Redirect} from 'react-router-dom'
 import loginData from '../../Services/signipapi'
@@ -96,8 +97,8 @@ class Signin extends Component {
       loginData(this.state).then((result) => {
         let response = result;
         console.log(response)
-        if (response.userData) {
-          sessionStorage.setItem('loginData', JSON.stringify(response));
+        if (response.user) {
+          sessionStorage.setItem('userId',response.user._id);
           this.setState({ redirectToReferrer: true });
         }
 
@@ -118,9 +119,9 @@ class Signin extends Component {
     }
   
   render() {
-// if(this.state.redirectToReferrer){
-//   return (<Redirect to ={'/profile'}/>)
-// }
+    if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
