@@ -23,9 +23,12 @@ class Signup extends Component {
       name: '',
       password: '',
       phoneNumber: '',
-      redirectToReferrer: false
-
+      redirectToReferrer: false,
+      valid:{
+        nameText:''
+      }
     };
+    
 
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -50,7 +53,116 @@ class Signup extends Component {
 
   //onchange of input feild binding
   onChangeValue = (e) => {
-    console.log(e)
+    console.log(e.target.name);
+       if(e.target.value.length == 0){
+        if(e.target.name == 'name'){
+          this.setState({
+            valid:{
+              nameText:'Name can not be empty'
+            }
+          });
+        }
+       }else{
+        if(e.target.name == 'name'){
+          this.setState({
+            valid:{
+              nameText:''
+            }
+          });
+        }
+       }
+
+       if(e.target.value.length == 0){
+        if(e.target.name == 'userName'){
+          this.setState({
+            valid:{
+              nameText:'username can not be empty'
+            }
+          });
+        }
+       }else{
+        if(e.target.name == 'userName'){
+          this.setState({
+            valid:{
+              nameText:''
+            }
+          });
+        }
+       }
+
+       if(e.target.value.length == 0){
+        if(e.target.name == 'email'){
+          this.setState({
+            valid:{
+              nameText:'email can not be empty '
+            }
+          });
+        }
+
+    //     if(typeof fields["name"] !== "undefined"){
+    //       if(!fields["name"].match(/^[a-zA-Z]+$/)){
+    //         this.setState({
+    //           valid:{
+    //             nameText:'enter a valid email '
+    //           }
+    //         });
+    //       }          
+    //  }
+
+       }else{
+        if(e.target.name == 'email'){
+          this.setState({
+            valid:{
+              nameText:''
+            }
+          });
+        }
+       }
+      //  if(e.target.value.length != 0){
+      //  if( e.target.name == 'email' && (e.target.email !=(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/))){
+      //   this.setState({
+      //     valid:{
+      //       nameText:' enter a valid email '
+      //     }
+      //   })
+      // }}
+
+       if(e.target.value.length == 0){
+        if(e.target.name == 'phoneNumber'){
+          this.setState({
+            valid:{
+              nameText:'phonenumber can not be empty'
+            }
+          });
+        }
+       }else{
+        if(e.target.name == 'phoneNumber'){
+          this.setState({
+            valid:{
+              nameText:''
+            }
+          });
+        }
+       }
+
+       if(e.target.value.length == 0){
+        if(e.target.name == 'password'){
+          this.setState({
+            valid:{
+              nameText:'password can not be empty'
+            }
+          });
+        }
+       }else{
+        if(e.target.name == 'password'){
+          this.setState({
+            valid:{
+              nameText:''
+            }
+          });
+        }
+       }
+
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value,'+', e.target.name)
   }
@@ -71,7 +183,11 @@ class Signup extends Component {
 
       });
     }
+    else{
+      alert("field cannot be empty")
+    }
   }
+
   render() {
 
     const { userName } = this.state;
@@ -112,6 +228,7 @@ class Signup extends Component {
                         onChange={this.onChangeValue}
                         ref={node => this.userNameInput = node}
                       />
+                      <div> {this.state.valid.nameText} </div>
                       <Input
                         placeholder="Username"
                         name="userName"
@@ -119,6 +236,7 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
+                     
                       {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -137,21 +255,23 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
+                     
                       <Input
                         placeholder=" Phone Number"
                         name="phoneNumber"
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                        type ="number"
                         onChange={this.onChangeValue}
                       />
-                      <Input
+                     
+                      <Input  type="password"
                         placeholder=" Password"
                         name="password"
-                        name ="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
                       />
+                      
                       {/* <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -183,7 +303,7 @@ class Signup extends Component {
                   </Button>
                  
                 </div>
-                  
+               
                   </Col>
 
                   <div className="registerbtn">
