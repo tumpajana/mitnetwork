@@ -63,9 +63,10 @@ class Signup extends Component {
       PostData(this.state).then((result) => {
         let response = result;
         console.log(result)
-        if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+        if (response.user) {
+          sessionStorage.setItem('userId', response.user._id);
           this.setState({ redirectToReferrer: true });
+          return <Redirect to ='/Profile' />
         }
 
       });

@@ -7,11 +7,26 @@ import placegholderimg from '../../Images/avatar.png';
 import Header from '../Header/Header.js';
 import User from '../../Images/user10.jpg';
 import backprofile from '../../Images/backpro.svg';
-
+import getUserProfile from '../../Services/profileapi';
 
 
 
 class Profile extends Component {
+   constructor() {
+    super();
+    this.state = {
+      userName: '',
+      email: '',
+      name: '',
+      phoneNumber: '',
+      redirectToReferrer: false
+
+    };
+
+     this.show = this.show.bind(this);
+    // this.onChangeValue = this.onChangeValue.bind(this);
+  }
+
   state = {
     loading: false,
     visible: false,
@@ -30,10 +45,30 @@ class Profile extends Component {
   handleCancel = () => {
     this.setState({ visible: false });
   }
+
+  //  //show profile
+  
+  show=() =>{
+    
+    console.log('submit button');
+
+      getUserProfile( sessionStorage.getItem("userId")).then((result) => {
+        let response = result;
+        this.userProfile=result.result;
+        console.log('userData...',this.userProfile)
+        // if (response.userData) {
+        //   sessionStorage.setItem('userData', JSON.stringify(response));
+        //   this.setState({ redirectToReferrer: true });
+        // }
+
+      });
+  }
+    
+
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
-
+this.show();
     function handleChange(value) {
       console.log(`selected ${value}`);
     }
@@ -271,6 +306,6 @@ class Profile extends Component {
       </div>
     );
   }
-}
+  }
 
 export default Profile;
