@@ -32,7 +32,7 @@ router.post('/upload', (request, response) => {
             cb(null, true)
         }
     }).single('file');
-    
+
     upload(request, response, function (error) {
         console.log('......body....',request.body);
 
@@ -128,7 +128,7 @@ router.post('/socialPost', (request, response) => {
             console.log(result);
             postResponse.error = false;
             postResponse.user = result;
-            postResponse.message = ` Post upload is  successfull.`;
+            postResponse.message = ` Post  is uploded  successfully.`;
             response.status(200).json(postResponse);
 
         }
@@ -138,7 +138,7 @@ router.post('/socialPost', (request, response) => {
 // Api for get  all Social post
 
 router.get('/getAllPost', (request, response) => {
-    console.log(" single project detail");
+    console.log(" post detail");
 
     let getResponse = {};
 
@@ -150,7 +150,7 @@ router.get('/getAllPost', (request, response) => {
         } else {
             getResponse.error = false;
             getResponse.result = result;
-            getResponse.message = ` all  post getting  successfully .`;
+            getResponse.message = `  getting all  post  successfully .`;
             response.status(200).json(getResponse);
         }
     });
