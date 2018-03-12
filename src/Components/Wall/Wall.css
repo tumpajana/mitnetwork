@@ -23,6 +23,24 @@ button.ant-btn.postedit {
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
+
+button.ant-btn.upldbtnwall {
+    width: auto;
+    text-align: center;
+    line-height: 0;
+    height: 36px;
+    float: left;
+    margin-right: 5px;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-left: 12px;
+    font-size: 13px;
+    border-color: rgba(0, 0, 0, 0.42);
+}
+.showpostall {
+    float: left;
+    text-align: left;
+}
 button.ant-btn.postedit:hover{
     border-color: rgb(0, 132, 191);
     color:rgb(0, 132, 191);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload,Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -62,20 +62,45 @@ class Wall extends Component {
                   </div>
                 </Col>
               </Row>
-              <Row type="flex" justify="center"> 
-              
+              <Row type="flex" justify="center">
+
                 <Col span={24}>
-                
-                <TextArea rows={4} placeholder="Write here .." className="showpost"/>
+
+                  {/* <TextArea rows={4} placeholder="Write here .." className="showpost" /> */}
+                  <div placeholder="Write here .." className="showpostall" >
                   
+                
+                  </div>
+
                 </Col>
               </Row>
             </form>
 
             <hr className="dividerwall" />
-            <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button>
-            <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button>
+
+            <Row >
+            
+            <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
+            <Col span={5}>
+            
+            <Upload >
+               <Button className="upldbtnwall">
+                <Icon type="upload" /> Click to Upload
+              </Button>
+            </Upload>
+            </Col>
+            <Col span={14}>
+            
+            
             <Button className="post" title="Post">Post</Button>
+            </Col>
+            
+             </Row>
+           
+            {/* <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button> */}
+
+           
+         
           </div>
         </div>
 
