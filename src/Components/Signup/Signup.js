@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import { Input, Icon, Radio, Button } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
 import { Redirect } from 'react-router-dom';
-import PostData from '../../Services/signupapi'
+import PostData from '../../Services/signupapi';
+import FacebookloginData from '../../Services/socialapi';
+import { browserHistory } from 'react-router';
 const RadioGroup = Radio.Group;
 
 class Signup extends Component {
-  // state = {
-  //   userName: '',
-  //   firstName:'',
-  //   lastName:'',
-  //   phoneNumber:''
-  // }
+
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -22,14 +22,58 @@ class Signup extends Component {
       email: '',
       name: '',
       password: '',
+      confirmPassword:'',
       phoneNumber: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      facebookInfo: {
+        name: '',
+        providerName: '',
+        providerPic: '',
+        providerId: '',
+        email: '',
+        phoneNumber: '',
+        token: ''
+      }
 
     };
 
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
+    this.facebookLogin = this.facebookLogin.bind(this);
+
   }
+
+  responseFacebook = (response) => {
+    console.log(response);
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.name,
+      providerName: 'Facebook',
+      providerPic: response.picture.data.url,
+      providerId: response.userID,
+      email: response.email,
+      phoneNumber: '999999999',
+      token: response.accessToken
+    }
+    this.facebookLogin(response, 'facebook')
+  }
+
+  responseGoogle = (response) => {
+    console.log(response, 'google');
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.w3.ig,
+      providerName: 'Google',
+      providerPic: response.w3.Paa,
+      providerId: response.El,
+      email: response.profileObj.email,
+      token: response.tokenObj.access_token
+    }
+    this.facebookLogin(response, 'google')
+  }
+
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ userName: '' });
@@ -52,12 +96,11 @@ class Signup extends Component {
   onChangeValue = (e) => {
     console.log(e)
     this.setState({ [e.target.name]: e.target.value });
-    console.log('onchangeusername', e.target.value,'+', e.target.name)
+    console.log('onchangeusername', e.target.value, '+', e.target.name)
   }
 
   //submit registration form
-  register=() =>{
-
+  register = () => {
     console.log('submit button');
     if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
       PostData(this.state).then((result) => {
@@ -72,6 +115,19 @@ class Signup extends Component {
       });
     }
   }
+
+  facebookLogin = (res, type) => {
+    FacebookloginData(this.state.facebookInfo).then((result) => {
+      let response = result;
+      console.log(response)
+      if (response.userData) {
+        sessionStorage.setItem('loginData', JSON.stringify(response));
+        this.setState({ redirectToReferrer: true });
+      }
+
+    });
+  }
+
   render() {
  if (this.state.redirectToReferrer) {
       return <Redirect to ="/Profile"/>
@@ -80,7 +136,7 @@ class Signup extends Component {
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
-      <div className="signuparea">
+      <div className="signuparea signinarea">
         <div className="signupcard">
           <Row type="flex" justify="center">
             <Col lg={9} sm={0} xs={0}>
@@ -92,8 +148,8 @@ class Signup extends Component {
               </div>
 
             </Col>
-            <Col lg={15} sm={24}  xs={24} className="centercontent">
-              <div className="formsigninmit1">
+            <Col lg={15} sm={24} xs={24} className="centercontent">
+              <div className="formsigninmit">
                 <div className="formarea">
                   <div className="formheading">
                     <p className="signfont">Sign Up </p>
@@ -101,8 +157,8 @@ class Signup extends Component {
                 </div>
                 <Row type="flex" justify="center">
 
-                  <Col lg={10} sm={10}  xs={24}>
-                    <form className="formsinput">
+                  <Col lg={10} sm={10} xs={24}>
+                    <form className="formsinput forsignupform">
                       <Input
                         placeholder="Your Name"
                         name="name"
@@ -149,7 +205,7 @@ class Signup extends Component {
                       <Input
                         placeholder=" Password"
                         name="password"
-                        name ="password"
+                        type="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -157,6 +213,8 @@ class Signup extends Component {
                        <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        name="confirmPassword"
+                        type="password"
 
                         onChange={this.onChangeValue}
                       /> 
@@ -166,7 +224,7 @@ class Signup extends Component {
                   </Col>
                   <Col lg={2} sm={2} xs={0}>
 
-                    <div className="wrapper">
+                    <div className="wrapper forsignup">
                       <div className="line"></div>
                       <div className="wordwrapper">
                         <div className="ordivider">OR</div>
@@ -174,27 +232,46 @@ class Signup extends Component {
                     </div>
                   </Col>
                   <Col lg={12} sm={12} xs={24} className="sociallogin">
-                  
-                  <div className="signupwithsocial">
-                  <p className="ordividerres">OR</p>
-                  <Button className="facebooklogin">Sign in 
+
+                    <div className="signupwithsocial">
+                      <p className="ordividerres">OR</p>
+                      {/* <Button className="facebooklogin">Sign in 
                   <Icon type="facebook" />
                   </Button>
                   <Button className="googlepluslogin">Sign in 
                   <Icon type="google-plus" />
-                  </Button>
-                 
-                </div>
-                  
+                  </Button> */}
+                      <FacebookLogin
+                        appId="312775355854012"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        // onClick={componentClicked}
+                        callback={this.responseFacebook}
+                        className="facebooksignin"
+                        // icon="fa-facebook" 
+                        />
+                     
+                      <GoogleLogin
+                        clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
+                        // icon="fa-google-plus-square"
+                        buttonText="Login with Googleplus"
+                        className="googleplussign"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        
+
+                      />
+                    </div>
+
                   </Col>
 
                   <div className="registerbtn">
-                    <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
+                    <Button className="sbmtbtn" onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
                     <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login here</a></p>
                   </div>
                
-
+                
                 </Row>
               </div>
             </Col>

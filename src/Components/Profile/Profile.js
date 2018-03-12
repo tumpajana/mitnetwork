@@ -25,6 +25,9 @@ userProfile:{}
 
      this.show = this.show.bind(this);
     // this.onChangeValue = this.onChangeValue.bind(this);
+    if(sessionStorage.userId){
+      this.show();
+    }
   }
 
   state = {
@@ -70,7 +73,7 @@ userProfile:{}
      
     const Option = Select.Option;
     const { visible, loading } = this.state;
-this.show();
+
     function handleChange(value) {
       console.log(`selected ${value}`);
     }
