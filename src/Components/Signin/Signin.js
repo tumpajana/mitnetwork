@@ -19,7 +19,12 @@ class Signin extends Component {
     this.state = {
       email: '',
       password: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      valid:{
+        nameText:'',
+        nameTextt:'',
+        
+      }
     };
 
     this.login = this.login.bind(this);
@@ -49,6 +54,52 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
+    if(e.target.value.length == 0){
+      if(e.target.name == 'email'){
+        this.setState({
+          valid:{
+            nameText:'email can not be empty'
+          }
+        });
+      }
+//       if(e.target.value.length!== 0 && !(e.target.email.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
+//          this.setState({
+//           valid:{
+//             nameText:'email is invalid'
+//       }
+    
+//   });
+//  }
+
+
+     }else{
+      if(e.target.name == 'email'){
+        this.setState({
+          valid:{
+            nameText:''
+          }
+        });
+      }
+     }
+    
+    //validation for password
+    if(e.target.value.length == 0){
+      if(e.target.name == 'password'){
+        this.setState({
+          valid:{
+            nameTextt:'password can not be empty'
+          }
+        });
+      }
+     }else{
+      if(e.target.name == 'password'){
+        this.setState({
+          valid:{
+            nameTextt:''
+          }
+        });
+      }
+     }
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
@@ -65,6 +116,9 @@ class Signin extends Component {
         }
 
       });
+    }
+    else{
+      alert("Fields are required");
     }
   }
   render() {
@@ -106,6 +160,8 @@ class Signin extends Component {
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
+                      
+                      <div> {this.state.valid.nameText} </div>
 
                       <Input
                         placeholder=" Password"
@@ -113,6 +169,8 @@ class Signin extends Component {
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
+                      
+                      <div> {this.state.valid.nameTextt} </div>
 
 
 
