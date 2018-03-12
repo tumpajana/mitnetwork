@@ -26,7 +26,9 @@ class Signup extends Component {
       redirectToReferrer: false,
       fields: {},
       errors: {},
+    
     };
+
 
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -128,6 +130,22 @@ if(!fields["phoneNumber"]){
  this.setState({errors: errors});
  return formIsValid;
 }
+//new change
+contactSubmit(e){
+  e.preventDefault();
+  if(this.handleValidation()){
+     alert("Form submitted");
+  }else{
+     alert("Form has errors.")
+  }
+
+}
+
+handleChange(field, e){         
+  let fields = this.state.fields;
+  fields[field] = e.target.value;        
+  this.setState({fields});
+}
 
 
   //submit registration form
@@ -136,7 +154,7 @@ if(!fields["phoneNumber"]){
     console.log(this.state.name)
     // if(this.handleValidation()){     // validation function
       
-    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+   if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
       PostData( this.state).then((result) => {
         let response = result;
         console.log(result)
@@ -147,9 +165,9 @@ if(!fields["phoneNumber"]){
 
       });
     }
-  //  }else{
-  //     alert("Form has errors.")
-  //  }
+     //else{
+     // alert("Form has errors.")
+  // }
     
   }
   render() {
@@ -180,15 +198,17 @@ if(!fields["phoneNumber"]){
                 <Row type="flex" justify="center">
 
                   <Col lg={10} sm={10}  xs={24}>
-                    <form className="formsinput">
+                    <form className="formsinput"  onSubmit= {this.contactSubmit.bind(this)}>
                       <Input
+                        ref="name"
                         placeholder="Your Name"
                         name="name"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         suffix={suffix}
                         // value={userName}
                         // onChange={this.onChangeUserName}
-
+                       // onChange={this.handleChange.bind(this, "name")} 
+                        //value={this.state.fields["name"]}
                         onChange={this.onChangeValue}
                         // ref={node => this.userNameInput = node}
                       
@@ -218,7 +238,7 @@ if(!fields["phoneNumber"]){
                         placeholder=" Email"
                         name="email"
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                        //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
                         onChange={this.onChangeValue}
                         
                       />
