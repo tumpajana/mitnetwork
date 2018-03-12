@@ -93,10 +93,10 @@ onChangeValue = (e) => {
    } 
 
   render() {
-     
+     this.show();
     const Option = Select.Option;
     const { visible, loading } = this.state;
-this.show();
+
     function handleChange(value) {
       console.log(`selected ${value}`);
     }

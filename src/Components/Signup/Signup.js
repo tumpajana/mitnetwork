@@ -6,15 +6,11 @@ import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
 import { Redirect } from 'react-router-dom';
 import PostData from '../../Services/signupapi'
+import { browserHistory } from 'react-router';
+
 const RadioGroup = Radio.Group;
 
 class Signup extends Component {
-  // state = {
-  //   userName: '',
-  //   firstName:'',
-  //   lastName:'',
-  //   phoneNumber:''
-  // }
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +18,7 @@ class Signup extends Component {
       email: '',
       name: '',
       password: '',
+      confirmPassword:'',
       phoneNumber: '',
       redirectToReferrer: false
 
@@ -72,6 +69,7 @@ class Signup extends Component {
       });
     }
   }
+  
   render() {
  if (this.state.redirectToReferrer) {
       return <Redirect to ="/Profile"/>
@@ -157,6 +155,7 @@ class Signup extends Component {
                        <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        name="confirmPassword"
 
                         onChange={this.onChangeValue}
                       /> 
@@ -194,7 +193,7 @@ class Signup extends Component {
                     <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
-
+                
                 </Row>
               </div>
             </Col>
