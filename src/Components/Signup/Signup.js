@@ -191,7 +191,7 @@ class Signup extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login here</a></p>
                   </div>
                
 
