@@ -180,6 +180,7 @@ form.formsinput input.ant-input {
  } */
 .formsigninmit {
    padding:0 2em;
+   background: #ffffff;
 }
 /* 
 button.ant-btn.sbmtbtn:hover {
