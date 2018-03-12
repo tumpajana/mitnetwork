@@ -37,7 +37,6 @@ class Signup extends Component {
 
     };
 
-
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
@@ -100,117 +99,21 @@ class Signup extends Component {
     console.log('onchangeusername', e.target.value, '+', e.target.name)
   }
 
- //validation
- handleValidation()  {
-  //  debugger;
-  let fields = this.state.fields;
-  let errors = {};
-  let formIsValid = true;
-
-  //Name
-  if(!fields["name"]){
-     formIsValid = false;
-     errors["name"] = "Cannot be empty";
-  }
-
-  if(typeof fields["name"] !== "undefined"){
-       if(!fields["name"].match(/^[a-zA-Z]+$/)){
-           formIsValid = false;
-           errors["name"] = "Only letters";
-       }          
-  }
-//UserName
-
-  if(!fields["userName"]){
-    formIsValid = false;
-    errors["userName"] = "Cannot be empty";
- }
-
- if(typeof fields["userName"] !== "undefined"){
-      if(!fields["userName"].match(/^[a-zA-Z]+$/)){
-          formIsValid = false;
-          errors["userName"] = "Only letters";
-      }          
- }
-
-  //Email
-  if(!fields["email"]){
-     formIsValid = false;
-     errors["email"] = "Cannot be empty";
-  }
-
-  if(typeof fields["email"] !== "undefined"){
-      let lastAtPos = fields["email"].lastIndexOf('@');
-      let lastDotPos = fields["email"].lastIndexOf('.');
-
-      if (!(lastAtPos < lastDotPos && lastAtPos > 0 && fields["email"].indexOf('@@') == -1 && lastDotPos > 2 && (fields["email"].length - lastDotPos) > 2)) {
-        formIsValid = false;
-        errors["email"] = "Email is not valid";
-      }
- }
-//password
-if(!fields["password"]){
-  formIsValid = false;
-  errors["password"] = "Cannot be empty";
-}
-
-if(typeof fields["password"] !== "undefined"){
-    if(!fields["password"].match(/^[a-zA-Z]+$/)){
-        formIsValid = false;
-        errors["password"] = "Only letters";
-    }          
-}
-//phonenumber
-
-if(!fields["phoneNumber"]){
-  formIsValid = false;
-  errors["phoneNumber"] = "Cannot be empty";
-}
-
-
- this.setState({errors: errors});
- return formIsValid;
-}
-//new change
-contactSubmit(e){
-  e.preventDefault();
-  if(this.handleValidation()){
-     alert("Form submitted");
-  }else{
-     alert("Form has errors.")
-  }
-
-}
-
-handleChange(field, e){         
-  let fields = this.state.fields;
-  fields[field] = e.target.value;        
-  this.setState({fields});
-}
-
-
   //submit registration form
   register = () => {
     console.log('submit button');
-    console.log(this.state.name)
-    // if(this.handleValidation()){     // validation function
-      
-   if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-      PostData( this.state).then((result) => {
+    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+      PostData(this.state).then((result) => {
         let response = result;
         console.log(result)
-        if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+        if (response.user) {
+          sessionStorage.setItem('userId', response.user._id);
           this.setState({ redirectToReferrer: true });
        
         }
 
       });
     }
-     //else{
-     // alert("Form has errors.")
-  // }
-    
   }
 
   facebookLogin = (res, type) => {
@@ -233,7 +136,7 @@ handleChange(field, e){
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
-      <div className="signuparea">
+      <div className="signuparea signinarea">
         <div className="signupcard">
           <Row type="flex" justify="center">
             <Col lg={9} sm={0} xs={0}>
@@ -246,7 +149,7 @@ handleChange(field, e){
 
             </Col>
             <Col lg={15} sm={24} xs={24} className="centercontent">
-              <div className="formsigninmit1">
+              <div className="formsigninmit">
                 <div className="formarea">
                   <div className="formheading">
                     <p className="signfont">Sign Up </p>
@@ -255,31 +158,25 @@ handleChange(field, e){
                 <Row type="flex" justify="center">
 
                   <Col lg={10} sm={10} xs={24}>
-                    <form className="formsinput">
+                    <form className="formsinput forsignupform">
                       <Input
-                        ref="name"
                         placeholder="Your Name"
                         name="name"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         suffix={suffix}
                         // value={userName}
                         // onChange={this.onChangeUserName}
-                       // onChange={this.handleChange.bind(this, "name")} 
-                        //value={this.state.fields["name"]}
+
                         onChange={this.onChangeValue}
-                        // ref={node => this.userNameInput = node}
-                      
+                        ref={node => this.userNameInput = node}
                       />
-                         <span style={{color: "red"}}>{this.state.errors["name"]}</span>
                       <Input
                         placeholder="Username"
                         name="userName"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                        
                       />
-                        <span style={{color: "red"}}>{this.state.errors["userName"]}</span>
                       {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -295,33 +192,29 @@ handleChange(field, e){
                         placeholder=" Email"
                         name="email"
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
+
                         onChange={this.onChangeValue}
-                        
                       />
-                         <span style={{color: "red"}}>{this.state.errors["email"]}</span>
                       <Input
                         placeholder=" Phone Number"
                         name="phoneNumber"
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                        // value={this.state.fields["phoneNumber"]}
                       />
-                        <span style={{color: "red"}}>{this.state.errors["phoneNumber"]}</span>
                       <Input
                         placeholder=" Password"
                         name="password"
-                        name="password"
+                        type="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                       
                       />
                        <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         name="confirmPassword"
+                        type="password"
 
                         onChange={this.onChangeValue}
                       /> 
@@ -331,7 +224,7 @@ handleChange(field, e){
                   </Col>
                   <Col lg={2} sm={2} xs={0}>
 
-                    <div className="wrapper">
+                    <div className="wrapper forsignup">
                       <div className="line"></div>
                       <div className="wordwrapper">
                         <div className="ordivider">OR</div>
@@ -350,19 +243,22 @@ handleChange(field, e){
                   </Button> */}
                       <FacebookLogin
                         appId="312775355854012"
-                        autoLoad={true}
+                        autoLoad={false}
                         fields="name,email,picture"
                         // onClick={componentClicked}
                         callback={this.responseFacebook}
                         className="facebooksignin"
-                        icon="fa-facebook" />
+                        // icon="fa-facebook" 
+                        />
+                     
                       <GoogleLogin
                         clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
-                        buttonText="Login"
+                        // icon="fa-google-plus-square"
+                        buttonText="Login with Googleplus"
                         className="googleplussign"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
-                        icon="google-plus"
+                        
 
                       />
                     </div>
@@ -372,7 +268,7 @@ handleChange(field, e){
                   <div className="registerbtn">
                     <Button className="sbmtbtn" onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login here</a></p>
                   </div>
                
                 
