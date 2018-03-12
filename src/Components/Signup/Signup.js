@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import { Input, Icon, Radio, Button } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
 import { Redirect } from 'react-router-dom';
-import PostData from '../../Services/signupapi'
+import PostData from '../../Services/signupapi';
+import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
-
 const RadioGroup = Radio.Group;
 
 class Signup extends Component {
+
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -20,13 +24,56 @@ class Signup extends Component {
       password: '',
       confirmPassword:'',
       phoneNumber: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      facebookInfo: {
+        name: '',
+        providerName: '',
+        providerPic: '',
+        providerId: '',
+        email: '',
+        phoneNumber: '',
+        token: ''
+      }
 
     };
 
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
+    this.facebookLogin = this.facebookLogin.bind(this);
+
   }
+
+  responseFacebook = (response) => {
+    console.log(response);
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.name,
+      providerName: 'Facebook',
+      providerPic: response.picture.data.url,
+      providerId: response.userID,
+      email: response.email,
+      phoneNumber: '999999999',
+      token: response.accessToken
+    }
+    this.facebookLogin(response, 'facebook')
+  }
+
+  responseGoogle = (response) => {
+    console.log(response, 'google');
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.w3.ig,
+      providerName: 'Google',
+      providerPic: response.w3.Paa,
+      providerId: response.El,
+      email: response.profileObj.email,
+      token: response.tokenObj.access_token
+    }
+    this.facebookLogin(response, 'google')
+  }
+
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ userName: '' });
@@ -49,12 +96,11 @@ class Signup extends Component {
   onChangeValue = (e) => {
     console.log(e)
     this.setState({ [e.target.name]: e.target.value });
-    console.log('onchangeusername', e.target.value,'+', e.target.name)
+    console.log('onchangeusername', e.target.value, '+', e.target.name)
   }
 
   //submit registration form
-  register=() =>{
-
+  register = () => {
     console.log('submit button');
     if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
       PostData(this.state).then((result) => {
@@ -69,7 +115,19 @@ class Signup extends Component {
       });
     }
   }
-  
+
+  facebookLogin = (res, type) => {
+    FacebookloginData(this.state.facebookInfo).then((result) => {
+      let response = result;
+      console.log(response)
+      if (response.userData) {
+        sessionStorage.setItem('loginData', JSON.stringify(response));
+        this.setState({ redirectToReferrer: true });
+      }
+
+    });
+  }
+
   render() {
  if (this.state.redirectToReferrer) {
       return <Redirect to ="/Profile"/>
@@ -90,7 +148,7 @@ class Signup extends Component {
               </div>
 
             </Col>
-            <Col lg={15} sm={24}  xs={24} className="centercontent">
+            <Col lg={15} sm={24} xs={24} className="centercontent">
               <div className="formsigninmit1">
                 <div className="formarea">
                   <div className="formheading">
@@ -99,7 +157,7 @@ class Signup extends Component {
                 </div>
                 <Row type="flex" justify="center">
 
-                  <Col lg={10} sm={10}  xs={24}>
+                  <Col lg={10} sm={10} xs={24}>
                     <form className="formsinput">
                       <Input
                         placeholder="Your Name"
@@ -147,7 +205,7 @@ class Signup extends Component {
                       <Input
                         placeholder=" Password"
                         name="password"
-                        name ="password"
+                        name="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -173,22 +231,38 @@ class Signup extends Component {
                     </div>
                   </Col>
                   <Col lg={12} sm={12} xs={24} className="sociallogin">
-                  
-                  <div className="signupwithsocial">
-                  <p className="ordividerres">OR</p>
-                  <Button className="facebooklogin">Sign in 
+
+                    <div className="signupwithsocial">
+                      <p className="ordividerres">OR</p>
+                      {/* <Button className="facebooklogin">Sign in 
                   <Icon type="facebook" />
                   </Button>
                   <Button className="googlepluslogin">Sign in 
                   <Icon type="google-plus" />
-                  </Button>
-                 
-                </div>
-                  
+                  </Button> */}
+                      <FacebookLogin
+                        appId="312775355854012"
+                        autoLoad={true}
+                        fields="name,email,picture"
+                        // onClick={componentClicked}
+                        callback={this.responseFacebook}
+                        className="facebooksignin"
+                        icon="fa-facebook" />
+                      <GoogleLogin
+                        clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
+                        buttonText="Login"
+                        className="googleplussign"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        icon="google-plus"
+
+                      />
+                    </div>
+
                   </Col>
 
                   <div className="registerbtn">
-                    <Button className="sbmtbtn"onClick={this.register}>Submit</Button>
+                    <Button className="sbmtbtn" onClick={this.register}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
                     <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>

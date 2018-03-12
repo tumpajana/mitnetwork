@@ -1,6 +1,6 @@
- function loginData( userData) {
+function FacebookloginData( FacebookData) {
     //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
-    let BaseURL ='http://mitapi.memeinfotech.com:5000/user/login';
+    let BaseURL ='http://mitapi.memeinfotech.com:5000/user/socialRegistration';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
         headers: {
@@ -8,7 +8,7 @@
             'Content-Type': 'application/json'
           },
    method: 'POST',
-   body: JSON.stringify(userData)
+   body: JSON.stringify(FacebookData)
    })
    .then((response) => response.json())
    .then((responseJSON) => {
@@ -20,6 +20,4 @@
    });
    });
    }
-   export default loginData
-
-  
+   export default FacebookloginData
