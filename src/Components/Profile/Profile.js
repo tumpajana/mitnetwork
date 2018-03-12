@@ -106,8 +106,8 @@ class Profile extends Component {
                 <img src={User} />
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
-              <p>{this.state.userProfile.userName}</p>
-              <h4>{this.state.userProfile.name} </h4>
+              <p>{this.state.userProfile.name}</p>
+              <h4>{this.state.userProfile.userName} </h4>
               {/* <h3>Senior manager at denali bank</h3> */}
             </div>
             <div className="prodetail maildetail">
