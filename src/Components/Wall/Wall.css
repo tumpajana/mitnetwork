@@ -227,12 +227,13 @@ line-height: 20px;
 font-weight: 600;
 color: rgba(0,0,0,.6);
 }
-.likecomment button:hover{
-    background-color: rgba(152,216,244,.25);
-    color: rgb(0, 96, 151);
+
+.likecomment button:hover {
+    background-color: hsla(260, 49%, 49%, 0.3);
+    color: rgb(105, 64, 186);
 }
 .likecomment button:focus{
-    color: rgb(0, 96, 151);
+    color: rgb(105, 64, 186);
 }
 .likecomment button:focus .anticon-like-o:before{
 content:'\E64C';
