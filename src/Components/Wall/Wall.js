@@ -6,6 +6,9 @@ import './Wall.css';
 import User from '../../Images/user10.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; 
+ 
 
 class Wall extends Component {
   state = {
@@ -90,9 +93,9 @@ class Wall extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
-            <Button key="back" onClick={this.handleCancel}>Back</Button>,
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
             <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              Done
+            POst
            </Button>,
           ]}
           className="mitprofileEditmodal"
@@ -102,18 +105,14 @@ class Wall extends Component {
 
           {/* ----------------edit profile form start--------------- */}
           <form className="editprofileform">
-            {/* name and username input start*/}
+           
             <Row gutter={24}>
               <Col span={24}>
-                <Input
-                  placeholder="Write Something here"
-                  prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
-                  ref={node => this.userNameInput = node}
-                />
+                <ReactQuill value={this.state.text}  onChange={this.handleChange} className="textareawall" />
+             
               </Col>
             </Row>
-            {/* name and username input end*/}
+           
           </form>
         </Modal>
         {/* ----------MODAL SECTION FOR write something end------------- */}
