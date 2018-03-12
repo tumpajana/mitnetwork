@@ -56,27 +56,22 @@ class Signup extends Component {
   register=() =>{
 
     console.log('submit button');
-    if (this.state.userName && this.state.password &&  this.state.confirmPassword && this.state.email && this.state.name && this.state.phoneNumber) {
-      if(this.state.password==this.state.confirmPassword){
-        PostData(this.state).then((result) => {
-          let response = result.user;
-          console.log(result)
-          if (response) {
-            sessionStorage.setItem('userId', response._id);
-            this.setState({ redirectToReferrer: true });
-          }
-  
-        });
-      }
-     else {
-       window.alert('Password not matched')
-     }
+    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
+      PostData(this.state).then((result) => {
+        let response = result;
+        console.log(result)
+        if (response.user) {
+          sessionStorage.setItem('userId', response.user._id);
+          this.setState({ redirectToReferrer: true });
+       
+        }
+
+      });
     }
   }
   
   render() {
-
-    if (this.state.redirectToReferrer) {
+ if (this.state.redirectToReferrer) {
       return <Redirect to ="/Profile"/>
     }
     const { userName } = this.state;
@@ -157,13 +152,13 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
-                      <Input
+                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         name="confirmPassword"
 
                         onChange={this.onChangeValue}
-                      />
+                      /> 
 
 
                     </form>

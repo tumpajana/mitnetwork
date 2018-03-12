@@ -5,6 +5,7 @@ import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
+import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
 import loginData from '../../Services/signipapi'
 const RadioGroup = Radio.Group;
@@ -67,6 +68,9 @@ class Signin extends Component {
     }
   }
   render() {
+    if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
 
     const { userName } = this.state;
 
