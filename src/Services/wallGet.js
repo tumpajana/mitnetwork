@@ -1,14 +1,12 @@
-function WallPost( postData) {
-    console.log(postData);
-    let BaseURL =' http://mitapi.memeinfotech.com:5000/file/socialPost '  ;
+function WallGet() {
+    let BaseURL =' http://mitapi.memeinfotech.com:5000/file/getAllPost ' ;
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-   method: 'POST',
-   body: JSON.stringify(postData)
+   method: 'GET',
    })
    .then((response) => response.json())
    .then((responseJSON) => {
@@ -21,4 +19,4 @@ function WallPost( postData) {
    }
    
    
-   export default WallPost;
+   export default WallGet;

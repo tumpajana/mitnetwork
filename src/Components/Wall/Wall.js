@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
-import User from '../../Images/user10.jpg';
+import User from '../../Images/usr.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
 import ReactQuill from 'react-quill';
 import WallPost from '../../Services/wallPost';
+import WallGet from '../../Services/wallGet';
 import 'react-quill/dist/quill.snow.css';
-
-
+import usrimgwall from '../../Images/usr.jpg';
+const { TextArea } = Input;
 class Wall extends Component {
   state = {
     loading: false,
@@ -20,28 +21,68 @@ class Wall extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts:{
+      posts: {
         title: '',
         content: ''
-      }
-     
+      },
+      postList:[]
+
     }
     this.textInput = this.textInput.bind(this);
-    this.title=this.title.bind(this);
+    this.title = this.title.bind(this);
+    this.socialPost = this.socialPost.bind(this);
+    this.getPosts();
+    
+  }
+
+  //postdata on server
+  socialPost() {
+    console.log('post')
+    let dataSent = {
+      title: this.state.posts.title,
+      content: this.state.posts.content,
+      userId: sessionStorage.getItem('userId')
+    }
+    WallPost(dataSent).then((result) => {
+      console.log(result);
+      this.getPosts();
+    })
+  }
+
+  //get al post
+  getPosts() {
+    WallGet().then((result) => {
+      console.log(result);
+      this.setState({postList:result.result.filter((element) => {return (element.userId != null || element.userId != undefined)})});
+    });
   }
 
   // content input
   textInput = (e) => {
-   this.setState({posts:{content: e } })
-     console.log(this.state.posts.content)
+    this.setState({
+      posts: {
+        title: this.state.posts.title,
+        content: e
+      }
+    })
+    console.log(this.state.posts.content)
   }
 
 
   //title input
   title = (e) => {
-   this.setState({posts:{title: e } })
+    //  let x= quill.container.innerHTML;
+    //  console.log.og(x)
+    console.log(e)
+    this.setState({
+      posts: {
+        title: e,
+        content: this.state.posts.content
+      }
+    })
     console.log(this.state.posts.title);
   }
+
 
   showModal = () => {
     this.setState({
@@ -52,7 +93,7 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
-    }, 3000);
+    }, 2000);
   }
   handleCancel = () => {
     this.setState({ visible: false });
@@ -75,20 +116,96 @@ class Wall extends Component {
 
         {/* wall view section start */}
         <div className="wallcard">
-          <div className="postsec">
-            <p>Share an Article, Photo, Video or Idea</p>
+          <div className="postsec clearfix">
+            <form>
+              <Row>
+                <Col span={2}>
+
+                  <div className="userprflimg">
+                    <img src={usrimgwall} />
+                  </div>
+                </Col>
+                <Col span={22}>
+                  <div className="usrview">
+                    <h4 className="usrnamewall">{this.state.posts.title}</h4>
+                    <p className="degignationwall">{this.state.posts.content}</p>
+                  </div>
+                </Col>
+              </Row>
+              <Row type="flex" justify="center">
+
+                <Col span={24}>
+
+                  {/* <TextArea rows={4} placeholder="Write here .." className="showpost" /> */}
+                  <div placeholder="Write here .." className="showpostall" >
 
 
-            <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button>
-            <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button>
-            <Button className="post" title="Post">Post</Button>
+                  </div>
+
+                </Col>
+              </Row>
+            </form>
+
+            <hr className="dividerwall" />
+
+            <Row >
+
+              <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
+              <Col span={5}>
+
+                <Upload >
+                  <Button className="upldbtnwall">
+                    <Icon type="upload" /> Click to Upload
+              </Button>
+                </Upload>
+              </Col>
+              <Col span={14}>
+
+
+                <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
+              </Col>
+
+            </Row>
+
+            {/* <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button> */}
+
+
+
           </div>
         </div>
 
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        <div className="postedpartcard">
+        { this.state.postList.map(function(item) {
+                return   <div className="postedpartcard">
+                <Row type="flex" justify="space-around" align="middle">
+                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                    <div className="userpicpost">
+                      <img src={User} />
+                    </div>
+                  </Col>
+                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                    <p>{item.userId.userName}</p>
+                    <h3>Senior manager at denali bank</h3>
+                  </Col>
+                </Row>
+                <div className="postedimg">
+                  <img src={Wallpostimg} />
+                  {item.title}
+                  {item.content}
+                </div>
+                <div className="likecomment">
+                  <h3>2k likes</h3>
+                  <Button title="like"><Icon type="like-o" />Likes</Button>
+                  <Button title="comment"><Icon type="message" />Comment</Button>
+      
+                </div>
+              </div>
+            })
+        }
+      
+        {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
             <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
               <div className="userpicpost">
@@ -96,14 +213,14 @@ class Wall extends Component {
               </div>
             </Col>
             <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-              <p>Jess Williams</p>
+              <p>{item.userId.userName}</p>
               <h3>Senior manager at denali bank</h3>
             </Col>
           </Row>
           <div className="postedimg">
             <img src={Wallpostimg} />
-            <p>International Women's day</p>
-            <h3>youtube</h3>
+            <p>{item.title}</p>
+            <h3>{item.content}</h3>
           </div>
           <div className="likecomment">
             <h3>2k likes</h3>
@@ -111,7 +228,7 @@ class Wall extends Component {
             <Button title="comment"><Icon type="message" />Comment</Button>
 
           </div>
-        </div>
+        </div> */}
 
         {/* posted blog html start */}
 
@@ -125,7 +242,7 @@ class Wall extends Component {
           footer={[
             <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
             <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              Post
+              Save
            </Button>,
           ]}
           className="mitprofileEditmodal"
@@ -141,7 +258,7 @@ class Wall extends Component {
                 <form>
 
 
-                  <ReactQuill  className="textareheadng" placeholder="Headline" name="title" onChange={this.title} />
+                  <ReactQuill id="#editor-container" className="textareheadng" placeholder="Headline" name="title" onChange={this.title} />
                   <ReactQuill placeholder="Write here .." className="textareawall" name="content" onChange={this.textInput} />
 
                 </form>
