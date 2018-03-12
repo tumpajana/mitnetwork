@@ -77,7 +77,7 @@ router.post('/socialRegistration', (request, response) => {
                 if (error) {
                     console.log(error);
                     socialResponse.error = true;
-                    socialResponse.message = `Error :` + error.message;
+                    socialResponse.message = `User already exist with this email`;
                     response.status(500).json(socialResponse);
                 } else {
                     console.log("result------------->", result);
