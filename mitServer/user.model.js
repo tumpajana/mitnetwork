@@ -11,15 +11,29 @@ const userSchema = mongoose.Schema({
     phoneNumber: {
         type: String,
         unique: true,
-        sparse:true
+        sparse:true,
+        required:true
     },
     email: {
         type: String,
         unique: true,
-        sparse:true
+        sparse:true,
+        required:true
     },
     password: {
         type: String
+    },
+    providerName:{
+        type:String
+    },
+    providerId:{
+        type:String
+    },
+    providerPic:{
+        type:String
+    },
+    token:{
+        type:String
     },
     createdDate: {
         type: Date,

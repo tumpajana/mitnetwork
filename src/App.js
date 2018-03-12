@@ -7,7 +7,7 @@ import Header from './Components/Header/Header';
 import Signup from './Components/Signup/Signup';
 import Signin from './Components/Signin/Signin';
 import Profile from './Components/Profile/Profile';
-
+import Wall from './Components/Wall/Wall';
 import { Row, Col } from 'antd';
 
 class App extends Component {

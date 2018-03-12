@@ -5,7 +5,7 @@
     line-height: 20px;
     border: none;
     /* padding: 0 5em; */
-    padding:0 5em;
+    padding:0px 5em 5px;
     font-family: Lato;
     font-size: 13px;
     font-weight: 400;
@@ -74,6 +74,12 @@ li.ant-menu-item.linkprfl:hover {
     opacity: 0.8;
     border:none !important;
 }
+
+
+
+
+/*-------------- 9march start-------------
+----------------------- */
 .navbarright li.ant-menu-item {
     padding-top: 0px;
     font-size: 12px;
@@ -81,8 +87,6 @@ li.ant-menu-item.linkprfl:hover {
     font-weight: 400;
     color: #c7d1d8;
 }
-
-
 .headersubmenu{
     padding-top: 4px;
     font-size: 12px;
@@ -90,15 +94,26 @@ li.ant-menu-item.linkprfl:hover {
     font-weight: 400;
     color: #c7d1d8;
 }
+.headersubmenu .anticon.anticon-down{
+    display: inline-block;
+    margin-top:0;
+    font-size: 9px;
+}
 .headersubmenu .ant-menu-submenu-arrow{
    position: absolute;
    top:0;
    right:0;
    display: inline-block !important;
 }
+.headersubmenu .ant-menu-item-group-title{
+    padding:0 !important;
+}
 .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
     border-bottom: 0 !important;
     color: #1890ff;
+}
+.ant-menu-horizontal > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu{
+    border-bottom:0 !important;
 }
 img.leftalign {
     width: 24px;
@@ -109,10 +124,21 @@ img.leftalign {
     border-radius: 50%;
     margin-top: 4px;
 }
-
-
-
 .ant-menu-item-group-title{
     padding-top:0;
     line-height: 10px;
+}
+.logoanchor.ant-anchor-wrapper{
+    padding-left: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.logoanchor .ant-anchor-ink:before{
+    display: none;
+}
+.logoanchor .ant-anchor-link{
+    padding:0;
+}
+.logoanchor .ant-anchor-link-title{
+    margin-bottom:0;
 }
