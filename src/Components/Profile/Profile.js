@@ -8,12 +8,15 @@ import Header from '../Header/Header.js';
 import User from '../../Images/user10.jpg';
 import backprofile from '../../Images/backpro.svg';
 import getUserProfile from '../../Services/profileapi';
+import ReactDOM from 'react-dom';
 
 
 
 class Profile extends Component {
-   constructor() {
-    super();
+   constructor(props) {
+    super(props);
+
+     this.show();
     this.state = {
       user :{
     userName: '',
@@ -27,14 +30,11 @@ userProfile:{}
     };
 
      this.show = this.show.bind(this);
+     this.showModal = this.showModal.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
   }
 
-onChangeValue = (e) => {
-    // this.setState({[e.target.name]:e.target.value});
-    this.setState({ userName: e.target.value });
 
-  }
 
   onChange = (e) => {
     console.log('radio checked', e.target.value);
@@ -56,7 +56,8 @@ onChangeValue = (e) => {
   showModal = () => {
     this.setState({
       visible: true,
-    });
+    })
+      console.log(this.userNameInput);        //  this.refs.username.value="abcd";
   }
   handleOk = () => {
     this.setState({ loading: true });
@@ -67,25 +68,42 @@ onChangeValue = (e) => {
   handleCancel = () => {
     this.setState({ visible: false });
   }
-
+  
   //  //show profile
   
   show=() =>{
+          //  this.refs.username.value="abcd";
+
     
     console.log('submit button');
-
+       let _base = this;
       getUserProfile( sessionStorage.getItem("userId")).then((result) => {
         let response = result;
-  
+        console.log(this.refs);
+  console.log(result);
         this.setState({ userProfile: result.result}); 
+        this.setState({user:result.result})
         console.log('userData...',this.state.userProfile)
-        // if (response.userData) {
-        //   sessionStorage.setItem('userData', JSON.stringify(response));
-        //   this.setState({ redirectToReferrer: true });
-        // }
-
-      });
+          console.log('userData...',this.state.user)
+          //  this.refs.username.value=this.state.userProfile.userName;
+        
+           });
+       
+      
   }
+   preveiwProfile(event) {
+  //   preveiwProfile(event) {
+  //   let fileList: FileList = event.target.files;
+  //   let fileTarget = fileList;
+  //   let file: File = fileTarget[0];
+  //   this.names = file;
+  //   console.log("File information :", file.name);
+  //   let formData: FormData = new FormData();
+  //   formData.append('file', file, file.name);
+  }
+  
+
+
    edit=() =>{
     console.log('Dispaly data');
       
@@ -93,7 +111,7 @@ onChangeValue = (e) => {
    } 
 
   render() {
-     this.show();
+    
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
@@ -242,16 +260,18 @@ onChangeValue = (e) => {
                           <Row gutter={24}>
                             <Col span={12}>
                             <Input
-                            
+                            value={this.state.user.name}
                               placeholder="Enter your Name"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeValue}
-                              ref={node => this.userNameInput = node}
+                            
+                            
                             />
                             </Col>
                             <Col span={12}>
                             <Input
-                              placeholder="Enter your Username"
+                            value={this.state.user.userName}
+                             placeholder="Enter your Username"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeValue}
                               ref={node => this.userNameInput = node}
@@ -264,6 +284,7 @@ onChangeValue = (e) => {
                           <Row gutter={24}>
                             <Col span={12}>
                             <Input
+                             value={this.state.user.phoneNumber}
                               placeholder="Enter your Phone No"
                               prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeValue}
