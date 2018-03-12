@@ -19,8 +19,8 @@ class Profile extends Component {
       email: '',
       name: '',
       phoneNumber: '',
-      redirectToReferrer: false
-
+      redirectToReferrer: false,
+userProfile:{}
     };
 
      this.show = this.show.bind(this);
@@ -54,8 +54,9 @@ class Profile extends Component {
 
       getUserProfile( sessionStorage.getItem("userId")).then((result) => {
         let response = result;
-        this.userProfile=result.result;
-        console.log('userData...',this.userProfile)
+  
+        this.setState({ userProfile: result.result}); 
+        console.log('userData...',this.state.userProfile)
         // if (response.userData) {
         //   sessionStorage.setItem('userData', JSON.stringify(response));
         //   this.setState({ redirectToReferrer: true });
@@ -102,8 +103,8 @@ this.show();
                   <img src={User} />
                 </div>
                 <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
-                <p>Jess Williams </p>
-                <h4>Jessica24 </h4>
+                <p>{this.state.userProfile.userName}</p>
+                <h4>{this.state.userProfile.name} </h4>
                 {/* <h3>Senior manager at denali bank</h3> */}
               </div>
               <div className="prodetail maildetail">
@@ -114,7 +115,7 @@ this.show();
                         <Icon type="mail" />
                       </Col>
                       <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>JessicaWilliams@gmail.com</p>
+                        <p>{this.state.userProfile.email}</p>
                       </Col>
                     </Row>
                   </Col>
@@ -125,7 +126,7 @@ this.show();
                         <Icon type="mobile" />
                       </Col>
                       <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>9865366456</p>
+                        <p>{this.state.userProfile.phoneNumber}</p>
                       </Col>
                     </Row>
                   </Col>
