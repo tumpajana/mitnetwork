@@ -45,7 +45,6 @@ class Signup extends Component {
 
     };
 
-
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
