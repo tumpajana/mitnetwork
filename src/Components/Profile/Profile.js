@@ -15,18 +15,40 @@ class Profile extends Component {
    constructor() {
     super();
     this.state = {
-      userName: '',
+      user :{
+    userName: '',
       email: '',
       name: '',
       phoneNumber: '',
       redirectToReferrer: false,
+      },
+  
 userProfile:{}
     };
 
      this.show = this.show.bind(this);
-    // this.onChangeValue = this.onChangeValue.bind(this);
+    this.onChangeValue = this.onChangeValue.bind(this);
   }
 
+onChangeValue = (e) => {
+    // this.setState({[e.target.name]:e.target.value});
+    this.setState({ userName: e.target.value });
+
+  }
+
+  onChange = (e) => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
+  }
+
+//onchange of input feild binding
+  onChangeValue = (e) => {
+    console.log(e)
+    this.setState({ [e.target.name]: e.target.value });
+    console.log('onchangeusername', e.target.value,'+', e.target.name)
+  }
   state = {
     loading: false,
     visible: false,
@@ -64,7 +86,11 @@ userProfile:{}
 
       });
   }
-    
+   edit=() =>{
+    console.log('Dispaly data');
+      
+
+   } 
 
   render() {
      
@@ -216,9 +242,10 @@ this.show();
                           <Row gutter={24}>
                             <Col span={12}>
                             <Input
+                            
                               placeholder="Enter your Name"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
+                              onChange={this.onChangeValue}
                               ref={node => this.userNameInput = node}
                             />
                             </Col>
@@ -226,7 +253,7 @@ this.show();
                             <Input
                               placeholder="Enter your Username"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
+                              onChange={this.onChangeValue}
                               ref={node => this.userNameInput = node}
                             />
                             </Col>
@@ -239,7 +266,7 @@ this.show();
                             <Input
                               placeholder="Enter your Phone No"
                               prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
+                              onChange={this.onChangeValue}
                               ref={node => this.userNameInput = node}
                             />
                             </Col>
@@ -247,7 +274,7 @@ this.show();
                             <Input
                               placeholder="Enter your Qualification"
                               prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
+                              onChange={this.onChangeValue}
                               ref={node => this.userNameInput = node}
                             />
                             </Col>
@@ -259,7 +286,7 @@ this.show();
                         <Row gutter={24}>
                             <Col span={12}>
                             <div>
-                              <Select defaultValue="0" onChange={handleChange}>
+                              <Select defaultValue="0" >
                                 <Option value="0">City</Option>
                                 <Option value="1">Kolkata</Option>
                                 <Option value="2">Delhi</Option>
@@ -269,7 +296,7 @@ this.show();
                             </Col>
                             <Col span={12}>
                             <div>
-                              <Select defaultValue="0" onChange={handleChange}>
+                              <Select defaultValue="0">
                                 <Option value="0">State</Option>
                                 <Option value="1">West Bengal</Option>
                                 <Option value="2">Uttar Pradesh</Option>
@@ -287,7 +314,7 @@ this.show();
                             <Input
                               placeholder="Enter your Address"
                               prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
+                              onChange={this.onChangeValue}
                               ref={node => this.userNameInput = node}
                             />
                             </div>
