@@ -7,15 +7,42 @@ import User from '../../Images/user10.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
 import ReactQuill from 'react-quill';
+import WallPost from '../../Services/wallPost';
 import 'react-quill/dist/quill.snow.css';
 
 
 class Wall extends Component {
-
   state = {
     loading: false,
     visible: false,
   }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts:{
+        title: '',
+        content: ''
+      }
+     
+    }
+    this.textInput = this.textInput.bind(this);
+    this.title=this.title.bind(this);
+  }
+
+  // content input
+  textInput = (e) => {
+   this.setState({posts:{content: e } })
+     console.log(this.state.posts.content)
+  }
+
+
+  //title input
+  title = (e) => {
+   this.setState({posts:{title: e } })
+    console.log(this.state.posts.title);
+  }
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -30,6 +57,8 @@ class Wall extends Component {
   handleCancel = () => {
     this.setState({ visible: false });
   }
+
+
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -110,10 +139,10 @@ class Wall extends Component {
             <Row gutter={24}>
               <Col span={24}>
                 <form>
-                
 
-                <ReactQuill value="" className="textareheadng" placeholder="Headline"/>
-                  <ReactQuill  placeholder="Write here .." className="textareawall" />
+
+                  <ReactQuill  className="textareheadng" placeholder="Headline" name="title" onChange={this.title} />
+                  <ReactQuill placeholder="Write here .." className="textareawall" name="content" onChange={this.textInput} />
 
                 </form>
               </Col>
