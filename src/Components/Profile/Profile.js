@@ -7,11 +7,29 @@ import placegholderimg from '../../Images/avatar.png';
 import Header from '../Header/Header.js';
 import User from '../../Images/user10.jpg';
 import backprofile from '../../Images/backpro.svg';
-
+import getUserProfile from '../../Services/profileapi';
 
 
 
 class Profile extends Component {
+   constructor() {
+    super();
+    this.state = {
+      userName: '',
+      email: '',
+      name: '',
+      phoneNumber: '',
+      redirectToReferrer: false,
+userProfile:{}
+    };
+
+     this.show = this.show.bind(this);
+    // this.onChangeValue = this.onChangeValue.bind(this);
+    if(sessionStorage.userId){
+      this.show();
+    }
+  }
+
   state = {
     loading: false,
     visible: false,
@@ -30,7 +48,29 @@ class Profile extends Component {
   handleCancel = () => {
     this.setState({ visible: false });
   }
+
+  //  //show profile
+  
+  show=() =>{
+    
+    console.log('submit button');
+
+      getUserProfile( sessionStorage.getItem("userId")).then((result) => {
+        let response = result;
+  
+        this.setState({ userProfile: result.result}); 
+        console.log('userData...',this.state.userProfile)
+        // if (response.userData) {
+        //   sessionStorage.setItem('userData', JSON.stringify(response));
+        //   this.setState({ redirectToReferrer: true });
+        // }
+
+      });
+  }
+    
+
   render() {
+     
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
@@ -59,15 +99,15 @@ class Profile extends Component {
      
        {/* profile view section start */}
           <section className="profilesec">
-            <img src={backprofile} />
+            {/* <img src={backprofile} /> */}
             <div className="procard">
               <div className="userdetail">
                 <div className="userpic">
                   <img src={User} />
                 </div>
                 <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
-                <p>Jess Williams </p>
-                <h4>Jessica24 </h4>
+                <p>{this.state.userProfile.userName}</p>
+                <h4>{this.state.userProfile.name} </h4>
                 {/* <h3>Senior manager at denali bank</h3> */}
               </div>
               <div className="prodetail maildetail">
@@ -78,7 +118,7 @@ class Profile extends Component {
                         <Icon type="mail" />
                       </Col>
                       <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>JessicaWilliams@gmail.com</p>
+                        <p>{this.state.userProfile.email}</p>
                       </Col>
                     </Row>
                   </Col>
@@ -89,7 +129,7 @@ class Profile extends Component {
                         <Icon type="mobile" />
                       </Col>
                       <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>9865366456</p>
+                        <p>{this.state.userProfile.phoneNumber}</p>
                       </Col>
                     </Row>
                   </Col>
@@ -151,8 +191,8 @@ class Profile extends Component {
                       onOk={this.handleOk}
                       onCancel={this.handleCancel}
                       footer={[
-                        <Button key="back" onClick={this.handleCancel}>Back</Button>,
-                        <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                        <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
+                        <Button key="submit" loading={loading} onClick={this.handleOk} className="savebtn">
                           Save
                         </Button>,
                       ]}
@@ -161,7 +201,7 @@ class Profile extends Component {
                       <Row>
                         <Col span={24}>
                           <div className="mitedituserback">
-                            <img src={editprofileimg} />
+                            {/* <img src={editprofileimg} /> */}
                             <div className="userimage">
                                 {/* <img src={placegholderimg} /> */}
                                 <Button className="editbtn" title="Edit Profile Image">
@@ -271,6 +311,6 @@ class Profile extends Component {
       </div>
     );
   }
-}
+  }
 
 export default Profile;

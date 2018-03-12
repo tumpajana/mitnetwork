@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import { Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
+import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
 import loginData from '../../Services/signipapi'
 const RadioGroup = Radio.Group;
@@ -25,6 +27,10 @@ class Signin extends Component {
   }
 
   responseFacebook = (response) => {
+    console.log(response);
+  }
+
+  responseGoogle = (response) => {
     console.log(response);
   }
   emitEmpty = () => {
@@ -53,8 +59,8 @@ class Signin extends Component {
       loginData(this.state).then((result) => {
         let response = result;
         console.log(response)
-        if (response.userData) {
-          sessionStorage.setItem('loginData', JSON.stringify(response));
+        if (response.user) {
+          sessionStorage.setItem('userId',response.user._id);
           this.setState({ redirectToReferrer: true });
         }
 
@@ -62,6 +68,9 @@ class Signin extends Component {
     }
   }
   render() {
+    if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
 
     const { userName } = this.state;
 
@@ -133,10 +142,18 @@ class Signin extends Component {
                         callback={this.responseFacebook}
                         className="facebooksignin"
                         icon="fa-facebook" />
-                      <Button className="googleplussign">Sign in
+                      {/* <Button className="googleplussign">Sign in
                         <Icon type="google-plus" />
-                      </Button>
-
+                      </Button> */}
+                      <GoogleLogin
+                        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                        buttonText="Login"
+                        className="googleplussign"
+                        icon="google-plus"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        
+                      />
                     </div>
 
                   </Col>

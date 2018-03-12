@@ -6,15 +6,11 @@ import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
 import { Redirect } from 'react-router-dom';
 import PostData from '../../Services/signupapi'
+import { browserHistory } from 'react-router';
+
 const RadioGroup = Radio.Group;
 
 class Signup extends Component {
-  // state = {
-  //   userName: '',
-  //   firstName:'',
-  //   lastName:'',
-  //   phoneNumber:''
-  // }
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +18,7 @@ class Signup extends Component {
       email: '',
       name: '',
       password: '',
+      confirmPassword:'',
       phoneNumber: '',
       redirectToReferrer: false
 
@@ -63,16 +60,20 @@ class Signup extends Component {
       PostData(this.state).then((result) => {
         let response = result;
         console.log(result)
-        if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+        if (response.user) {
+          sessionStorage.setItem('userId', response.user._id);
           this.setState({ redirectToReferrer: true });
+       
         }
 
       });
     }
   }
+  
   render() {
-
+ if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
@@ -151,12 +152,13 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
-                      {/* <Input
+                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        name="confirmPassword"
 
                         onChange={this.onChangeValue}
-                      /> */}
+                      /> 
 
 
                     </form>
@@ -191,7 +193,7 @@ class Signup extends Component {
                     <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
-
+                
                 </Row>
               </div>
             </Col>
