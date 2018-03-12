@@ -6,15 +6,11 @@ import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
 import { Redirect } from 'react-router-dom';
 import PostData from '../../Services/signupapi'
+import { browserHistory } from 'react-router';
+
 const RadioGroup = Radio.Group;
 
 class Signup extends Component {
-  // state = {
-  //   userName: '',
-  //   firstName:'',
-  //   lastName:'',
-  //   phoneNumber:''
-  // }
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +18,7 @@ class Signup extends Component {
       email: '',
       name: '',
       password: '',
+      confirmPassword:'',
       phoneNumber: '',
       redirectToReferrer: false,
       fields: {},
@@ -161,6 +158,7 @@ handleChange(field, e){
         if (response.userData) {
           sessionStorage.setItem('userData', JSON.stringify(response));
           this.setState({ redirectToReferrer: true });
+       
         }
 
       });
@@ -170,8 +168,11 @@ handleChange(field, e){
   // }
     
   }
+  
   render() {
-
+ if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
@@ -261,13 +262,13 @@ handleChange(field, e){
                         onChange={this.onChangeValue}
                        
                       />
-                        <span style={{color: "red"}}>{this.state.errors["password"]}</span>
-                      {/* <Input
+                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        name="confirmPassword"
 
                         onChange={this.onChangeValue}
-                      /> */}
+                      /> 
 
 
                     </form>
@@ -302,7 +303,7 @@ handleChange(field, e){
                     <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
                   </div>
                
-
+                
                 </Row>
               </div>
             </Col>
