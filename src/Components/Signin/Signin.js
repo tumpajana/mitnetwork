@@ -7,7 +7,7 @@ import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
-import {Redirect} from 'react-router-dom'
+
 import loginData from '../../Services/signipapi'
 import FacebookloginData from '../../Services/socialapi'
 const RadioGroup = Radio.Group;
