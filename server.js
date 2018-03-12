@@ -9,6 +9,8 @@ var app = express();
 
 // put const here
 const userRoute = require('./mitServer/user.controller');
+const uploadRoute = require('./mitServer/upload/file.controller');
+
 
 //connect to mongodb
 mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
@@ -37,6 +39,7 @@ app.use(bodyParser.json());
 
 //routes
 app.use('/user', userRoute);
+app.use('/file', uploadRoute);
 
 
 // port listen at
