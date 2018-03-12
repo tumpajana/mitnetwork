@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload,Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -68,8 +68,8 @@ class Wall extends Component {
 
                   {/* <TextArea rows={4} placeholder="Write here .." className="showpost" /> */}
                   <div placeholder="Write here .." className="showpostall" >
-                  
-                
+
+
                   </div>
 
                 </Col>
@@ -79,28 +79,28 @@ class Wall extends Component {
             <hr className="dividerwall" />
 
             <Row >
-            
-            <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
-            <Col span={5}>
-            
-            <Upload >
-               <Button className="upldbtnwall">
-                <Icon type="upload" /> Click to Upload
+
+              <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
+              <Col span={5}>
+
+                <Upload >
+                  <Button className="upldbtnwall">
+                    <Icon type="upload" /> Click to Upload
               </Button>
-            </Upload>
-            </Col>
-            <Col span={14}>
-            
-            
-            <Button className="post" title="Post">Post</Button>
-            </Col>
-            
-             </Row>
-           
+                </Upload>
+              </Col>
+              <Col span={14}>
+
+
+                <Button className="post" title="Post">Post</Button>
+              </Col>
+
+            </Row>
+
             {/* <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button> */}
 
-           
-         
+
+
           </div>
         </div>
 
@@ -136,20 +136,21 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-        <Modal className="artlhead"
-          visible={visible}
-          title="Share Article"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
-            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              Save
+        <div className="modalcustom">
+          <Modal className="artclhead"
+            visible={visible}
+            title="Share Article"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                Save
            </Button>,
-          ]}
-          className="mitprofileEditmodal"
-        >
-
+            ]}
+            className="mitprofileEditmodal"
+          >
+     
 
 
           {/* ----------------edit profile form start--------------- */}
@@ -169,6 +170,8 @@ class Wall extends Component {
 
           </form>
         </Modal>
+
+        </div>
         {/* ----------MODAL SECTION FOR write something end------------- */}
 
       </div>
