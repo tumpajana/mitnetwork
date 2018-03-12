@@ -207,6 +207,7 @@ class Signin extends Component {
 
                       <Input
                         placeholder="Username"
+                        type="email"
                         name="email"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
@@ -216,6 +217,7 @@ class Signin extends Component {
 
                       <Input
                         placeholder=" Password"
+                        type="password"
                         name="password"
                         type="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
