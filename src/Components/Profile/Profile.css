@@ -1,6 +1,18 @@
+
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900');
+
 body{
     font-family: Lato;
     background: #f7f7f7;
+    font-family: 'Lato', sans-serif;
+}
+
+.mitprofileEditmodal .ant-modal-title{
+    font-size: 17px;
+    font-weight: 500;
+    font-family: lato;
+    margin: 0;
+    color: rgb(89, 89, 89);
 }
 
 .ant-modal-wrap {
@@ -9,7 +21,6 @@ body{
     justify-content: center;
     align-items: center;
 }
-
 .ant-modal{
     top:0;
     width:50% !important;
@@ -28,6 +39,12 @@ body{
     position: relative;
     overflow: visible;
     margin-bottom: 4em;
+    background: linear-gradient(
+        rgba(105, 64, 186, 0.75), 
+        rgba(105, 64, 186, 0.75)
+      ), url(../../Images/editprofileimg.svg) no-repeat;
+    height: 20vh;
+    background-size: cover;
 }
 .userimage{
     position: absolute;
@@ -51,17 +68,23 @@ body{
     bottom: 0;
     border-radius: 50%;
     padding: 5px 8px;
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+    border:none;
+
 }
 .editbtn:hover{
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
+    border:none;
 }
 .editbtn.ant-btn:focus{
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
+    border:none;
+
 }
 .editbtn:active{
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
+    border:none;
 }
 
 .editbtn .anticon-edit{
@@ -79,18 +102,58 @@ body{
    margin-bottom:16px;
 }
 
-
-.editprofileform .anticon.anticon-phone{
-   transform: rotate(90deg);
+.editprofileform .ant-input:hover , .ant-select-selection:hover {
+    border-color: rgba(105, 64, 186, 0.52) !important;
+    box-shadow: none !important;
+    outline: 0;
+}
+.editprofileform .ant-input:focus , .ant-select-selection:focus{
+    border-color: rgba(105, 64, 186, 0.52) !important;
+    box-shadow: none !important;
+    outline: 0;
 }
 
 
 
+.editprofileform .anticon.anticon-phone{
+   transform: rotate(90deg);
+}
+.savebtn{
+    background: rgb(105, 64, 186);
+    color:#ffffff;
+
+}
+.backbtn.ant-btn:hover {
+    color: rgb(105, 64, 186);
+    background-color: #fff;
+    border-color: rgb(105, 64, 186);
+}
+.savebtn.ant-btn:hover{
+    color: #ffffff;
+    background-color: rgb(105, 64, 186);
+    border-color: rgb(105, 64, 186);
+}
+.backbtn.ant-btn:focus {
+    color: rgb(105, 64, 186);
+    background-color: #fff;
+    border-color: rgb(105, 64, 186);
+}
+.savebtn.ant-btn:focus{
+    color: #ffffff;
+    background-color: rgb(105, 64, 186);
+    border-color: rgb(105, 64, 186);
+}
+
 
 .profilesec{
-    background: rgb(225, 233, 238);
-    /* height: 87vh; */
+    background: linear-gradient(
+        rgba(105, 64, 186, 0.75), 
+        rgba(105, 64, 186, 0.75)
+      ), url(../../Images/editprofileimg.svg) no-repeat;
+    height: 35vh;
     position: relative;
+    background-size: cover;
+
 }
 .profilesec img{
     height: 40%;
@@ -147,23 +210,31 @@ body{
     right: 45px;
     width:50px;
     height:50px;
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
     border-radius: 50%;
     padding:10px;
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
 }
 .vieweditbtn:hover{
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
+    border:none;
+
 }
 .vieweditbtn.ant-btn:focus{
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
+    border:none;
+
 }
 .vieweditbtn:active{
-    background: rgb(24, 144, 255);
+    background: rgb(105, 64, 186);
+    border:none;
+
 }
 .vieweditbtn .anticon.anticon-edit{
     color:#ffffff;
     font-size: 25px;
+    border:none;
+
 }
 
 
@@ -185,21 +256,21 @@ body{
     position: relative;
 }
 .prodetail:before{
-    position: absolute;
-    left:0;
-    right:0;
-    margin:0 auto;
-    content:"";
-    width:1px;
-    height: 75%;
-    top: 14px;
+        position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    content: "";
+    width: 1px;
+    height: 81%;
+    top: 4px;
     background: #dedede;
 }
 .procard{
     height: auto;
     padding: 30px 30px 4em;
     background: white;
-    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.01);
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.01);
     width: 60%;
     margin: 0 auto;
     position: absolute;
@@ -210,7 +281,7 @@ body{
 }
 
 .prodetail .anticon:before {
-    color: rgb(24, 144, 255);
+    color: rgb(105, 64, 186);
     font-size: 18px;
 
 }
