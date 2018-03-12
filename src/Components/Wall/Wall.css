@@ -37,13 +37,28 @@ button.ant-btn.upldbtnwall {
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
+.postedimg a {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: rgba(0,0,0,.9);
+    text-align: left;
+    padding-left: 10px;
+    margin: 0;
+    float: left;
+}
+button.ant-btn.upldbtnwall:hover {
+    color:rgb(105, 64, 186);
+    border-color:rgb(105, 64, 186);
+    border: 1px solidrgb(105, 64, 186);
+}
 .showpostall {
     float: left;
     text-align: left;
 }
 button.ant-btn.postedit:hover{
-    border-color: rgb(0, 132, 191);
-    color:rgb(0, 132, 191);
+    border-color:rgb(105, 64, 186);
+    color: rgb(105, 64, 186);
 }
 
 button.ant-btn.postimg {
@@ -66,7 +81,7 @@ button.ant-btn.post {
     padding: 0 19px;
     margin-right: 5px;
     margin-top: 4px;
-    background: rgb(0, 115, 177);
+    background:rgb(105, 64, 186);
     color: rgb(255, 255, 255);
     font-weight: 600;
     font-size: 14px;
@@ -85,14 +100,14 @@ button.ant-btn.post:hover {
    font-weight: 500;
 }
  button.ant-btn.postedit:hover {
-    color: rgb(0, 132, 191);
-    border-color: rgb(0, 132, 191);
-    border: 1px solid rgb(0, 132, 191);
+    color:rgb(105, 64, 186);
+    border-color: rgb(105, 64, 186);
+    border: 1px solid rgb(105, 64, 186);
 }
 button.ant-btn.postimg:hover {
-    color: rgb(0, 132, 191);
-    border-color: rgb(0, 132, 191);
-    border: 1px solid rgb(0, 132, 191);
+    color:rgb(105, 64, 186);
+    border-color:rgb(105, 64, 186);
+    border: 1px solidrgb(105, 64, 186);
 }
 .postsec p{
     padding-bottom: 25px;
@@ -112,6 +127,28 @@ button.ant-btn.postimg:hover {
     width: 50%;
     margin: 2em auto;
 
+}
+.ant-btn:hover, .ant-btn:focus {
+    color: inherit;
+   
+}
+button.ant-btn.post:hover {
+    background: rgb(92, 55, 165);
+}
+.ant-modal.mitprofileEditmodal button.ant-btn {
+    border: 1px solid #a7a5ab;
+    font-family: Lato;
+    font-size: 14px;
+}
+.ant-modal.mitprofileEditmodal button.ant-btn:hover {
+    /* background: #f7f7f7; */
+    border: 1px solid #6940ba;
+    color: #6940ba;
+}
+.ant-modal.mitprofileEditmodal button.ant-btn.ant-btn-primary {
+    background: rgb(105, 64, 186);
+    border: none;
+    color: #ffffff;
 }
 .userpicpost{
     background-image: url('../../Images/male.png');
@@ -139,8 +176,10 @@ color: rgba(0,0,0,.9);
 text-align: left;
 padding-left: 10px;
 margin: 0;
+cursor:pointer;
 }
 .postedpartcard h3{
+    cursor:pointer;
     line-height: 20px;
     font-size: 12px;
     color:rgba(0,0,0,.6);
@@ -188,12 +227,13 @@ line-height: 20px;
 font-weight: 600;
 color: rgba(0,0,0,.6);
 }
-.likecomment button:hover{
-    background-color: rgba(152,216,244,.25);
-    color: rgb(0, 96, 151);
+
+.likecomment button:hover {
+    background-color: hsla(260, 49%, 49%, 0.3);
+    color: rgb(105, 64, 186);
 }
 .likecomment button:focus{
-    color: rgb(0, 96, 151);
+    color: rgb(105, 64, 186);
 }
 .likecomment button:focus .anticon-like-o:before{
 content:'\E64C';

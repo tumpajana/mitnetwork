@@ -155,7 +155,7 @@ class Wall extends Component {
 
                 <Upload >
                   <Button className="upldbtnwall">
-                    <Icon type="upload" /> Click to Upload
+                    <Icon type="upload" />Upload Image
               </Button>
                 </Upload>
               </Col>
@@ -234,20 +234,21 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-        <Modal className="artlhead"
-          visible={visible}
-          title="Share Article"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
-            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              Save
+        <div className="modalcustom">
+          <Modal className="artclhead"
+            visible={visible}
+            title="Share Article"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                Save
            </Button>,
-          ]}
-          className="mitprofileEditmodal"
-        >
-
+            ]}
+            className="mitprofileEditmodal"
+          >
+     
 
 
           {/* ----------------edit profile form start--------------- */}
@@ -267,6 +268,8 @@ class Wall extends Component {
 
           </form>
         </Modal>
+
+        </div>
         {/* ----------MODAL SECTION FOR write something end------------- */}
 
       </div>

@@ -22,6 +22,11 @@ class Signin extends Component {
       email: '',
       password: '',
       redirectToReferrer: false,
+      valid:{
+        nameText:'',
+        nameTextt:'',
+        
+      },
       facebookInfo: {
         name: '',
         providerName: '',
@@ -87,6 +92,52 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
+    if(e.target.value.length == 0){
+      if(e.target.name == 'email'){
+        this.setState({
+          valid:{
+            nameText:'email can not be empty'
+          }
+        });
+      }
+//       if(e.target.value.length!== 0 && !(e.target.email.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
+//          this.setState({
+//           valid:{
+//             nameText:'email is invalid'
+//       }
+    
+//   });
+//  }
+
+
+     }else{
+      if(e.target.name == 'email'){
+        this.setState({
+          valid:{
+            nameText:''
+          }
+        });
+      }
+     }
+    
+    //validation for password
+    if(e.target.value.length == 0){
+      if(e.target.name == 'password'){
+        this.setState({
+          valid:{
+            nameTextt:'password can not be empty'
+          }
+        });
+      }
+     }else{
+      if(e.target.name == 'password'){
+        this.setState({
+          valid:{
+            nameTextt:''
+          }
+        });
+      }
+     }
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
@@ -103,6 +154,9 @@ class Signin extends Component {
         }
 
       });
+    }
+    else{
+      alert("Fields are required");
     }
   }
 
@@ -127,7 +181,7 @@ class Signin extends Component {
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
 
     return (
-      <div className="signuparea">
+      <div className="signuparea signinarea">
         <div className="signupcard">
           <Row type="flex" justify="center" >
             <Col lg={9} sm={0} xs={0}>
@@ -157,13 +211,18 @@ class Signin extends Component {
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
+                      
+                      <div> {this.state.valid.nameText} </div>
 
                       <Input
                         placeholder=" Password"
                         name="password"
+                        type="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
+                      
+                      <div> {this.state.valid.nameTextt} </div>
 
 
 
@@ -185,26 +244,30 @@ class Signin extends Component {
                       {/* <Button className="facebooksignin">Sign in
                         <Icon type="facebook" />
                       </Button> */}
+
                       <FacebookLogin
                         appId="312775355854012"
-                        autoLoad={true}
+                        autoLoad={false}
                         fields="name,email,picture"
                         // onClick={componentClicked}
                         callback={this.responseFacebook}
                         className="facebooksignin"
-                        icon="fa-facebook" />
-                      {/* <Button className="googleplussign">Sign in
-                        <Icon type="google-plus" />
-                      </Button> */}
+                        // icon="fa-facebook-square" 
+                        />
+                      
                       <GoogleLogin
                         clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
-                        buttonText="Login"
+                        buttonText="Login with Googleplus"
                         className="googleplussign"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
-                        icon="google-plus"
+                        // icon="google-plus"
                         
                       />
+
+                      {/* <Button className="googleplussign">Sign in
+                        <Icon type="google-plus" />
+                      </Button> */}
                     </div>
 
                   </Col>
@@ -212,7 +275,7 @@ class Signin extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn" onClick={this.login}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register</a> &nbsp;here</p>
+                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register now</a></p>
                   </div>
 
 
