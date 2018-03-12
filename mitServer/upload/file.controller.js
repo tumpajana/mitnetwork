@@ -102,4 +102,42 @@ router.get('/getImage', (request, response) => {
         }
     })
 });
+//  Api for post
+
+// router.post('/socialPost', (request, response) => {
+//     console.log("user create ");
+//     console.log(request.body);
+
+//     let postResponse = {};
+//     let data = new user({
+//         userName: request.body.userName,
+//         name: request.body.name,
+//         phoneNumber: request.body.phoneNumber
+
+//     });
+//     if (request.body.email) {
+//         data.email = (request.body.email).toLowerCase();
+
+//     };
+//     if (request.body.password) {
+//         data.password = cryptr.encrypt(request.body.password)
+//     };
+//     console.log(data);
+//     data.save((error, result) => {
+//         if (error) {
+//             console.log(error);
+//             registrationResponse.error = true;
+//             registrationResponse.message = `Error :` + error.code == 11000 ? error.message : "phone number or email already exist";
+//             response.status(500).json(registrationResponse);
+//         } else {
+//             console.log(result);
+//             registrationResponse.error = false;
+//             registrationResponse.user = result;
+//             registrationResponse.message = `registration is  successfull.`;
+//             response.status(200).json(registrationResponse);
+
+//         }
+
+//     });
+// });
 module.exports = router;
