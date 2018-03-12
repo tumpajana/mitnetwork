@@ -66,14 +66,16 @@ class Signup extends Component {
         if (response.user) {
           sessionStorage.setItem('userId', response.user._id);
           this.setState({ redirectToReferrer: true });
-          return <Redirect to ='/Profile' />
+       
         }
 
       });
     }
   }
   render() {
-
+ if (this.state.redirectToReferrer) {
+      return <Redirect to ="/Profile"/>
+    }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
@@ -152,12 +154,12 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
-                      {/* <Input
+                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
-                      /> */}
+                      /> 
 
 
                     </form>
