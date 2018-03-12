@@ -59,7 +59,7 @@ class Signin extends Component {
         let response = result;
         console.log(response)
         if (response.userData) {
-          sessionStorage.setItem('loginData', JSON.stringify(response));
+          sessionStorage.setItem('userId', JSON.stringify(response));
           this.setState({ redirectToReferrer: true });
         }
 
