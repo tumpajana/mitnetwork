@@ -8,28 +8,53 @@ import Header from '../Header/Header.js';
 import User from '../../Images/user10.jpg';
 import backprofile from '../../Images/backpro.svg';
 import getUserProfile from '../../Services/profileapi';
-
+import ReactDOM from 'react-dom';
+import profilePic from '../../Services/profilepicapi';
 
 
 class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      userName: '',
+      user :{
+    userName: '',
       email: '',
       name: '',
       phoneNumber: '',
       redirectToReferrer: false,
-      userProfile: {}
+      },
+  
+userProfile:{}
     };
 
-    this.show = this.show.bind(this);
-    // this.onChangeValue = this.onChangeValue.bind(this);
+     this.show = this.show.bind(this);
+     this.showModal = this.showModal.bind(this);
+    this.onChangeValue = this.onChangeValue.bind(this);
+
+     // this.onChangeValue = this.onChangeValue.bind(this);
     if (sessionStorage.userId) {
       this.show();
     }
+    };
+
+   
+  
+
+
+
+  onChange = (e) => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
   }
 
+//onchange of input feild binding
+  onChangeValue = (e) => {
+    console.log(e)
+    this.setState({ [e.target.name]: e.target.value });
+    console.log('onchangeusername', e.target.value,'+', e.target.name)
+  }
   state = {
     loading: false,
     visible: false,
@@ -37,7 +62,8 @@ class Profile extends Component {
   showModal = () => {
     this.setState({
       visible: true,
-    });
+    })
+           //  this.refs.username.value="abcd";
   }
   handleOk = () => {
     this.setState({ loading: true });
@@ -48,29 +74,58 @@ class Profile extends Component {
   handleCancel = () => {
     this.setState({ visible: false });
   }
-
+  
   //  //show profile
+  
+  show=() =>{
+          //  this.refs.username.value="abcd";
 
-  show = () => {
-
+    
     console.log('submit button');
-
-    getUserProfile(sessionStorage.getItem("userId")).then((result) => {
-      let response = result;
-
-      this.setState({ userProfile: result.result });
-      console.log('userData...', this.state.userProfile)
-      // if (response.userData) {
-      //   sessionStorage.setItem('userData', JSON.stringify(response));
-      //   this.setState({ redirectToReferrer: true });
-      // }
-
-    });
+       let _base = this;
+      getUserProfile( sessionStorage.getItem("userId")).then((result) => {
+        let response = result;
+        console.log(this.refs);
+  console.log(result);
+        this.setState({ userProfile: result.result}); 
+        this.setState({user:result.result})
+        console.log('userData...',this.state.userProfile)
+          console.log('userData...',this.state.user)
+          //  this.refs.username.value=this.state.userProfile.userName;
+        
+           });
+       
+      
   }
+   preveiwProfile = (event) => {
+     console.log(event.target.files)
+  //   preveiwProfile(event) {
+    
+    let fileList= event.target.files;
+    let fileTarget = fileList;
+    let file=  fileTarget[0];
+      // this.names = file;
+    console.log("File information :", file);
+    var formData = new FormData();
+    formData.append('file', 'gfthyby');
+   console.log( formData.entries())
+  console.log(formData)
+    profilePic(formData).then((result)=>{
+      console.log(result)
+    })
+  }
+   
+  
 
+
+   edit=() =>{
+    console.log('Dispaly data');
+      
+
+   } 
 
   render() {
-
+    
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
@@ -207,11 +262,13 @@ class Profile extends Component {
                   {/* <Button className="editbtn" title="Edit Profile Image">
                                   <Icon type="edit" />
                                 </Button> */}
-                  <Upload >
-                    <Button className="editbtn">
+                  {/*<Upload >*/}
+                    <Button className="editbtn"> 
                     <Icon type="edit" />
+                    <Input type="file" name="myFile" onChange={this.preveiwProfile} />
                     </Button>
-                  </Upload>
+                   
+                  {/*</Upload>*/}
                 </div>
               </div>
             </Col>
@@ -317,5 +374,7 @@ class Profile extends Component {
     );
   }
 }
+
+
 
 export default Profile;

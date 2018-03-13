@@ -37,10 +37,8 @@ class Header extends Component {
   logout() {
     console.log('menu item selected');
     sessionStorage.clear();
-    this.setState({redirectToReferrer:true})
-
-    
-  }
+    this.setState({redirectToReferrer:true});
+}
 
   render() {
 

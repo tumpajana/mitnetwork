@@ -10,6 +10,8 @@ var app = express();
 // put const here
 const userRoute = require('./mitServer/user.controller');
 const uploadRoute = require('./mitServer/upload/file.controller');
+const postRoute = require('./mitServer/post/socialPost.controller');
+
 
 
 //connect to mongodb
@@ -28,7 +30,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 //port no
-const port = 5050;
+const port = 5000;
 
 //middleware
 app.use(cors());
@@ -40,6 +42,8 @@ app.use(bodyParser.json());
 //routes
 app.use('/user', userRoute);
 app.use('/file', uploadRoute);
+app.use('/post', postRoute);
+
 
 
 // port listen at
