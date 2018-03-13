@@ -33,6 +33,18 @@ const userSchema = mongoose.Schema({
     token:{
         type:String
     },
+    qualification:{
+        type:String
+    },
+    state:{
+        type:String
+    },
+    city:{
+        type:String
+    },
+    designation:{
+        type:String
+    },
     createdDate: {
         type: Date,
         default: Date.now
