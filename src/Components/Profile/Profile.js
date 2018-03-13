@@ -23,6 +23,7 @@ class Profile extends Component {
         phoneNumber: '',
         redirectToReferrer: false,
       },
+      formData: new FormData(),
 
       userProfile: {}
     };
@@ -98,22 +99,12 @@ class Profile extends Component {
 
   }
   preveiwProfile = (event) => {
-    console.log(event.target.files)
-    //   preveiwProfile(event) {
-
-    let fileList = event.target.files;
-    let fileTarget = fileList;
-    let file = fileTarget[0];
-    console.log("file :", file);
-    // this.names = file;
-    console.log("File information :", file);
-    let formData = new FormData();
-    formData.append('file', file, file.name);
-    console.log(formData.entries());
-    console.log(formData);
-    profilePic(formData).then((result) => {
-      console.log(result)
-    })
+    // let fileList = event.target.files;
+    // let fileTarget = fileList;
+    // let file = fileTarget[0];
+    var fd = new FormData();
+    fd.append('foo', 'bar'); // works
+    console.log(fd.entries());
   }
 
 
