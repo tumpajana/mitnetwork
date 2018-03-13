@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema({
             type:String
         },
     like:[{
-        type:Schema.ObjectId
+        userId:Schema.ObjectId
     }],
     //  unLike:{
     //         type:String
