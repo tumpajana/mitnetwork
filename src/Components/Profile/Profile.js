@@ -46,19 +46,19 @@ class Profile extends Component {
 
 
 
-
-
-  onChange = (e) => {
+ onChange = (e) => {
     console.log('radio checked', e.target.value);
     this.setState({
       value: e.target.value,
     });
   }
 
+ 
   state = {
     loading: false,
     visible: false,
   }
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -125,7 +125,6 @@ class Profile extends Component {
 
   show = () => {
     //  this.refs.username.value="abcd";
-
 
     console.log('submit button');
     let _base = this;
