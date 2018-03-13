@@ -7,15 +7,83 @@ import User from '../../Images/usr.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
 import ReactQuill from 'react-quill';
+import WallPost from '../../Services/wallPost';
+import WallGet from '../../Services/wallGet';
 import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
 const { TextArea } = Input;
 class Wall extends Component {
-
   state = {
     loading: false,
     visible: false,
   }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: {
+        title: '',
+        content: ''
+      },
+      postList:[]
+
+    }
+    this.textInput = this.textInput.bind(this);
+    this.title = this.title.bind(this);
+    this.socialPost = this.socialPost.bind(this);
+    this.getPosts();
+    
+  }
+
+  //postdata on server
+  socialPost() {
+    console.log('post')
+    let dataSent = {
+      title: this.state.posts.title,
+      content: this.state.posts.content,
+      userId: sessionStorage.getItem('userId')
+    }
+    WallPost(dataSent).then((result) => {
+      console.log(result);
+      this.getPosts();
+    })
+  }
+
+  //get al post
+  getPosts() {
+    WallGet().then((result) => {
+      console.log(result);
+      this.setState({postList:result.result.filter((element) => {return (element.userId != null || element.userId != undefined)})});
+    });
+  }
+
+  // content input
+  textInput = (e) => {
+    this.setState({
+      posts: {
+        title: this.state.posts.title,
+        content: e
+      }
+    })
+    console.log(this.state.posts.content)
+  }
+
+
+  //title input
+  title = (e) => {
+    //  let x= quill.container.innerHTML;
+    //  console.log.og(x)
+    console.log(e)
+    this.setState({
+      posts: {
+        title: e,
+        content: this.state.posts.content
+      }
+    })
+    console.log(this.state.posts.title);
+  }
+
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -25,11 +93,13 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
-    }, 3000);
+    }, 2000);
   }
   handleCancel = () => {
     this.setState({ visible: false });
   }
+
+
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -57,8 +127,8 @@ class Wall extends Component {
                 </Col>
                 <Col span={22}>
                   <div className="usrview">
-                    <h4 className="usrnamewall">Jess Williams</h4>
-                    <p className="degignationwall">HR Manager at VMware</p>
+                    <h4 className="usrnamewall">{this.state.posts.title}</h4>
+                    <p className="degignationwall">{this.state.posts.content}</p>
                   </div>
                 </Col>
               </Row>
@@ -85,14 +155,14 @@ class Wall extends Component {
 
                 <Upload >
                   <Button className="upldbtnwall">
-                    <Icon type="upload" /> Click to Upload
+                    <Icon type="upload" />Upload Image
               </Button>
                 </Upload>
               </Col>
               <Col span={14}>
 
 
-                <Button className="post" title="Post">Post</Button>
+                <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
               </Col>
 
             </Row>
@@ -107,7 +177,35 @@ class Wall extends Component {
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        <div className="postedpartcard">
+        { this.state.postList.map(function(item) {
+                return   <div className="postedpartcard">
+                <Row type="flex" justify="space-around" align="middle">
+                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                    <div className="userpicpost">
+                      <img src={User} />
+                    </div>
+                  </Col>
+                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                    <p>{item.userId.userName}</p>
+                    <h3>Senior manager at denali bank</h3>
+                  </Col>
+                </Row>
+                <div className="postedimg">
+                  <img src={Wallpostimg} />
+                  {item.title}
+                  {item.content}
+                </div>
+                <div className="likecomment">
+                  <h3>2k likes</h3>
+                  <Button title="like"><Icon type="like-o" />Likes</Button>
+                  <Button title="comment"><Icon type="message" />Comment</Button>
+      
+                </div>
+              </div>
+            })
+        }
+      
+        {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
             <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
               <div className="userpicpost">
@@ -115,14 +213,14 @@ class Wall extends Component {
               </div>
             </Col>
             <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-              <p>Jess Williams</p>
+              <p>{item.userId.userName}</p>
               <h3>Senior manager at denali bank</h3>
             </Col>
           </Row>
           <div className="postedimg">
             <img src={Wallpostimg} />
-            <p>International Women's day</p>
-            <h3>youtube</h3>
+            <p>{item.title}</p>
+            <h3>{item.content}</h3>
           </div>
           <div className="likecomment">
             <h3>2k likes</h3>
@@ -130,7 +228,7 @@ class Wall extends Component {
             <Button title="comment"><Icon type="message" />Comment</Button>
 
           </div>
-        </div>
+        </div> */}
 
         {/* posted blog html start */}
 
@@ -161,8 +259,8 @@ class Wall extends Component {
                 <form>
 
 
-                  <ReactQuill value="" className="textareheadng" placeholder="Headline" />
-                  <ReactQuill placeholder="Write here .." className="textareawall" />
+                  <ReactQuill id="#editor-container" className="textareheadng" placeholder="Headline" name="title" onChange={this.title} />
+                  <ReactQuill placeholder="Write here .." className="textareawall" name="content" onChange={this.textInput} />
 
                 </form>
               </Col>
