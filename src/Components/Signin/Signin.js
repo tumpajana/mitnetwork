@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Input, Icon, Radio, Button } from 'antd';
+import { Form,Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
-
 import loginData from '../../Services/signipapi'
 import FacebookloginData from '../../Services/socialapi'
 const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
 
 class Signin extends Component {
   state = {
@@ -22,11 +22,7 @@ class Signin extends Component {
       email: '',
       password: '',
       redirectToReferrer: false,
-      valid:{
-        nameText:'',
-        nameTextt:'',
-        
-      },
+
       facebookInfo: {
         name: '',
         providerName: '',
@@ -42,6 +38,7 @@ class Signin extends Component {
     this.login = this.login.bind(this);
     this.onChangeLoginName = this.onChangeLoginName.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
@@ -92,55 +89,21 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
-    if(e.target.value.length == 0){
-      if(e.target.name == 'email'){
-        this.setState({
-          valid:{
-            nameText:'email can not be empty'
-          }
-        });
-      }
-//       if(e.target.value.length!== 0 && !(e.target.email.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
-//          this.setState({
-//           valid:{
-//             nameText:'email is invalid'
-//       }
-    
-//   });
-//  }
-
-
-     }else{
-      if(e.target.name == 'email'){
-        this.setState({
-          valid:{
-            nameText:''
-          }
-        });
-      }
-     }
-    
-    //validation for password
-    if(e.target.value.length == 0){
-      if(e.target.name == 'password'){
-        this.setState({
-          valid:{
-            nameTextt:'password can not be empty'
-          }
-        });
-      }
-     }else{
-      if(e.target.name == 'password'){
-        this.setState({
-          valid:{
-            nameTextt:''
-          }
-        });
-      }
-     }
+  
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.login();
+      }
+
+    });
   }
 
   login = () => {
@@ -155,9 +118,7 @@ class Signin extends Component {
 
       });
     }
-    else{
-      alert("Fields are required");
-    }
+
   }
 
   facebookLogin =(res,type) => { 
@@ -173,6 +134,7 @@ class Signin extends Component {
     }
   
   render() {
+    const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
       return <Redirect to ="/Profile"/>
     }
@@ -203,17 +165,24 @@ class Signin extends Component {
                 <Row type="flex" justify="center">
 
                   <Col lg={10} sm={10} xs={24} className="signinarea">
-                    <form className="formsinput">
-
+                    <form   onSubmit={this.handleSubmit} className="formsinput">
+                    <FormItem>
+                    {getFieldDecorator('email', {
+            rules: [{ required: true, message: 'Username is reruired' }],
+          })(
                       <Input
                         placeholder="Username"
                         name="email"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
-                      
-                      <div> {this.state.valid.nameText} </div>
-
+                    )}
+                       </FormItem>
+ 
+                      <FormItem>
+                    {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Password is required' }],
+          })(
                       <Input
                         placeholder=" Password"
                         name="password"
@@ -221,10 +190,15 @@ class Signin extends Component {
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
-                      
-                      <div> {this.state.valid.nameTextt} </div>
+                    )}
+                    </FormItem>
+                
 
-
+                  <div className="registerbtn">
+                    <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                    <Button className="cnclbtn">Cancel</Button>
+                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register now</a></p>
+                  </div>
 
                     </form>
                   </Col>
@@ -272,12 +246,6 @@ class Signin extends Component {
 
                   </Col>
 
-                  <div className="registerbtn">
-                    <Button className="sbmtbtn" onClick={this.login}>Submit</Button>
-                    <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register now</a></p>
-                  </div>
-
 
                 </Row>
               </div>
@@ -290,4 +258,7 @@ class Signin extends Component {
   }
 }
 
-export default Signin
+Form.create()(Signin);
+
+export default Form.create()(Signin);
+
