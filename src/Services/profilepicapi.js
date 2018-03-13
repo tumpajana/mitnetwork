@@ -1,6 +1,6 @@
  function profilePic( userData) {
     //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
-    let BaseURL ='http://mitapi.memeinfotech.com:5000/file/upload   -post';
+    let BaseURL ='http://mitapi.memeinfotech.com:5000/file/upload';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
         headers: {
@@ -20,4 +20,4 @@
    });
    });
    }
-   export default loginData
+   export default profilePic

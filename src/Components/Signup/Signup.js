@@ -190,11 +190,7 @@ handleChange(field, e){
 
 
   //submit registration form
-<<<<<<< HEAD
-  register=() =>{
-=======
   register = () => {
->>>>>>> e36bc322f5d9ed18df683eb86348f95e819c241a
     console.log('submit button');
     console.log(this.state.name)
     // if(this.handleValidation()){     // validation function
@@ -258,13 +254,8 @@ handleChange(field, e){
                 </div>
                 <Row type="flex" justify="center">
 
-<<<<<<< HEAD
-                  <Col lg={10} sm={10}  xs={24}>
-                    <form className="formsinput"  onSubmit= {this.contactSubmit.bind(this)}>
-=======
                   <Col lg={10} sm={10} xs={24}>
                     <form className="formsinput">
->>>>>>> e36bc322f5d9ed18df683eb86348f95e819c241a
                       <Input
                         ref="name"
                         placeholder="Your Name"
