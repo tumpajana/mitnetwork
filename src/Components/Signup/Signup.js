@@ -56,7 +56,7 @@ class Signup extends Component {
     this.facebookLogin = this.facebookLogin.bind(this);
   }
 
-//Login with Facebook
+  //Login with Facebook
   responseFacebook = (response) => {
     console.log(response);
     this.facebookInfo = response;
@@ -73,7 +73,7 @@ class Signup extends Component {
     this.facebookLogin(response, 'facebook')
   }
 
-//login with Google
+  //login with Google
   responseGoogle = (response) => {
     console.log(response, 'google');
     this.facebookInfo = response;
@@ -241,7 +241,6 @@ class Signup extends Component {
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
-
           }
         }
         else if (response.error == true) {
@@ -261,23 +260,22 @@ class Signup extends Component {
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
-      console.log(result);
+      console.log("registration", result);
       if (result.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
+        console.log(response);
         if (response.userData) {
           sessionStorage.setItem('userData', JSON.stringify(response));
           this.setState({ redirectToReferrer: true });
-
         }
         else {
-          toast.warn("num ber already exist!", {
+          toast.warn("phone number or email already exist!", {
             position: toast.POSITION.TOP_CENTER,
           });
         }
       }
-
 
     });
   }
@@ -286,17 +284,17 @@ class Signup extends Component {
   // }
 
 
-  facebookLogin = (res, type) => {
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      let response = result;
-      console.log(response)
-      if (response.userData) {
-        sessionStorage.setItem('loginData', JSON.stringify(response));
-        this.setState({ redirectToReferrer: true });
-      }
+  // facebookLogin = (res, type) => {
+  //   FacebookloginData(this.state.facebookInfo).then((result) => {
+  //     let response = result;
+  //     console.log(response)
+  //     if (response.userData) {
+  //       sessionStorage.setItem('loginData', JSON.stringify(response));
+  //       this.setState({ redirectToReferrer: true });
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
   render() {
     if (this.state.redirectToReferrer) {

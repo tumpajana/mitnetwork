@@ -23,10 +23,10 @@ class Signin extends Component {
       email: '',
       password: '',
       redirectToReferrer: false,
-      valid:{
-        nameText:'',
-        nameTextt:'',
-        
+      valid: {
+        nameText: '',
+        nameTextt: '',
+
       },
       facebookInfo: {
         name: '',
@@ -76,7 +76,7 @@ class Signin extends Component {
     }
     this.facebookLogin(response, 'google')
   }
- 
+
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ userName: '' });
@@ -93,52 +93,52 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
-    if(e.target.value.length == 0){
-      if(e.target.name == 'email'){
+    if (e.target.value.length == 0) {
+      if (e.target.name == 'email') {
         this.setState({
-          valid:{
-            nameText:'email can not be empty'
+          valid: {
+            nameText: 'email can not be empty'
           }
         });
       }
-//       if(e.target.value.length!== 0 && !(e.target.email.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
-//          this.setState({
-//           valid:{
-//             nameText:'email is invalid'
-//       }
-    
-//   });
-//  }
+      //       if(e.target.value.length!== 0 && !(e.target.email.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
+      //          this.setState({
+      //           valid:{
+      //             nameText:'email is invalid'
+      //       }
+
+      //   });
+      //  }
 
 
-     }else{
-      if(e.target.name == 'email'){
+    } else {
+      if (e.target.name == 'email') {
         this.setState({
-          valid:{
-            nameText:''
+          valid: {
+            nameText: ''
           }
         });
       }
-     }
-    
+    }
+
     //validation for password
-    if(e.target.value.length == 0){
-      if(e.target.name == 'password'){
+    if (e.target.value.length == 0) {
+      if (e.target.name == 'password') {
         this.setState({
-          valid:{
-            nameTextt:'password can not be empty'
+          valid: {
+            nameTextt: 'password can not be empty'
           }
         });
       }
-     }else{
-      if(e.target.name == 'password'){
+    } else {
+      if (e.target.name == 'password') {
         this.setState({
-          valid:{
-            nameTextt:''
+          valid: {
+            nameTextt: ''
           }
         });
       }
-     }
+    }
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
@@ -149,16 +149,16 @@ class Signin extends Component {
       loginData(this.state).then((result) => {
         let response = result;
         console.log(response)
-         if (response.error == false) {
+        if (response.error == false) {
           toast.success("You have been login successfully!", {
             position: toast.POSITION.TOP_CENTER,
           });
-        if (response.user) {
-          sessionStorage.setItem('userId',response.user._id);
-          this.setState({ redirectToReferrer: true });
+          if (response.user) {
+            sessionStorage.setItem('userId', response.user._id);
+            this.setState({ redirectToReferrer: true });
+          }
         }
-         }
-         else if (response.error == true) {
+        else if (response.error == true) {
           toast.warn("Wrong password", {
             position: toast.POSITION.TOP_CENTER,
           });
@@ -166,26 +166,25 @@ class Signin extends Component {
 
       });
     }
-    else{
+    else {
       alert("Fields are required");
     }
   }
 
-  facebookLogin =(res,type) => { 
+  facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
-        let response = result;
-        console.log(response)
-        if (response.userData) {
-          sessionStorage.setItem('loginData', JSON.stringify(response));
-          this.setState({ redirectToReferrer: true });
-        }
+      let response = result;
+      console.log(response)
+      if (response.error == false) {
+        sessionStorage.setItem('loginData', JSON.stringify(response.result));
+        this.setState({ redirectToReferrer: true });
+      }
+    });
+  }
 
-      });
-    }
-  
   render() {
     if (this.state.redirectToReferrer) {
-      return <Redirect to ="/Profile"/>
+      return <Redirect to="/Wall" />
     }
     const { userName } = this.state;
 
@@ -222,7 +221,7 @@ class Signin extends Component {
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
-                      
+
                       <div> {this.state.valid.nameText} </div>
 
                       <Input
@@ -232,7 +231,7 @@ class Signin extends Component {
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
-                      
+
                       <div> {this.state.valid.nameTextt} </div>
 
 
@@ -263,17 +262,17 @@ class Signin extends Component {
                         // onClick={componentClicked}
                         callback={this.responseFacebook}
                         className="facebooksignin"
-                        // icon="fa-facebook-square" 
-                        />
-                      
+                      // icon="fa-facebook-square" 
+                      />
+
                       <GoogleLogin
                         clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
                         buttonText="Login with Googleplus"
                         className="googleplussign"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
-                        // icon="google-plus"
-                        
+                      // icon="google-plus"
+
                       />
 
                       {/* <Button className="googleplussign">Sign in
@@ -296,7 +295,7 @@ class Signin extends Component {
 
           </Row>
         </div>
-         <ToastContainer autoClose={2000} />
+        <ToastContainer autoClose={2000} />
       </div>
     );
   }

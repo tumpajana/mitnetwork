@@ -16,44 +16,48 @@ class Header extends Component {
   }
   constructor(props) {
     super(props);
-  this.state={
-    redirectToReferrer: false
-  }
+    this.state = {
+      redirectToReferrer: false
+    }
 
     this.logout = this.logout.bind(this);
   }
- 
+
 
   onClickButton = (ev) => {
     console.log(ev)
-    if(ev.key === 'setting:2') { // light is the value of menuitem in string
-    
+    if (ev.key === 'setting:2') { // light is the value of menuitem in string
+
       this.logout()
-    } 
-  
+    }
+
   }
 
   // logout and clear session storage
   logout() {
     console.log('menu item selected');
     sessionStorage.clear();
-    this.setState({redirectToReferrer:true})
+    this.setState({ redirectToReferrer: true })
 
-    
+
+  }
+
+  handleClick = (e) => {
+    console.log('click ', e);
   }
 
   render() {
 
     // redirect to signin after logout
     if (this.state.redirectToReferrer) {
-      return <Redirect to ="/Signin"/>
+      return <Redirect to="/Signin" />
     }
-    
+
     return (
       <div className="navbarsocial">
         <Row>
           <Col lg={12}>
-            <Menu>
+            <Menu >
               <div className="navlogo">
                 <Anchor className="logoanchor">
                   <Link href="#Home"><img src={navbarlogo} /></Link>
@@ -67,7 +71,7 @@ class Header extends Component {
                 onClick={this.onClickButton}
                 selectedKeys={[this.state.current]}
                 mode="horizontal"
-               
+
               >
                 <Menu.Item key="mail" >
                   <Icon type="home" />Home
