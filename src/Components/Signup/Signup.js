@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Input, Icon, Radio, Button } from 'antd';
+import { Form,Input, Icon, Radio, Button } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
@@ -13,7 +13,7 @@ import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 
 const RadioGroup = Radio.Group;
-
+const FormItem = Form.Item;
 
 
 class Signup extends Component {
@@ -29,14 +29,7 @@ class Signup extends Component {
       confirmPassword: '',
       phoneNumber: '',
       redirectToReferrer: false,
-      valid: {
-        nameText: '',
-        nameText1: '',
-        nameText2: '',
-        nameText3: '',
-        nameText4: '',
-        nameText5: '',
-      },
+     
       facebookInfo: {
         name: '',
         providerName: '',
@@ -54,6 +47,7 @@ class Signup extends Component {
     this.register = this.register.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 //Login with Facebook
@@ -109,70 +103,7 @@ class Signup extends Component {
   //onchange of input feild binding
   onChangeValue = (e) => {
     console.log(e.target.name);
-    if (e.target.value.length == 0) {
-      if (e.target.name == 'name') {
-        this.setState({
-          valid: {
-            nameText: 'Name can not be empty'
-          }
-        });
-      }
-    } else {
-      if (e.target.name == 'name') {
-        this.setState({
-          valid: {
-            nameText: ''
-          }
-        });
-      }
-    }
-
-    if (e.target.value.length == 0) {
-      if (e.target.name == 'userName') {
-        this.setState({
-          valid: {
-            nameText: 'username can not be empty'
-          }
-        });
-      }
-    } else {
-      if (e.target.name == 'userName') {
-        this.setState({
-          valid: {
-            nameText: ''
-          }
-        });
-      }
-    }
-
-    if (e.target.value.length == 0) {
-      if (e.target.name == 'email') {
-        this.setState({
-          valid: {
-            nameText: 'email can not be empty '
-          }
-        });
-      }
-
-      //     if(typeof fields["name"] !== "undefined"){
-      //       if(!fields["name"].match(/^[a-zA-Z]+$/)){
-      //         this.setState({
-      //           valid:{
-      //             nameText:'enter a valid email '
-      //           }
-      //         });
-      //       }          
-      //  }
-
-    } else {
-      if (e.target.name == 'email') {
-        this.setState({
-          valid: {
-            nameText: ''
-          }
-        });
-      }
-    }
+    
     //  if(e.target.value.length != 0){
     //  if( e.target.name == 'email' && (e.target.email !=(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/))){
     //   this.setState({
@@ -182,47 +113,23 @@ class Signup extends Component {
     //   })
     // }}
 
-    if (e.target.value.length == 0) {
-      if (e.target.name == 'phoneNumber') {
-        this.setState({
-          valid: {
-            nameText: 'phonenumber can not be empty'
-          }
-        });
-      }
-    } else {
-      if (e.target.name == 'phoneNumber') {
-        this.setState({
-          valid: {
-            nameText: ''
-          }
-        });
-      }
-    }
-
-    if (e.target.value.length == 0) {
-      if (e.target.name == 'password') {
-        this.setState({
-          valid: {
-            nameText: 'password can not be empty'
-          }
-        });
-      }
-    } else {
-      if (e.target.name == 'password') {
-        this.setState({
-          valid: {
-            nameText: ''
-          }
-        });
-      }
-    }
+    
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
   }
+//validation
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        this.register();
+      }
 
+    });
+  }
 
   //submit registration form
   register = () => {
@@ -299,6 +206,7 @@ class Signup extends Component {
   }
 
   render() {
+    const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
       return <Redirect to="/wall" />
     }
@@ -329,9 +237,13 @@ class Signup extends Component {
                 <Row type="flex" justify="center">
 
                   <Col lg={10} sm={10} xs={24}>
-                    <form className="formsinput">
+                    <form   onSubmit={this.handleSubmit} className="formsinput">
+                    <FormItem>
+                    {getFieldDecorator('name', {
+            rules: [{ required: true, message: 'name is reruired' }],
+          })(
                       <Input
-                        ref="name"
+                     
                         placeholder="Your Name"
                         name="name"
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -344,7 +256,12 @@ class Signup extends Component {
                       // ref={node => this.userNameInput = node}
 
                       />
-                      <div> {this.state.valid.nameText} </div>
+                    )}
+                    </FormItem>
+                    <FormItem>
+                    {getFieldDecorator('Username', {
+            rules: [{ required: true, message: 'Username is reruired' }],
+          })(
                       <Input
                         placeholder="Username"
                         name="userName"
@@ -353,7 +270,9 @@ class Signup extends Component {
                         onChange={this.onChangeValue}
 
                       />
-                      <div> {this.state.valid.nameText1} </div>
+                    )}
+                    </FormItem>
+                  
                       {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -364,6 +283,11 @@ class Signup extends Component {
                       <Radio value={1} className="gendervalue">Male</Radio>
                       <Radio value={2} className="gendervalue">Female</Radio>
                     </RadioGroup> */}
+                     <FormItem>
+                    {getFieldDecorator('email', {
+            rules: [{  type: 'email', message: 'The input is not valid E-mail!',
+                     },{ required: true, message: 'email is reruired' }],
+          })(
                       <Input
                         placeholder=" Email"
                         name="email"
@@ -372,7 +296,12 @@ class Signup extends Component {
                         onChange={this.onChangeValue}
 
                       />
-                      <div> {this.state.valid.nameText2} </div>
+                    )}
+                    </FormItem>
+                    <FormItem>
+                    {getFieldDecorator('phoneNumber', {
+            rules: [{ required: true, message: 'phoneNumber is reruired' }],
+          })(
                       <Input
                         placeholder=" Phone Number"
                         name="phoneNumber"
@@ -381,7 +310,12 @@ class Signup extends Component {
                         onChange={this.onChangeValue}
                       // value={this.state.fields["phoneNumber"]}
                       />
-                      <div> {this.state.valid.nameText3} </div>
+                    )}
+                    </FormItem>
+                    <FormItem>
+                    {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'password is reruired' }],
+          })(
                       <Input
                         placeholder=" Password"
                         name="password"
@@ -391,7 +325,12 @@ class Signup extends Component {
                         onChange={this.onChangeValue}
 
                       />
-                      <div> {this.state.valid.nameText4} </div>
+                    )}
+                    </FormItem>
+                    <FormItem>
+                    {getFieldDecorator('confirmPassword', {
+            rules: [{ required: true, message: 'confirmPassword is reruired' }],
+          })(
                       <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -399,7 +338,14 @@ class Signup extends Component {
 
                         onChange={this.onChangeValue}
                       />
-                      <div> {this.state.valid.nameText5} </div>
+                    )}
+                    </FormItem>
+                      <div className="registerbtn">
+                    <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                    <Button className="cnclbtn">Cancel</Button>
+
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/login' >Login</a> &nbsp;here</p>
+                  </div>
 
                     </form>
                   </Col>
@@ -443,13 +389,7 @@ class Signup extends Component {
 
                   </Col>
 
-                  <div className="registerbtn">
-                    <Button className="sbmtbtn" onClick={this.register}>Submit</Button>
-                    <Button className="cnclbtn">Cancel</Button>
-
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/login' >Login</a> &nbsp;here</p>
-                  </div>
-
+                 
 
                 </Row>
               </div>
@@ -462,5 +402,6 @@ class Signup extends Component {
     );
   }
 }
+Form.create()(Signup);
 
-export default Signup
+export default Form.create()(Signup);
