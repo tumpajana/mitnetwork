@@ -12,6 +12,8 @@ import WallGet from '../../Services/wallGet';
 import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
 import { ToastContainer, toast } from 'react-toastify';
+import postLike from '../../Services/postLikeApi';
+
 import camera from '../../Images/camera.png';
 const { TextArea } = Input;
 class Wall extends Component {
@@ -33,6 +35,7 @@ class Wall extends Component {
     this.postContent = this.postContent.bind(this);
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
+    this.postLike = this.postLike.bind(this);
     this.getPosts();
 
   }
@@ -98,6 +101,23 @@ class Wall extends Component {
     console.log(this.state.posts.content)
   }
 
+  //postlike
+  postLike(id) {
+    console.log('mjhngfds')
+    console.log(id)
+    let likeData = {
+      userId: sessionStorage.getItem("userId"),
+      postId: id
+    }
+    postLike(likeData).then((result) => {
+      let response = result;
+      console.log(result)
+      toast.success("Post Liked Successfuly!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      this.getPosts();
+    });
+  }
 
 
 
@@ -196,52 +216,35 @@ class Wall extends Component {
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        {this.state.postList.map(function (item) {
-          return <div className="postedpartcard" key={item._id}>
-            <Row type="flex" justify="space-around" align="middle">
-              <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
-                <div className="userpicpost">
-                  <img src={User} />
-                </div>
-              </Col>
-              <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-                <p>{item.userId.userName}</p>
-                <h3>Senior manager at denali bank</h3>
-              </Col>
-            </Row>
-            <div className="postedimg">
-              <img src={Wallpostimg} />
-              <p><a>{item.title}</a></p>
-              <p className="sub_content"><a> {item.content}</a></p>
-            </div>
-            <div className="likecomment">
-              <h3>2k likes</h3>
-              <Button title="like"><Icon type="like-o" />Likes</Button>
-              <Button title="comment"><Icon type="message" />Comment</Button>
-
-            </div>
-              {/* ****Comment section**** */}
-            <div className="commentSection">
+        {this.state.postList.map((item) => {
+          return <div>
+            <div className="postedpartcard" key={item._id}>
               <Row type="flex" justify="space-around" align="middle">
-
-                <Col xs={3} sm={3} md={2}>
-                  <div className="commentImg">
+                <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                  <div className="userpicpost">
                     <img src={User} />
                   </div>
                 </Col>
-
-                <Col xs={21} sm={21} md={22}>
-                  <div className="commentText">
-                    <img src={camera} />
-                    <TextArea rows={1} />
-                  </div>
+                <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                  <p>{item.userId.userName}</p>
+                  <h3>Senior manager at denali bank</h3>
                 </Col>
-
               </Row>
+              <div className="postedimg">
+                <img src={Wallpostimg} />
+                <p><a>{item.title}</a></p>
+                <p className="sub_content"><a> {item.content}</a></p>
+              </div>
+              <div className="likecomment">
+                <h3>{item.like.length}  likes</h3>
+                <Button title="like" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                <Button title="comment"><Icon type="message" />Comment</Button>
 
+              </div>
+              {/* ****Comment section**** */}
+              {/* <div className="commentSection">
+                <Row type="flex" justify="space-around" align="middle">
 
-              <Row>
-                <div className="contentsComment">
                   <Col xs={3} sm={3} md={2}>
                     <div className="commentImg">
                       <img src={User} />
@@ -249,21 +252,111 @@ class Wall extends Component {
                   </Col>
 
                   <Col xs={21} sm={21} md={22}>
-                  <div className="postComment">
-                    <p>John Doe</p>
-                    <h3>Manager-TATA Sky, Co-Founder- India Needs You, Global Shaper</h3>
-                    <h3>Good to see this all Best wishes</h3>
-                    <p className="likeReply">
-                      <Button className="commentbutton">Like</Button>
-                      <Button className="commentbutton4">Reply</Button>
-                      <span className="likeTotal">1 Like</span>
-                      </p>
+                    <div className="commentText">
+                      <img src={camera} />
+                      <TextArea rows={1} />
                     </div>
                   </Col>
-                </div>
-              </Row>
+
+                </Row>
+
+
+                <Row>
+                  <div className="contentsComment">
+                    <Col xs={3} sm={3} md={2}>
+                      <div className="commentImg">
+                        <img src={User} />
+                      </div>
+                    </Col>
+
+                    <Col xs={21} sm={21} md={22}>
+                      <div className="postComment">
+                        <p>John Doe</p>
+                        <h3>Manager-TATA Sky, Co-Founder- India Needs You, Global Shaper</h3>
+                        <h3>Good to see this all Best wishes</h3>
+                        <p className="likeReply">
+                          <Button className="commentbutton">Like</Button>
+                          <Button className="commentbutton4">Reply</Button>
+                          <span className="likeTotal">1 Like</span>
+                        </p>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
+              </div> */}
+              {/* ****Comment section**** */}
             </div>
-            {/* ****Comment section**** */}
+            {/* **** video section**** */}
+            <div className="postedpartcard" key={item._id}>
+              <Row type="flex" justify="space-around" align="middle">
+                <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                  <div className="userpicpost">
+                    <img src={User} />
+                  </div>
+                </Col>
+                <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                  <p>{item.userId.userName}</p>
+                  <h3>Project Manager -Reached Max. 30.000+ connections</h3>
+                </Col>
+              </Row>
+              <div className="postedimg">
+                <img src={Wallpostimg} />
+                <p><a>{item.title}</a></p>
+                <p className="sub_content"><a> {item.content}</a></p>
+              </div>
+              <div className="likecomment">
+                <h3>2k likes</h3>
+                <Button title="like"><Icon type="like-o" />Likes</Button>
+                <Button title="comment"><Icon type="message" />Comment</Button>
+
+              </div>
+              {/* ****Comment section**** */}
+              {/* <div className="commentSection">
+                <Row type="flex" justify="space-around" align="middle">
+
+                  <Col xs={3} sm={3} md={2}>
+                    <div className="commentImg">
+                      <img src={User} />
+                    </div>
+                  </Col>
+
+                  <Col xs={21} sm={21} md={22}>
+                    <div className="commentText">
+                      <img src={camera} />
+                      <TextArea rows={1} />
+                    </div>
+                  </Col>
+
+                </Row>
+
+
+                <Row>
+                  <div className="contentsComment">
+                    <Col xs={3} sm={3} md={2}>
+                      <div className="commentImg">
+                        <img src={User} />
+                      </div>
+                    </Col>
+
+                    <Col xs={21} sm={21} md={22}>
+                      <div className="postComment">
+                        <p>John Doe</p>
+                        <h3>Manager-TATA Sky, Co-Founder- India Needs You, Global Shaper</h3>
+                        <h3>Good to see this all Best wishes</h3>
+                        <p className="likeReply">
+                          <Button className="commentbutton">Like</Button>
+                          <Button className="commentbutton4">Reply</Button>
+                          <span className="likeTotal">1 Like</span>
+                        </p>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
+              </div> */}
+              {/* ****Comment section**** */}
+            </div>
+            {/* **** video section**** */}
+
           </div>
 
 

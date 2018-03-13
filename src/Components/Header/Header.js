@@ -17,13 +17,13 @@ class Header extends Component {
   constructor(props) {
    
     super(props);
-  this.state={
-    redirectToReferrer: false
-  }
+    this.state = {
+      redirectToReferrer: false
+    }
 
     this.logout = this.logout.bind(this);
   }
- 
+
 
   onClickButton = (ev) => {
     if(ev.key === 'setting:2') { // light is the value of menuitem in string
@@ -44,12 +44,12 @@ class Header extends Component {
     if (this.state.redirectToReferrer) {
       return <Redirect to ="/login"/>
     }
-    
+
     return (
       <div className="navbarsocial">
         <Row>
           <Col lg={12}>
-            <Menu>
+            <Menu >
               <div className="navlogo">
                 <Anchor className="logoanchor">
                   <Link href="#Home"><img src={navbarlogo} /></Link>
@@ -63,7 +63,7 @@ class Header extends Component {
                 onClick={this.onClickButton}
                 selectedKeys={[this.state.current]}
                 mode="horizontal"
-               
+
               >
                 <Menu.Item key="mail">
                   <Icon type="home" /><NavLink to="/wall">Home</NavLink>
