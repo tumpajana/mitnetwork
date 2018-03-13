@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col,Input, Icon, Radio, Button, Modal,Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
 import 'antd/dist/antd.css';
 import './Profile.css';
 import editprofileimg from '../../Images/editprofileimg.svg';
@@ -12,7 +12,7 @@ import getUserProfile from '../../Services/profileapi';
 
 
 class Profile extends Component {
-   constructor() {
+  constructor() {
     super();
     this.state = {
       userName: '',
@@ -20,12 +20,12 @@ class Profile extends Component {
       name: '',
       phoneNumber: '',
       redirectToReferrer: false,
-userProfile:{}
+      userProfile: {}
     };
 
-     this.show = this.show.bind(this);
+    this.show = this.show.bind(this);
     // this.onChangeValue = this.onChangeValue.bind(this);
-    if(sessionStorage.userId){
+    if (sessionStorage.userId) {
       this.show();
     }
   }
@@ -50,27 +50,27 @@ userProfile:{}
   }
 
   //  //show profile
-  
-  show=() =>{
-    
+
+  show = () => {
+
     console.log('submit button');
 
-      getUserProfile( sessionStorage.getItem("userId")).then((result) => {
-        let response = result;
-  
-        this.setState({ userProfile: result.result}); 
-        console.log('userData...',this.state.userProfile)
-        // if (response.userData) {
-        //   sessionStorage.setItem('userData', JSON.stringify(response));
-        //   this.setState({ redirectToReferrer: true });
-        // }
+    getUserProfile(sessionStorage.getItem("userId")).then((result) => {
+      let response = result;
 
-      });
+      this.setState({ userProfile: result.result });
+      console.log('userData...', this.state.userProfile)
+      // if (response.userData) {
+      //   sessionStorage.setItem('userData', JSON.stringify(response));
+      //   this.setState({ redirectToReferrer: true });
+      // }
+
+    });
   }
-    
+
 
   render() {
-     
+
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
@@ -93,224 +93,229 @@ userProfile:{}
     return (
       <div className="App">
 
-       {/* navbar section start */}
-          <Header></Header>
-       {/* navbar section end */}
-     
-       {/* profile view section start */}
-          <section className="profilesec">
-            {/* <img src={backprofile} /> */}
-            <div className="procard">
-              <div className="userdetail">
-                <div className="userpic">
-                  <img src={User} />
-                </div>
-                <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
-                <p>{this.state.userProfile.userName}</p>
-                <h4>{this.state.userProfile.name} </h4>
-                {/* <h3>Senior manager at denali bank</h3> */}
-              </div>
-              <div className="prodetail maildetail">
-                <Row type="flex" justify="space-around" align="middle">
-                  <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
-                    <Row>
-                      <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                        <Icon type="mail" />
-                      </Col>
-                      <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>{this.state.userProfile.email}</p>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
-                    <Row>
-                      <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+        {/* navbar section start */}
+        <Header></Header>
+        {/* navbar section end */}
 
-                        <Icon type="mobile" />
-                      </Col>
-                      <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>{this.state.userProfile.phoneNumber}</p>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row type="flex" justify="space-around" align="middle">
-                  <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
-                    <Row>
-                      <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                        <Icon type="home" />
-                      </Col>
-                      <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>B23, lime hill, hawai road</p>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
-                    <Row>
-                      <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                        <Icon type="environment-o" />
-                      </Col>
-                      <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>U.S.A</p>
-                      </Col>
-                    </Row>
-
-                  </Col>
-                </Row>
-                <Row type="flex" justify="space-around" align="middle">
-                  <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
-                    <Row>
-                      <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                        <Icon type="book" />
-                      </Col>
-                      <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>M.Tech in CSE</p>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
-                    <Row>
-                      <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                        <Icon type="profile" />
-                      </Col>
-                      <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                        <p>Software Engineer</p>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
+        {/* profile view section start */}
+        <section className="profilesec">
+         
+          <div className="procard">
+            <div className="userdetail">
+              <div className="userpic">
+                <img src={User} />
               </div>
+              <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
+              <p>{this.state.userProfile.name}</p>
+              <h4>{this.state.userProfile.userName} </h4>
+              {/* <h3>Senior manager at denali bank</h3> */}
             </div>
-          </section>
-       {/* profile view section end */} 
-   
-          {/* ----------MODAL SECTION FOR EDIT PROFILE start------------- */}
-            <Modal
-                      visible={visible}
-                      title="Edit Intro"
-                      onOk={this.handleOk}
-                      onCancel={this.handleCancel}
-                      footer={[
-                        <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
-                        <Button key="submit" loading={loading} onClick={this.handleOk} className="savebtn">
-                          Save
+            <div className="prodetail maildetail">
+              <Row type="flex" justify="space-around" align="middle">
+                <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
+                  <Row>
+                    <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+                      <Icon type="mail" />
+                    </Col>
+                    <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
+                      <p>{this.state.userProfile.email}</p>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
+                  <Row>
+                    <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+
+                      <Icon type="mobile" />
+                    </Col>
+                    <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
+                      <p>{this.state.userProfile.phoneNumber}</p>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row type="flex" justify="space-around" align="middle">
+                <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
+                  <Row>
+                    <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+                      <Icon type="home" />
+                    </Col>
+                    <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
+                      <p>B23, lime hill, hawai road</p>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
+                  <Row>
+                    <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+                      <Icon type="environment-o" />
+                    </Col>
+                    <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
+                      <p>U.S.A</p>
+                    </Col>
+                  </Row>
+
+                </Col>
+              </Row>
+              <Row type="flex" justify="space-around" align="middle">
+                <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
+                  <Row>
+                    <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+                      <Icon type="book" />
+                    </Col>
+                    <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
+                      <p>M.Tech in CSE</p>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
+                  <Row>
+                    <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
+                      <Icon type="profile" />
+                    </Col>
+                    <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
+                      <p>Software Engineer</p>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </section>
+        {/* profile view section end */}
+
+        {/* ----------MODAL SECTION FOR EDIT PROFILE start------------- */}
+        <Modal
+          visible={visible}
+          title="Edit Intro"
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
+            <Button key="submit" loading={loading} onClick={this.handleOk} className="savebtn">
+              Save
                         </Button>,
-                      ]}
-                      className="mitprofileEditmodal"
-                    >
-                      <Row>
-                        <Col span={24}>
-                          <div className="mitedituserback">
-                            {/* <img src={editprofileimg} /> */}
-                            <div className="userimage">
-                                {/* <img src={placegholderimg} /> */}
-                                <Button className="editbtn" title="Edit Profile Image">
+          ]}
+          className="mitprofileEditmodal"
+        >
+          <Row>
+            <Col span={24}>
+              <div className="mitedituserback">
+                {/* <img src={editprofileimg} /> */}
+                <div className="userimage">
+                  {/* <img src={placegholderimg} /> */}
+                  {/* <Button className="editbtn" title="Edit Profile Image">
                                   <Icon type="edit" />
-                                </Button>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row> 
-                      
-
-                      {/* ----------------edit profile form start--------------- */}
-                      <form className="editprofileform">
-                        {/* name and username input start*/}
-                          <Row gutter={24}>
-                            <Col span={12}>
-                            <Input
-                              placeholder="Enter your Name"
-                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
-                              ref={node => this.userNameInput = node}
-                            />
-                            </Col>
-                            <Col span={12}>
-                            <Input
-                              placeholder="Enter your Username"
-                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
-                              ref={node => this.userNameInput = node}
-                            />
-                            </Col>
-                          </Row>
-                        {/* name and username input end*/}
-
-                        {/* phone no and qualification input start */}
-                          <Row gutter={24}>
-                            <Col span={12}>
-                            <Input
-                              placeholder="Enter your Phone No"
-                              prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
-                              ref={node => this.userNameInput = node}
-                            />
-                            </Col>
-                            <Col span={12}>
-                            <Input
-                              placeholder="Enter your Qualification"
-                              prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
-                              ref={node => this.userNameInput = node}
-                            />
-                            </Col>
-                          </Row>
-                        {/* /phone no and qualification input end */}
+                                </Button> */}
+                  <Upload >
+                    <Button className="editbtn">
+                    <Icon type="edit" />
+                    </Button>
+                  </Upload>
+                </div>
+              </div>
+            </Col>
+          </Row>
 
 
-                        {/* city and state input start */}
-                        <Row gutter={24}>
-                            <Col span={12}>
-                            <div>
-                              <Select defaultValue="0" onChange={handleChange}>
-                                <Option value="0">City</Option>
-                                <Option value="1">Kolkata</Option>
-                                <Option value="2">Delhi</Option>
-                                <Option value="3">Pune</Option>
-                              </Select>
-                            </div>
-                            </Col>
-                            <Col span={12}>
-                            <div>
-                              <Select defaultValue="0" onChange={handleChange}>
-                                <Option value="0">State</Option>
-                                <Option value="1">West Bengal</Option>
-                                <Option value="2">Uttar Pradesh</Option>
-                              </Select>
-                            </div>
-                            </Col>
-                        </Row>
-                        {/* /city and state input end */}
+          {/* ----------------edit profile form start--------------- */}
+          <form className="editprofileform">
+            {/* name and username input start*/}
+            <Row gutter={24}>
+              <Col span={12}>
+                <Input
+                  placeholder="Enter your Name"
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  onChange={this.onChangeUserName}
+                  ref={node => this.userNameInput = node}
+                />
+              </Col>
+              <Col span={12}>
+                <Input
+                  placeholder="Enter your Username"
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  onChange={this.onChangeUserName}
+                  ref={node => this.userNameInput = node}
+                />
+              </Col>
+            </Row>
+            {/* name and username input end*/}
+
+            {/* phone no and qualification input start */}
+            <Row gutter={24}>
+              <Col span={12}>
+                <Input
+                  placeholder="Enter your Phone No"
+                  prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  onChange={this.onChangeUserName}
+                  ref={node => this.userNameInput = node}
+                />
+              </Col>
+              <Col span={12}>
+                <Input
+                  placeholder="Enter your Qualification"
+                  prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  onChange={this.onChangeUserName}
+                  ref={node => this.userNameInput = node}
+                />
+              </Col>
+            </Row>
+            {/* /phone no and qualification input end */}
 
 
-                        {/* city and state input start */}
-                        <Row gutter={24}>
-                            <Col span={24}>
-                            <div>
-                            <Input
-                              placeholder="Enter your Address"
-                              prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeUserName}
-                              ref={node => this.userNameInput = node}
-                            />
-                            </div>
-                            </Col>
-                        </Row>
-                        {/* /city and state input end */}
+            {/* city and state input start */}
+            <Row gutter={24}>
+              <Col span={12}>
+                <div>
+                  <Select defaultValue="0" onChange={handleChange}>
+                    <Option value="0">City</Option>
+                    <Option value="1">Kolkata</Option>
+                    <Option value="2">Delhi</Option>
+                    <Option value="3">Pune</Option>
+                  </Select>
+                </div>
+              </Col>
+              <Col span={12}>
+                <div>
+                  <Select defaultValue="0" onChange={handleChange}>
+                    <Option value="0">State</Option>
+                    <Option value="1">West Bengal</Option>
+                    <Option value="2">Uttar Pradesh</Option>
+                  </Select>
+                </div>
+              </Col>
+            </Row>
+            {/* /city and state input end */}
 
-                      </form>
-                      {/* ----------------/ edit profile form end--------------- */}
+
+            {/* city and state input start */}
+            <Row gutter={24}>
+              <Col span={24}>
+                <div>
+                  <Input
+                    placeholder="Enter your Address"
+                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    onChange={this.onChangeUserName}
+                    ref={node => this.userNameInput = node}
+                  />
+                </div>
+              </Col>
+            </Row>
+            {/* /city and state input end */}
+
+          </form>
+          {/* ----------------/ edit profile form end--------------- */}
 
 
 
 
 
-            </Modal>
-          {/* ----------MODAL SECTION FOR EDIT PROFILE end------------- */}
+        </Modal>
+        {/* ----------MODAL SECTION FOR EDIT PROFILE end------------- */}
 
       </div>
     );
   }
-  }
+}
 
 export default Profile;
