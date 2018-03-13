@@ -71,6 +71,7 @@ class Profile extends Component {
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
+    console.log('button')
   }
 
 
