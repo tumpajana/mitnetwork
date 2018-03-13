@@ -16,116 +16,110 @@ class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      user :{
-    userName: '',
-      email: '',
-      name: '',
-      phoneNumber: '',
-      redirectToReferrer: false,
+      user: {
+        userName: '',
+        email: '',
+        name: '',
+        phoneNumber: '',
+        redirectToReferrer: false,
       },
-  
-userProfile:{}
+
+      userProfile: {}
     };
 
-     this.show = this.show.bind(this);
-     this.showModal = this.showModal.bind(this);
+    this.show = this.show.bind(this);
+    this.showModal = this.showModal.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
 
-     // this.onChangeValue = this.onChangeValue.bind(this);
+    // this.onChangeValue = this.onChangeValue.bind(this);
     if (sessionStorage.userId) {
       this.show();
     }
-    };
+  };
 
-   
-  
-
-
-
-  onChange = (e) => {
+ onChange = (e) => {
     console.log('radio checked', e.target.value);
     this.setState({
       value: e.target.value,
     });
   }
 
-//onchange of input feild binding
+  //onchange of input feild binding
   onChangeValue = (e) => {
     console.log(e)
     this.setState({ [e.target.name]: e.target.value });
-    console.log('onchangeusername', e.target.value,'+', e.target.name)
+    console.log('onchangeusername', e.target.value, '+', e.target.name)
   }
   state = {
     loading: false,
     visible: false,
   }
+
   showModal = () => {
     this.setState({
       visible: true,
     })
-           //  this.refs.username.value="abcd";
+    //  this.refs.username.value="abcd";
   }
+
   handleOk = () => {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
   }
+
   handleCancel = () => {
     this.setState({ visible: false });
   }
-  
-  //  //show profile
-  
-  show=() =>{
-          //  this.refs.username.value="abcd";
 
-    
+  //  //show profile
+
+  show = () => {
+    //  this.refs.username.value="abcd";
+
     console.log('submit button');
-       let _base = this;
-      getUserProfile( sessionStorage.getItem("userId")).then((result) => {
-        let response = result;
-        console.log(this.refs);
-  console.log(result);
-        this.setState({ userProfile: result.result}); 
-        this.setState({user:result.result})
-        console.log('userData...',this.state.userProfile)
-          console.log('userData...',this.state.user)
-          //  this.refs.username.value=this.state.userProfile.userName;
-        
-           });
-       
-      
+    let _base = this;
+    getUserProfile(sessionStorage.getItem("userId")).then((result) => {
+      let response = result;
+      console.log(this.refs);
+      console.log(result);
+      this.setState({ userProfile: result.result });
+      this.setState({ user: result.result })
+      console.log('userData...', this.state.userProfile)
+      console.log('userData...', this.state.user)
+      //  this.refs.username.value=this.state.userProfile.userName;
+
+    });
+
+
   }
-   preveiwProfile = (event) => {
-     console.log(event.target.files)
-  //   preveiwProfile(event) {
-    
-    let fileList= event.target.files;
+  picUpload = (event) => {
+    console.log(event.target.files)
+    let fileList = event.target.files;
     let fileTarget = fileList;
-    let file=  fileTarget[0];
-      // this.names = file;
+    let file = fileTarget[0];
+    // this.names = file;
     console.log("File information :", file);
     var formData = new FormData();
-    formData.append('file', 'gfthyby');
-   console.log( formData.entries())
-  console.log(formData)
-    profilePic(formData).then((result)=>{
+    formData.append('file',file);
+    console.log(formData)
+    profilePic(formData).then((result) => {
       console.log(result)
     })
   }
-   
-  
 
 
-   edit=() =>{
+
+
+  edit = () => {
     console.log('Dispaly data');
-      
 
-   } 
+
+  }
 
   render() {
-    
+
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
@@ -154,7 +148,7 @@ userProfile:{}
 
         {/* profile view section start */}
         <section className="profilesec">
-         
+
           <div className="procard">
             <div className="userdetail">
               <div className="userpic">
@@ -263,11 +257,11 @@ userProfile:{}
                                   <Icon type="edit" />
                                 </Button> */}
                   {/*<Upload >*/}
-                    <Button className="editbtn"> 
+                  <Button className="editbtn">
                     <Icon type="edit" />
-                    <Input type="file" name="myFile" onChange={this.preveiwProfile} />
-                    </Button>
-                   
+                    <Input type="file" name="myFile" onChange={this.picUpload} />
+                  </Button>
+
                   {/*</Upload>*/}
                 </div>
               </div>
