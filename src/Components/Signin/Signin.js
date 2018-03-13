@@ -100,6 +100,7 @@ class Signin extends Component {
           }
         });
       }
+      
 //       if(e.target.value.length!== 0 && !(e.target.value.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
 //          this.setState({
 //           valid:{
