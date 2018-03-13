@@ -43,9 +43,9 @@ router.post('/socialPost', (request, response) => {
 });
 // Api for get  all Social post
 
-router.get('/getAllPost', (request, response) => {
+router.get('/getAllPost', (request, response,next) => {
     console.log(" post detail");
-    var perPage = 10, page = request.param('page') > 0 ? request.param('page') : 0;
+    var perPage =10, page = request.param('page') > 0 ? request.param('page') : 0;
 
     let getResponse = {};
 
@@ -137,7 +137,7 @@ router.post('/comment', (request, response) => {
 });
 // Api for getting all  comment through postId
 router.get('/getAllComment', (request, response) => {
-    var perPage = 1, page = request.param('page') > 0 ? request.param('page') : 0;
+    var perPage = 10, page = request.param('page') > 0 ? request.param('page') : 0;
     let getResponse = {};
     let postId = request.query.postId;
     post.find({ postId: postId })

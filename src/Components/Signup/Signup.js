@@ -445,7 +445,6 @@ class Signup extends Component {
 
                   <div className="registerbtn">
                     <Button className="sbmtbtn" onClick={this.register}>Submit</Button>
-                    <Button onClick={this.closeAfter15}>Close after 15 seconds</Button>
                     <Button className="cnclbtn">Cancel</Button>
 
                     <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/login' >Login</a> &nbsp;here</p>
