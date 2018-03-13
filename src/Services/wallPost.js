@@ -1,6 +1,6 @@
 function WallPost( postData) {
     console.log(postData);
-    let BaseURL =' http://mitapi.memeinfotech.com:5000/file/socialPost '  ;
+    let BaseURL =' http://mitapi.memeinfotech.com:5000/post/socialPost '  ;
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {
