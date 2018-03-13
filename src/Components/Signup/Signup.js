@@ -259,7 +259,7 @@ validateToNextPassword = (rule, value, callback) => {
                     <form   onSubmit={this.handleSubmit} className="formsinput">
                     <FormItem>
                     {getFieldDecorator('name', {
-            rules: [{ required: true, message: 'name is reruired' }],
+            rules: [{ required: true, message: 'name is required' }],
           })(
                       <Input
                      
@@ -279,7 +279,7 @@ validateToNextPassword = (rule, value, callback) => {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('Username', {
-            rules: [{ required: true, message: 'Username is reruired' }],
+            rules: [{ required: true, message: 'Username is required' }],
           })(
                       <Input
                         placeholder="Username"
@@ -305,7 +305,7 @@ validateToNextPassword = (rule, value, callback) => {
                      <FormItem>
                     {getFieldDecorator('email', {
             rules: [{  type: 'email', message: 'The input is not valid E-mail!',
-                     },{ required: true, message: 'email is reruired' }],
+                     },{ required: true, message: 'email is required' }],
           })(
                       <Input
                         placeholder=" Email"
@@ -319,7 +319,7 @@ validateToNextPassword = (rule, value, callback) => {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('phoneNumber', {
-            rules: [{ required: true, message: 'phoneNumber is reruired' }],
+            rules: [{ required: true, message: 'phoneNumber is required' }],
           })(
                       <Input
                         placeholder=" Phone Number"
@@ -334,7 +334,7 @@ validateToNextPassword = (rule, value, callback) => {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is reruired', },
+            rules: [{ required: true, message: 'password is required', },
             {
               validator: this.validateToNextPassword,
             }],
@@ -353,7 +353,7 @@ validateToNextPassword = (rule, value, callback) => {
                     <FormItem >
                     
                     {getFieldDecorator('confirmPassword', {
-            rules: [{ required: true, message: 'confirmPassword is reruired' ,
+            rules: [{ required: true, message: 'confirmPassword is required' ,
           }, { 
             validator: this.compareToFirstPassword,
           }],
