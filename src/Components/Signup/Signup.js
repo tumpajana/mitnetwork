@@ -131,24 +131,10 @@ class Signup extends Component {
 
     });
   }
-<<<<<<< HEAD
-//password validation
-handleConfirmBlur = (e) => {
-  const value = e.target.value;
-  this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-}
-compareToFirstPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && value !== form.getFieldValue('password')) {
-    callback('password doesnot match!');
-  } else {
-    callback();
-=======
   //password validation
   handleConfirmBlur = (e) => {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
->>>>>>> e77be6ca46ebd1b348b5e6fc86876bacb193ed87
   }
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
