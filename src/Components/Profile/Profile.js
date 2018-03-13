@@ -11,6 +11,7 @@ import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
+var FormData = require('form-data');
 
 
 class Profile extends Component {
@@ -46,14 +47,14 @@ class Profile extends Component {
 
 
 
- onChange = (e) => {
+  onChange = (e) => {
     console.log('radio checked', e.target.value);
     this.setState({
       value: e.target.value,
     });
   }
 
- 
+
   state = {
     loading: false,
     visible: false,
@@ -81,7 +82,6 @@ class Profile extends Component {
     let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
     userProfile[e.target.name] = e.target.value;                        //updating value
     this.setState({ userProfile });
-
   }
 
 
@@ -152,9 +152,9 @@ class Profile extends Component {
     let file = fileTarget[0];
     // this.names = file;
     console.log("File information :", file);
-    var formData = new FormData();
-    formData.append('file', event.target.files[0]);
-    console.log(formData);
+    var form = new FormData();
+    form.append('file', 'Pushpendu');
+    console.log(form.entries());
     // console.log(formData)
     //   profilePic(formData).then((result)=>{
     //     console.log(result)
