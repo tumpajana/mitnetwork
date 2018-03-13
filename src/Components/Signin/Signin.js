@@ -174,7 +174,7 @@ class Signin extends Component {
   
   render() {
     if (this.state.redirectToReferrer) {
-      return <Redirect to ="/Profile"/>
+      return <Redirect to ="/wall"/>
     }
     const { userName } = this.state;
 
@@ -275,7 +275,7 @@ class Signin extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn" onClick={this.login}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register now</a></p>
+                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/signup'>Register now</a></p>
                   </div>
 
 

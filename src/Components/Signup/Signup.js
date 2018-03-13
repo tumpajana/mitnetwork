@@ -300,7 +300,7 @@ class Signup extends Component {
 
   render() {
     if (this.state.redirectToReferrer) {
-      return <Redirect to="/Profile" />
+      return <Redirect to="/wall" />
     }
     const { userName } = this.state;
 
@@ -448,7 +448,7 @@ class Signup extends Component {
                     <Button onClick={this.closeAfter15}>Close after 15 seconds</Button>
                     <Button className="cnclbtn">Cancel</Button>
 
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/Signin' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/login' >Login</a> &nbsp;here</p>
                   </div>
 
 
