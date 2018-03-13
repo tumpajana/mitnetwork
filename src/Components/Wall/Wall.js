@@ -208,9 +208,9 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg">
-                  <img src={Wallpostimg} />
-                 <h1> {item.title}</h1>
-                  {item.content}
+                <img src={Wallpostimg} />
+                 <p><a>{item.title}</a></p>
+                 <p className="sub_content"><a> {item.content}</a></p>
                 </div>
                 <div className="likecomment">
                   <h3>2k likes</h3>
