@@ -25,9 +25,9 @@ const postSchema = mongoose.Schema({
     like:[{
         type:Schema.ObjectId
     }],
-     unLike:{
-            type:String
-        },
+    //  unLike:{
+    //         type:String
+    //     },
     createdDate: {
         type: Date,
         default: Date.now
