@@ -94,17 +94,21 @@ class Profile extends Component {
 
 
   }
+
+  //upload pic
   picUpload = (event) => {
+    debugger;
     console.log(event.target.files)
     let fileList = event.target.files;
     let fileTarget = fileList;
     let file = fileTarget[0];
     // this.names = file;
     console.log("File information :", file);
-    var formData = new FormData();
-    formData.append('file',file);
-    console.log(formData)
-    profilePic(formData).then((result) => {
+    var formdata = new FormData();
+    formdata.append('file',file);
+    formdata.entries()
+    console.log(formdata)
+    profilePic(formdata).then((result) => {
       console.log(result)
     })
   }
