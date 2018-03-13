@@ -56,12 +56,17 @@ router.post('/socialRegistration', (request, response) => {
     user.findOne({ providerId: providerId }, (error, result) => {
         console.log(error);
         console.log(result);
-        if (result) {
+        if (error) {
             socialResponse.error = true;
-            socialResponse.message = `User already exist with this provider id`;
+            socialResponse.message = `Error :` + error.message;
             response.status(500).json(socialResponse);
         }
-        else  {
+        else if (result) {
+            socialResponse.error = false;
+            socialResponse.result = result;
+            response.status(500).json(socialResponse);
+        }
+        else if (result == null) {
             let newData = new user({
                 name: request.body.name,
                 providerName: request.body.providerName,
