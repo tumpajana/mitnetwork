@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Form,Input, Icon, Radio, Button } from 'antd';
+import { Form, Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
-import { Redirect,NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
 import loginData from '../../Services/signipapi'
 import FacebookloginData from '../../Services/socialapi'
@@ -90,7 +90,7 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
-  
+
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
@@ -136,7 +136,7 @@ class Signin extends Component {
       let response = result;
       console.log(response)
       if (response.error == false) {
-        sessionStorage.setItem('loginData', JSON.stringify(response.result));
+        sessionStorage.setItem('userId', response.result._id);
         this.setState({ redirectToReferrer: true });
       }
     });
@@ -145,7 +145,7 @@ class Signin extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
-      return <Redirect to ="/wall"/>
+      return <Redirect to="/wall" />
     }
     const { userName } = this.state;
 
@@ -174,42 +174,42 @@ class Signin extends Component {
                 <Row type="flex" justify="center">
 
                   <Col lg={10} sm={10} xs={24} className="signinarea">
-                    <form   onSubmit={this.handleSubmit} className="formsinput">
-                    <FormItem>
-                    {getFieldDecorator('email', {
-            rules: [{ required: true, message: 'Username is reruired' }],
-          })(
-                      <Input
-                        placeholder="Username"
-                        type="email"
-                        name="email"
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        onChange={this.onChangeLoginName}
-                      />
-                    )}
-                       </FormItem>
- 
+                    <form onSubmit={this.handleSubmit} className="formsinput">
                       <FormItem>
-                    {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Password is required' }],
-          })(
-                      <Input
-                        placeholder=" Password"
-                        type="password"
-                        name="password"
-                        type="password"
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        onChange={this.onChangeLoginName}
-                      />
-                    )}
-                    </FormItem>
-                
+                        {getFieldDecorator('email', {
+                          rules: [{ required: true, message: 'Username is reruired' }],
+                        })(
+                          <Input
+                            placeholder="Username"
+                            type="email"
+                            name="email"
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            onChange={this.onChangeLoginName}
+                          />
+                        )}
+                      </FormItem>
 
-                  <div className="registerbtn">
-                    <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                    <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
-                  </div>
+                      <FormItem>
+                        {getFieldDecorator('password', {
+                          rules: [{ required: true, message: 'Password is required' }],
+                        })(
+                          <Input
+                            placeholder=" Password"
+                            type="password"
+                            name="password"
+                            type="password"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            onChange={this.onChangeLoginName}
+                          />
+                        )}
+                      </FormItem>
+
+
+                      <div className="registerbtn">
+                        <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                        <Button className="cnclbtn">Cancel</Button>
+                        <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
+                      </div>
 
                     </form>
                   </Col>

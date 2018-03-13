@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Form,Input, Icon, Radio, Button } from 'antd';
+import { Form, Input, Icon, Radio, Button } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
-import { Redirect,NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
@@ -29,7 +29,7 @@ class Signup extends Component {
       confirmPassword: '',
       phoneNumber: '',
       redirectToReferrer: false,
-     
+
       facebookInfo: {
         name: '',
         providerName: '',
@@ -103,7 +103,7 @@ class Signup extends Component {
   //onchange of input feild binding
   onChangeValue = (e) => {
     console.log(e.target.name);
-    
+
     //  if(e.target.value.length != 0){
     //  if( e.target.name == 'email' && (e.target.email !=(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/))){
     //   this.setState({
@@ -113,12 +113,12 @@ class Signup extends Component {
     //   })
     // }}
 
-    
+
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
   }
-//validation
+  //validation
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -130,26 +130,26 @@ class Signup extends Component {
 
     });
   }
-//password validation
-handleConfirmBlur = (e) => {
-  const value = e.target.value;
-  this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-}
-compareToFirstPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && value !== form.getFieldValue('password')) {
-    callback('Two passwords that you enter is inconsistent!');
-  } else {
+  //password validation
+  handleConfirmBlur = (e) => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  }
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  }
+  validateToNextPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
     callback();
   }
-}
-validateToNextPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && this.state.confirmDirty) {
-    form.validateFields(['confirm'], { force: true });
-  }
-  callback();
-}
   //submit registration form
   register = () => {
     console.log('submit button');
@@ -193,7 +193,7 @@ validateToNextPassword = (rule, value, callback) => {
         });
         console.log(response);
         if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+          sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
         else {
@@ -254,42 +254,42 @@ validateToNextPassword = (rule, value, callback) => {
                 <Row type="flex" justify="center">
 
                   <Col lg={10} sm={10} xs={24}>
-                    <form   onSubmit={this.handleSubmit} className="formsinput">
-                    <FormItem>
-                    {getFieldDecorator('name', {
-            rules: [{ required: true, message: 'name is reruired' }],
-          })(
-                      <Input
-                     
-                        placeholder="Your Name"
-                        name="name"
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        suffix={suffix}
-                        // value={userName}
-                        // onChange={this.onChangeUserName}
-                        // onChange={this.handleChange.bind(this, "name")} 
-                        //value={this.state.fields["name"]}
-                        onChange={this.onChangeValue}
-                      // ref={node => this.userNameInput = node}
+                    <form onSubmit={this.handleSubmit} className="formsinput">
+                      <FormItem>
+                        {getFieldDecorator('name', {
+                          rules: [{ required: true, message: 'name is reruired' }],
+                        })(
+                          <Input
 
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem>
-                    {getFieldDecorator('Username', {
-            rules: [{ required: true, message: 'Username is reruired' }],
-          })(
-                      <Input
-                        placeholder="Username"
-                        name="userName"
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="Your Name"
+                            name="name"
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            suffix={suffix}
+                            // value={userName}
+                            // onChange={this.onChangeUserName}
+                            // onChange={this.handleChange.bind(this, "name")} 
+                            //value={this.state.fields["name"]}
+                            onChange={this.onChangeValue}
+                          // ref={node => this.userNameInput = node}
 
-                        onChange={this.onChangeValue}
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem>
+                        {getFieldDecorator('Username', {
+                          rules: [{ required: true, message: 'Username is reruired' }],
+                        })(
+                          <Input
+                            placeholder="Username"
+                            name="userName"
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                      />
-                    )}
-                    </FormItem>
-                  
+                            onChange={this.onChangeValue}
+
+                          />
+                        )}
+                      </FormItem>
+
                       {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -300,77 +300,79 @@ validateToNextPassword = (rule, value, callback) => {
                       <Radio value={1} className="gendervalue">Male</Radio>
                       <Radio value={2} className="gendervalue">Female</Radio>
                     </RadioGroup> */}
-                     <FormItem>
-                    {getFieldDecorator('email', {
-            rules: [{  type: 'email', message: 'The input is not valid E-mail!',
-                     },{ required: true, message: 'email is reruired' }],
-          })(
-                      <Input
-                        placeholder=" Email"
-                        name="email"
-                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
-                        onChange={this.onChangeValue}
+                      <FormItem>
+                        {getFieldDecorator('email', {
+                          rules: [{
+                            type: 'email', message: 'The input is not valid E-mail!',
+                          }, { required: true, message: 'email is reruired' }],
+                        })(
+                          <Input
+                            placeholder=" Email"
+                            name="email"
+                            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
+                            onChange={this.onChangeValue}
 
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem>
-                    {getFieldDecorator('phoneNumber', {
-            rules: [{ required: true, message: 'phoneNumber is reruired' }],
-          })(
-                      <Input
-                        placeholder=" Phone Number"
-                        name="phoneNumber"
-                      
-                        prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem>
+                        {getFieldDecorator('phoneNumber', {
+                          rules: [{ required: true, message: 'phoneNumber is reruired' }],
+                        })(
+                          <Input
+                            placeholder=" Phone Number"
+                            name="phoneNumber"
 
-                        onChange={this.onChangeValue}
-                      // value={this.state.fields["phoneNumber"]}
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem>
-                    {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is reruired', },
-            {
-              validator: this.validateToNextPassword,
-            }],
-          })(
-                      <Input type="password" 
-                        placeholder=" Password"
-                        name="password"
-                        // type="password"
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                        onChange={this.onChangeValue}
+                            onChange={this.onChangeValue}
+                          // value={this.state.fields["phoneNumber"]}
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem>
+                        {getFieldDecorator('password', {
+                          rules: [{ required: true, message: 'password is reruired', },
+                          {
+                            validator: this.validateToNextPassword,
+                          }],
+                        })(
+                          <Input type="password"
+                            placeholder=" Password"
+                            name="password"
+                            // type="password"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem >
-                    
-                    {getFieldDecorator('confirmPassword', {
-            rules: [{ required: true, message: 'confirmPassword is reruired' ,
-          }, { 
-            validator: this.compareToFirstPassword,
-          }],
-          })(
-                      <Input type="password" onBlur={this.handleConfirmBlur} 
-                        placeholder="Confirm Password"
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        name="confirmPassword"
+                            onChange={this.onChangeValue}
 
-                        onChange={this.onChangeValue}
-                      />
-                    )}
-                    </FormItem>
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem >
+
+                        {getFieldDecorator('confirmPassword', {
+                          rules: [{
+                            required: true, message: 'confirmPassword is reruired',
+                          }, {
+                            validator: this.compareToFirstPassword,
+                          }],
+                        })(
+                          <Input type="password" onBlur={this.handleConfirmBlur}
+                            placeholder="Confirm Password"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            name="confirmPassword"
+
+                            onChange={this.onChangeValue}
+                          />
+                        )}
+                      </FormItem>
                       <div className="registerbtn">
-                    <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                    <Button className="cnclbtn">Cancel</Button>
+                        <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                        <Button className="cnclbtn">Cancel</Button>
 
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                  </div>
+                        <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                      </div>
 
                     </form>
                   </Col>
@@ -414,7 +416,7 @@ validateToNextPassword = (rule, value, callback) => {
 
                   </Col>
 
-                 
+
 
                 </Row>
               </div>
