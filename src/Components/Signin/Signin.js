@@ -91,57 +91,7 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
-<<<<<<< HEAD
-    if(e.target.value.length == 0){
-      if(e.target.name == 'email'){
-        this.setState({
-          valid:{
-            nameText:'email can not be empty'
-          }
-        });
-      }
-      
-//       if(e.target.value.length!== 0 && !(e.target.value.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
-//          this.setState({
-//           valid:{
-//             nameText:'email is invalid'
-//       }
-    
-//   });
-//  }
-
-
-     }else{
-      if(e.target.name == 'email'){
-        this.setState({
-          valid:{
-            nameText:''
-          }
-        });
-      }
-     }
-    
-    //validation for password
-    if(e.target.value.length == 0){
-      if(e.target.name == 'password'){
-        this.setState({
-          valid:{
-            nameTextt:'password can not be empty'
-          }
-        });
-      }
-     }else{
-      if(e.target.name == 'password'){
-        this.setState({
-          valid:{
-            nameTextt:''
-          }
-        });
-      }
-     }
-=======
   
->>>>>>> 128de71ff970936f4dd4c0d6a753ce68313583b4
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
