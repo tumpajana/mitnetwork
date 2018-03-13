@@ -6,7 +6,7 @@ import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
-import { Redirect } from 'react-router-dom';
+import { Redirect,NavLink } from 'react-router-dom';
 import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
@@ -179,7 +179,7 @@ class Signup extends Component {
 
         }
         else {
-          toast.warn("num ber already exist!", {
+          toast.warn("Number already exist!", {
             position: toast.POSITION.TOP_CENTER,
           });
         }
@@ -344,7 +344,7 @@ class Signup extends Component {
                     <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
 
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<a className="loginlink" href='/login' >Login</a> &nbsp;here</p>
+                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
                   </div>
 
                     </form>

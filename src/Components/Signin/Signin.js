@@ -5,7 +5,7 @@ import { Form,Input, Icon, Radio, Button } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect,NavLink } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
 import loginData from '../../Services/signipapi'
 import FacebookloginData from '../../Services/socialapi'
@@ -211,7 +211,7 @@ class Signin extends Component {
                   <div className="registerbtn">
                     <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
-                    <p className="regtext"> New User ? &nbsp;&nbsp;<a className="loginlink" href='/Signup'>Register now</a></p>
+                    <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
                   </div>
 
                     </form>
