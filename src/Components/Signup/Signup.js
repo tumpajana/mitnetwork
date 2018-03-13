@@ -130,7 +130,26 @@ class Signup extends Component {
 
     });
   }
-
+//password validation
+handleConfirmBlur = (e) => {
+  const value = e.target.value;
+  this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+}
+compareToFirstPassword = (rule, value, callback) => {
+  const form = this.props.form;
+  if (value && value !== form.getFieldValue('password')) {
+    callback('Two passwords that you enter is inconsistent!');
+  } else {
+    callback();
+  }
+}
+validateToNextPassword = (rule, value, callback) => {
+  const form = this.props.form;
+  if (value && this.state.confirmDirty) {
+    form.validateFields(['confirm'], { force: true });
+  }
+  callback();
+}
   //submit registration form
   register = () => {
     console.log('submit button');
@@ -305,6 +324,7 @@ class Signup extends Component {
                       <Input
                         placeholder=" Phone Number"
                         name="phoneNumber"
+                      
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -314,12 +334,15 @@ class Signup extends Component {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is reruired' }],
+            rules: [{ required: true, message: 'password is reruired', },
+            {
+              validator: this.validateToNextPassword,
+            }],
           })(
-                      <Input
+                      <Input type="password" 
                         placeholder=" Password"
                         name="password"
-                        name="password"
+                        // type="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -327,11 +350,15 @@ class Signup extends Component {
                       />
                     )}
                     </FormItem>
-                    <FormItem>
+                    <FormItem >
+                    
                     {getFieldDecorator('confirmPassword', {
-            rules: [{ required: true, message: 'confirmPassword is reruired' }],
+            rules: [{ required: true, message: 'confirmPassword is reruired' ,
+          }, { 
+            validator: this.compareToFirstPassword,
+          }],
           })(
-                      <Input
+                      <Input type="password" onBlur={this.handleConfirmBlur} 
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         name="confirmPassword"
