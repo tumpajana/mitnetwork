@@ -160,65 +160,43 @@ router.get('/getAllComment', (request, response) => {
 
 // Api for likes
 router.put('/like', (request, response) => {
-    console.log("user create ");
+    let likeResponse = {};
+
+    let userId = request.body.userId;
     console.log(request.body);
-
-    let socialResponse = {};
-
-    let _id = request.body.userId;
-    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { like:  _id  } }, (error, result) => {
+    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { like: userId } }, (error, result) => {
         if (error) {
-            socialResponse.error = true;
-            socialResponse.message = `Error :` + error.message;
-            response.status(500).json(socialResponse);
+            likeResponse.error = true;
+            likeResponse.message = `Error :` + error.message;
+            response.status(500).json(likeResponse);
         } else {
-            socialResponse.error = false;
-            socialResponse.result = result;
-            socialResponse.message = ` Thanku for Liking.`;
-            response.status(200).json(socialResponse);
+            likeResponse.error = false;
+            likeResponse.result = result;
+            likeResponse.message = `Success`;
+            response.status(200).json(likeResponse);
         }
     });
 });
-router.put('/like', (request, response) => {
-    let likeResponse = {};
-    post.findOne({
-        postId: request.body.postId,
+// Api for Unlike
+// router.put('/unlike', (request, response) => {
+//     let likeResponse = {};
 
-        "like": {
-            "$elemMatch": { "userId": request.body.userId }
-        }
-    },
-        (error, result) => {
-            console.log('/////error/////', error);
-            console.log(result);
+//     let userId = request.body.userId;
+//     console.log(request.body);
+//     post.findOneAndUpdate({ _id: request.body.postId }, { $pull: { like: userId } }, (error, result) => {
+//         if (error) {
+//             likeResponse.error = true;
+//             likeResponse.message = `Error :` + error.message;
+//             response.status(500).json(likeResponse);
+//         } else {
+//             likeResponse.error = false;
+//             likeResponse.result = result;
+//             likeResponse.message = `Success`;
+//             response.status(200).json(likeResponse);
+//         }
+//     });
+// });
 
-            if (error) {
-                likeResponse.error = true;
-                likeResponse.message = `Error :` + error.message;
-                response.status(500).json(likeResponse);
-            }
-            else if (result == null) {
-                let _id = request.body.userId;
-                post.finUpdate({ _id: request.body.postId }, { $push: { like: { userId: _id } } }, (error, result) => {
-                    if (error) {
-                        likeResponse.error = true;
-                        likeResponse.message = `Error :` + error.message;
-                        response.status(500).json(likeResponse);
-                    } else {
-                        likeResponse.error = false;
-                        likeResponse.result = result;
-                        likeResponse.message = ` Thanku for Liking.`;
-                        response.status(200).json(likeResponse);
-                    }
-                });
-            }
-            else {
-                likeResponse.error = true;
-                likeResponse.message = `You already liked it`;
-                response.status(500).json(likeResponse);
-            }
-        });
-});
 
 //Api for Delete post
 router.delete('/delete', (request, response) => {
