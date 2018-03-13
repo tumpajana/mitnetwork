@@ -11,6 +11,7 @@ import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
+var FormData = require('form-data');
 
 
 class Profile extends Component {
@@ -42,18 +43,20 @@ class Profile extends Component {
     if (sessionStorage.userId) {
       this.show();
     }
+
+  
   };
 
 
 
- onChange = (e) => {
+  onChange = (e) => {
     console.log('radio checked', e.target.value);
     this.setState({
       value: e.target.value,
     });
   }
 
- 
+
   state = {
     loading: false,
     visible: false,
@@ -81,7 +84,6 @@ class Profile extends Component {
     let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
     userProfile[e.target.name] = e.target.value;                        //updating value
     this.setState({ userProfile });
-
   }
 
 
@@ -152,9 +154,9 @@ class Profile extends Component {
     let file = fileTarget[0];
     // this.names = file;
     console.log("File information :", file);
-    var formData = new FormData();
-    formData.append('file', event.target.files[0]);
-    console.log(formData);
+    var form = new FormData();
+    form.append('file', 'Pushpendu');
+    console.log(form.entries());
     // console.log(formData)
     //   profilePic(formData).then((result)=>{
     //     console.log(result)
@@ -239,7 +241,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="home" />
+                      {this.state.userProfile.city ? <Icon type="home" />:''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.city}</p>
@@ -249,7 +251,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="environment-o" />
+                       {this.state.userProfile.state ? <Icon type="environment-o" />:''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.state}</p>
@@ -262,7 +264,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="book" />
+                      {this.state.userProfile.qualification ? <Icon type="book" />:''} 
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.qualification}</p>
@@ -272,7 +274,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="profile" />
+                      {this.state.userProfile.designation ? <Icon type="profile" />:''} 
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.designation}</p>
