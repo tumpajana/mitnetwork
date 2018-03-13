@@ -19,13 +19,5 @@ enabled: {
 }
 
 });
-imageSchema.pre('findOne', function (next) {
-    this.populate('userId');
-    next();
-});
-imageSchema.pre('find', function (next) {
-    this.populate('userId');
-    next();
-});
 
 const image = module.exports = mongoose.model('image', imageSchema);

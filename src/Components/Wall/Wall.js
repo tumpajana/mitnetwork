@@ -28,8 +28,8 @@ class Wall extends Component {
       postList:[]
 
     }
-    this.textInput = this.textInput.bind(this);
-    this.title = this.title.bind(this);
+    this.postContent = this.postContent.bind(this);
+    this.postTitle= this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
     this.getPosts();
     
@@ -57,44 +57,44 @@ class Wall extends Component {
     });
   }
 
-  // content input
-  textInput = (e) => {
+ //post title 
+ postTitle = (e) => {
+  this.setState({
+    posts: {
+      title: document.getElementById("editor-title").innerText,
+      content: this.state.posts.content
+    } 
+  })
+}
+
+
+  // post content
+  postContent= (e) => {
     this.setState({
       posts: {
         title: this.state.posts.title,
-        content: e
+        content: document.getElementById("editor-content").innerText
       }
     })
     console.log(this.state.posts.content)
   }
 
 
-  //title input
-  title = (e) => {
-    //  let x= quill.container.innerHTML;
-    //  console.log.og(x)
-    console.log(e)
-    this.setState({
-      posts: {
-        title: e,
-        content: this.state.posts.content
-      }
-    })
-    console.log(this.state.posts.title);
-  }
-
+ 
 
   showModal = () => {
     this.setState({
       visible: true,
     });
   }
+
   handleOk = () => {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 2000);
   }
+
   handleCancel = () => {
     this.setState({ visible: false });
   }
@@ -178,7 +178,7 @@ class Wall extends Component {
 
         {/* posted blog html start */}
         { this.state.postList.map(function(item) {
-                return   <div className="postedpartcard">
+                return   <div className="postedpartcard"  key={item._id}>
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
                     <div className="userpicpost">
@@ -259,8 +259,8 @@ class Wall extends Component {
                 <form>
 
 
-                  <ReactQuill id="#editor-container" className="textareheadng" placeholder="Headline" name="title" onChange={this.title} />
-                  <ReactQuill placeholder="Write here .." className="textareawall" name="content" onChange={this.textInput} />
+                  <ReactQuill id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
+                  <ReactQuill   id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
 
                 </form>
               </Col>
