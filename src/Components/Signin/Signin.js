@@ -9,6 +9,8 @@ import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
 import loginData from '../../Services/signipapi'
 import FacebookloginData from '../../Services/socialapi'
+import { ToastContainer, toast } from 'react-toastify';
+
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 
@@ -111,9 +113,19 @@ class Signin extends Component {
       loginData(this.state).then((result) => {
         let response = result;
         console.log(response)
+         if (response.error == false) {
+          toast.success("You have been login successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
         if (response.user) {
           sessionStorage.setItem('userId',response.user._id);
           this.setState({ redirectToReferrer: true });
+        }
+         }
+         else if (response.error == true) {
+          toast.warn("Wrong password", {
+            position: toast.POSITION.TOP_CENTER,
+          });
         }
 
       });
@@ -136,7 +148,7 @@ class Signin extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
-      return <Redirect to ="/Profile"/>
+      return <Redirect to ="/wall"/>
     }
     const { userName } = this.state;
 
@@ -253,6 +265,7 @@ class Signin extends Component {
 
           </Row>
         </div>
+         <ToastContainer autoClose={2000} />
       </div>
     );
   }
