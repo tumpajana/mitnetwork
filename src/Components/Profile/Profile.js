@@ -23,7 +23,7 @@ class Profile extends Component {
         name: '',
         phoneNumber: '',
         city: '',
-        education: '',
+        qualification: '',
         designation: '',
         state: '',
         redirectToReferrer: false,
@@ -71,6 +71,7 @@ class Profile extends Component {
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
+    console.log('button')
   }
 
 
@@ -106,7 +107,7 @@ class Profile extends Component {
       phoneNumber: this.state.userProfile.phoneNumber,
       city: this.state.userProfile.city,
       state: this.state.userProfile.state,
-      education: this.state.userProfile.education,
+      qualification: this.state.userProfile.qualification,
       designation: this.state.userProfile.designation,
     }
     console.log(this.state.userProfile)
@@ -241,7 +242,7 @@ class Profile extends Component {
                       <Icon type="home" />
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>B23, lime hill, hawai road</p>
+                      <p>{this.state.userProfile.city}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -251,7 +252,7 @@ class Profile extends Component {
                       <Icon type="environment-o" />
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>U.S.A</p>
+                      <p>{this.state.userProfile.state}</p>
                     </Col>
                   </Row>
 
@@ -264,7 +265,7 @@ class Profile extends Component {
                       <Icon type="book" />
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>M.Tech in CSE</p>
+                      <p>{this.state.userProfile.qualification}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -274,7 +275,7 @@ class Profile extends Component {
                       <Icon type="profile" />
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>Software Engineer</p>
+                      <p>{this.state.userProfile.designation}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -366,7 +367,7 @@ class Profile extends Component {
                   prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
-                  name="education"
+                  name="qualification"
                 />
               </Col>
             </Row>

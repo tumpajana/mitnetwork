@@ -12,6 +12,8 @@ import WallGet from '../../Services/wallGet';
 import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
 import { ToastContainer, toast } from 'react-toastify';
+import postLike from '../../Services/postLikeApi';
+
 import camera from '../../Images/camera.png';
 const { TextArea } = Input;
 class Wall extends Component {
@@ -33,6 +35,7 @@ class Wall extends Component {
     this.postContent = this.postContent.bind(this);
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
+    this.postLike = this.postLike.bind(this);
     this.getPosts();
 
   }
@@ -98,7 +101,24 @@ class Wall extends Component {
     console.log(this.state.posts.content)
   }
 
+//postlike
+postLike(id){
+  console.log('mjhngfds')
+  console.log(id)
+  let likeData={
+    userId:sessionStorage.getItem("userId"),
+    postId:id
+  }
+  postLike(likeData).then((result) =>{
+    let response = result;
+    console.log(result)
+    toast.success("Post Liked Successfuly!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
 
+  });
+}
+ 
 
 
   showModal = () => {
@@ -196,7 +216,7 @@ class Wall extends Component {
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        {this.state.postList.map(function (item) {
+          {this.state.postList.map( (item) =>{
           return <div>
             <div className="postedpartcard" key={item._id}>
               <Row type="flex" justify="space-around" align="middle">
@@ -217,7 +237,7 @@ class Wall extends Component {
               </div>
               <div className="likecomment">
                 <h3>2k likes</h3>
-                <Button title="like"><Icon type="like-o" />Likes</Button>
+                <Button title="like"><Icon type="like-o" onClick={this.postLike(item._id)} />Likes</Button>
                 <Button title="comment"><Icon type="message" />Comment</Button>
 
               </div>
