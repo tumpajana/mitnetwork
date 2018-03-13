@@ -42,6 +42,8 @@ class Profile extends Component {
     if (sessionStorage.userId) {
       this.show();
     }
+
+  
   };
 
 
@@ -239,7 +241,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="home" />
+                      {this.state.userProfile.city ? <Icon type="home" />:''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.city}</p>
@@ -249,7 +251,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="environment-o" />
+                       {this.state.userProfile.state ? <Icon type="environment-o" />:''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.state}</p>
@@ -262,7 +264,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="book" />
+                      {this.state.userProfile.qualification ? <Icon type="book" />:''} 
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.qualification}</p>
@@ -272,7 +274,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="profile" />
+                      {this.state.userProfile.designation ? <Icon type="profile" />:''} 
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.designation}</p>
