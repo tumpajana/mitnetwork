@@ -8,6 +8,7 @@ import Header from '../Header/Header.js';
 import User from '../../Images/user10.jpg';
 import backprofile from '../../Images/backpro.svg';
 import getUserProfile from '../../Services/profileapi';
+import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
 
@@ -16,29 +17,34 @@ class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      user :{
-    userName: '',
-      email: '',
-      name: '',
-      phoneNumber: '',
-      redirectToReferrer: false,
+      user: {
+        userName: '',
+        email: '',
+        name: '',
+        phoneNumber: '',
+        city: '',
+        education: '',
+        address: '',
+        state: '',
+        redirectToReferrer: false,
       },
-  
-userProfile:{}
+
+      userProfile: {}
     };
 
-     this.show = this.show.bind(this);
-     this.showModal = this.showModal.bind(this);
+    this.show = this.show.bind(this);
+    this.showModal = this.showModal.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
-
-     // this.onChangeValue = this.onChangeValue.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.onChangeCity = this.onChangeCity.bind(this);
+    this.onChangeState = this.onChangeState.bind(this);
+    // this.onChangeValue = this.onChangeValue.bind(this);
     if (sessionStorage.userId) {
       this.show();
     }
-    };
+  };
 
-   
-  
+
 
 
 
@@ -49,12 +55,6 @@ userProfile:{}
     });
   }
 
-//onchange of input feild binding
-  onChangeValue = (e) => {
-    console.log(e)
-    this.setState({ [e.target.name]: e.target.value });
-    console.log('onchangeusername', e.target.value,'+', e.target.name)
-  }
   state = {
     loading: false,
     visible: false,
@@ -63,69 +63,115 @@ userProfile:{}
     this.setState({
       visible: true,
     })
-           //  this.refs.username.value="abcd";
+    //  this.refs.username.value="abcd";
   }
+
   handleOk = () => {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
   }
+
+
+  //onchange of input feild binding
+  onChangeValue = (e) => {
+    console.log(e)
+    let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
+    userProfile[e.target.name] = e.target.value;                        //updating value
+    this.setState({ userProfile });
+
+  }
+
+
+  //on selecting city
+  onChangeCity = (e) => {
+    let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
+    userProfile.city = e;                        //updating value
+    this.setState({ userProfile });
+  }
+
+  //on selecting state
+  onChangeState = (e) => {
+    let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
+    userProfile.state = e;                        //updating value
+    this.setState({ userProfile });
+  }
+  //update profile
+  updateProfile() {
+    let userData = {
+      _id: sessionStorage.getItem('userId'),
+      name: this.state.userProfile.name,
+      userName: this.state.userProfile.userName,
+      phoneNumber: this.state.userProfile.phoneNumber,
+      city: this.state.userProfile.city,
+      state: this.state.userProfile.state,
+      education: this.state.userProfile.education,
+      address: this.state.userProfile.address,
+    }
+    console.log(this.state.userProfile)
+    updateData(userData).then((result) => {
+      let response = result;
+      console.log(result)
+    });
+  }
+
+
   handleCancel = () => {
     this.setState({ visible: false });
   }
-  
-  //  //show profile
-  
-  show=() =>{
-          //  this.refs.username.value="abcd";
 
-    
+  //  //show profile
+
+  show = () => {
+    //  this.refs.username.value="abcd";
+
+
     console.log('submit button');
-       let _base = this;
-      getUserProfile( sessionStorage.getItem("userId")).then((result) => {
-        let response = result;
-        console.log(this.refs);
-  console.log(result);
-        this.setState({ userProfile: result.result}); 
-        this.setState({user:result.result})
-        console.log('userData...',this.state.userProfile)
-          console.log('userData...',this.state.user)
-          //  this.refs.username.value=this.state.userProfile.userName;
-        
-           });
-       
-      
+    let _base = this;
+    getUserProfile(sessionStorage.getItem("userId")).then((result) => {
+      let response = result;
+      console.log(this.refs);
+      console.log(result);
+      this.setState({ userProfile: result.result });
+
+      console.log('userData...', this.state.userProfile)
+
+      //  this.refs.username.value=this.state.userProfile.userName;
+
+    });
+
+
   }
-   preveiwProfile = (event) => {
-     console.log(event.target.files)
-  //   preveiwProfile(event) {
-    
-    let fileList= event.target.files;
+  preveiwProfile = (event) => {
+    console.log(event.target.files)
+    //   preveiwProfile(event) {
+
+    let fileList = event.target.files;
     let fileTarget = fileList;
-    let file=  fileTarget[0];
-      // this.names = file;
+    let file = fileTarget[0];
+    // this.names = file;
     console.log("File information :", file);
     var formData = new FormData();
-    formData.append('file', 'gfthyby');
-   console.log( formData.entries())
-  console.log(formData)
-    profilePic(formData).then((result)=>{
-      console.log(result)
-    })
+    formData.append('file', event.target.files[0]);
+    console.log(formData);
+    // console.log(formData)
+    //   profilePic(formData).then((result)=>{
+    //     console.log(result)
+    //   })
   }
-   
-  
 
 
-   edit=() =>{
+
+
+  edit = () => {
     console.log('Dispaly data');
-      
 
-   } 
+
+  }
 
   render() {
-    
+
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
@@ -154,7 +200,7 @@ userProfile:{}
 
         {/* profile view section start */}
         <section className="profilesec">
-         
+
           <div className="procard">
             <div className="userdetail">
               <div className="userpic">
@@ -247,7 +293,7 @@ userProfile:{}
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
-            <Button key="submit" loading={loading} onClick={this.handleOk} className="savebtn">
+            <Button key="submit" loading={loading} onClick={this.updateProfile} className="savebtn">
               Save
                         </Button>,
           ]}
@@ -263,11 +309,11 @@ userProfile:{}
                                   <Icon type="edit" />
                                 </Button> */}
                   {/*<Upload >*/}
-                    <Button className="editbtn"> 
+                  <Button className="editbtn">
                     <Icon type="edit" />
                     <Input type="file" name="myFile" onChange={this.preveiwProfile} />
-                    </Button>
-                   
+                  </Button>
+
                   {/*</Upload>*/}
                 </div>
               </div>
@@ -281,18 +327,23 @@ userProfile:{}
             <Row gutter={24}>
               <Col span={12}>
                 <Input
+
                   placeholder="Enter your Name"
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
+                  onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
+                  defaultValue={this.state.userProfile.name}
+                  name="name"
                 />
               </Col>
               <Col span={12}>
                 <Input
                   placeholder="Enter your Username"
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
+                  onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
+                  defaultValue={this.state.userProfile.userName}
+                  name="userName"
                 />
               </Col>
             </Row>
@@ -304,16 +355,19 @@ userProfile:{}
                 <Input
                   placeholder="Enter your Phone No"
                   prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
+                  onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
+                  defaultValue={this.state.userProfile.phoneNumber}
+                  name="phoneNumber"
                 />
               </Col>
               <Col span={12}>
                 <Input
                   placeholder="Enter your Qualification"
                   prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
+                  onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
+                  name="education"
                 />
               </Col>
             </Row>
@@ -324,20 +378,20 @@ userProfile:{}
             <Row gutter={24}>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" onChange={handleChange}>
+                  <Select defaultValue="0" name="city" onChange={this.onChangeCity}>
                     <Option value="0">City</Option>
-                    <Option value="1">Kolkata</Option>
-                    <Option value="2">Delhi</Option>
-                    <Option value="3">Pune</Option>
+                    <Option value="Kolkata">Kolkata</Option>
+                    <Option value="Delhi">Delhi</Option>
+                    <Option value="Pune">Pune</Option>
                   </Select>
                 </div>
               </Col>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" onChange={handleChange}>
+                  <Select defaultValue="0" onChange={this.onChangeState}>
                     <Option value="0">State</Option>
-                    <Option value="1">West Bengal</Option>
-                    <Option value="2">Uttar Pradesh</Option>
+                    <Option value="West Bengal">West Bengal</Option>
+                    <Option value="Uttar Pradesh">Uttar Pradesh</Option>
                   </Select>
                 </div>
               </Col>
@@ -352,8 +406,9 @@ userProfile:{}
                   <Input
                     placeholder="Enter your Address"
                     prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    onChange={this.onChangeUserName}
+                    onChange={this.onChangeValue}
                     ref={node => this.userNameInput = node}
+                    name="address"
                   />
                 </div>
               </Col>
