@@ -101,24 +101,24 @@ class Wall extends Component {
     console.log(this.state.posts.content)
   }
 
-//postlike
-postLike(id){
-  console.log('mjhngfds')
-  console.log(id)
-  let likeData={
-    userId:sessionStorage.getItem("userId"),
-    postId:id
-  }
-  postLike(likeData).then((result) =>{
-    let response = result;
-    console.log(result)
-    toast.success("Post Liked Successfuly!", {
-      position: toast.POSITION.TOP_CENTER,
+  //postlike
+  postLike(id) {
+    console.log('mjhngfds')
+    console.log(id)
+    let likeData = {
+      userId: sessionStorage.getItem("userId"),
+      postId: id
+    }
+    postLike(likeData).then((result) => {
+      let response = result;
+      console.log(result)
+      toast.success("Post Liked Successfuly!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      this.getPosts();
     });
+  }
 
-  });
-}
- 
 
 
   showModal = () => {
@@ -216,7 +216,7 @@ postLike(id){
         {/* wall view section end */}
 
         {/* posted blog html start */}
-          {this.state.postList.map( (item) =>{
+        {this.state.postList.map((item) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
               <Row type="flex" justify="space-around" align="middle">
@@ -236,13 +236,13 @@ postLike(id){
                 <p className="sub_content"><a> {item.content}</a></p>
               </div>
               <div className="likecomment">
-                <h3>2k likes</h3>
-                <Button title="like"><Icon type="like-o" onClick={this.postLike(item._id)} />Likes</Button>
+                <h3>{item.like.length}  likes</h3>
+                <Button title="like" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
                 <Button title="comment"><Icon type="message" />Comment</Button>
 
               </div>
               {/* ****Comment section**** */}
-              <div className="commentSection">
+              {/* <div className="commentSection">
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={3} sm={3} md={2}>
@@ -283,7 +283,7 @@ postLike(id){
                     </Col>
                   </div>
                 </Row>
-              </div>
+              </div> */}
               {/* ****Comment section**** */}
             </div>
             {/* **** video section**** */}
@@ -311,7 +311,7 @@ postLike(id){
 
               </div>
               {/* ****Comment section**** */}
-              <div className="commentSection">
+              {/* <div className="commentSection">
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={3} sm={3} md={2}>
@@ -352,10 +352,10 @@ postLike(id){
                     </Col>
                   </div>
                 </Row>
-              </div>
+              </div> */}
               {/* ****Comment section**** */}
             </div>
-{/* **** video section**** */}
+            {/* **** video section**** */}
 
           </div>
 

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Form,Input, Icon, Radio, Button } from 'antd';
+import { Form, Input, Icon, Radio, Button } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
-import { Redirect,NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
@@ -29,7 +29,7 @@ class Signup extends Component {
       confirmPassword: '',
       phoneNumber: '',
       redirectToReferrer: false,
-     
+
       facebookInfo: {
         name: '',
         providerName: '',
@@ -50,7 +50,7 @@ class Signup extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-//Login with Facebook
+  //Login with Facebook
   responseFacebook = (response) => {
     console.log(response);
     this.facebookInfo = response;
@@ -67,7 +67,7 @@ class Signup extends Component {
     this.facebookLogin(response, 'facebook')
   }
 
-//login with Google
+  //login with Google
   responseGoogle = (response) => {
     console.log(response, 'google');
     this.facebookInfo = response;
@@ -103,7 +103,7 @@ class Signup extends Component {
   //onchange of input feild binding
   onChangeValue = (e) => {
     console.log(e.target.name);
-    
+
     //  if(e.target.value.length != 0){
     //  if( e.target.name == 'email' && (e.target.email !=(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/))){
     //   this.setState({
@@ -113,12 +113,12 @@ class Signup extends Component {
     //   })
     // }}
 
-    
+
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
   }
-//validation
+  //validation
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -130,26 +130,26 @@ class Signup extends Component {
 
     });
   }
-//password validation
-handleConfirmBlur = (e) => {
-  const value = e.target.value;
-  this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-}
-compareToFirstPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && value !== form.getFieldValue('password')) {
-    callback('Two passwords that you enter is inconsistent!');
-  } else {
+  //password validation
+  handleConfirmBlur = (e) => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  }
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  }
+  validateToNextPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
     callback();
   }
-}
-validateToNextPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && this.state.confirmDirty) {
-    form.validateFields(['confirm'], { force: true });
-  }
-  callback();
-}
   //submit registration form
   register = () => {
     console.log('submit button');
@@ -167,7 +167,6 @@ validateToNextPassword = (rule, value, callback) => {
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
-
           }
         }
         else if (response.error == true) {
@@ -187,15 +186,15 @@ validateToNextPassword = (rule, value, callback) => {
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
-      console.log(result);
+      console.log("registration", result);
       if (result.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
+        console.log(response);
         if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+          sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
-
         }
         else {
           toast.warn("Number already exist!", {
@@ -204,7 +203,6 @@ validateToNextPassword = (rule, value, callback) => {
         }
       }
 
-
     });
   }
   //else{
@@ -212,17 +210,17 @@ validateToNextPassword = (rule, value, callback) => {
   // }
 
 
-  facebookLogin = (res, type) => {
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      let response = result;
-      console.log(response)
-      if (response.userData) {
-        sessionStorage.setItem('loginData', JSON.stringify(response));
-        this.setState({ redirectToReferrer: true });
-      }
+  // facebookLogin = (res, type) => {
+  //   FacebookloginData(this.state.facebookInfo).then((result) => {
+  //     let response = result;
+  //     console.log(response)
+  //     if (response.userData) {
+  //       sessionStorage.setItem('loginData', JSON.stringify(response));
+  //       this.setState({ redirectToReferrer: true });
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -368,11 +366,11 @@ validateToNextPassword = (rule, value, callback) => {
                     )}
                     </FormItem>
                       <div className="registerbtn">
-                    <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                    <Button className="cnclbtn">Cancel</Button>
+                        <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                        <Button className="cnclbtn">Cancel</Button>
 
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                  </div>
+                        <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                      </div>
 
                     </form>
                   </Col>
@@ -416,7 +414,7 @@ validateToNextPassword = (rule, value, callback) => {
 
                   </Col>
 
-                 
+
 
                 </Row>
               </div>
