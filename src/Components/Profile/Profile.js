@@ -24,7 +24,7 @@ class Profile extends Component {
         phoneNumber: '',
         city: '',
         education: '',
-        address: '',
+        designation: '',
         state: '',
         redirectToReferrer: false,
       },
@@ -107,7 +107,7 @@ class Profile extends Component {
       city: this.state.userProfile.city,
       state: this.state.userProfile.state,
       education: this.state.userProfile.education,
-      address: this.state.userProfile.address,
+      designation: this.state.userProfile.designation,
     }
     console.log(this.state.userProfile)
     updateData(userData).then((result) => {
@@ -352,12 +352,12 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <Input
-                  placeholder="Enter your Phone No"
+                  placeholder="Enter your Designation"
                   prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
-                  defaultValue={this.state.userProfile.phoneNumber}
-                  name="phoneNumber"
+                  defaultValue={this.state.userProfile.designation}
+                  name="designation"
                 />
               </Col>
               <Col span={12}>
@@ -399,7 +399,7 @@ class Profile extends Component {
 
 
             {/* city and state input start */}
-            <Row gutter={24}>
+            {/*<Row gutter={24}>
               <Col span={24}>
                 <div>
                   <Input
@@ -411,7 +411,7 @@ class Profile extends Component {
                   />
                 </div>
               </Col>
-            </Row>
+            </Row>*/}
             {/* /city and state input end */}
 
           </form>

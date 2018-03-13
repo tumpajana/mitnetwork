@@ -152,7 +152,7 @@ class Signup extends Component {
           }
         }
         else if (response.error == true) {
-          toast.warn("number aloready exist!", {
+          toast.warn("Phonenumber/Email already exist !", {
             position: toast.POSITION.TOP_CENTER,
           });
         }
