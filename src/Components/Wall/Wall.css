@@ -130,6 +130,7 @@ button.ant-btn.postimg:hover {
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
     width: 50%;
     margin: 2em auto;
+    position:relative;
 
 }
 .ant-btn:hover, .ant-btn:focus {
@@ -172,6 +173,7 @@ button.ant-btn.post:hover {
     border-radius: 50%;
     /* border: 2px solid rgb(255, 255, 255); */
 }
+
 .postedpartcard p{
 font-size: 14px;
 line-height: 20px;
@@ -194,6 +196,7 @@ cursor:pointer;
    padding-left: 10px;
 
 }
+
 .postedimg h3{
     padding-left: 10px;
     font-size: 12px;
@@ -340,3 +343,78 @@ and (max-width: 767px) {
     }
 
 }
+
+
+/* comment section */
+
+.commentImg {
+    margin:0 auto;
+    height: 30px;
+    width: 30px;
+}
+
+.commentImg img{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+.commentSection {
+    background: #f3f6f8;
+    position: absolute;
+    z-index:1;
+    padding: 10px 19px 10px 8px;
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
+    margin: 0 auto;
+    left: 0;
+    text-align: left;
+    right: 0;
+}
+.commentText textarea {
+    border-radius: 0;
+    resize: none;
+}
+.contentsComment {
+    padding: 1em 0;
+}
+.commentText img {
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    z-index: 1;
+    top: 7px;
+    right: 15px;
+}
+.postComment p {
+    padding-left: 0;
+    line-height: 10px;
+}
+.postComment h3 {
+    padding-left: 0;
+    margin-bottom: 0px;
+}
+p.likeReply button {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    height: 24px;
+    width: 34px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: left;
+    padding: 0;
+}
+span.likeTotal {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.56);
+    font-weight: 500;
+    border-left: 1px solid rgba(0, 0, 0, 0.51);
+    padding-left: 1em;
+}
+button.ant-btn.commentbutton4 {
+    width: 49px;
+}
+.commentText {
+    position: relative;
+}
+/* comment section */
