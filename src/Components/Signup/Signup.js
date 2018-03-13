@@ -48,6 +48,7 @@ class Signup extends Component {
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
   }
 
 //Login with Facebook
@@ -138,7 +139,7 @@ handleConfirmBlur = (e) => {
 compareToFirstPassword = (rule, value, callback) => {
   const form = this.props.form;
   if (value && value !== form.getFieldValue('password')) {
-    callback('Two passwords that you enter is inconsistent!');
+    callback('password doesnot match!');
   } else {
     callback();
   }
@@ -321,9 +322,11 @@ validateToNextPassword = (rule, value, callback) => {
                     {getFieldDecorator('phoneNumber', {
             rules: [{ required: true, message: 'phoneNumber is required' }],
           })(
-                      <Input
+                      <Input 
+                    
                         placeholder=" Phone Number"
                         name="phoneNumber"
+                        type="phone"
                       
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
