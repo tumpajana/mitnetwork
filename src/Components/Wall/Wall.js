@@ -11,6 +11,8 @@ import WallPost from '../../Services/wallPost';
 import WallGet from '../../Services/wallGet';
 import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
+import { ToastContainer, toast } from 'react-toastify';
+
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
@@ -45,7 +47,15 @@ class Wall extends Component {
     }
     WallPost(dataSent).then((result) => {
       console.log(result);
+      toast.success("Post Uploaded Successfuly!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      this.setState({posts:{
+        title:"",
+        content:""
+      }})
       this.getPosts();
+      
     })
   }
 
@@ -53,7 +63,14 @@ class Wall extends Component {
   getPosts() {
     WallGet().then((result) => {
       console.log(result);
-      this.setState({postList:result.result.filter((element) => {return (element.userId != null || element.userId != undefined)})});
+      if(result.result.length!=0){
+        this.setState({postList:result.result.filter((element) => {return (element.userId != null || element.userId != undefined)})});
+      }
+  //  else{
+  //   console.log('jhgfdxdfghjk')
+  //    return(<div  className="postedpartcard">No Post Found</div>)
+    
+  //  }
     });
   }
 
@@ -271,7 +288,7 @@ class Wall extends Component {
 
         </div>
         {/* ----------MODAL SECTION FOR write something end------------- */}
-
+        <ToastContainer autoClose={2000} />
       </div>
     );
   }
