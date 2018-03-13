@@ -7,7 +7,9 @@ import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import { Redirect } from 'react-router-dom';
 import mitlogo from '../../Images/mitlogo.png';
+
 import loginData from '../../Services/signipapi'
+import FacebookloginData from '../../Services/socialapi'
 const RadioGroup = Radio.Group;
 
 class Signin extends Component {
@@ -19,20 +21,61 @@ class Signin extends Component {
     this.state = {
       email: '',
       password: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      valid:{
+        nameText:'',
+        nameTextt:'',
+        
+      },
+      facebookInfo: {
+        name: '',
+        providerName: '',
+        providerPic: '',
+        providerId: '',
+        email: '',
+        phoneNumber: '',
+        token: ''
+      }
+
     };
 
     this.login = this.login.bind(this);
     this.onChangeLoginName = this.onChangeLoginName.bind(this);
+    this.facebookLogin = this.facebookLogin.bind(this);
+
   }
 
   responseFacebook = (response) => {
     console.log(response);
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.name,
+      providerName: 'Facebook',
+      providerPic: response.picture.data.url,
+      providerId: response.userID,
+      email: response.email,
+      phoneNumber: '999999999',
+      token: response.accessToken
+    }
+    this.facebookLogin(response, 'facebook')
   }
 
   responseGoogle = (response) => {
-    console.log(response);
+    console.log(response, 'google');
+    this.facebookInfo = response;
+    console.log(this.facebookInfo)
+    this.state.facebookInfo = {
+      name: response.w3.ig,
+      providerName: 'Google',
+      providerPic: response.w3.Paa,
+      providerId: response.El,
+      email: response.profileObj.email,
+      token: response.tokenObj.access_token
+    }
+    this.facebookLogin(response, 'google')
   }
+ 
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ userName: '' });
@@ -49,6 +92,52 @@ class Signin extends Component {
 
 
   onChangeLoginName(e) {
+    if(e.target.value.length == 0){
+      if(e.target.name == 'email'){
+        this.setState({
+          valid:{
+            nameText:'email can not be empty'
+          }
+        });
+      }
+//       if(e.target.value.length!== 0 && !(e.target.email.match (/^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i))){
+//          this.setState({
+//           valid:{
+//             nameText:'email is invalid'
+//       }
+    
+//   });
+//  }
+
+
+     }else{
+      if(e.target.name == 'email'){
+        this.setState({
+          valid:{
+            nameText:''
+          }
+        });
+      }
+     }
+    
+    //validation for password
+    if(e.target.value.length == 0){
+      if(e.target.name == 'password'){
+        this.setState({
+          valid:{
+            nameTextt:'password can not be empty'
+          }
+        });
+      }
+     }else{
+      if(e.target.name == 'password'){
+        this.setState({
+          valid:{
+            nameTextt:''
+          }
+        });
+      }
+     }
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
@@ -66,15 +155,31 @@ class Signin extends Component {
 
       });
     }
+    else{
+      alert("Fields are required");
+    }
   }
+
+  facebookLogin =(res,type) => { 
+    FacebookloginData(this.state.facebookInfo).then((result) => {
+        let response = result;
+        console.log(response)
+        if (response.userData) {
+          sessionStorage.setItem('loginData', JSON.stringify(response));
+          this.setState({ redirectToReferrer: true });
+        }
+
+      });
+    }
+  
   render() {
     if (this.state.redirectToReferrer) {
       return <Redirect to ="/Profile"/>
     }
-
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
+
     return (
       <div className="signuparea">
         <div className="signupcard">
@@ -106,6 +211,8 @@ class Signin extends Component {
                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
+                      
+                      <div> {this.state.valid.nameText} </div>
 
                       <Input
                         placeholder=" Password"
@@ -113,6 +220,8 @@ class Signin extends Component {
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         onChange={this.onChangeLoginName}
                       />
+                      
+                      <div> {this.state.valid.nameTextt} </div>
 
 
 
@@ -135,7 +244,7 @@ class Signin extends Component {
                         <Icon type="facebook" />
                       </Button> */}
                       <FacebookLogin
-                        appId="1003222123164561"
+                        appId="312775355854012"
                         autoLoad={true}
                         fields="name,email,picture"
                         // onClick={componentClicked}
@@ -146,12 +255,12 @@ class Signin extends Component {
                         <Icon type="google-plus" />
                       </Button> */}
                       <GoogleLogin
-                        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                        clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
                         buttonText="Login"
                         className="googleplussign"
-                        icon="google-plus"
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
+                        icon="google-plus"
                         
                       />
                     </div>

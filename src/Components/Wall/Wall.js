@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
-import User from '../../Images/user10.jpg';
+import User from '../../Images/usr.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import usrimgwall from '../../Images/usr.jpg';
+const { TextArea } = Input;
 class Wall extends Component {
+
   state = {
     loading: false,
     visible: false,
@@ -42,13 +46,61 @@ class Wall extends Component {
 
         {/* wall view section start */}
         <div className="wallcard">
-          <div className="postsec">
-            <p>Share an Article, Photo, Video or Idea</p>
-      
+          <div className="postsec clearfix">
+            <form>
+              <Row>
+                <Col span={2}>
 
-            <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button>
-            <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button>
-            <Button className="post" title="Post">Post</Button>
+                  <div className="userprflimg">
+                    <img src={usrimgwall} />
+                  </div>
+                </Col>
+                <Col span={22}>
+                  <div className="usrview">
+                    <h4 className="usrnamewall">Jess Williams</h4>
+                    <p className="degignationwall">HR Manager at VMware</p>
+                  </div>
+                </Col>
+              </Row>
+              <Row type="flex" justify="center">
+
+                <Col span={24}>
+
+                  {/* <TextArea rows={4} placeholder="Write here .." className="showpost" /> */}
+                  <div placeholder="Write here .." className="showpostall" >
+
+
+                  </div>
+
+                </Col>
+              </Row>
+            </form>
+
+            <hr className="dividerwall" />
+
+            <Row >
+
+              <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
+              <Col span={5}>
+
+                <Upload >
+                  <Button className="upldbtnwall">
+                    <Icon type="upload" /> Click to Upload
+              </Button>
+                </Upload>
+              </Col>
+              <Col span={14}>
+
+
+                <Button className="post" title="Post">Post</Button>
+              </Col>
+
+            </Row>
+
+            {/* <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button> */}
+
+
+
           </div>
         </div>
 
@@ -84,38 +136,42 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-        <Modal
-          visible={visible}
-          title="Jessica Willam"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>Back</Button>,
-            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              Done
+        <div className="modalcustom">
+          <Modal className="artclhead"
+            visible={visible}
+            title="Share Article"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                Save
            </Button>,
-          ]}
-          className="mitprofileEditmodal"
-        >
-
+            ]}
+            className="mitprofileEditmodal"
+          >
+     
 
 
           {/* ----------------edit profile form start--------------- */}
           <form className="editprofileform">
-            {/* name and username input start*/}
+
             <Row gutter={24}>
               <Col span={24}>
-                <Input
-                  placeholder="Write Something here"
-                  prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onChangeUserName}
-                  ref={node => this.userNameInput = node}
-                />
+                <form>
+
+
+                  <ReactQuill value="" className="textareheadng" placeholder="Headline" />
+                  <ReactQuill placeholder="Write here .." className="textareawall" />
+
+                </form>
               </Col>
             </Row>
-            {/* name and username input end*/}
+
           </form>
         </Modal>
+
+        </div>
         {/* ----------MODAL SECTION FOR write something end------------- */}
 
       </div>
