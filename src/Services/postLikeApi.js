@@ -1,4 +1,4 @@
- function profilePic( filedata) {
+function postLike( filedata) {
     //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
     let BaseURL ='http://mitapi.memeinfotech.com:5000/file/upload';
     return new Promise((resolve, reject) =>{
@@ -19,4 +19,4 @@
    });
    });
    }
-   export default profilePic
+   export default postLike

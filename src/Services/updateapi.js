@@ -1,14 +1,15 @@
-function WallPost( postData) {
-    console.log(postData);
-    let BaseURL =' http://mitapi.memeinfotech.com:5000/post/socialPost '  ;
+  function updateData( userData) {
+    //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
+    console.log(userData);
+    let BaseURL ='http://mitapi.memeinfotech.com:5000/user/update';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-   method: 'POST',
-   body: JSON.stringify(postData)
+   method: 'PUT',
+   body: JSON.stringify(userData)
    })
    .then((response) => response.json())
    .then((responseJSON) => {
@@ -21,4 +22,6 @@ function WallPost( postData) {
    }
    
    
-   export default WallPost;
+   export default updateData;
+
+  

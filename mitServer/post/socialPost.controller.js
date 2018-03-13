@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var router = express.Router();
 var post = require('./socialPost.model');
-
+// var ObjectId = require("mongodb").ObjectId;
 
 
 //  Api for post
@@ -43,27 +43,27 @@ router.post('/socialPost', (request, response) => {
 });
 // Api for get  all Social post
 
-router.get('/getAllPost', (request, response,next) => {
+router.get('/getAllPost', (request, response, next) => {
     console.log(" post detail");
-    var perPage =10, page = request.param('page') > 0 ? request.param('page') : 0;
+    var perPage = 10, page = request.param('page') > 0 ? request.param('page') : 0;
 
     let getResponse = {};
 
     post.find({}).sort({ createdDate: 'descending' })
-    .limit(perPage)
-    .skip(perPage * page)
-    .exec((error, result) => {
-        if (error) {
-            getResponse.error = true;
-            getResponse.message = `Error :` + error.message;
-            response.status(500).json(getResponse);
-        } else {
-            getResponse.error = false;
-            getResponse.result = result;
-            getResponse.message = `  getting all  post  successfully .`;
-            response.status(200).json(getResponse);
-        }
-    });
+        .limit(perPage)
+        .skip(perPage * page)
+        .exec((error, result) => {
+            if (error) {
+                getResponse.error = true;
+                getResponse.message = `Error :` + error.message;
+                response.status(500).json(getResponse);
+            } else {
+                getResponse.error = false;
+                getResponse.result = result;
+                getResponse.message = `  getting all  post  successfully .`;
+                response.status(200).json(getResponse);
+            }
+        });
 });
 // Api for get particular  Social post
 
@@ -144,39 +144,86 @@ router.get('/getAllComment', (request, response) => {
         .sort({ createdDate: 'descending' })
         .limit(perPage)
         .skip(perPage * page)
-        .exec((error, result) => { 
-        if (error) {
-            getResponse.error = true;
-            getResponse.message = `Error :` + error.message;
-            response.status(500).json(getResponse);
-        } else {
-            getResponse.error = false;
-            getResponse.result = result;
-            getResponse.message = ` getting all comment   successfully .`;
-            response.status(200).json(getResponse);
-        }
-    });
+        .exec((error, result) => {
+            if (error) {
+                getResponse.error = true;
+                getResponse.message = `Error :` + error.message;
+                response.status(500).json(getResponse);
+            } else {
+                getResponse.error = false;
+                getResponse.result = result;
+                getResponse.message = ` getting all comment   successfully .`;
+                response.status(200).json(getResponse);
+            }
+        });
 });
 
 // Api for likes
 router.put('/like', (request, response) => {
-    console.log("user create ");
-    console.log(request.body);
-
-    let socialResponse = {};
+    let likeResponse = {};
 
     let userId = request.body.userId;
-    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { like:userId}  }, (error, result) => {
+    console.log(request.body);
+    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { like: userId } }, (error, result) => {
         if (error) {
-            socialResponse.error = true;
-            socialResponse.message = `Error :` + error.message;
-            response.status(500).json(socialResponse);
+            likeResponse.error = true;
+            likeResponse.message = `Error :` + error.message;
+            response.status(500).json(likeResponse);
         } else {
-            socialResponse.error = false;
-            socialResponse.result = result;
-            socialResponse.message = ` Thanku for Liking.`;
-            response.status(200).json(socialResponse);
+            likeResponse.error = false;
+            likeResponse.result = result;
+            likeResponse.message = `Success`;
+            response.status(200).json(likeResponse);
         }
     });
+});
+// Api for Unlike
+// router.put('/unlike', (request, response) => {
+//     let likeResponse = {};
+
+//     let userId = request.body.userId;
+//     console.log(request.body);
+//     post.findOne({
+//         postId: request.body.postId,
+//         "like": {
+//             "$elemMatch": { "like": request.query.userId }
+//         }
+//     }),
+//         post.findOneAndUpdate({ _id: request.body.postId }, { $pull: { like: userId } }, (error, result) => {
+//             if (error) {
+//                 likeResponse.error = true;
+//                 likeResponse.message = `Error :` + error.message;
+//                 response.status(500).json(likeResponse);
+//             } else {
+//                 likeResponse.error = false;
+//                 likeResponse.result = result;
+//                 likeResponse.message = `Success`;
+//                 response.status(200).json(likeResponse);
+//             }
+//         });
+// });
+
+
+
+//Api for Delete post
+router.delete('/delete', (request, response) => {
+    console.log("delete user details");
+
+    let deleteResponse = {};
+    let postId = request.query.postId;
+    post.remove({ _id: postId }, (error, result) => {
+        if (error) {
+            deleteResponse.error = true;
+            deleteResponse.message = `Error :` + error.message;
+            response.status(500).json(getResponse);
+        } else {
+            deleteResponse.error = false;
+            deleteResponse.result = result;
+            deleteResponse.message = `Post  deleted  successfully .`;
+            response.status(200).json(deleteResponse);
+
+        }
+    });
+
 });
 module.exports = router;

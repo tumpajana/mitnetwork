@@ -17,8 +17,11 @@ router.post('/registration', (request, response) => {
     let data = new user({
         userName: request.body.userName,
         name: request.body.name,
-        phoneNumber: request.body.phoneNumber
-
+        phoneNumber: request.body.phoneNumber,
+        designation:request.body.designation?(request.body.designation):null,
+        city:request.body.city?(request.body.city):null,
+        state:request.body.state?(request.body.state):null,
+        qualification:request.body.qualification?(request.body.qualification):null
     });
     if (request.body.email) {
         data.email = (request.body.email).toLowerCase();
@@ -56,18 +59,27 @@ router.post('/socialRegistration', (request, response) => {
     user.findOne({ providerId: providerId }, (error, result) => {
         console.log(error);
         console.log(result);
-        if (result) {
+        if (error) {
             socialResponse.error = true;
-            socialResponse.message = `User already exist with this provider id`;
+            socialResponse.message = `Error :` + error.message;
             response.status(500).json(socialResponse);
         }
-        else  {
+        else if (result) {
+            socialResponse.error = false;
+            socialResponse.result = result;
+            response.status(500).json(socialResponse);
+        }
+        else if (result == null) {
             let newData = new user({
                 name: request.body.name,
                 providerName: request.body.providerName,
                 providerId: request.body.providerId,
                 providerPic: request.body.providerPic,
-                token: request.body.token
+                token: request.body.token,
+                designation:request.body.designation?(request.body.designation):null,
+                city:request.body.city?(request.body.city):null,
+                state:request.body.state?(request.body.state):null,
+                qualification:request.body.qualification?(request.body.qualification):null
             })
             if (request.body.email) {
                 newData.email = (request.body.email).toLowerCase();
@@ -174,7 +186,7 @@ router.get('/getSingle', (request, response) => {
 */
 router.put('/update', (request, response) => {
 
-    let _id = request.body._id;
+    let _id = request.body._id; /// id 
 
     let userUpdateResponse = {};
 
@@ -189,8 +201,11 @@ router.put('/update', (request, response) => {
             console.log(result);
             result.name = (request.body.name ? (request.body.name) : result.name);
             result.phoneNumber = (request.body.phoneNumber ? (request.body.phoneNumber) : result.phoneNumber);
-
             result.userName = (request.body.userName ? (request.body.userName) : result.userName);
+            result.qualification = (request.body.qualification ? (request.body.qualification) : result.qualification);
+            result.state = (request.body.state ? (request.body.state) : result.state);
+            result.city = (request.body.city ? (request.body.city) : result.city);
+            result.designation = (request.body.designation ? (request.body.designation) : result.designation);
 
             if (request.body.email) {
                 result.email = (request.body.email ? (request.body.email).toLowerCase() : result.email)

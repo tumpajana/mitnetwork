@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import './Header.css';
 import navbarlogo from '../../Images/mitlogo.png';
 import userpic from '../../Images/userprofilepic.jpg';
-import { Redirect } from 'react-router-dom';
+import { Redirect,NavLink } from 'react-router-dom';
 // import Wall from '../Components/Wall';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -15,6 +15,7 @@ class Header extends Component {
     current: 'mail',
   }
   constructor(props) {
+   
     super(props);
     this.state = {
       redirectToReferrer: false
@@ -25,32 +26,23 @@ class Header extends Component {
 
 
   onClickButton = (ev) => {
-    console.log(ev)
-    if (ev.key === 'setting:2') { // light is the value of menuitem in string
-
+    if(ev.key === 'setting:2') { // light is the value of menuitem in string
       this.logout()
-    }
-
+    } 
   }
 
   // logout and clear session storage
   logout() {
     console.log('menu item selected');
     sessionStorage.clear();
-    this.setState({ redirectToReferrer: true })
-
-
-  }
-
-  handleClick = (e) => {
-    console.log('click ', e);
-  }
+    this.setState({redirectToReferrer:true});
+}
 
   render() {
 
     // redirect to signin after logout
     if (this.state.redirectToReferrer) {
-      return <Redirect to="/Signin" />
+      return <Redirect to ="/login"/>
     }
 
     return (
@@ -73,8 +65,8 @@ class Header extends Component {
                 mode="horizontal"
 
               >
-                <Menu.Item key="mail" >
-                  <Icon type="home" />Home
+                <Menu.Item key="mail">
+                  <Icon type="home" /><NavLink to="/wall">Home</NavLink>
              </Menu.Item>
                 <Menu.Item >
                   <Icon type="usergroup-add" />My Networks
@@ -85,7 +77,7 @@ class Header extends Component {
 
                 <SubMenu title={<span><img type="setting" className="leftalign" src={userpic} />Me<Icon type="down" /></span>} className="headersubmenu">
                   <MenuItemGroup title="">
-                    <Menu.Item key="setting:1" className="linkprfl">Edit Profile</Menu.Item>
+                    <Menu.Item key="setting:1" className="linkprfl"><NavLink to="/profile">Edit Profile</NavLink></Menu.Item>
                     <Menu.Item key="setting:2" className="linkprfl">Log out</Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
@@ -98,6 +90,7 @@ class Header extends Component {
       </div>
     );
   }
+
 }
 
 export default Header;
