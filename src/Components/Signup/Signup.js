@@ -56,6 +56,7 @@ class Signup extends Component {
     this.facebookLogin = this.facebookLogin.bind(this);
   }
 
+//Login with Facebook
   responseFacebook = (response) => {
     console.log(response);
     this.facebookInfo = response;
@@ -72,6 +73,7 @@ class Signup extends Component {
     this.facebookLogin(response, 'facebook')
   }
 
+//login with Google
   responseGoogle = (response) => {
     console.log(response, 'google');
     this.facebookInfo = response;
@@ -231,9 +233,37 @@ class Signup extends Component {
     if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
       PostData(this.state).then((result) => {
         let response = result;
-        console.log(result);
-        if(result.error==false){
-           toast.success("You have been registered successfully!", {
+        console.log(result)
+        if (response.error == false) {
+          toast.success("You have been registered successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          if (response.user) {
+            sessionStorage.setItem('userId', response.user._id);
+            this.setState({ redirectToReferrer: true });
+
+          }
+        }
+        else if (response.error == true) {
+          toast.warn("number aloready exist!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+
+      });
+    }
+    //else{
+    // alert("Form has errors.")
+    // }
+
+  }
+
+  facebookLogin = (res, type) => {
+    FacebookloginData(this.state.facebookInfo).then((result) => {
+      let response = result;
+      console.log(result);
+      if (result.error == false) {
+        toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
         if (response.userData) {
@@ -242,21 +272,19 @@ class Signup extends Component {
 
         }
         else {
-           toast.warn("num ber already exist!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+          toast.warn("num ber already exist!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
         }
-        }
-       
-
-      });
-    }
-    //else{
-    // alert("Form has errors.")
-    // }
+      }
 
 
+    });
   }
+  //else{
+  // alert("Form has errors.")
+  // }
+
 
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
