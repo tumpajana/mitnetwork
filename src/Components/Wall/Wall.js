@@ -16,6 +16,14 @@ import postLike from '../../Services/postLikeApi';
 import Post from "../Posts/post";
 import camera from '../../Images/camera.png';
 import profilePic from '../../Services/profilepicapi';
+import commentPost from "../../Services/postCommentApi";
+import getPostComments from "../../Services/getPostCommentsApi";
+
+
+import { DefaultPlayer as Video } from 'react-html5video';
+import 'react-html5video/dist/styles.css';
+
+
 
 const { TextArea } = Input;
 class Wall extends Component {
@@ -31,17 +39,24 @@ class Wall extends Component {
         title: '',
         content: ''
       },
-      postList: []
-
+      postList: [],
+      comments: {
+        comment: '',
+        postid: ''
+      }
     }
     this.postContent = this.postContent.bind(this);
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
     this.postLike = this.postLike.bind(this);
     this.imageUpload = this.imageUpload.bind(this);
+    this.writeComment = this.writeComment.bind(this);
     this.getPosts();
 
   }
+
+
+
 
   //postdata on server
   socialPost() {
@@ -138,6 +153,57 @@ class Wall extends Component {
 
   }
 
+// get comments for a post
+getComments(id){
+  getPostComments(id).then((result)=>{
+    console.log(result)
+  })
+}
+
+
+  // write comment in comment box
+  writeComment(i, e) {
+    console.log(i)
+    console.log(e.target.value);
+    console.log(i)
+    this.setState({
+      comments: {
+        comment: e.target.value,
+        postid: i
+      }
+    })
+    console.log(this.state.comments)
+  }
+
+  // post comment entered
+  postComment = (e)=> {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      console.log(this.state.comments)
+      let data={
+        comment:this.state.comments.comment,
+        postId:this.state.comments.postid,
+        userId:sessionStorage.getItem('userId')
+      }
+      commentPost(data).then((result)=>{
+        console.log('comment',result);
+        if(result.error==false){
+          toast.success("Post Liked Successfuly!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          this.getComments(result.user._id);
+          this.setState({
+            comments: {
+              comment:'',
+              postid: '' }
+          })
+        }
+       
+      })
+
+    }
+  }
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -209,7 +275,7 @@ class Wall extends Component {
               <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
               <Col span={5}>
 
-                <Upload onChange={this.imageUpload}>
+                <Upload onChange={() => { this.imageUpload }}>
                   <Button className="upldbtnwall">
                     <Icon type="upload" />Upload Image
               </Button>
@@ -236,29 +302,38 @@ class Wall extends Component {
         {this.state.postList.map((item) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
-            <div className="mitpic">
-              <Row type="flex" justify="space-around" align="middle">
-                <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
-                  <div className="userpicpost">
-                    <img src={User} />
-                  </div>
-                </Col>
-                <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-                  <p>{item.userId.userName}</p>
-                  <h3>Senior manager at denali bank</h3>
-                </Col>
-              </Row> 
-              <div className="postedimg">
-                <img src={Wallpostimg} />
-                <p><a>{item.title}</a></p>
-                <p className="sub_content"><a> {item.content}</a></p>
-              </div>
-              <div className="likecomment">
-                <h3>{item.like.length}  likes</h3>
-                <Button title="like" className="buttonsmilie" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
-                <Button title="comment"><Icon type="message" />Comment</Button>
+              <div className="mitpic">
+                <Row type="flex" justify="space-around" align="middle">
+                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                    <div className="userpicpost">
+                      <img src={User} />
+                    </div>
+                  </Col>
+                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                    <p>{item.userId.userName}</p>
+                    <h3>Senior manager at denali bank</h3>
+                  </Col>
+                </Row>
+                <div className="postedimg">
+                  {/* <img src={Wallpostimg} /> */}
+                  <Video autoPlay loop muted
+            controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+            poster="http://sourceposter.jpg"
+            onCanPlayThrough={() => {
+                // Do stuff
+            }}>
+            <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
+            <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
+        </Video>
+                  <p><a>{item.title}</a></p>
+                  <p className="sub_content"><a> {item.content}</a></p>
+                </div>
+                <div className="likecomment">
+                  <h3>{item.like.length}  likes</h3>
+                  <Button title="like" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                  <Button title="comment"><Icon type="message" />Comment</Button>
 
-              </div>
+                </div>
               </div>
               {/* ****Comment section**** */}
               <div className="commentSection">
@@ -273,7 +348,7 @@ class Wall extends Component {
                   <Col xs={21} sm={21} md={22}>
                     <div className="commentText">
                       <img src={camera} />
-                      <TextArea rows={1} />
+                      <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
 

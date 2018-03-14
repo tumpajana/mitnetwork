@@ -29,7 +29,7 @@ class Profile extends Component {
         state: '',
         redirectToReferrer: false,
       },
-
+      imagUrl: '',
       userProfile: {}
     };
 
@@ -100,7 +100,7 @@ class Profile extends Component {
     userProfile.state = e;                        //updating value
     this.setState({ userProfile });
   }
-  
+
   //update profile
   updateProfile() {
     let userData = {
@@ -139,6 +139,10 @@ class Profile extends Component {
       console.log(result);
       this.setState({ userProfile: result.result });
       console.log('userData...', this.state.userProfile)
+      if (this.state.userProfile.imageId) {
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+      }
+
     });
   }
 
@@ -157,15 +161,18 @@ class Profile extends Component {
         toast.success("Image Uploaded Successfuly!", {
           position: toast.POSITION.TOP_CENTER,
         });
-
-        // let userData = {
-        //   _id: sessionStorage.getItem('userId'),
-        //   profileImage: result.Upload._id
-        // }
-        // updateData(userData).then((result) => {
-        //   let response = result;
-        //   console.log(result)
-        // });
+        // console.log(result.upload.filr._id)
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + result.upload._id })
+        let userData = {
+          _id: sessionStorage.getItem('userId'),
+          imageId: result.upload._id
+        }
+        updateData(userData).then((result) => {
+          let response = result;
+          console.log(result);
+       
+          // this.UserProfileData();
+        });
       }
     })
   }
@@ -175,11 +182,11 @@ class Profile extends Component {
 
   edit = () => {
     console.log('Dispaly data');
- }
+  }
 
   render() {
 
-  const Option = Select.Option;
+    const Option = Select.Option;
     const { visible, loading } = this.state;
 
     function handleChange(value) {
@@ -210,8 +217,9 @@ class Profile extends Component {
 
           <div className="procard">
             <div className="userdetail">
-              <div className="userpic">
-                <img src={User} />
+              <div className="userpic">{
+                (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={User} />
+              }
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
@@ -310,7 +318,9 @@ class Profile extends Component {
             <Col span={24}>
               <div className="mitedituserback">
                 {/* <img src={editprofileimg} /> */}
-                <div className="userimage">
+                <div className="userimage">{
+                   (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
+                }
                   {/* <img src={placegholderimg} /> */}
                   <Button className="editbtn" title="Edit Profile Image">
                     <input type="file" name="file" onChange={this.profilePicUpload} />
@@ -375,6 +385,7 @@ class Profile extends Component {
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
                   name="qualification"
+                  defaultValue={this.state.userProfile.qualification}
                 />
               </Col>
             </Row>
@@ -385,7 +396,7 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" name="city" onChange={this.onChangeCity}>
+                  <Select value={this.state.userProfile.city?this.state.userProfile.city:"0"}  onChange={this.onChangeCity}>
                     <Option value="0">City</Option>
                     <Option value="Kolkata">Kolkata</Option>
                     <Option value="Delhi">Delhi</Option>
@@ -395,7 +406,7 @@ class Profile extends Component {
               </Col>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" onChange={this.onChangeState}>
+                  <Select value={this.state.userProfile.state?this.state.userProfile.state:"0"} onChange={this.onChangeState}>
                     <Option value="0">State</Option>
                     <Option value="West Bengal">West Bengal</Option>
                     <Option value="Uttar Pradesh">Uttar Pradesh</Option>
