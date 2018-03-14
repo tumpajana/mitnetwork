@@ -118,7 +118,16 @@ class Wall extends Component {
       this.getPosts();
     });
   }
+//   //color change on like
+// likeColor(){
+//   if (like.indexof(userId) >-1)
+//   {
 
+//   }
+// else{
+
+// }
+// }
 
 
   showModal = () => {
