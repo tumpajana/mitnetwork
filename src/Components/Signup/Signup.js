@@ -187,12 +187,12 @@ class Signup extends Component {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
       console.log("registration", result);
-      if (result.error == false) {
+      if (response.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
-        console.log(response);
-        if (response.userData) {
+        console.log(response.result);
+        if (response.result) {
           sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
@@ -367,19 +367,19 @@ class Signup extends Component {
                           />
                         )}
                       </FormItem>
-                      {/* <Row>
+                      <Row>
                         <div className="registerbtn">
                           <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
                           <Button className="cnclbtn">Cancel</Button>
 
                           <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
                         </div>
-                      </Row> */}
+                      </Row>
                     </form>
                   </Col>
                   <Col lg={2} sm={2} xs={0}>
 
-                    <div className="wrapperor">
+                    <div className="wrapper">
                       <div className="line"></div>
                       <div className="wordwrapper">
                         <div className="ordivider">OR</div>
@@ -420,14 +420,14 @@ class Signup extends Component {
 
 
                 </Row>
-                <Row>
+                {/* <Row>
                         <div className="registerbtn">
                           <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
                           <Button className="cnclbtn">Cancel</Button>
 
                           <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
                         </div>
-                      </Row>
+                      </Row> */}
 
 
 

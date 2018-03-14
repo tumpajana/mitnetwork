@@ -19,6 +19,12 @@ import profilePic from '../../Services/profilepicapi';
 import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 
+
+import { DefaultPlayer as Video } from 'react-html5video';
+import 'react-html5video/dist/styles.css';
+
+
+
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
@@ -48,6 +54,9 @@ class Wall extends Component {
     this.getPosts();
 
   }
+
+
+
 
   //postdata on server
   socialPost() {
@@ -307,15 +316,24 @@ getComments(id){
                   </Col>
                 </Row>
                 <div className="postedimg">
-                  <img src={Wallpostimg} />
+                  {/* <img src={Wallpostimg} /> */}
+                  <Video autoPlay loop muted
+            controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+            poster="http://sourceposter.jpg"
+            onCanPlayThrough={() => {
+                // Do stuff
+            }}>
+            <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
+            <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
+        </Video>
                   <p><a>{item.title}</a></p>
                   <p className="sub_content"><a> {item.content}</a></p>
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>
-                  <Button title="like"  onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                  <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId'))>-1)? 'messagecomment':''}  onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
                   <Button title="comment"><Icon type="message" />Comment</Button>
-                  {/* className={((item.like).indexOf(sessionStorage.getItem('userId'))>-1)? 'likecolor':'likecolor2'}  */}
+               
                 </div>
               </div>
               {/* ****Comment section**** */}

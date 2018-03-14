@@ -57,12 +57,12 @@ body{
     width:110px;
     height:110px;
     background: #ffffff;
-    background: #ffffff url(../../Images/avatar.png) no-repeat;
+    /* background: #ffffff url(../../Images/avatar.png) no-repeat; */
     background-size: 65px 65px;
     background-position: center;
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
 }
-.editbtn{
+/* .editbtn{
     position: absolute;
     right: -7px;
     bottom: 0;
@@ -72,7 +72,24 @@ body{
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
     border:none;
 
+} */
+/* ********************14th march***************************** */
+.editbtn{
+    position: absolute;
+    right: 0px;
+    bottom: 3px;
+    border-radius: 50%;
+    padding: 5px 8px;
+    background: rgb(78, 84, 186);
+    -webkit-box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.1);
+    border: none !important;
 }
+.editbtn input{
+    width: 100%;
+    display: none;
+}
+/* ********************14th march***************************** */
 .editbtn:hover{
     background: rgb(105, 64, 186);
     border:none;
@@ -92,9 +109,12 @@ body{
     font-size: 15px;
 }
 .userimage img{
-    width:100%;
-    height:100%;
-    border-radius: 50%;
+    width: 95px;
+    height: 95px;
+    padding: 10px 10px;
+    margin: 6px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 

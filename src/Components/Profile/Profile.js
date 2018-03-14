@@ -122,6 +122,8 @@ class Profile extends Component {
           position: toast.POSITION.TOP_CENTER,
         });
       }
+      console.log("Close")
+      this.setState({ visible: false });
     });
   }
 
@@ -138,11 +140,14 @@ class Profile extends Component {
       console.log(this.refs);
       console.log(result);
       this.setState({ userProfile: result.result });
-      console.log('userData...', this.state.userProfile)
+      console.log('userData...', this.state.userProfile);
+      
       if (this.state.userProfile.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+      }else if(this.state.userProfile.providerPic){
+        console.log(this.state.userProfile.providerPic);
+        this.setState({ imageUrl: this.state.userProfile.providerPic })
       }
-
     });
   }
 
@@ -170,7 +175,7 @@ class Profile extends Component {
         updateData(userData).then((result) => {
           let response = result;
           console.log(result);
-       
+          this.setState({ visible: false });
           // this.UserProfileData();
         });
       }
@@ -218,7 +223,7 @@ class Profile extends Component {
           <div className="procard">
             <div className="userdetail">
               <div className="userpic">{
-                (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
               }
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
@@ -242,7 +247,7 @@ class Profile extends Component {
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
 
-                      <Icon type="mobile" />
+                      {this.state.userProfile.phoneNumber ? <Icon type="mobile" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.phoneNumber}</p>
@@ -318,8 +323,8 @@ class Profile extends Component {
             <Col span={24}>
               <div className="mitedituserback">
                 {/* <img src={editprofileimg} /> */}
-                <div className="userimage">{
-                   (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
+                <div className="userpic">{
+                  (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
                 }
                   {/* <img src={placegholderimg} /> */}
                   <Button className="editbtn" title="Edit Profile Image">
@@ -371,7 +376,7 @@ class Profile extends Component {
               <Col span={12}>
                 <Input
                   placeholder="Enter your Designation"
-                  prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  prefix={<Icon type="profile" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
                   defaultValue={this.state.userProfile.designation}
