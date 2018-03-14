@@ -12,8 +12,8 @@ import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
 import { ToastContainer, toast } from 'react-toastify';
-
-
+import {Cropper} from 'react-image-cropper'
+// import 'react-image-crop/dist/ReactCrop.css';
 class Profile extends Component {
   constructor() {
     super();
@@ -40,6 +40,7 @@ class Profile extends Component {
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
     // this.onChangeValue = this.onChangeValue.bind(this);
+    this.myimagecropper=this.myimagecropper.bind(this);
     if (sessionStorage.userId) {
       this.UserProfileData();
     }
@@ -153,10 +154,11 @@ class Profile extends Component {
 
   //image upload of profile pic
   profilePicUpload = (event) => {
-    console.log(event.target.files)
-    let fileList = event.target.files;
-    let fileTarget = fileList;
-    let file = fileTarget[0];
+    console.log(event);
+    console.log(event.fileList)
+    let fileList = event.fileList[0];
+    // let fileTarget = fileList;
+    let file = fileList.originFileObj;
     console.log("File information :", file);
     var form = new FormData();
     form.append('file', file, file.name);
@@ -182,7 +184,14 @@ class Profile extends Component {
     })
   }
 
-
+  //image cropper
+  myimagecropper=(e)=>
+  {
+  let   x = this.refs.myimage.crop()
+  console.log(x)
+    const values = this.refs.myimage.values()
+    console.log(values)
+  }
 
 
   edit = () => {
@@ -327,16 +336,16 @@ class Profile extends Component {
                   (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
                 }
                   {/* <img src={placegholderimg} /> */}
-                  <Button className="editbtn" title="Edit Profile Image">
+                  {/* <Button className="editbtn" title="Edit Profile Image">
                     <input type="file" name="file" onChange={this.profilePicUpload} />
                     <Icon type="edit" />
-                  </Button>
-                  {/*<Upload >*/}
+                  </Button> */}
+                  <Upload  onChange={this.profilePicUpload } >
                   <Button className="editbtn">
                     <Icon type="edit" />
                   </Button>
 
-                  {/*</Upload>*/}
+                   </Upload>
                 </div>
               </div>
             </Col>
