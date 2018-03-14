@@ -131,7 +131,7 @@ button.ant-btn.postimg:hover {
 /* posted blog css start*/
 .postedpartcard{
     background:rgb(255, 255, 255);
-    padding: 15px 15px 0;
+    /* padding: 15px 15px 0; */
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
     width: 50%;
     margin: 2em auto;
@@ -365,7 +365,7 @@ and (max-width: 767px) {
 }
 .commentSection {
     background: #f3f6f8;
-    position: absolute;
+    /* position: absolute; */
     z-index:1;
     padding: 10px 19px 10px 8px;
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
@@ -418,6 +418,9 @@ span.likeTotal {
 }
 button.ant-btn.commentbutton4 {
     width: 49px;
+}
+.mitpic {
+    padding: 15px 15px 0;
 }
 .commentText {
     position: relative;

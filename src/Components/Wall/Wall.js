@@ -13,8 +13,10 @@ import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import postLike from '../../Services/postLikeApi';
-
+import Post from "../Posts/post";
 import camera from '../../Images/camera.png';
+import profilePic from '../../Services/profilepicapi';
+
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
@@ -36,6 +38,7 @@ class Wall extends Component {
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
     this.postLike = this.postLike.bind(this);
+    this.imageUpload = this.imageUpload.bind(this);
     this.getPosts();
 
   }
@@ -119,7 +122,21 @@ class Wall extends Component {
     });
   }
 
+  // upload image 
+  imageUpload = (event) => {
+    console.log(event);
+    console.log(event.fileList)
+    let fileList = event.fileList[0];
+    // let fileTarget = fileList;
+    let file = fileList.originFileObj;
+    console.log("File information :", file);
+    var form = new FormData();
+    form.append('file', file, file.name);
+    profilePic(form).then((result) => {
+      console.log(result)
+    })
 
+  }
 
   showModal = () => {
     this.setState({
@@ -192,7 +209,7 @@ class Wall extends Component {
               <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
               <Col span={5}>
 
-                <Upload >
+                <Upload onChange={this.imageUpload}>
                   <Button className="upldbtnwall">
                     <Icon type="upload" />Upload Image
               </Button>
@@ -219,6 +236,7 @@ class Wall extends Component {
         {this.state.postList.map((item) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
+            <div className="mitpic">
               <Row type="flex" justify="space-around" align="middle">
                 <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
                   <div className="userpicpost">
@@ -229,7 +247,7 @@ class Wall extends Component {
                   <p>{item.userId.userName}</p>
                   <h3>Senior manager at denali bank</h3>
                 </Col>
-              </Row>
+              </Row> 
               <div className="postedimg">
                 <img src={Wallpostimg} />
                 <p><a>{item.title}</a></p>
@@ -241,8 +259,9 @@ class Wall extends Component {
                 <Button title="comment"><Icon type="message" />Comment</Button>
 
               </div>
+              </div>
               {/* ****Comment section**** */}
-              {/* <div className="commentSection">
+              <div className="commentSection">
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={3} sm={3} md={2}>
@@ -283,7 +302,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                 </Row>
-              </div> */}
+              </div>
               {/* ****Comment section**** */}
             </div>
           </div>
