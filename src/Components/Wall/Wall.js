@@ -210,7 +210,7 @@ class Wall extends Component {
               <Col span={5}>
 
                 <Upload onChange={this.imageUpload}>
-                  <Button>
+                  <Button className="upldbtnwall">
                     <Icon type="upload" />Upload Image
               </Button>
                 </Upload>
