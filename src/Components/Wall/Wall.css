@@ -415,6 +415,9 @@ and (max-width: 767px) {
     padding-left: 0;
     margin-bottom: 0px;
 }
+button.ant-btn.messagecomment {
+    color: rgb(105, 64, 186);
+}
 p.likeReply button {
     background: transparent;
     border: none;
@@ -426,6 +429,10 @@ p.likeReply button {
     font-size: 12px;
     text-align: left;
     padding: 0;
+}
+p.likeReply button:hover {
+    color: #6940ba;
+    background: transparent;
 }
 span.likeTotal {
     font-size: 12px;
