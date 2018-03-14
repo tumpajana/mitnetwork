@@ -265,7 +265,6 @@ class Signin extends Component {
                     <Button className="cnclbtn">Cancel</Button>
                     <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
                   </div>
-
                 </Row>
                 </div>
                 

@@ -251,7 +251,7 @@ class Signup extends Component {
                   </div>
                 </div>
 
-                <Row type="flex" justify="center">
+                <Row type="flex">
 
                   <Col lg={10} sm={10} xs={24}>
                     <form onSubmit={this.handleSubmit} className="formsinput">
@@ -367,19 +367,19 @@ class Signup extends Component {
                           />
                         )}
                       </FormItem>
-                      <Row>
+                      {/* <Row>
                         <div className="registerbtn">
                           <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
                           <Button className="cnclbtn">Cancel</Button>
 
                           <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
                         </div>
-                      </Row>
+                      </Row> */}
                     </form>
                   </Col>
                   <Col lg={2} sm={2} xs={0}>
 
-                    <div className="wrapper">
+                    <div className="wrapperor">
                       <div className="line"></div>
                       <div className="wordwrapper">
                         <div className="ordivider">OR</div>
@@ -420,6 +420,17 @@ class Signup extends Component {
 
 
                 </Row>
+                <Row>
+                        <div className="registerbtn">
+                          <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                          <Button className="cnclbtn">Cancel</Button>
+
+                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                        </div>
+                      </Row>
+
+
+
               </div>
             </Col>
 
