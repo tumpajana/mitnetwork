@@ -161,7 +161,8 @@ class Profile extends Component {
         toast.success("Image Uploaded Successfuly!", {
           position: toast.POSITION.TOP_CENTER,
         });
-
+        // console.log(result.upload.filr._id)
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + result.upload._id })
         let userData = {
           _id: sessionStorage.getItem('userId'),
           imageId: result.upload._id
@@ -169,7 +170,8 @@ class Profile extends Component {
         updateData(userData).then((result) => {
           let response = result;
           console.log(result);
-          this.UserProfileData();
+       
+          // this.UserProfileData();
         });
       }
     })
@@ -316,7 +318,9 @@ class Profile extends Component {
             <Col span={24}>
               <div className="mitedituserback">
                 {/* <img src={editprofileimg} /> */}
-                <div className="userimage">
+                <div className="userimage">{
+                   (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
+                }
                   {/* <img src={placegholderimg} /> */}
                   <Button className="editbtn" title="Edit Profile Image">
                     <input type="file" name="file" onChange={this.profilePicUpload} />
@@ -381,6 +385,7 @@ class Profile extends Component {
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
                   name="qualification"
+                  defaultValue={this.state.userProfile.qualification}
                 />
               </Col>
             </Row>
@@ -391,7 +396,7 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" name="city" onChange={this.onChangeCity}>
+                  <Select value={this.state.userProfile.city?this.state.userProfile.city:"0"}  onChange={this.onChangeCity}>
                     <Option value="0">City</Option>
                     <Option value="Kolkata">Kolkata</Option>
                     <Option value="Delhi">Delhi</Option>
@@ -401,7 +406,7 @@ class Profile extends Component {
               </Col>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" onChange={this.onChangeState}>
+                  <Select value={this.state.userProfile.state?this.state.userProfile.state:"0"} onChange={this.onChangeState}>
                     <Option value="0">State</Option>
                     <Option value="West Bengal">West Bengal</Option>
                     <Option value="Uttar Pradesh">Uttar Pradesh</Option>
