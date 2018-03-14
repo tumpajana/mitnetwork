@@ -21,7 +21,8 @@ router.post('/registration', (request, response) => {
         designation:request.body.designation?(request.body.designation):null,
         city:request.body.city?(request.body.city):null,
         state:request.body.state?(request.body.state):null,
-        qualification:request.body.qualification?(request.body.qualification):null
+        qualification:request.body.qualification?(request.body.qualification):null,
+        imageId:request.body.imageId?(request.body.imageId):null
     });
     if (request.body.email) {
         data.email = (request.body.email).toLowerCase();
@@ -79,7 +80,8 @@ router.post('/socialRegistration', (request, response) => {
                 designation:request.body.designation?(request.body.designation):null,
                 city:request.body.city?(request.body.city):null,
                 state:request.body.state?(request.body.state):null,
-                qualification:request.body.qualification?(request.body.qualification):null
+                qualification:request.body.qualification?(request.body.qualification):null,
+                imageId:request.body.imageId?(request.body.imageId):null
             })
             if (request.body.email) {
                 newData.email = (request.body.email).toLowerCase();
@@ -206,6 +208,7 @@ router.put('/update', (request, response) => {
             result.state = (request.body.state ? (request.body.state) : result.state);
             result.city = (request.body.city ? (request.body.city) : result.city);
             result.designation = (request.body.designation ? (request.body.designation) : result.designation);
+            result.imageId = (request.body.imageId ? (request.body.imageId) : result.imageId);
 
             if (request.body.email) {
                 result.email = (request.body.email ? (request.body.email).toLowerCase() : result.email)
