@@ -11,7 +11,6 @@ import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
-var FormData = require('form-data');
 
 
 class Profile extends Component {
@@ -155,12 +154,11 @@ class Profile extends Component {
     // this.names = file;
     console.log("File information :", file);
     var form = new FormData();
-    form.append('file', 'Pushpendu');
-    console.log(form.entries());
-    // console.log(formData)
-    //   profilePic(formData).then((result)=>{
-    //     console.log(result)
-    //   })
+    form.append('file', file, file.name);
+
+    profilePic(form).then((result) => {
+      console.log(result)
+    })
   }
 
 
@@ -307,13 +305,13 @@ class Profile extends Component {
                 {/* <img src={editprofileimg} /> */}
                 <div className="userimage">
                   {/* <img src={placegholderimg} /> */}
-                  {/* <Button className="editbtn" title="Edit Profile Image">
-                                  <Icon type="edit" />
-                                </Button> */}
+                  <Button className="editbtn" title="Edit Profile Image">
+                    <input type="file" name="file" onChange={this.preveiwProfile} />
+                    <Icon type="edit" />
+                  </Button>
                   {/*<Upload >*/}
                   <Button className="editbtn">
                     <Icon type="edit" />
-                    <Input type="file" name="myFile" onChange={this.preveiwProfile} />
                   </Button>
 
                   {/*</Upload>*/}
