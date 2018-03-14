@@ -415,6 +415,10 @@ and (max-width: 767px) {
     padding-left: 0;
     margin-bottom: 0px;
 }
+button.ant-btn.messagecomment {
+    background-color: rgba(105, 64, 186, 0.3);
+    color: rgb(105, 64, 186);
+}
 p.likeReply button {
     background: transparent;
     border: none;
