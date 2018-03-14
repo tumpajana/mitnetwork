@@ -317,7 +317,7 @@ class Profile extends Component {
         {/* ----------MODAL SECTION FOR EDIT PROFILE start------------- */}
         <Modal
           visible={visible}
-          title="Edit Intro"
+          // title="Edit Intro"
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
@@ -331,6 +331,7 @@ class Profile extends Component {
           <Row>
             <Col span={24}>
               <div className="mitedituserback">
+              <h1 class="editIntro">Edit Intro</h1>
                 {/* <img src={editprofileimg} /> */}
                 <div className="userpic">{
                   (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
