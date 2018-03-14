@@ -30,6 +30,7 @@ class Wall extends Component {
   state = {
     loading: false,
     visible: false,
+    showPreviewIcon:true
   }
 
   constructor(props) {
@@ -43,7 +44,8 @@ class Wall extends Component {
       comments: {
         comment: '',
         postid: ''
-      }
+      },
+      imageId:''
     }
     
     this.postContent = this.postContent.bind(this);
@@ -66,7 +68,8 @@ class Wall extends Component {
     let dataSent = {
       title: this.state.posts.title,
       content: this.state.posts.content,
-      userId: sessionStorage.getItem('userId')
+      userId: sessionStorage.getItem('userId'),
+      imageId:this.state.imageId
     }
 
     WallPost(dataSent).then((result) => {
@@ -80,7 +83,12 @@ class Wall extends Component {
           content: ""
         }
       })
+<<<<<<< HEAD
       
+=======
+      this.setState({imageId:''})
+      this.setState({showPreviewIcon:false})
+>>>>>>> 5ee198b4ee2da7dca1ef84a4be385102a57ee2f2
       this.getPosts();
 
     })
@@ -151,11 +159,7 @@ class Wall extends Component {
       this.getPosts();
     });
   }
-  //   //color change on like
-  // likeColor(){
-  //   if (like.indexof(userId) >-1)
-  //   {
-
+  
   // upload image 
   imageUpload = (event) => { 
     console.log(event);
@@ -168,6 +172,7 @@ class Wall extends Component {
     form.append('file', file, file.name);
     profilePic(form).then((result) => {
       console.log(result)
+      this.setState({imageId:result.upload._id});
     })
   
   
@@ -307,7 +312,8 @@ class Wall extends Component {
               <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
               <Col span={5}>
 
-                <Upload onChange={() => { this.imageUpload }}>
+                <Upload onChange={this.imageUpload }
+                  showUploadList={this.state.showPreviewIcon}>
                   <Button className="upldbtnwall">
                     <Icon type="upload" />Upload Image
               </Button>
