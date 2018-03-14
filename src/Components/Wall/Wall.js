@@ -125,10 +125,10 @@ class Wall extends Component {
   // upload image 
   imageUpload = (event) => {
     console.log(event);
-    console.log(event.target.files)
-    let fileList = event.target.files;
-    let fileTarget = fileList;
-    let file = fileTarget[0];
+    console.log(event.fileList)
+    let fileList = event.fileList[0];
+    // let fileTarget = fileList;
+    let file = fileList.originFileObj;
     console.log("File information :", file);
     var form = new FormData();
     form.append('file', file, file.name);
