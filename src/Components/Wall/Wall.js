@@ -219,6 +219,7 @@ class Wall extends Component {
         {this.state.postList.map((item) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
+            <div className="mitpic">
               <Row type="flex" justify="space-around" align="middle">
                 <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
                   <div className="userpicpost">
@@ -229,7 +230,7 @@ class Wall extends Component {
                   <p>{item.userId.userName}</p>
                   <h3>Senior manager at denali bank</h3>
                 </Col>
-              </Row>
+              </Row> 
               <div className="postedimg">
                 <img src={Wallpostimg} />
                 <p><a>{item.title}</a></p>
@@ -241,8 +242,9 @@ class Wall extends Component {
                 <Button title="comment"><Icon type="message" />Comment</Button>
 
               </div>
+              </div>
               {/* ****Comment section**** */}
-              {/* <div className="commentSection">
+              <div className="commentSection">
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={3} sm={3} md={2}>
@@ -283,7 +285,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                 </Row>
-              </div> */}
+              </div>
               {/* ****Comment section**** */}
             </div>
           </div>
