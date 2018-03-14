@@ -149,13 +149,12 @@ class Profile extends Component {
 
   //image upload of profile pic
   profilePicUpload = (event) => {
-    console.log(event.target.files)
-   
-    let fileList = event.target.files;
-    let fileTarget = fileList;
-    let file = fileTarget[0];
+    console.log(event);
+    console.log(event.fileList)
+    let fileList = event.fileList[0];
+    // let fileTarget = fileList;
+    let file = fileList.originFileObj;
     console.log("File information :", file);
-    console.log('path',URL.createObjectURL(event.target.files[0]))
     var form = new FormData();
     form.append('file', file, file.name);
     profilePic(form).then((result) => {
@@ -180,6 +179,7 @@ class Profile extends Component {
     })
   }
 
+  //image cropper
   myimagecropper=(e)=>
   {
   let   x = this.refs.myimage.crop()
@@ -230,9 +230,6 @@ class Profile extends Component {
                 (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={User} />
               }
               </div>
-              <Cropper 
-    src={User} 
-    ref="myimage" onChange={this.myimagecropper}/>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
               <h4>{this.state.userProfile.userName} </h4>
@@ -334,16 +331,16 @@ class Profile extends Component {
                    (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
                 }
                   {/* <img src={placegholderimg} /> */}
-                  <Button className="editbtn" title="Edit Profile Image">
+                  {/* <Button className="editbtn" title="Edit Profile Image">
                     <input type="file" name="file" onChange={this.profilePicUpload} />
                     <Icon type="edit" />
-                  </Button>
-                  {/*<Upload >*/}
+                  </Button> */}
+                  <Upload  onChange={this.profilePicUpload } >
                   <Button className="editbtn">
                     <Icon type="edit" />
                   </Button>
 
-                  {/*</Upload>*/}
+                   </Upload>
                 </div>
               </div>
             </Col>
