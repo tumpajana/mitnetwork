@@ -250,7 +250,12 @@ color: rgba(0,0,0,.6);
 .likecomment button:focus .anticon-like-o:before{
 content:'\E64C';
 }
-
+.likecolor{
+    color: rgb(105, 64, 186);
+}
+.likecolor2{
+    color: rgba(0,0,0,.6);
+}
 .textareawall {
     height: 115px;
     margin-bottom: 28px;
