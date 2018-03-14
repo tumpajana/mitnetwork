@@ -13,8 +13,10 @@ import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import postLike from '../../Services/postLikeApi';
-
+import Post from "../Posts/post";
 import camera from '../../Images/camera.png';
+import profilePic from '../../Services/profilepicapi';
+
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
@@ -36,6 +38,7 @@ class Wall extends Component {
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
     this.postLike = this.postLike.bind(this);
+    this.imageUpload = this.imageUpload.bind(this);
     this.getPosts();
 
   }
@@ -119,7 +122,21 @@ class Wall extends Component {
     });
   }
 
+  // upload image 
+  imageUpload = (event) => {
+    console.log(event);
+    console.log(event.target.files)
+    let fileList = event.target.files;
+    let fileTarget = fileList;
+    let file = fileTarget[0];
+    console.log("File information :", file);
+    var form = new FormData();
+    form.append('file', file, file.name);
+    profilePic(form).then((result) => {
+      console.log(result)
+    })
 
+  }
 
   showModal = () => {
     this.setState({
@@ -192,7 +209,7 @@ class Wall extends Component {
               <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
               <Col span={5}>
 
-                <Upload >
+                <Upload onChange={this.imageUpload}>
                   <Button className="upldbtnwall">
                     <Icon type="upload" />Upload Image
               </Button>
