@@ -18,13 +18,10 @@ router.post('/registration', (request, response) => {
         userName: request.body.userName,
         name: request.body.name,
         phoneNumber: request.body.phoneNumber,
-        designation:request.body.designation,
-        city:request.body.city,
-        state:request.body.state,
-        qualification:request.body.qualification
-
-
-
+        designation:request.body.designation?(request.body.designation):null,
+        city:request.body.city?(request.body.city):null,
+        state:request.body.state?(request.body.state):null,
+        qualification:request.body.qualification?(request.body.qualification):null
     });
     if (request.body.email) {
         data.email = (request.body.email).toLowerCase();
@@ -79,10 +76,10 @@ router.post('/socialRegistration', (request, response) => {
                 providerId: request.body.providerId,
                 providerPic: request.body.providerPic,
                 token: request.body.token,
-                designation:request.body.designation,
-                city:request.body.city,
-                state:request.body.state,
-                qualification:request.body.qualification
+                designation:request.body.designation?(request.body.designation):null,
+                city:request.body.city?(request.body.city):null,
+                state:request.body.state?(request.body.state):null,
+                qualification:request.body.qualification?(request.body.qualification):null
             })
             if (request.body.email) {
                 newData.email = (request.body.email).toLowerCase();

@@ -13,7 +13,7 @@ import { Row, Col } from 'antd';
 class App extends Component {
   constructor(props){
     super(props);
-// debugger;
+debugger;
     if(sessionStorage.getItem('userId')) {
       // this.props.navigation.navigate('/wall');
         this.props.history.push('/wall');

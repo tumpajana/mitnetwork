@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Form,Input, Icon, Radio, Button } from 'antd';
+import { Form, Input, Icon, Radio, Button } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 import mitlogo from '../../Images/mitlogo.png';
-import { Redirect,NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
@@ -29,7 +29,7 @@ class Signup extends Component {
       confirmPassword: '',
       phoneNumber: '',
       redirectToReferrer: false,
-     
+
       facebookInfo: {
         name: '',
         providerName: '',
@@ -50,7 +50,7 @@ class Signup extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-//Login with Facebook
+  //Login with Facebook
   responseFacebook = (response) => {
     console.log(response);
     this.facebookInfo = response;
@@ -67,7 +67,7 @@ class Signup extends Component {
     this.facebookLogin(response, 'facebook')
   }
 
-//login with Google
+  //login with Google
   responseGoogle = (response) => {
     console.log(response, 'google');
     this.facebookInfo = response;
@@ -103,7 +103,7 @@ class Signup extends Component {
   //onchange of input feild binding
   onChangeValue = (e) => {
     console.log(e.target.name);
-    
+
     //  if(e.target.value.length != 0){
     //  if( e.target.name == 'email' && (e.target.email !=(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/))){
     //   this.setState({
@@ -113,12 +113,12 @@ class Signup extends Component {
     //   })
     // }}
 
-    
+
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
 
   }
-//validation
+  //validation
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -130,7 +130,30 @@ class Signup extends Component {
 
     });
   }
+<<<<<<< HEAD
 
+=======
+  //password validation
+  handleConfirmBlur = (e) => {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  }
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  }
+  validateToNextPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  }
+>>>>>>> 50252d8d26fabd5cc087e9b5a00b8854f96530ef
   //submit registration form
   register = () => {
     console.log('submit button');
@@ -148,7 +171,6 @@ class Signup extends Component {
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
-
           }
         }
         else if (response.error == true) {
@@ -165,15 +187,15 @@ class Signup extends Component {
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
-      console.log(result);
+      console.log("registration", result);
       if (result.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
+        console.log(response);
         if (response.userData) {
-          sessionStorage.setItem('userData', JSON.stringify(response));
+          sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
-
         }
         else {
           toast.warn("Number already exist!", {
@@ -182,7 +204,6 @@ class Signup extends Component {
         }
       }
 
-
     });
   }
   //else{
@@ -190,17 +211,17 @@ class Signup extends Component {
   // }
 
 
-  facebookLogin = (res, type) => {
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      let response = result;
-      console.log(response)
-      if (response.userData) {
-        sessionStorage.setItem('loginData', JSON.stringify(response));
-        this.setState({ redirectToReferrer: true });
-      }
+  // facebookLogin = (res, type) => {
+  //   FacebookloginData(this.state.facebookInfo).then((result) => {
+  //     let response = result;
+  //     console.log(response)
+  //     if (response.userData) {
+  //       sessionStorage.setItem('loginData', JSON.stringify(response));
+  //       this.setState({ redirectToReferrer: true });
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -237,7 +258,7 @@ class Signup extends Component {
                     <form   onSubmit={this.handleSubmit} className="formsinput">
                     <FormItem>
                     {getFieldDecorator('name', {
-            rules: [{ required: true, message: 'name is reruired' }],
+            rules: [{ required: true, message: 'name is required' }],
           })(
                       <Input
                      
@@ -257,7 +278,7 @@ class Signup extends Component {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('Username', {
-            rules: [{ required: true, message: 'Username is reruired' }],
+            rules: [{ required: true, message: 'Username is required' }],
           })(
                       <Input
                         placeholder="Username"
@@ -283,7 +304,7 @@ class Signup extends Component {
                      <FormItem>
                     {getFieldDecorator('email', {
             rules: [{  type: 'email', message: 'The input is not valid E-mail!',
-                     },{ required: true, message: 'email is reruired' }],
+                     },{ required: true, message: 'email is required' }],
           })(
                       <Input
                         placeholder=" Email"
@@ -297,7 +318,7 @@ class Signup extends Component {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('phoneNumber', {
-            rules: [{ required: true, message: 'phoneNumber is reruired' }],
+            rules: [{ required: true, message: 'phoneNumber is required' }],
           })(
                       <Input
                         placeholder=" Phone Number"
@@ -311,7 +332,14 @@ class Signup extends Component {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('password', {
+<<<<<<< HEAD
             rules: [{ required: true, message: 'password is reruired' }],
+=======
+            rules: [{ required: true, message: 'password is required', },
+            {
+              validator: this.validateToNextPassword,
+            }],
+>>>>>>> 50252d8d26fabd5cc087e9b5a00b8854f96530ef
           })(
                       <Input
                         placeholder=" Password"
@@ -326,7 +354,14 @@ class Signup extends Component {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('confirmPassword', {
+<<<<<<< HEAD
             rules: [{ required: true, message: 'confirmPassword is reruired' }],
+=======
+            rules: [{ required: true, message: 'confirmPassword is required' ,
+          }, { 
+            validator: this.compareToFirstPassword,
+          }],
+>>>>>>> 50252d8d26fabd5cc087e9b5a00b8854f96530ef
           })(
                       <Input
                         placeholder="Confirm Password"
@@ -338,11 +373,11 @@ class Signup extends Component {
                     )}
                     </FormItem>
                       <div className="registerbtn">
-                    <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                    <Button className="cnclbtn">Cancel</Button>
+                        <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                        <Button className="cnclbtn">Cancel</Button>
 
-                    <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                  </div>
+                        <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                      </div>
 
                     </form>
                   </Col>
@@ -386,7 +421,7 @@ class Signup extends Component {
 
                   </Col>
 
-                 
+
 
                 </Row>
               </div>

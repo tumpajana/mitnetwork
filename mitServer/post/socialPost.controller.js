@@ -183,19 +183,26 @@ router.put('/like', (request, response) => {
 
 //     let userId = request.body.userId;
 //     console.log(request.body);
-//     post.findOneAndUpdate({ _id: request.body.postId }, { $pull: { like: userId } }, (error, result) => {
-//         if (error) {
-//             likeResponse.error = true;
-//             likeResponse.message = `Error :` + error.message;
-//             response.status(500).json(likeResponse);
-//         } else {
-//             likeResponse.error = false;
-//             likeResponse.result = result;
-//             likeResponse.message = `Success`;
-//             response.status(200).json(likeResponse);
+//     post.findOne({
+//         postId: request.body.postId,
+//         "like": {
+//             "$elemMatch": { "like": request.query.userId }
 //         }
-//     });
+//     }),
+//         post.findOneAndUpdate({ _id: request.body.postId }, { $pull: { like: userId } }, (error, result) => {
+//             if (error) {
+//                 likeResponse.error = true;
+//                 likeResponse.message = `Error :` + error.message;
+//                 response.status(500).json(likeResponse);
+//             } else {
+//                 likeResponse.error = false;
+//                 likeResponse.result = result;
+//                 likeResponse.message = `Success`;
+//                 response.status(200).json(likeResponse);
+//             }
+//         });
 // });
+
 
 
 //Api for Delete post

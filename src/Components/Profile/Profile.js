@@ -23,7 +23,7 @@ class Profile extends Component {
         name: '',
         phoneNumber: '',
         city: '',
-        education: '',
+        qualification: '',
         designation: '',
         state: '',
         redirectToReferrer: false,
@@ -42,18 +42,20 @@ class Profile extends Component {
     if (sessionStorage.userId) {
       this.show();
     }
+
+  
   };
 
 
 
- onChange = (e) => {
+  onChange = (e) => {
     console.log('radio checked', e.target.value);
     this.setState({
       value: e.target.value,
     });
   }
 
- 
+
   state = {
     loading: false,
     visible: false,
@@ -71,6 +73,7 @@ class Profile extends Component {
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
+    console.log('button')
   }
 
 
@@ -80,7 +83,6 @@ class Profile extends Component {
     let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
     userProfile[e.target.name] = e.target.value;                        //updating value
     this.setState({ userProfile });
-
   }
 
 
@@ -106,7 +108,7 @@ class Profile extends Component {
       phoneNumber: this.state.userProfile.phoneNumber,
       city: this.state.userProfile.city,
       state: this.state.userProfile.state,
-      education: this.state.userProfile.education,
+      qualification: this.state.userProfile.qualification,
       designation: this.state.userProfile.designation,
     }
     console.log(this.state.userProfile)
@@ -151,13 +153,12 @@ class Profile extends Component {
     let file = fileTarget[0];
     // this.names = file;
     console.log("File information :", file);
-    var formData = new FormData();
-    formData.append('file', event.target.files[0]);
-    console.log(formData);
-    // console.log(formData)
-    //   profilePic(formData).then((result)=>{
-    //     console.log(result)
-    //   })
+    var form = new FormData();
+    form.append('file', file, file.name);
+
+    profilePic(form).then((result) => {
+      console.log(result)
+    })
   }
 
 
@@ -238,20 +239,20 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="home" />
+                      {this.state.userProfile.city ? <Icon type="home" />:''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>B23, lime hill, hawai road</p>
+                      <p>{this.state.userProfile.city}</p>
                     </Col>
                   </Row>
                 </Col>
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="environment-o" />
+                       {this.state.userProfile.state ? <Icon type="environment-o" />:''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>U.S.A</p>
+                      <p>{this.state.userProfile.state}</p>
                     </Col>
                   </Row>
 
@@ -261,20 +262,20 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="book" />
+                      {this.state.userProfile.qualification ? <Icon type="book" />:''} 
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>M.Tech in CSE</p>
+                      <p>{this.state.userProfile.qualification}</p>
                     </Col>
                   </Row>
                 </Col>
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      <Icon type="profile" />
+                      {this.state.userProfile.designation ? <Icon type="profile" />:''} 
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
-                      <p>Software Engineer</p>
+                      <p>{this.state.userProfile.designation}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -304,13 +305,13 @@ class Profile extends Component {
                 {/* <img src={editprofileimg} /> */}
                 <div className="userimage">
                   {/* <img src={placegholderimg} /> */}
-                  {/* <Button className="editbtn" title="Edit Profile Image">
-                                  <Icon type="edit" />
-                                </Button> */}
+                  <Button className="editbtn" title="Edit Profile Image">
+                    <input type="file" name="file" onChange={this.preveiwProfile} />
+                    <Icon type="edit" />
+                  </Button>
                   {/*<Upload >*/}
                   <Button className="editbtn">
                     <Icon type="edit" />
-                    <Input type="file" name="myFile" onChange={this.preveiwProfile} />
                   </Button>
 
                   {/*</Upload>*/}
@@ -366,7 +367,7 @@ class Profile extends Component {
                   prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
-                  name="education"
+                  name="qualification"
                 />
               </Col>
             </Row>
