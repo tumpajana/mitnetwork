@@ -34,7 +34,7 @@ class Wall extends Component {
       postList: []
 
     }
-    this.props.history.push("/login");
+    
     this.postContent = this.postContent.bind(this);
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
@@ -47,11 +47,13 @@ class Wall extends Component {
   //postdata on server
   socialPost() {
     console.log('post')
+   if((this.state.posts.title) && (this.state.posts.content)){
     let dataSent = {
       title: this.state.posts.title,
       content: this.state.posts.content,
       userId: sessionStorage.getItem('userId')
     }
+
     WallPost(dataSent).then((result) => {
       console.log(result);
       toast.success("Post Uploaded Successfuly!", {
@@ -63,12 +65,19 @@ class Wall extends Component {
           content: ""
         }
       })
+      
       this.getPosts();
 
     })
   }
+  else{
+    toast.success(" No content for this post!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+  }
 
-  //get al post
+  //get all post
   getPosts() {
     WallGet().then((result) => {
       console.log(result);
@@ -85,24 +94,28 @@ class Wall extends Component {
 
   //post title 
   postTitle = (e) => {
+    if(this.refs.quill_title.getEditorContents()){
     this.setState({
       posts: {
-        title: document.getElementById("editor-title").innerText,
+        title: this.refs.quill_title.getEditorContents(),
         content: this.state.posts.content
       }
     })
+  }
+ 
   }
 
 
   // post content
   postContent = (e) => {
+  
     this.setState({
       posts: {
         title: this.state.posts.title,
-        content: document.getElementById("editor-content").innerText
+        content: this.refs.quill_content.getEditorContents()
       }
     })
-    console.log(this.state.posts.content)
+  
   }
 
   //postlike
@@ -124,7 +137,7 @@ class Wall extends Component {
   }
 
   // upload image 
-  imageUpload = (event) => {
+  imageUpload = (event) => { 
     console.log(event);
     console.log(event.fileList)
     let fileList = event.fileList[0];
@@ -136,7 +149,8 @@ class Wall extends Component {
     profilePic(form).then((result) => {
       console.log(result)
     })
-
+  
+  
   }
 
   showModal = () => {
@@ -149,7 +163,18 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
+      console.log("Quill Title data",this.refs.quill_title.getEditorContents());
+      console.log("Quill Content data",this.refs.quill_content.getEditorContents());
     }, 2000);
+    // if(!(this.refs.quill_title.getEditorContents() && this.refs.quill_content.getEditorContents())){
+    //   // alert("please enter field");
+    //   toast.warning("Field is empty!", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
+    // else{
+    //   alert("");
+    // }
   }
 
   handleCancel = () => {
@@ -184,8 +209,8 @@ class Wall extends Component {
                 </Col>
                 <Col span={22}>
                   <div className="usrview">
-                    <h4 className="usrnamewall">{this.state.posts.title}</h4>
-                    <p className="degignationwall">{this.state.posts.content}</p>
+                    <h4 className="usrnamewall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
+                    <p className="degignationwall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
                   </div>
                 </Col>
               </Row>
@@ -235,8 +260,8 @@ class Wall extends Component {
 
         {/* posted blog html start */}
         {this.state.postList.map((item) => {
-          return <div>
-            <div className="postedpartcard" key={item._id}>
+          return <div key={item._id}>
+            <div className="postedpartcard" >
             <div className="mitpic">
               <Row type="flex" justify="space-around" align="middle">
                 <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
@@ -250,9 +275,11 @@ class Wall extends Component {
                 </Col>
               </Row> 
               <div className="postedimg">
-                <img src={Wallpostimg} />
-                <p><a>{item.title}</a></p>
-                <p className="sub_content"><a> {item.content}</a></p>
+              {/* {this.state.userProfile.state ? <Icon type="environment-o" /> : ''} */}
+              {/* <img src={Wallpostimg} /> */}
+                {item.imageId ?<img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId='+item.imageId} />:''}
+                <p contentEditable='true' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
+                <p className="sub_content" contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
               </div>
               <div className="likecomment">
                 <h3>{item.like.length}  likes</h3>
@@ -366,8 +393,8 @@ class Wall extends Component {
                   <form>
 
 
-                    <ReactQuill id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
-                    <ReactQuill id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
+                    <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
+                    <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
 
                   </form>
                 </Col>

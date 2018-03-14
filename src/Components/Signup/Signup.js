@@ -221,6 +221,16 @@ class Signup extends Component {
 
   //   });
   // }
+  //   phonenumber(inputtxt) {
+  //   var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  //   if(inputtxt.value.match(phoneno)) {
+  //     return true;
+  //   }
+  //   else {
+  //     alert("message");
+  //     return false;
+  //   }
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -257,7 +267,7 @@ class Signup extends Component {
                     <form onSubmit={this.handleSubmit} className="formsinput">
                       <FormItem>
                         {getFieldDecorator('name', {
-                          rules: [{ required: true, message: 'name is required' }],
+                          rules: [{ required: true, message: 'Name is required' }],
                         })(
                           <Input
 
@@ -303,8 +313,8 @@ class Signup extends Component {
                       <FormItem>
                         {getFieldDecorator('email', {
                           rules: [{
-                            type: 'email', message: 'The input is not valid E-mail!',
-                          }, { required: true, message: 'email is required' }],
+                            type: 'email', message: 'Please enter a valid email',
+                          }, { required: true, message: 'Email is required' }],
                         })(
                           <Input
                             placeholder=" Email"
@@ -318,14 +328,14 @@ class Signup extends Component {
                       </FormItem>
                       <FormItem>
                         {getFieldDecorator('phoneNumber', {
-                          rules: [{ required: true, message: 'phoneNumber is required' }],
+                          rules: [{ required: true, message: 'PhoneNumber is required' }],
                         })(
                           <Input
                             placeholder=" Phone Number"
                             name="phoneNumber"
 
                             prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                               
                             onChange={this.onChangeValue}
                           // value={this.state.fields["phoneNumber"]}
                           />
@@ -333,7 +343,7 @@ class Signup extends Component {
                       </FormItem>
                       <FormItem>
                         {getFieldDecorator('password', {
-                          rules: [{ required: true, message: 'password is required', },
+                          rules: [{ required: true, message: 'Password is required', },
                           {
                             validator: this.validateToNextPassword,
                           }],
@@ -353,7 +363,7 @@ class Signup extends Component {
 
                         {getFieldDecorator('confirmPassword', {
                           rules: [{
-                            required: true, message: 'confirmPassword is required',
+                            required: true, message: 'ConfirmPassword is required',
                           }, {
                             validator: this.compareToFirstPassword,
                           }],
