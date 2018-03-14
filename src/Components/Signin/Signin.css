@@ -24,7 +24,7 @@ button.ant-btn.googleplussign {
 }
 
 .formsigninmit .sociallogin {
-    /* display: flex; */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -108,11 +108,9 @@ a.loginlink {
 }
 .signinarea .formsinput{
     margin-left:11px;
+    width:100%;
 }
 .signinarea .signupwithsocial{
-    
-    display: inline-block;
-
     margin-right: 24px;
     text-align: right;
     margin-left:0;
@@ -140,7 +138,7 @@ a.loginlink {
     margin-top:0;
 }
 .signinarea .registerbtn{
-    margin-bottom:0;
+    margin-bottom:2em;
 }
 .signinarea .formsigninmit {
     padding: 1em 2em;
