@@ -326,17 +326,17 @@ class Wall extends Component {
                 </Row>
                 <div className="postedimg">
                   {/* <img src={Wallpostimg} /> */}
-                  <Video autoPlay loop muted
+                  {/* <Video autoPlay loop muted
                     controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                     poster="http://sourceposter.jpg"
-                    onCanPlayThrough={() => {
-                      // Do stuff
-                    }}>
+                    onCanPlayThrough={() => { */}
+                      {/* // Do stuff */}
+                    {/* }}>
                     <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
                     <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
-                  </Video>
-                  <p><a>{item.title}</a></p>
-                  <p className="sub_content"><a> {item.content}</a></p>
+                  </Video> */}
+                  <p><a dangerouslySetInnerHTML={{__html:item.title}}></a></p>
+                  <p className="sub_content" dangerouslySetInnerHTML={{__html:item.content}}><a></a></p>
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>
