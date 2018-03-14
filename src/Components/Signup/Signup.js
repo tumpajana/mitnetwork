@@ -130,26 +130,7 @@ class Signup extends Component {
 
     });
   }
-//password validation
-handleConfirmBlur = (e) => {
-  const value = e.target.value;
-  this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-}
-compareToFirstPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && value !== form.getFieldValue('password')) {
-    callback('Two passwords that you enter is inconsistent!');
-  } else {
-    callback();
-  }
-}
-validateToNextPassword = (rule, value, callback) => {
-  const form = this.props.form;
-  if (value && this.state.confirmDirty) {
-    form.validateFields(['confirm'], { force: true });
-  }
-  callback();
-}
+
   //submit registration form
   register = () => {
     console.log('submit button');
@@ -171,16 +152,13 @@ validateToNextPassword = (rule, value, callback) => {
           }
         }
         else if (response.error == true) {
-          toast.warn("Phonenumber/Email already exist !", {
+          toast.warn("number aloready exist!", {
             position: toast.POSITION.TOP_CENTER,
           });
         }
 
       });
     }
-    //else{
-    // alert("Form has errors.")
-    // }
 
   }
 
@@ -324,7 +302,6 @@ validateToNextPassword = (rule, value, callback) => {
                       <Input
                         placeholder=" Phone Number"
                         name="phoneNumber"
-                      
                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -334,15 +311,12 @@ validateToNextPassword = (rule, value, callback) => {
                     </FormItem>
                     <FormItem>
                     {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is reruired', },
-            {
-              validator: this.validateToNextPassword,
-            }],
+            rules: [{ required: true, message: 'password is reruired' }],
           })(
-                      <Input type="password" 
+                      <Input
                         placeholder=" Password"
                         name="password"
-                        // type="password"
+                        name="password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                         onChange={this.onChangeValue}
@@ -350,15 +324,11 @@ validateToNextPassword = (rule, value, callback) => {
                       />
                     )}
                     </FormItem>
-                    <FormItem >
-                    
+                    <FormItem>
                     {getFieldDecorator('confirmPassword', {
-            rules: [{ required: true, message: 'confirmPassword is reruired' ,
-          }, { 
-            validator: this.compareToFirstPassword,
-          }],
+            rules: [{ required: true, message: 'confirmPassword is reruired' }],
           })(
-                      <Input type="password" onBlur={this.handleConfirmBlur} 
+                      <Input
                         placeholder="Confirm Password"
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         name="confirmPassword"

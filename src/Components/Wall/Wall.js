@@ -30,6 +30,7 @@ class Wall extends Component {
       postList:[]
 
     }
+    this.props.history.push("/login");
     this.postContent = this.postContent.bind(this);
     this.postTitle= this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);

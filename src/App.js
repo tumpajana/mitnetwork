@@ -11,6 +11,18 @@ import Wall from './Components/Wall/Wall';
 import { Row, Col } from 'antd';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+// debugger;
+    if(sessionStorage.getItem('userId')) {
+      // this.props.navigation.navigate('/wall');
+        this.props.history.push('/wall');
+      }
+      else{
+        // this.props.history.push('/login');
+        return;
+      }
+    }
   render() {
     return (
       <div className="App">
