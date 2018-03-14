@@ -127,6 +127,7 @@ class Wall extends Component {
       userId: sessionStorage.getItem("userId"),
       postId: id
     }
+   
     postLike(likeData).then((result) => {
       let response = result;
       console.log(result)
@@ -136,6 +137,10 @@ class Wall extends Component {
       this.getPosts();
     });
   }
+//   //color change on like
+// likeColor(){
+//   if (like.indexof(userId) >-1)
+//   {
 
   // upload image 
   imageUpload = (event) => {
@@ -330,9 +335,9 @@ getComments(id){
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>
-                  <Button title="like" onClick={() => { this.postLike(item._id) }} className="messagecomment"><Icon type="like-o" />Likes</Button>
+                  <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId'))>-1)? 'messagecomment':''}  onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
                   <Button title="comment"><Icon type="message" />Comment</Button>
-
+               
                 </div>
               </div>
               {/* ****Comment section**** */}

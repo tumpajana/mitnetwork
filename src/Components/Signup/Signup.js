@@ -48,6 +48,7 @@ class Signup extends Component {
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
   }
 
   //Login with Facebook
@@ -187,12 +188,12 @@ class Signup extends Component {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
       console.log("registration", result);
-      if (result.error == false) {
+      if (response.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
-        console.log(response);
-        if (response.userData) {
+        console.log(response.result);
+        if (response.result) {
           sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
