@@ -11,6 +11,7 @@ import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 class Profile extends Component {
@@ -32,7 +33,7 @@ class Profile extends Component {
       userProfile: {}
     };
 
-    this.show = this.show.bind(this);
+    this.UserProfileData = this.UserProfileData.bind(this);
     this.showModal = this.showModal.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
@@ -40,10 +41,10 @@ class Profile extends Component {
     this.onChangeState = this.onChangeState.bind(this);
     // this.onChangeValue = this.onChangeValue.bind(this);
     if (sessionStorage.userId) {
-      this.show();
+      this.UserProfileData();
     }
 
-  
+
   };
 
 
@@ -99,6 +100,7 @@ class Profile extends Component {
     userProfile.state = e;                        //updating value
     this.setState({ userProfile });
   }
+  
   //update profile
   updateProfile() {
     let userData = {
@@ -114,7 +116,12 @@ class Profile extends Component {
     console.log(this.state.userProfile)
     updateData(userData).then((result) => {
       let response = result;
-      console.log(result)
+      console.log(result);
+      if (response.error == false) {
+        toast.success("Profile Updated Successfuly!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     });
   }
 
@@ -123,41 +130,43 @@ class Profile extends Component {
     this.setState({ visible: false });
   }
 
-  //  //show profile
-
-  show = () => {
-    //  this.refs.username.value="abcd";
-
-    console.log('submit button');
+  // get user profile details
+  UserProfileData = () => {
     let _base = this;
     getUserProfile(sessionStorage.getItem("userId")).then((result) => {
       let response = result;
       console.log(this.refs);
       console.log(result);
       this.setState({ userProfile: result.result });
-
       console.log('userData...', this.state.userProfile)
-
-      //  this.refs.username.value=this.state.userProfile.userName;
-
     });
-
-
   }
-  preveiwProfile = (event) => {
-    console.log(event.target.files)
-    //   preveiwProfile(event) {
 
+  //image upload of profile pic
+  profilePicUpload = (event) => {
+    console.log(event.target.files)
     let fileList = event.target.files;
     let fileTarget = fileList;
     let file = fileTarget[0];
-    // this.names = file;
     console.log("File information :", file);
     var form = new FormData();
     form.append('file', file, file.name);
-
     profilePic(form).then((result) => {
-      console.log(result)
+      console.log('pic uploaded', result);
+      if (result.error == false) {
+        toast.success("Image Uploaded Successfuly!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+
+        // let userData = {
+        //   _id: sessionStorage.getItem('userId'),
+        //   profileImage: result.Upload._id
+        // }
+        // updateData(userData).then((result) => {
+        //   let response = result;
+        //   console.log(result)
+        // });
+      }
     })
   }
 
@@ -166,13 +175,11 @@ class Profile extends Component {
 
   edit = () => {
     console.log('Dispaly data');
-
-
-  }
+ }
 
   render() {
 
-    const Option = Select.Option;
+  const Option = Select.Option;
     const { visible, loading } = this.state;
 
     function handleChange(value) {
@@ -239,7 +246,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      {this.state.userProfile.city ? <Icon type="home" />:''}
+                      {this.state.userProfile.city ? <Icon type="home" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.city}</p>
@@ -249,7 +256,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                       {this.state.userProfile.state ? <Icon type="environment-o" />:''}
+                      {this.state.userProfile.state ? <Icon type="environment-o" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.state}</p>
@@ -262,7 +269,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      {this.state.userProfile.qualification ? <Icon type="book" />:''} 
+                      {this.state.userProfile.qualification ? <Icon type="book" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.qualification}</p>
@@ -272,7 +279,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      {this.state.userProfile.designation ? <Icon type="profile" />:''} 
+                      {this.state.userProfile.designation ? <Icon type="profile" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.designation}</p>
@@ -306,7 +313,7 @@ class Profile extends Component {
                 <div className="userimage">
                   {/* <img src={placegholderimg} /> */}
                   <Button className="editbtn" title="Edit Profile Image">
-                    <input type="file" name="file" onChange={this.preveiwProfile} />
+                    <input type="file" name="file" onChange={this.profilePicUpload} />
                     <Icon type="edit" />
                   </Button>
                   {/*<Upload >*/}
@@ -424,7 +431,7 @@ class Profile extends Component {
 
         </Modal>
         {/* ----------MODAL SECTION FOR EDIT PROFILE end------------- */}
-
+        <ToastContainer autoClose={2000} />
       </div>
     );
   }
