@@ -48,6 +48,7 @@ class Signup extends Component {
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
   }
 
   //Login with Facebook
@@ -187,12 +188,12 @@ class Signup extends Component {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
       console.log("registration", result);
-      if (result.error == false) {
+      if (response.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
-        console.log(response);
-        if (response.userData) {
+        console.log(response.result);
+        if (response.result) {
           sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
@@ -261,7 +262,7 @@ class Signup extends Component {
                   </div>
                 </div>
 
-                <Row type="flex" justify="center">
+                <Row type="flex">
 
                   <Col lg={10} sm={10} xs={24}>
                     <form onSubmit={this.handleSubmit} className="formsinput">
@@ -430,6 +431,17 @@ class Signup extends Component {
 
 
                 </Row>
+                {/* <Row>
+                        <div className="registerbtn">
+                          <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                          <Button className="cnclbtn">Cancel</Button>
+
+                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                        </div>
+                      </Row> */}
+
+
+
               </div>
             </Col>
 
