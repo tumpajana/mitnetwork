@@ -2,9 +2,17 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 const postSchema = mongoose.Schema({
 
-    comment:{
-        type:String
-    },
+    comments:[{
+        comment:{
+            type:String
+        },
+        userId:{
+            type:Schema.ObjectId,
+            ref: 'user'
+        }
+    }]
+    
+    ,
     title:{
          type:String
     },
@@ -56,4 +64,10 @@ const postSchema = mongoose.Schema({
         this.populate('imageId');
         next();
     });
+
+    postSchema.pre('findOneAndUpdate', function (next) {
+        this.populate('userId');
+        next();
+    });
+   
     const post = module.exports = mongoose.model('post', postSchema);

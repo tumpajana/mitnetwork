@@ -383,7 +383,7 @@ class Profile extends Component {
               <Col span={12}>
                 <Input
                   placeholder="Enter your Designation"
-                  prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  prefix={<Icon type="profile" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
                   defaultValue={this.state.userProfile.designation}
