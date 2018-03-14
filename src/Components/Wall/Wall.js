@@ -255,7 +255,7 @@ class Wall extends Component {
               </div>
               <div className="likecomment">
                 <h3>{item.like.length}  likes</h3>
-                <Button title="like" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                <Button title="like" className="buttonsmilie" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
                 <Button title="comment"><Icon type="message" />Comment</Button>
 
               </div>
