@@ -205,11 +205,11 @@ class Signin extends Component {
                       </FormItem>
 
 
-                      {/* <div className="registerbtn">
+                      <div className="registerbtn">
                         <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
                         <Button className="cnclbtn">Cancel</Button>
                         <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
-                      </div> */}
+                      </div>
 
                     </form>
                   </Col>
@@ -259,14 +259,13 @@ class Signin extends Component {
 
 
                 </Row>
-                <Row>
+                {/* <Row>
                   <div className="registerbtn">
                     <Button className="sbmtbtn" type="primary" htmlType="submit" onClick={this.login}>Submit</Button>
                     <Button className="cnclbtn">Cancel</Button>
                     <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
                   </div>
-
-                </Row>
+                </Row> */}
                 </div>
                 
               
