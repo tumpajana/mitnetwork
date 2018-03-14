@@ -17,6 +17,12 @@ import Post from "../Posts/post";
 import camera from '../../Images/camera.png';
 import profilePic from '../../Services/profilepicapi';
 
+
+import { DefaultPlayer as Video } from 'react-html5video';
+import 'react-html5video/dist/styles.css';
+
+
+
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
@@ -42,6 +48,9 @@ class Wall extends Component {
     this.getPosts();
 
   }
+
+
+
 
   //postdata on server
   socialPost() {
@@ -249,7 +258,23 @@ class Wall extends Component {
                 </Col>
               </Row> 
               <div className="postedimg">
-                <img src={Wallpostimg} />
+                {/* <img src={Wallpostimg} /> */}
+
+
+
+      <Video autoPlay loop muted
+            controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+            poster="http://sourceposter.jpg"
+            onCanPlayThrough={() => {
+                // Do stuff
+            }}>
+            <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
+            <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
+        </Video>
+
+
+
+
                 <p><a>{item.title}</a></p>
                 <p className="sub_content"><a> {item.content}</a></p>
               </div>
