@@ -11,6 +11,7 @@ import Wall from './Components/Wall/Wall';
 import { Row, Col } from 'antd';
 
 class App extends Component {
+ 
   render() {
     return (
       <div className="App">

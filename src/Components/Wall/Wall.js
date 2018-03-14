@@ -47,6 +47,7 @@ class Wall extends Component {
       },
       imageId:''
     }
+    
     this.postContent = this.postContent.bind(this);
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
@@ -63,12 +64,14 @@ class Wall extends Component {
   //postdata on server
   socialPost() {
     console.log('post')
+   if((this.state.posts.title) && (this.state.posts.content)){
     let dataSent = {
       title: this.state.posts.title,
       content: this.state.posts.content,
       userId: sessionStorage.getItem('userId'),
       imageId:this.state.imageId
     }
+
     WallPost(dataSent).then((result) => {
       console.log(result);
       toast.success("Post Uploaded Successfuly!", {
@@ -86,8 +89,14 @@ class Wall extends Component {
 
     })
   }
+  else{
+    toast.success(" No content for this post!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+  }
 
-  //get al post
+  //get all post
   getPosts() {
     WallGet().then((result) => {
       console.log(result);
@@ -104,24 +113,28 @@ class Wall extends Component {
 
   //post title 
   postTitle = (e) => {
+    if(this.refs.quill_title.getEditorContents()){
     this.setState({
       posts: {
-        title: document.getElementById("editor-title").innerText,
+        title: this.refs.quill_title.getEditorContents(),
         content: this.state.posts.content
       }
     })
+  }
+ 
   }
 
 
   // post content
   postContent = (e) => {
+  
     this.setState({
       posts: {
         title: this.state.posts.title,
-        content: document.getElementById("editor-content").innerText
+        content: this.refs.quill_content.getEditorContents()
       }
     })
-    console.log(this.state.posts.content)
+  
   }
 
   //postlike
@@ -144,7 +157,7 @@ class Wall extends Component {
   }
   
   // upload image 
-  imageUpload = (event) => {
+  imageUpload = (event) => { 
     console.log(event);
     console.log(event.fileList)
     let fileList = event.fileList[0];
@@ -157,7 +170,8 @@ class Wall extends Component {
       console.log(result)
       this.setState({imageId:result.upload._id});
     })
-
+  
+  
   }
 
   // get comments for a post
@@ -222,7 +236,18 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
+      console.log("Quill Title data",this.refs.quill_title.getEditorContents());
+      console.log("Quill Content data",this.refs.quill_content.getEditorContents());
     }, 2000);
+    // if(!(this.refs.quill_title.getEditorContents() && this.refs.quill_content.getEditorContents())){
+    //   // alert("please enter field");
+    //   toast.warning("Field is empty!", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
+    // else{
+    //   alert("");
+    // }
   }
 
   handleCancel = () => {
@@ -257,8 +282,8 @@ class Wall extends Component {
                 </Col>
                 <Col span={22}>
                   <div className="usrview">
-                    <h4 className="usrnamewall">{this.state.posts.title}</h4>
-                    <p className="degignationwall">{this.state.posts.content}</p>
+                    <h4 className="usrnamewall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
+                    <p className="degignationwall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
                   </div>
                 </Col>
               </Row>
@@ -321,7 +346,7 @@ class Wall extends Component {
                   </Col>
                   <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
                     <p>{item.userId.userName}</p>
-                    <h3>Senior manager at denali bank</h3>
+                    <h3>{item.userId.designation}</h3>
                   </Col>
                 </Row>
                 <div className="postedimg">
@@ -335,8 +360,9 @@ class Wall extends Component {
                     <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
                     <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
                   </Video> */}
-                  <p><a dangerouslySetInnerHTML={{__html:item.title}}></a></p>
-                  <p className="sub_content" dangerouslySetInnerHTML={{__html:item.content}}><a></a></p>
+                  {item.imageId ?<img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId='+item.imageId._id} />:''}
+                <p contentEditable='true' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
+                <p className="sub_content" contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>
@@ -450,8 +476,8 @@ class Wall extends Component {
                   <form>
 
 
-                    <ReactQuill id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
-                    <ReactQuill id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
+                    <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
+                    <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
 
                   </form>
                 </Col>
