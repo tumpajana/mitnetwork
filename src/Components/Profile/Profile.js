@@ -29,7 +29,7 @@ class Profile extends Component {
         state: '',
         redirectToReferrer: false,
       },
-
+      imagUrl: '',
       userProfile: {}
     };
 
@@ -100,7 +100,7 @@ class Profile extends Component {
     userProfile.state = e;                        //updating value
     this.setState({ userProfile });
   }
-  
+
   //update profile
   updateProfile() {
     let userData = {
@@ -139,6 +139,10 @@ class Profile extends Component {
       console.log(result);
       this.setState({ userProfile: result.result });
       console.log('userData...', this.state.userProfile)
+      if (this.state.userProfile.imageId) {
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+      }
+
     });
   }
 
@@ -164,7 +168,8 @@ class Profile extends Component {
         }
         updateData(userData).then((result) => {
           let response = result;
-          console.log(result)
+          console.log(result);
+          this.UserProfileData();
         });
       }
     })
@@ -175,11 +180,11 @@ class Profile extends Component {
 
   edit = () => {
     console.log('Dispaly data');
- }
+  }
 
   render() {
 
-  const Option = Select.Option;
+    const Option = Select.Option;
     const { visible, loading } = this.state;
 
     function handleChange(value) {
@@ -210,8 +215,9 @@ class Profile extends Component {
 
           <div className="procard">
             <div className="userdetail">
-              <div className="userpic">
-                <img src={User} />
+              <div className="userpic">{
+                (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={User} />
+              }
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
