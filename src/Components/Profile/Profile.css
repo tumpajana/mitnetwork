@@ -31,6 +31,14 @@ body{
 .editprofileform{
     padding:25px;
 }
+h1.editIntro {
+    padding-top: 11px;
+    color: #fff;
+    padding-left: 1em;
+}
+ span.ant-modal-close-x {
+    color: #fff;
+}
 .mitedituserback img{
     width:100%;
     height:auto;
