@@ -127,7 +127,7 @@ class Wall extends Component {
       userId: sessionStorage.getItem("userId"),
       postId: id
     }
-   
+
     postLike(likeData).then((result) => {
       let response = result;
       console.log(result)
@@ -137,10 +137,10 @@ class Wall extends Component {
       this.getPosts();
     });
   }
-//   //color change on like
-// likeColor(){
-//   if (like.indexof(userId) >-1)
-//   {
+  //   //color change on like
+  // likeColor(){
+  //   if (like.indexof(userId) >-1)
+  //   {
 
   // upload image 
   imageUpload = (event) => {
@@ -158,12 +158,12 @@ class Wall extends Component {
 
   }
 
-// get comments for a post
-getComments(id){
-  getPostComments(id).then((result)=>{
-    console.log(result)
-  })
-}
+  // get comments for a post
+  getComments(id) {
+    getPostComments(id).then((result) => {
+      console.log(result)
+    })
+  }
 
 
   // write comment in comment box
@@ -181,29 +181,30 @@ getComments(id){
   }
 
   // post comment entered
-  postComment = (e)=> {
+  postComment = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       console.log(this.state.comments)
-      let data={
-        comment:this.state.comments.comment,
-        postId:this.state.comments.postid,
-        userId:sessionStorage.getItem('userId')
+      let data = {
+        comment: this.state.comments.comment,
+        postId: this.state.comments.postid,
+        userId: sessionStorage.getItem('userId')
       }
-      commentPost(data).then((result)=>{
-        console.log('comment',result);
-        if(result.error==false){
+      commentPost(data).then((result) => {
+        console.log('comment', result);
+        if (result.error == false) {
           toast.success("Post Liked Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
           });
           this.getComments(result.user._id);
           this.setState({
             comments: {
-              comment:'',
-              postid: '' }
+              comment: '',
+              postid: ''
+            }
           })
         }
-       
+
       })
 
     }
@@ -248,9 +249,9 @@ getComments(id){
               <Row>
                 <Col span={2}>
 
-                  <div className="userprflimg">
+                  {/* <div className="userprflimg">
                     <img src={usrimgwall} />
-                  </div>
+                  </div> */}
                 </Col>
                 <Col span={22}>
                   <div className="usrview">
@@ -310,8 +311,9 @@ getComments(id){
               <div className="mitpic">
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
-                    <div className="userpicpost">
-                      <img src={User} />
+                    <div className="userpicpost">{
+                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : <img src={User} />
+                    }
                     </div>
                   </Col>
                   <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
@@ -322,22 +324,22 @@ getComments(id){
                 <div className="postedimg">
                   {/* <img src={Wallpostimg} /> */}
                   <Video autoPlay loop muted
-            controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-            poster="http://sourceposter.jpg"
-            onCanPlayThrough={() => {
-                // Do stuff
-            }}>
-            <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
-            <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
-        </Video>
+                    controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+                    poster="http://sourceposter.jpg"
+                    onCanPlayThrough={() => {
+                      // Do stuff
+                    }}>
+                    <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
+                    <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
+                  </Video>
                   <p><a>{item.title}</a></p>
                   <p className="sub_content"><a> {item.content}</a></p>
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>
-                  <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId'))>-1)? 'messagecomment':''}  onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                  <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
                   <Button title="comment"><Icon type="message" />Comment</Button>
-               
+
                 </div>
               </div>
               {/* ****Comment section**** */}
