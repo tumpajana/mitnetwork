@@ -243,7 +243,7 @@ class Signup extends Component {
               </div>
 
             </Col>
-            <Col lg={15} sm={24} xs={24} className="centercontent">
+            <Col lg={15} sm={24} xs={24} className="">
               <div className="formsigninmit1">
                 <div className="formarea">
                   <div className="formheading">
