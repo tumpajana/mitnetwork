@@ -11,9 +11,9 @@ import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
-var FormData = require('form-data');
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import {Cropper} from 'react-image-cropper'
+// import 'react-image-crop/dist/ReactCrop.css';
 class Profile extends Component {
   constructor() {
     super();
@@ -29,22 +29,23 @@ class Profile extends Component {
         state: '',
         redirectToReferrer: false,
       },
-
+      imagUrl: '',
       userProfile: {}
     };
 
-    this.show = this.show.bind(this);
+    this.UserProfileData = this.UserProfileData.bind(this);
     this.showModal = this.showModal.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
     // this.onChangeValue = this.onChangeValue.bind(this);
+    this.myimagecropper=this.myimagecropper.bind(this);
     if (sessionStorage.userId) {
-      this.show();
+      this.UserProfileData();
     }
 
-  
+
   };
 
 
@@ -100,6 +101,7 @@ class Profile extends Component {
     userProfile.state = e;                        //updating value
     this.setState({ userProfile });
   }
+
   //update profile
   updateProfile() {
     let userData = {
@@ -115,7 +117,12 @@ class Profile extends Component {
     console.log(this.state.userProfile)
     updateData(userData).then((result) => {
       let response = result;
-      console.log(result)
+      console.log(result);
+      if (response.error == false) {
+        toast.success("Profile Updated Successfuly!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     });
   }
 
@@ -124,52 +131,66 @@ class Profile extends Component {
     this.setState({ visible: false });
   }
 
-  //  //show profile
-
-  show = () => {
-    //  this.refs.username.value="abcd";
-
-    console.log('submit button');
+  // get user profile details
+  UserProfileData = () => {
     let _base = this;
     getUserProfile(sessionStorage.getItem("userId")).then((result) => {
       let response = result;
       console.log(this.refs);
       console.log(result);
       this.setState({ userProfile: result.result });
-
       console.log('userData...', this.state.userProfile)
-
-      //  this.refs.username.value=this.state.userProfile.userName;
+      if (this.state.userProfile.imageId) {
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+      }
 
     });
-
-
   }
-  preveiwProfile = (event) => {
-    console.log(event.target.files)
-    //   preveiwProfile(event) {
 
+  //image upload of profile pic
+  profilePicUpload = (event) => {
+    console.log(event.target.files)
+   
     let fileList = event.target.files;
     let fileTarget = fileList;
     let file = fileTarget[0];
-    // this.names = file;
     console.log("File information :", file);
+    console.log('path',URL.createObjectURL(event.target.files[0]))
     var form = new FormData();
-    form.append('file', 'Pushpendu');
-    console.log(form.entries());
-    // console.log(formData)
-    //   profilePic(formData).then((result)=>{
-    //     console.log(result)
-    //   })
+    form.append('file', file, file.name);
+    profilePic(form).then((result) => {
+      console.log('pic uploaded', result);
+      if (result.error == false) {
+        toast.success("Image Uploaded Successfuly!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        // console.log(result.upload.filr._id)
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + result.upload._id })
+        let userData = {
+          _id: sessionStorage.getItem('userId'),
+          imageId: result.upload._id
+        }
+        updateData(userData).then((result) => {
+          let response = result;
+          console.log(result);
+       
+          // this.UserProfileData();
+        });
+      }
+    })
   }
 
-
+  myimagecropper=(e)=>
+  {
+  let   x = this.refs.myimage.crop()
+  console.log(x)
+    const values = this.refs.myimage.values()
+    console.log(values)
+  }
 
 
   edit = () => {
     console.log('Dispaly data');
-
-
   }
 
   render() {
@@ -205,9 +226,13 @@ class Profile extends Component {
 
           <div className="procard">
             <div className="userdetail">
-              <div className="userpic">
-                <img src={User} />
+              <div className="userpic">{
+                (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={User} />
+              }
               </div>
+              <Cropper 
+    src={User} 
+    ref="myimage" onChange={this.myimagecropper}/>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
               <h4>{this.state.userProfile.userName} </h4>
@@ -241,7 +266,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      {this.state.userProfile.city ? <Icon type="home" />:''}
+                      {this.state.userProfile.city ? <Icon type="home" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.city}</p>
@@ -251,7 +276,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                       {this.state.userProfile.state ? <Icon type="environment-o" />:''}
+                      {this.state.userProfile.state ? <Icon type="environment-o" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.state}</p>
@@ -264,7 +289,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      {this.state.userProfile.qualification ? <Icon type="book" />:''} 
+                      {this.state.userProfile.qualification ? <Icon type="book" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.qualification}</p>
@@ -274,7 +299,7 @@ class Profile extends Component {
                 <Col md={{ span: 10 }} sm={{ span: 10 }} xs={{ span: 24 }}>
                   <Row>
                     <Col md={{ span: 5 }} sm={{ span: 5 }} xs={{ span: 8 }}>
-                      {this.state.userProfile.designation ? <Icon type="profile" />:''} 
+                      {this.state.userProfile.designation ? <Icon type="profile" /> : ''}
                     </Col>
                     <Col md={{ span: 19 }} sm={{ span: 21 }} xs={{ span: 16 }}>
                       <p>{this.state.userProfile.designation}</p>
@@ -305,15 +330,17 @@ class Profile extends Component {
             <Col span={24}>
               <div className="mitedituserback">
                 {/* <img src={editprofileimg} /> */}
-                <div className="userimage">
+                <div className="userimage">{
+                   (this.state.userProfile.imageId) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
+                }
                   {/* <img src={placegholderimg} /> */}
-                  {/* <Button className="editbtn" title="Edit Profile Image">
-                                  <Icon type="edit" />
-                                </Button> */}
+                  <Button className="editbtn" title="Edit Profile Image">
+                    <input type="file" name="file" onChange={this.profilePicUpload} />
+                    <Icon type="edit" />
+                  </Button>
                   {/*<Upload >*/}
                   <Button className="editbtn">
                     <Icon type="edit" />
-                    <Input type="file" name="myFile" onChange={this.preveiwProfile} />
                   </Button>
 
                   {/*</Upload>*/}
@@ -370,6 +397,7 @@ class Profile extends Component {
                   onChange={this.onChangeValue}
                   ref={node => this.userNameInput = node}
                   name="qualification"
+                  defaultValue={this.state.userProfile.qualification}
                 />
               </Col>
             </Row>
@@ -380,7 +408,7 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" name="city" onChange={this.onChangeCity}>
+                  <Select value={this.state.userProfile.city?this.state.userProfile.city:"0"}  onChange={this.onChangeCity}>
                     <Option value="0">City</Option>
                     <Option value="Kolkata">Kolkata</Option>
                     <Option value="Delhi">Delhi</Option>
@@ -390,7 +418,7 @@ class Profile extends Component {
               </Col>
               <Col span={12}>
                 <div>
-                  <Select defaultValue="0" onChange={this.onChangeState}>
+                  <Select value={this.state.userProfile.state?this.state.userProfile.state:"0"} onChange={this.onChangeState}>
                     <Option value="0">State</Option>
                     <Option value="West Bengal">West Bengal</Option>
                     <Option value="Uttar Pradesh">Uttar Pradesh</Option>
@@ -426,7 +454,7 @@ class Profile extends Component {
 
         </Modal>
         {/* ----------MODAL SECTION FOR EDIT PROFILE end------------- */}
-
+        <ToastContainer autoClose={2000} />
       </div>
     );
   }
