@@ -158,14 +158,14 @@ class Profile extends Component {
           position: toast.POSITION.TOP_CENTER,
         });
 
-        // let userData = {
-        //   _id: sessionStorage.getItem('userId'),
-        //   profileImage: result.Upload._id
-        // }
-        // updateData(userData).then((result) => {
-        //   let response = result;
-        //   console.log(result)
-        // });
+        let userData = {
+          _id: sessionStorage.getItem('userId'),
+          imageId: result.upload._id
+        }
+        updateData(userData).then((result) => {
+          let response = result;
+          console.log(result)
+        });
       }
     })
   }
