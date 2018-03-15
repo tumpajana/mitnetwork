@@ -31,7 +31,8 @@ class Profile extends Component {
         redirectToReferrer: false,
       },
       imagUrl: '',
-      userProfile: {}
+      userProfile: {},
+      userName: ''
     };
 
     this.UserProfileData = this.UserProfileData.bind(this);
@@ -142,6 +143,8 @@ class Profile extends Component {
       console.log(this.refs);
       console.log(result);
       this.setState({ userProfile: result.result });
+      this.setState({ userName: result.result.name });
+      console.log(this.state.userName);
       console.log('userData...', this.state.userProfile);
 
       if (this.state.userProfile.imageId) {
@@ -223,7 +226,8 @@ class Profile extends Component {
       <div className="App">
 
         {/* navbar section start */}
-        <Header></Header>
+
+        <Header ></Header>
         {/* navbar section end */}
 
         {/* profile view section start */}

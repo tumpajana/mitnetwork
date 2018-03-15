@@ -175,12 +175,14 @@ class Signin extends Component {
 
                   <Col lg={10} sm={10} xs={24} className="signinarea">
                     <form onSubmit={this.handleSubmit} className="formsinput">
-                      <FormItem>
+                    <FormItem>
                         {getFieldDecorator('email', {
-                          rules: [{ required: true, message: 'Username is required' }],
+                          rules: [{
+                            type: 'email', message: '*please enter a valid email',
+                          }, { required: true, message: '*email required' }],
                         })(
                           <Input
-                            placeholder="Username"
+                            placeholder="Email"
                             type="email"
                             name="email"
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -191,13 +193,14 @@ class Signin extends Component {
 
                       <FormItem>
                         {getFieldDecorator('password', {
-                          rules: [{ required: true, message: 'Password is required' }],
+                          rules: [{ required: true, message: '*password required' }],
                         })(
                           <Input
                             placeholder=" Password"
                             type="password"
                             name="password"
-                            type="password"
+                            minlength="6"
+                            maxlength="10"
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             onChange={this.onChangeLoginName}
                           />
