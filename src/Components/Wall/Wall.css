@@ -1,9 +1,13 @@
+.postsec{
+    /* background:rgb(255, 255, 255);
 .postsec {
     background: rgb(255, 255, 255);
     padding: 20px 15px 15px;
     box-shadow: 0px 3px 8px 1px rgba(0, 0, 0, 0.05);
     width: 50%;
     margin: 30px auto 15px;
+    height: auto; */
+    padding: 20px 15px 15px;
     height: auto;
 }
 
@@ -43,7 +47,7 @@ button.ant-btn.upldbtnwall {
     margin-right: 5px;
     border-radius: 30px;
     font-weight: 600;
-    margin-left: 25px;
+    /* margin-left: 25px; */
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
@@ -347,12 +351,13 @@ h4.usrnamewall {
 
 hr.dividerwall {
     border-top: 1px solid #e2e2e2;
-    margin-left: -15px;
-    margin-right: -15px;
+    /* margin-left: -15px;
+    margin-right: -15px; */
 }
 
 .usrview {
-    margin-left: 7px;
+    /* margin-left: 7px; */
+    margin-left:18px;
 }
 
 p.degignationwall {
@@ -373,8 +378,66 @@ p.degignationwall {
     font-family: Lato;
     font-size: 14px;
 }
-
-@media only screen and (min-width: 320px) and (max-width: 767px) {
+/* ************************************15th march *********************************** */
+.usrview h3{
+    text-align:left;
+    text-transform:capitalize;
+    margin:7px 0 0;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: Lato;
+}
+.usrview p{
+    text-align:left;
+    text-transform:capitalize;
+    margin:0;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: Lato;
+    border-bottom:none;
+    padding-bottom:0;
+}
+.textSection .ql-toolbar.ql-snow{
+    text-align:left;
+    border-bottom: none;
+    background:#f7f7f7;
+    border:none;
+    border-bottom:none;
+}
+.textSection .ql-container.ql-snow{
+    border: none;
+}
+.textSection .ql-editor{
+height: 100px;
+}
+.textSection p{
+    border:none;
+}
+.uploadalign{
+    text-align:left;
+}
+.usercard{
+    background:rgb(255, 255, 255);
+    /* padding: 20px 15px 15px; */
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.12);
+    width: 50%;
+    margin: 30px auto 15px;
+    height: auto;
+    border: 1px solid #ece9e9;
+}
+.uploadimgsec{
+    padding:10px 15px;
+}
+.textSection span.ql-header.ql-picker.ql-expanded{
+     color:#827e7e !important;
+}
+.textSection .ql-stroke{
+    stroke:#827e7e !important;
+}
+/* ************************************15th march *********************************** */
+@media only screen 
+and (min-width: 320px) 
+and (max-width: 767px) {
     .postsec {
         width: 95%;
     }

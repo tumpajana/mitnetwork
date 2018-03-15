@@ -319,23 +319,40 @@ class Wall extends Component {
         {/* navbar section end */}
 
         {/* wall view section start */}
+        <form className="postarticlesec">
         <div className="wallcard">
+        <div className="usercard">
           <div className="postsec clearfix">
-            <form>
+           
               <Row>
+              <form>
                 <Col span={2}>
-
-                  {/* <div className="userprflimg">
+               
+                  <div className="userprflimg">
                     <img src={usrimgwall} />
-                  </div> */}
-                </Col>
-                <Col span={22}>
-                  <div className="usrview">
-                    <h4 className="usrnamewall" contentEditable='flase' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
-                    <p className="degignationwall" contentEditable='false' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
                   </div>
                 </Col>
+                <Col span={22}>
+                  <div className="usrview">                
+                <h3>payel dutta</h3>
+                  <p>software engineer,meme infotech</p>
+                  </div>
+                 
+                </Col>
+                </form>
               </Row>
+              </div>
+              <div className="textSection">
+              <Row>
+                <Col span={24}>
+               
+                <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Write an article here" name="title" onChange={this.postTitle} />
+                {/* <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} /> */}
+
+                
+                </Col>
+               </Row>
+               </div>
               <Row type="flex" justify="center">
 
                 <Col span={24}>
@@ -348,14 +365,15 @@ class Wall extends Component {
 
                 </Col>
               </Row>
-            </form>
+          
 
             <hr className="dividerwall" />
-
+<form className="uploadimgsec">
             <Row >
 
-              <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
-              <Col span={5}>
+              {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
+              <div className="uploadalign">
+              <Col span={10}>
 
                 <Upload onChange={this.imageUpload}
                   showUploadList={this.state.showPreviewIcon}>
@@ -364,21 +382,16 @@ class Wall extends Component {
               </Button>
                 </Upload>
               </Col>
+              </div>
               <Col span={14}>
-
-
                 <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
               </Col>
 
             </Row>
-
-            {/* <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button> */}
-
-
-
+            </form>
           </div>
-        </div>
-
+      </div>
+</form>
         {/* wall view section end */}
 
         {/* posted blog html start */}
@@ -512,42 +525,7 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-        <div className="modalcustom">
-          <Modal className="artclhead"
-            visible={visible}
-            title="Share Article"
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-            footer={[
-              <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
-              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-                Save
-           </Button>,
-            ]}
-            className="mitprofileEditmodal"
-          >
-
-
-
-            {/* ----------------edit profile form start--------------- */}
-            <form className="editprofileform">
-
-              <Row gutter={24}>
-                <Col span={24}>
-                  <form>
-
-
-                    <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
-                    <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
-
-                  </form>
-                </Col>
-              </Row>
-
-            </form>
-          </Modal>
-
-        </div>
+       
         {/* ----------MODAL SECTION FOR write something end------------- */}
         <ToastContainer autoClose={2000} />
       </div>
