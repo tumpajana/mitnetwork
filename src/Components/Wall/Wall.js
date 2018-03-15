@@ -65,14 +65,23 @@ class Wall extends Component {
   socialPost() {
     console.log('post')
    if((this.state.posts.title) && (this.state.posts.content)){
-    let dataSent = {
-      title: this.state.posts.title,
-      content: this.state.posts.content,
-      userId: sessionStorage.getItem('userId'),
-      imageId:this.state.imageId
-    }
-
-    WallPost(dataSent).then((result) => {
+     if(this.state.imageId){
+       var dataSent={
+        title: this.state.posts.title,
+        content: this.state.posts.content,
+        userId: sessionStorage.getItem('userId'),
+        imageId:this.state.imageId
+       }
+     }
+     else{
+      var dataSent = {
+        title: this.state.posts.title,
+        content: this.state.posts.content,
+        userId: sessionStorage.getItem('userId'),
+         }
+     }
+   
+  WallPost(dataSent).then((result) => {               //api call for post
       console.log(result);
       toast.success("Post Uploaded Successfuly!", {
         position: toast.POSITION.TOP_CENTER,
@@ -90,7 +99,7 @@ class Wall extends Component {
     })
   }
   else{
-    toast.success(" No content for this post!", {
+    toast.warn(" No content for this post!", {
       position: toast.POSITION.TOP_CENTER,
     });
   }
@@ -103,11 +112,6 @@ class Wall extends Component {
       if (result.result.length != 0) {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
       }
-      //  else{
-      //   console.log('jhgfdxdfghjk')
-      //    return(<div  className="postedpartcard">No Post Found</div>)
-
-      //  }
     });
   }
 
