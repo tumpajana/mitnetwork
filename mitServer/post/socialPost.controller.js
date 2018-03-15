@@ -49,7 +49,7 @@ router.get('/getAllPost', (request, response, next) => {
 
     let getResponse = {};
 
-    post.find({}).sort({ createdDate: 'descending' })
+    post.find({}).populate('comments.userId').sort({ createdDate: 'descending' })
         .limit(perPage)
         .skip(perPage * page)
         .exec((error, result) => {
