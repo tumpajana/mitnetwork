@@ -83,12 +83,8 @@ class Wall extends Component {
           content: ""
         }
       })
-<<<<<<< HEAD
-      
-=======
       this.setState({imageId:''})
       this.setState({showPreviewIcon:false})
->>>>>>> 5ee198b4ee2da7dca1ef84a4be385102a57ee2f2
       this.getPosts();
 
     })
