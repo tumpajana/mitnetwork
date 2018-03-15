@@ -10,7 +10,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 const Routes = () => (
     <BrowserRouter>
         <Switch>
-        <Route exact path='/' component= {Signin} />
+        <Route exact path='/' component= {Profile} />
         <Route  path='/header' component= {Header} />
         <Route  path='/profile' component= {Profile} />
         <Route  path='/login' component= {Signin} />
