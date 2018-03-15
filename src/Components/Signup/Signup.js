@@ -11,6 +11,7 @@ import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
+// import NumberFormat from 'react-number-format';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -103,21 +104,10 @@ class Signup extends Component {
 
   //onchange of input feild binding
   onChangeValue = (e) => {
-    console.log(e.target.name);
-
-    //  if(e.target.value.length != 0){
-    //  if( e.target.name == 'email' && (e.target.email !=(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/))){
-    //   this.setState({
-    //     valid:{
-    //       nameText:' enter a valid email '
-    //     }
-    //   })
-    // }}
-
 
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
-
+ 
   }
   //validation
 
@@ -139,7 +129,7 @@ class Signup extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('*password mismatch');
     } else {
       callback();
     }
@@ -222,16 +212,7 @@ class Signup extends Component {
 
   //   });
   // }
-  //   phonenumber(inputtxt) {
-  //   var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  //   if(inputtxt.value.match(phoneno)) {
-  //     return true;
-  //   }
-  //   else {
-  //     alert("message");
-  //     return false;
-  //   }
-  // }
+
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -268,12 +249,14 @@ class Signup extends Component {
                     <form onSubmit={this.handleSubmit} className="formsinput">
                       <FormItem>
                         {getFieldDecorator('name', {
-                          rules: [{ required: true, message: 'Name is required' }],
+                          rules: [{ required: true, message: '*name required' }],
                         })(
                           <Input
 
                             placeholder="Your Name"
                             name="name"
+
+                            maxlength="30"
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             suffix={suffix}
                             // value={userName}
@@ -288,11 +271,13 @@ class Signup extends Component {
                       </FormItem>
                       <FormItem>
                         {getFieldDecorator('Username', {
-                          rules: [{ required: true, message: 'Username is required' }],
+                          rules: [{ required: true, message: '*username required' }],
                         })(
                           <Input
                             placeholder="Username"
                             name="userName"
+
+                            maxlength="20"
                             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                             onChange={this.onChangeValue}
@@ -314,8 +299,8 @@ class Signup extends Component {
                       <FormItem>
                         {getFieldDecorator('email', {
                           rules: [{
-                            type: 'email', message: 'Please enter a valid email',
-                          }, { required: true, message: 'Email is required' }],
+                            type: 'email', message: '*please enter a valid email',
+                          }, { required: true, message: '*email required' }],
                         })(
                           <Input
                             placeholder=" Email"
@@ -329,22 +314,26 @@ class Signup extends Component {
                       </FormItem>
                       <FormItem>
                         {getFieldDecorator('phoneNumber', {
-                          rules: [{ required: true, message: 'PhoneNumber is required' }],
+                          rules: [{ required: true, message: '*phonenumber required' }],
                         })(
-                          <Input
+                          
+                          // <NumberFormat format="#### #### #### ####" />
+                          <Input 
+                            type="number"
                             placeholder=" Phone Number"
                             name="phoneNumber"
-
+                            minlength="10"
+                            maxlength="10"
                             prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                               
                             onChange={this.onChangeValue}
+                            // onKeyDown={this.isVaildNumber} 
                           // value={this.state.fields["phoneNumber"]}
                           />
                         )}
                       </FormItem>
                       <FormItem>
                         {getFieldDecorator('password', {
-                          rules: [{ required: true, message: 'Password is required', },
+                          rules: [{ required: true, message: '*password required', },
                           {
                             validator: this.validateToNextPassword,
                           }],
@@ -352,7 +341,8 @@ class Signup extends Component {
                           <Input type="password"
                             placeholder=" Password"
                             name="password"
-                            // type="password"
+                            minlength="6"
+                            maxlength="10"
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
                             onChange={this.onChangeValue}
@@ -364,13 +354,15 @@ class Signup extends Component {
 
                         {getFieldDecorator('confirmPassword', {
                           rules: [{
-                            required: true, message: 'ConfirmPassword is required',
+                            required: true, message: '*confirmpassword required',
                           }, {
                             validator: this.compareToFirstPassword,
                           }],
                         })(
                           <Input type="password" onBlur={this.handleConfirmBlur}
                             placeholder="Confirm Password"
+                            minlength="6"
+                            maxlength="10"
                             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             name="confirmPassword"
 

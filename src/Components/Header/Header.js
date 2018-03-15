@@ -5,6 +5,7 @@ import './Header.css';
 import navbarlogo from '../../Images/mitlogo.png';
 import userpic from '../../Images/userprofilepic.jpg';
 import { Redirect,NavLink } from 'react-router-dom';
+import getUserProfile from '../../Services/profileapi';
 // import Wall from '../Components/Wall';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -13,15 +14,24 @@ const { Link } = Anchor;
 class Header extends Component {
   state = {
     current: 'mail',
+   
   }
   constructor(props) {
    
     super(props);
     this.state = {
-      redirectToReferrer: false
+      redirectToReferrer: false,
+       imageUrl:'',
+    userProfile: {},
+    username:'',
+    userNameNew: '',
     }
 
     this.logout = this.logout.bind(this);
+    this.UserProfileData = this.UserProfileData.bind(this);
+    if (sessionStorage.userId) {
+      this.UserProfileData();
+    }
   }
 
 
@@ -37,6 +47,28 @@ class Header extends Component {
     sessionStorage.clear();
     this.setState({redirectToReferrer:true});
 }
+
+  // get user profile details
+  UserProfileData = () => {
+    let _base = this;
+    getUserProfile(sessionStorage.getItem("userId")).then((result) => {
+      // debugger;
+      let response = result;
+      console.log(this.refs);
+      console.log(result);
+      this.setState({ userProfile: result.result });
+      this.setState({ userName: result.result.name });
+      console.log('userData...', this.state.userProfile);
+      if (this.state.userProfile.imageId) {
+        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+        console.log( this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id }));
+      }else if(this.state.userProfile.providerPic){
+      console.log(this.state.userName);
+        console.log(this.state.userProfile.providerPic);
+        this.setState({ imageUrl: this.state.userProfile.providerPic })
+      }
+    });
+  }
 
   render() {
 
@@ -68,14 +100,16 @@ class Header extends Component {
                 <Menu.Item key="mail">
                   <Icon type="home" /><NavLink to="/wall">Home</NavLink>
              </Menu.Item>
-                <Menu.Item >
+                {/* <Menu.Item >
                   <Icon type="usergroup-add" />My Networks
-             </Menu.Item>
-                <Menu.Item >
+             </Menu.Item> */}
+                {/* <Menu.Item >
                   <Icon type="wechat" />Messaging
-             </Menu.Item>
+             </Menu.Item> */}
 
-                <SubMenu title={<span><img type="setting" className="leftalign" src={userpic} />Me<Icon type="down" /></span>} className="headersubmenu">
+                <SubMenu title={<span>{
+  (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img  type="setting" className="leftalign"src={this.state.imageUrl} /> : <img type="setting" className="leftalign" src={userpic} />
+}Me<Icon type="down" /></span>} className="headersubmenu">
                   <MenuItemGroup title="">
                     <Menu.Item key="setting:1" className="linkprfl"><NavLink to="/profile">Edit Profile</NavLink></Menu.Item>
                     <Menu.Item key="setting:2" className="linkprfl">Log out</Menu.Item>
