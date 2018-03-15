@@ -149,9 +149,9 @@ class Wall extends Component {
     postLike(likeData).then((result) => {
       let response = result;
       console.log(result)
-      toast.success("Post Liked Successfuly!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      // toast.success("Post Liked Successfuly!", {
+      //   position: toast.POSITION.TOP_CENTER,
+      // });
       this.getPosts();
     });
   }
@@ -365,8 +365,10 @@ class Wall extends Component {
                 <p className="sub_content" contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
                 <div className="likecomment">
-                  <h3>{item.like.length}  likes</h3>
-                  <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                  <h3>{item.like.length}  likes</h3>{
+                    (item.like).indexOf(sessionStorage.getItem('userId')) >-1? <Button title="like"><Icon type="like-o" />Unlike</Button>:<Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                  }
+               
                   <Button title="comment"><Icon type="message" />Comment</Button>
 
                 </div>
