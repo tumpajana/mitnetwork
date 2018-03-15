@@ -409,7 +409,7 @@ class Wall extends Component {
                     <h3>{item.userId.designation}</h3>
                   </Col>
                 </Row>
-                <div className="postedimg">
+                <div className="postedimg onlytext">
                   {/* <img src={Wallpostimg} /> */}
                   {/* <Video autoPlay loop muted
                     controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
