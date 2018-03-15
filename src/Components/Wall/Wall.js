@@ -49,7 +49,8 @@ class Wall extends Component {
       imageId: '',
       profileData: {},
       userInfo: {},
-      imageUrl: ''
+      imageUrl: '',
+      cPostid:''
     }
 
     this.postContent = this.postContent.bind(this);
@@ -294,9 +295,11 @@ class Wall extends Component {
   }
 
   // show comment box
-  showCommentBox = () => {
+  showCommentBox = (e) => {
+    console.log(e)
     console.log('comment box')
     this.setState({ showcomment: !this.state.showcomment})
+    this.state.cPostid=e;
   }
 
   render() {
@@ -377,7 +380,7 @@ class Wall extends Component {
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        {this.state.postList.map((item) => {
+        {this.state.postList.map((item,pIndex) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
               <div className="mitpic">
@@ -410,10 +413,10 @@ class Wall extends Component {
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
-                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="dislike-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
+                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
 
-                  <Button title="comment" onClick={this.showCommentBox}><Icon type="message" />Comment</Button>
+                  <Button title="comment" onClick={()=>{this.showCommentBox(item._id)}}><Icon type="message" />Comment</Button>
 
                 </div>
               </div>
@@ -440,8 +443,10 @@ class Wall extends Component {
 
 
                 <Row >
-                  {item.comments.map((list) => (
-                    this.state.showcomment ?
+                  {item.comments.map((list,cIndex) => (
+
+              this.state.showcomment && item._id===this.state.cPostid?
+                    // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
@@ -463,7 +468,7 @@ class Wall extends Component {
     </p> */}
                           </div>
                         </Col>
-                      </div> : ''
+                      </div> :''
                   ))
                   }
                 </Row>
