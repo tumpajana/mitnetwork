@@ -213,7 +213,7 @@ class Wall extends Component {
       commentPost(data).then((result) => {
         console.log('comment', result);
         if (result.error == false) {
-          toast.success("Post Liked Successfuly!", {
+          toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
           });
           this.getComments(result.user._id);
@@ -286,8 +286,8 @@ class Wall extends Component {
                 </Col>
                 <Col span={22}>
                   <div className="usrview">
-                    <h4 className="usrnamewall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
-                    <p className="degignationwall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
+                    <h4 className="usrnamewall" contentEditable='flase' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
+                    <p className="degignationwall" contentEditable='false' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
                   </div>
                 </Col>
               </Row>
@@ -344,7 +344,7 @@ class Wall extends Component {
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
                     <div className="userpicpost">{
-                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : <img src={User} />
+                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic)?<img src={ item.userId.providerPic} />:<img src={User} />
                     }
                     </div>
                   </Col>
@@ -365,8 +365,8 @@ class Wall extends Component {
                     <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
                   </Video> */}
                   {item.imageId ?<img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId='+item.imageId._id} />:''}
-                <p contentEditable='true' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
-                <p className="sub_content" contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
+                <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
