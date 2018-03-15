@@ -13,13 +13,24 @@ import 'react-quill/dist/quill.snow.css';
 import usrimgwall from '../../Images/usr.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import postLike from '../../Services/postLikeApi';
-
+import Post from "../Posts/post";
 import camera from '../../Images/camera.png';
+import profilePic from '../../Services/profilepicapi';
+import commentPost from "../../Services/postCommentApi";
+import getPostComments from "../../Services/getPostCommentsApi";
+
+
+import { DefaultPlayer as Video } from 'react-html5video';
+import 'react-html5video/dist/styles.css';
+
+
+
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
     loading: false,
     visible: false,
+    showPreviewIcon:true
   }
 
   constructor(props) {
@@ -29,24 +40,37 @@ class Wall extends Component {
         title: '',
         content: ''
       },
-      postList: []
-
+      postList: [],
+      comments: {
+        comment: '',
+        postid: ''
+      },
+      imageId:''
     }
+    
     this.postContent = this.postContent.bind(this);
     this.postTitle = this.postTitle.bind(this);
     this.socialPost = this.socialPost.bind(this);
     this.postLike = this.postLike.bind(this);
+    this.imageUpload = this.imageUpload.bind(this);
+    this.writeComment = this.writeComment.bind(this);
     this.getPosts();
   }
+
+
+
 
   //postdata on server
   socialPost() {
     console.log('post')
+   if((this.state.posts.title) && (this.state.posts.content)){
     let dataSent = {
       title: this.state.posts.title,
       content: this.state.posts.content,
-      userId: sessionStorage.getItem('userId')
+      userId: sessionStorage.getItem('userId'),
+      imageId:this.state.imageId
     }
+
     WallPost(dataSent).then((result) => {
       console.log(result);
       toast.success("Post Uploaded Successfuly!", {
@@ -58,11 +82,19 @@ class Wall extends Component {
           content: ""
         }
       })
+      this.setState({imageId:''})
+      this.setState({showPreviewIcon:false})
       this.getPosts();
     })
   }
+  else{
+    toast.success(" No content for this post!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+  }
 
-  //get al post
+  //get all post
   getPosts() {
     WallGet().then((result) => {
       console.log(result);
@@ -79,24 +111,28 @@ class Wall extends Component {
 
   //post title 
   postTitle = (e) => {
+    if(this.refs.quill_title.getEditorContents()){
     this.setState({
       posts: {
-        title: document.getElementById("editor-title").innerText,
+        title: this.refs.quill_title.getEditorContents(),
         content: this.state.posts.content
       }
     })
+  }
+ 
   }
 
 
   // post content
   postContent = (e) => {
+  
     this.setState({
       posts: {
         title: this.state.posts.title,
-        content: document.getElementById("editor-content").innerText
+        content: this.refs.quill_content.getEditorContents()
       }
     })
-    console.log(this.state.posts.content)
+  
   }
 
   //postlike
@@ -107,17 +143,86 @@ class Wall extends Component {
       userId: sessionStorage.getItem("userId"),
       postId: id
     }
+
     postLike(likeData).then((result) => {
       let response = result;
       console.log(result)
-      toast.success("Post Liked Successfuly!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      // toast.success("Post Liked Successfuly!", {
+      //   position: toast.POSITION.TOP_CENTER,
+      // });
       this.getPosts();
     });
   }
+  
+  // upload image 
+  imageUpload = (event) => { 
+    console.log(event);
+    console.log(event.fileList)
+    let fileList = event.fileList[0];
+    // let fileTarget = fileList;
+    let file = fileList.originFileObj;
+    console.log("File information :", file);
+    var form = new FormData();
+    form.append('file', file, file.name);
+    profilePic(form).then((result) => {
+      console.log(result)
+      this.setState({imageId:result.upload._id});
+    })
+  
+  
+  }
+
+  // get comments for a post
+  getComments(id) {
+    getPostComments(id).then((result) => {
+      console.log(result)
+    })
+  }
 
 
+  // write comment in comment box
+  writeComment(i, e) {
+    console.log(i)
+    console.log(e.target.value);
+    console.log(i)
+    this.setState({
+      comments: {
+        comment: e.target.value,
+        postid: i
+      }
+    })
+    console.log(this.state.comments)
+  }
+
+  // post comment entered
+  postComment = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      console.log(this.state.comments)
+      let data = {
+        comment: this.state.comments.comment,
+        postId: this.state.comments.postid,
+        userId: sessionStorage.getItem('userId')
+      }
+      commentPost(data).then((result) => {
+        console.log('comment', result);
+        if (result.error == false) {
+          toast.success("Post Liked Successfuly!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          this.getComments(result.user._id);
+          this.setState({
+            comments: {
+              comment: '',
+              postid: ''
+            }
+          })
+        }
+
+      })
+
+    }
+  }
 
   showModal = () => {
     this.setState({
@@ -129,7 +234,18 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
+      console.log("Quill Title data",this.refs.quill_title.getEditorContents());
+      console.log("Quill Content data",this.refs.quill_content.getEditorContents());
     }, 2000);
+    // if(!(this.refs.quill_title.getEditorContents() && this.refs.quill_content.getEditorContents())){
+    //   // alert("please enter field");
+    //   toast.warning("Field is empty!", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
+    // else{
+    //   alert("");
+    // }
   }
 
   handleCancel = () => {
@@ -158,14 +274,14 @@ class Wall extends Component {
               <Row>
                 <Col span={2}>
 
-                  <div className="userprflimg">
+                  {/* <div className="userprflimg">
                     <img src={usrimgwall} />
-                  </div>
+                  </div> */}
                 </Col>
                 <Col span={22}>
                   <div className="usrview">
-                    <h4 className="usrnamewall">{this.state.posts.title}</h4>
-                    <p className="degignationwall">{this.state.posts.content}</p>
+                    <h4 className="usrnamewall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
+                    <p className="degignationwall" contentEditable='true' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
                   </div>
                 </Col>
               </Row>
@@ -190,7 +306,8 @@ class Wall extends Component {
               <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
               <Col span={5}>
 
-                <Upload >
+                <Upload onChange={this.imageUpload }
+                  showUploadList={this.state.showPreviewIcon}>
                   <Button className="upldbtnwall">
                     <Icon type="upload" />Upload Image
               </Button>
@@ -217,30 +334,45 @@ class Wall extends Component {
         {this.state.postList.map((item) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
-              <Row type="flex" justify="space-around" align="middle">
-                <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
-                  <div className="userpicpost">
-                    <img src={User} />
-                  </div>
-                </Col>
-                <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-                  <p>{item.userId.userName}</p>
-                  <h3>Senior manager at denali bank</h3>
-                </Col>
-              </Row>
-              <div className="postedimg">
-                <img src={Wallpostimg} />
-                <p><a>{item.title}</a></p>
-                <p className="sub_content"><a> {item.content}</a></p>
-              </div>
-              <div className="likecomment">
-                <h3>{item.like.length}  likes</h3>
-                <Button title="like" onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
-                <Button title="comment"><Icon type="message" />Comment</Button>
+              <div className="mitpic">
+                <Row type="flex" justify="space-around" align="middle">
+                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                    <div className="userpicpost">{
+                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : <img src={User} />
+                    }
+                    </div>
+                  </Col>
+                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                    <p>{item.userId.userName}</p>
+                    <h3>{item.userId.designation}</h3>
+                  </Col>
+                </Row>
+                <div className="postedimg">
+                  {/* <img src={Wallpostimg} /> */}
+                  {/* <Video autoPlay loop muted
+                    controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+                    poster="http://sourceposter.jpg"
+                    onCanPlayThrough={() => { */}
+                      {/* // Do stuff */}
+                    {/* }}>
+                    <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
+                    <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
+                  </Video> */}
+                  {item.imageId ?<img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId='+item.imageId._id} />:''}
+                <p contentEditable='true' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
+                <p className="sub_content" contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                </div>
+                <div className="likecomment">
+                  <h3>{item.like.length}  likes</h3>{
+                    (item.like).indexOf(sessionStorage.getItem('userId')) >-1? <Button title="like"><Icon type="dislike-o" />Unlike</Button>:<Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
+                  }
+               
+                  <Button title="comment"><Icon type="message" />Comment</Button>
 
+                </div>
               </div>
               {/* ****Comment section**** */}
-              {/* <div className="commentSection">
+              <div className="commentSection">
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={3} sm={3} md={2}>
@@ -252,7 +384,7 @@ class Wall extends Component {
                   <Col xs={21} sm={21} md={22}>
                     <div className="commentText">
                       <img src={camera} />
-                      <TextArea rows={1} />
+                      <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
 
@@ -281,7 +413,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                 </Row>
-              </div> */}
+              </div>
               {/* ****Comment section**** */}
             </div>
           </div>
@@ -344,8 +476,8 @@ class Wall extends Component {
                   <form>
 
 
-                    <ReactQuill id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
-                    <ReactQuill id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
+                    <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
+                    <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
 
                   </form>
                 </Col>

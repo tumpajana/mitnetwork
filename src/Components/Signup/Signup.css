@@ -84,7 +84,7 @@ form.formsinput span.ant-input-affix-wrapper {
 
 .wrapper {
     position: relative;
-    height: 300px;
+    height: 86%;
     margin: 10px;
 }
 
@@ -160,7 +160,7 @@ form.formsinput input.ant-input {
     font-family: Lato;
 }
 .registerbtn {
-    margin: 3em 0 1em 0;
+    margin: 2em 0 1em 0;
 }
 
 .sidesection{

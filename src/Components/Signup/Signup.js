@@ -48,6 +48,7 @@ class Signup extends Component {
     this.onChangeValue = this.onChangeValue.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
   }
 
   //Login with Facebook
@@ -187,12 +188,12 @@ class Signup extends Component {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
       console.log("registration", result);
-      if (result.error == false) {
+      if (response.error == false) {
         toast.success("You have been registered successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
-        console.log(response);
-        if (response.userData) {
+        console.log(response.result);
+        if (response.result) {
           sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
@@ -221,6 +222,16 @@ class Signup extends Component {
 
   //   });
   // }
+  //   phonenumber(inputtxt) {
+  //   var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  //   if(inputtxt.value.match(phoneno)) {
+  //     return true;
+  //   }
+  //   else {
+  //     alert("message");
+  //     return false;
+  //   }
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -243,7 +254,7 @@ class Signup extends Component {
               </div>
 
             </Col>
-            <Col lg={15} sm={24} xs={24} className="centercontent">
+            <Col lg={15} sm={24} xs={24} className="">
               <div className="formsigninmit1">
                 <div className="formarea">
                   <div className="formheading">
@@ -251,45 +262,45 @@ class Signup extends Component {
                   </div>
                 </div>
 
-                <Row type="flex" justify="center">
+                <Row type="flex">
 
                   <Col lg={10} sm={10} xs={24}>
-                    <form   onSubmit={this.handleSubmit} className="formsinput">
-                    <FormItem>
-                    {getFieldDecorator('name', {
-            rules: [{ required: true, message: 'name is required' }],
-          })(
-                      <Input
-                     
-                        placeholder="Your Name"
-                        name="name"
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        suffix={suffix}
-                        // value={userName}
-                        // onChange={this.onChangeUserName}
-                        // onChange={this.handleChange.bind(this, "name")} 
-                        //value={this.state.fields["name"]}
-                        onChange={this.onChangeValue}
-                      // ref={node => this.userNameInput = node}
+                    <form onSubmit={this.handleSubmit} className="formsinput">
+                      <FormItem>
+                        {getFieldDecorator('name', {
+                          rules: [{ required: true, message: 'Name is required' }],
+                        })(
+                          <Input
 
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem>
-                    {getFieldDecorator('Username', {
-            rules: [{ required: true, message: 'Username is required' }],
-          })(
-                      <Input
-                        placeholder="Username"
-                        name="userName"
-                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="Your Name"
+                            name="name"
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            suffix={suffix}
+                            // value={userName}
+                            // onChange={this.onChangeUserName}
+                            // onChange={this.handleChange.bind(this, "name")} 
+                            //value={this.state.fields["name"]}
+                            onChange={this.onChangeValue}
+                          // ref={node => this.userNameInput = node}
 
-                        onChange={this.onChangeValue}
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem>
+                        {getFieldDecorator('Username', {
+                          rules: [{ required: true, message: 'Username is required' }],
+                        })(
+                          <Input
+                            placeholder="Username"
+                            name="userName"
+                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                      />
-                    )}
-                    </FormItem>
-                  
+                            onChange={this.onChangeValue}
+
+                          />
+                        )}
+                      </FormItem>
+
                       {/* <Input
                       placeholder="Username"
                       prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -300,78 +311,81 @@ class Signup extends Component {
                       <Radio value={1} className="gendervalue">Male</Radio>
                       <Radio value={2} className="gendervalue">Female</Radio>
                     </RadioGroup> */}
-                     <FormItem>
-                    {getFieldDecorator('email', {
-            rules: [{  type: 'email', message: 'The input is not valid E-mail!',
-                     },{ required: true, message: 'email is required' }],
-          })(
-                      <Input
-                        placeholder=" Email"
-                        name="email"
-                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
-                        onChange={this.onChangeValue}
+                      <FormItem>
+                        {getFieldDecorator('email', {
+                          rules: [{
+                            type: 'email', message: 'Please enter a valid email',
+                          }, { required: true, message: 'Email is required' }],
+                        })(
+                          <Input
+                            placeholder=" Email"
+                            name="email"
+                            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
+                            onChange={this.onChangeValue}
 
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem>
-                    {getFieldDecorator('phoneNumber', {
-            rules: [{ required: true, message: 'phoneNumber is required' }],
-          })(
-                      <Input
-                        placeholder=" Phone Number"
-                        name="phoneNumber"
-                      
-                        prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem>
+                        {getFieldDecorator('phoneNumber', {
+                          rules: [{ required: true, message: 'PhoneNumber is required' }],
+                        })(
+                          <Input
+                            placeholder=" Phone Number"
+                            name="phoneNumber"
 
-                        onChange={this.onChangeValue}
-                      // value={this.state.fields["phoneNumber"]}
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem>
-                    {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'password is required', },
-            {
-              validator: this.validateToNextPassword,
-            }],
-          })(
-                      <Input type="password" 
-                        placeholder=" Password"
-                        name="password"
-                        // type="password"
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                               
+                            onChange={this.onChangeValue}
+                          // value={this.state.fields["phoneNumber"]}
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem>
+                        {getFieldDecorator('password', {
+                          rules: [{ required: true, message: 'Password is required', },
+                          {
+                            validator: this.validateToNextPassword,
+                          }],
+                        })(
+                          <Input type="password"
+                            placeholder=" Password"
+                            name="password"
+                            // type="password"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 
-                        onChange={this.onChangeValue}
+                            onChange={this.onChangeValue}
 
-                      />
-                    )}
-                    </FormItem>
-                    <FormItem >
-                    
-                    {getFieldDecorator('confirmPassword', {
-            rules: [{ required: true, message: 'confirmPassword is required' ,
-          }, { 
-            validator: this.compareToFirstPassword,
-          }],
-          })(
-                      <Input type="password" onBlur={this.handleConfirmBlur} 
-                        placeholder="Confirm Password"
-                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        name="confirmPassword"
+                          />
+                        )}
+                      </FormItem>
+                      <FormItem >
 
-                        onChange={this.onChangeValue}
-                      />
-                    )}
-                    </FormItem>
-                      <div className="registerbtn">
-                        <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                        <Button className="cnclbtn">Cancel</Button>
+                        {getFieldDecorator('confirmPassword', {
+                          rules: [{
+                            required: true, message: 'ConfirmPassword is required',
+                          }, {
+                            validator: this.compareToFirstPassword,
+                          }],
+                        })(
+                          <Input type="password" onBlur={this.handleConfirmBlur}
+                            placeholder="Confirm Password"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            name="confirmPassword"
 
-                        <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                      </div>
+                            onChange={this.onChangeValue}
+                          />
+                        )}
+                      </FormItem>
+                      <Row>
+                        <div className="registerbtn">
+                          <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                          <Button className="cnclbtn">Cancel</Button>
 
+                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                        </div>
+                      </Row>
                     </form>
                   </Col>
                   <Col lg={2} sm={2} xs={0}>
@@ -417,6 +431,17 @@ class Signup extends Component {
 
 
                 </Row>
+                {/* <Row>
+                        <div className="registerbtn">
+                          <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
+                          <Button className="cnclbtn">Cancel</Button>
+
+                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                        </div>
+                      </Row> */}
+
+
+
               </div>
             </Col>
 

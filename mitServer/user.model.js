@@ -45,6 +45,10 @@ const userSchema = mongoose.Schema({
     designation:{
         type:String
     },
+    imageId:{
+        type:Schema.ObjectId,
+        ref: 'image'
+        },
     createdDate: {
         type: Date,
         default: Date.now
@@ -57,5 +61,13 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 1
     }
+});
+userSchema.pre('findOne', function (next) {
+    this.populate('imageId');
+    next();
+});
+userSchema.pre('find', function (next) {
+    this.populate('imageId');
+    next();
 });
 const user = module.exports = mongoose.model('user', userSchema);
