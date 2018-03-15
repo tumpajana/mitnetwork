@@ -346,7 +346,7 @@ class Wall extends Component {
                   </Col>
                   <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
                     <p>{item.userId.userName}</p>
-                    <h3>Senior manager at denali bank</h3>
+                    <h3>{item.userId.designation}</h3>
                   </Col>
                 </Row>
                 <div className="postedimg">
@@ -354,13 +354,13 @@ class Wall extends Component {
                   {/* <Video autoPlay loop muted
                     controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                     poster="http://sourceposter.jpg"
-                    onCanPlayThrough={() => {
-                      // Do stuff
-                    }}>
+                    onCanPlayThrough={() => { */}
+                      {/* // Do stuff */}
+                    {/* }}>
                     <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
                     <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
                   </Video> */}
-                  {item.imageId ?<img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId='+item.imageId} />:''}
+                  {item.imageId ?<img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId='+item.imageId._id} />:''}
                 <p contentEditable='true' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
                 <p className="sub_content" contentEditable='true' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
