@@ -8,7 +8,7 @@ function commentPost( commentData) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-   method: 'POST',
+   method: 'PUT',
    body: JSON.stringify(commentData)
    })
    .then((response) => response.json())
