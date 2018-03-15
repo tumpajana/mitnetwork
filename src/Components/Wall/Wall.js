@@ -366,7 +366,7 @@ class Wall extends Component {
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
-                    (item.like).indexOf(sessionStorage.getItem('userId')) >-1? <Button title="like"><Icon type="like-o" />Unlike</Button>:<Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Likes</Button>
+                    (item.like).indexOf(sessionStorage.getItem('userId')) >-1? <Button title="like"><Icon type="dislike-o" />Unlike</Button>:<Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
                
                   <Button title="comment"><Icon type="message" />Comment</Button>
