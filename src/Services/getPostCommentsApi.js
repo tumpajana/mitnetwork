@@ -1,7 +1,7 @@
 function getPostComments( postid) {
     //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
     console.log(postid);
-    let BaseURL ='http://mitapi.memeinfotech.com:5000/post/getAllComment?postId='+postid;
+    let BaseURL ='http://mitapi.memeinfotech.com:5000/post/getCommentByPostId?postId='+postid;
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {

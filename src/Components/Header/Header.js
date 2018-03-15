@@ -6,6 +6,9 @@ import navbarlogo from '../../Images/mitlogo.png';
 import userpic from '../../Images/userprofilepic.jpg';
 import { Redirect,NavLink } from 'react-router-dom';
 import getUserProfile from '../../Services/profileapi';
+// import { Redirect, NavLink } from 'react-router-dom';
+import isAuthenticated from '../../Services/auth';
+
 // import Wall from '../Components/Wall';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -17,7 +20,7 @@ class Header extends Component {
    
   }
   constructor(props) {
-   
+
     super(props);
     this.state = {
       redirectToReferrer: false,
@@ -26,27 +29,33 @@ class Header extends Component {
     username:'',
     userNameNew: '',
     }
-
-    this.logout = this.logout.bind(this);
     this.UserProfileData = this.UserProfileData.bind(this);
     if (sessionStorage.userId) {
       this.UserProfileData();
     }
+    this.logout = this.logout.bind(this);
+    let _base = this;
+    isAuthenticated()
+      .then(function (success) {
+        console.log("Authenticated");
+      }, function (error) {
+        _base.logout();
+      });
   }
 
 
   onClickButton = (ev) => {
-    if(ev.key === 'setting:2') { // light is the value of menuitem in string
+    if (ev.key === 'setting:2') { // light is the value of menuitem in string
       this.logout()
-    } 
+    }
   }
 
   // logout and clear session storage
   logout() {
     console.log('menu item selected');
     sessionStorage.clear();
-    this.setState({redirectToReferrer:true});
-}
+    this.setState({ redirectToReferrer: true });
+  }
 
   // get user profile details
   UserProfileData = () => {
@@ -74,7 +83,7 @@ class Header extends Component {
 
     // redirect to signin after logout
     if (this.state.redirectToReferrer) {
-      return <Redirect to ="/login"/>
+      return <Redirect to="/login" />
     }
 
     return (

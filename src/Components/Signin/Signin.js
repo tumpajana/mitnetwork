@@ -40,7 +40,6 @@ class Signin extends Component {
     this.onChangeLoginName = this.onChangeLoginName.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
   responseFacebook = (response) => {
@@ -171,6 +170,7 @@ class Signin extends Component {
                     <p className="signfont">Sign In </p>
                   </div>
                 </div>
+                <form className="signinflds">
                 <Row type="flex" >
 
                   <Col lg={10} sm={10} xs={24} className="signinarea">
@@ -208,11 +208,6 @@ class Signin extends Component {
                       </FormItem>
 
 
-                      <div className="registerbtn">
-                        <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                        <Button className="cnclbtn">Cancel</Button>
-                        <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
-                      </div>
 
                     </form>
                   </Col>
@@ -259,9 +254,15 @@ class Signin extends Component {
                     </div>
 
                   </Col>
-
-
+                  <Col lg={12} sm={12} xs={24} className="submitlogin">
+                      <div className="registerbtn">
+                        <Button className="sbmtbtn" type="primary" htmlType="submit" onClick={this.handleSubmit}>Submit</Button>
+                        {/* <Button className="cnclbtn">Cancel</Button> */}
+                        <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
+                      </div>
+                   </Col>
                 </Row>
+                </form>
                 {/* <Row>
                   <div className="registerbtn">
                     <Button className="sbmtbtn" type="primary" htmlType="submit" onClick={this.login}>Submit</Button>

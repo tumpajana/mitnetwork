@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var cors = require('cors');
 var app = express();
+var http = require('http');
 
 // put const here
 const userRoute = require('./mitServer/user.controller');
@@ -16,6 +17,20 @@ const postRoute = require('./mitServer/post/socialPost.controller');
 
 //connect to mongodb
 mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
+const server = http.createServer(app)
+ var io = require('socket.io')(server)
+
+ // socket connection
+ io.sockets.on('connection', function(socket){
+     console.log('Socket Connected'+ socket.id);
+   //
+     socket.on('comment',function(post){
+         io.emit('comment',comment);
+     });
+ });
+ //socet disconnected
+ io.sockets.on('disconnected',function(socket){
+ });
 
 //on successful connection
 mongoose.connection.on('connected', () => {

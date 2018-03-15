@@ -242,7 +242,7 @@ class Signup extends Component {
                     <p className="signfont">Sign Up </p>
                   </div>
                 </div>
-
+                 <form className="inputflds">
                 <Row type="flex">
 
                   <Col lg={10} sm={10} xs={24}>
@@ -370,14 +370,7 @@ class Signup extends Component {
                           />
                         )}
                       </FormItem>
-                      <Row>
-                        <div className="registerbtn">
-                          <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                          <Button className="cnclbtn">Cancel</Button>
-
-                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                        </div>
-                      </Row>
+                   
                     </form>
                   </Col>
                   <Col lg={2} sm={2} xs={0}>
@@ -419,10 +412,21 @@ class Signup extends Component {
                     </div>
 
                   </Col>
+                  <Col lg={12} sm={12} xs={24} className="submitArea">
+                  {/* <Row> */}
+                        <div className="registerbtn">
+                          <Button className="sbmtbtn" type="primary" onClick={this.handleSubmit} htmlType="submit">Submit</Button>
+                         
+
+                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                        </div>
+                      {/* </Row> */}
+                  </Col>
 
 
 
                 </Row>
+                </form>
                 {/* <Row>
                         <div className="registerbtn">
                           <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
