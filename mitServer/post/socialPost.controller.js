@@ -67,7 +67,7 @@ router.get('/getAllPost', (request, response, next) => {
 });
 // Api for get particular  Social post
 
-//Api to All comment through postId
+//Api to get single post  through postId
 router.get('/getSinglePost', (request, response) => {
     console.log(" post detail through post id ");
     let postId = request.query.postId;
@@ -87,45 +87,39 @@ router.get('/getSinglePost', (request, response) => {
         }
     });
 });
-// Api for comment
-// router.post('/comment', (request, response) => {
-//     console.log("comment upload ");
-//     console.log(request.body);
+//  Api for comment
+router.put('/comment', (request, response) => {
+    let commentesponse = {};
 
-//     let postResponse = {};
-//     let data = new post({
-//         comment: request.body.comment,
-//         userId: request.body.userId,
-//         postId: request.body.postId
-//     });
-//     console.log(data);
-//     data.save((error, result) => {
-//         if (error) {
-//             console.log(error);
-//             postResponse.error = true;
-//             postResponse.message = `getAllCommentError :` + error.message;
-//             response.status(500).json(postResponse);
-//         } else {
-//             console.log(result);
-//             postResponse.error = false;
-//             postResponse.user = result;
-//             postResponse.message = ` comment uploaded  successfully.`;
-//             response.status(200).json(postResponse);
-
-//         }
-
-//     });
-// });
+    let userId = request.body.userId;
+    let comment = request.body.comment;
+    console.log(userId);
+    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: {comment:comment,userId:userId} } }).populate('comments.userId').exec(function (error, result) {
+        if (error) {
+            commentesponse.error = true;
+            commentesponse.message = `Error :` + error.message;
+            commentesponse.status(500).json(commentesponse);
+        } else {
+            commentesponse.error = false;
+            commentesponse.result = result;
+            commentesponse.message = `Success`;
+            response.status(200).json(commentesponse);
+        }
+    });
+});
 // Api for getting all  comment through postId
-router.get('/getAllComment', (request, response) => {
-    var perPage = 10, page = request.param('page') > 0 ? request.param('page') : 0;
+router.get('/getCommentByPostId', (request, response) => {
+    console.log(request.body);
+    // var perPage = 5, page = request.param('page') > 0 ? request.param('page') : 0;
     let getResponse = {};
     let postId = request.query.postId;
-    post.find({ postId: postId })
-        .sort({ createdDate: 'descending' })
-        .limit(perPage)
-        .skip(perPage * page)
+    post.findOne({ _id: postId })
+        // .sort({ createdDate: 'descending' })
+        // .limit({comments:'perPage'})
+        // .skip(perPage * page)
         .exec((error, result) => {
+            console.log('error......',error);
+            console.log('result.....',result);
             if (error) {
                 getResponse.error = true;
                 getResponse.message = `Error :` + error.message;
@@ -206,26 +200,6 @@ router.delete('/delete', (request, response) => {
         }
     });
 
-});
-//  Api for comment
-router.put('/comment', (request, response) => {
-    let commentesponse = {};
-
-    let userId = request.body.userId;
-    let comment = request.body.comment;
-    console.log(userId);
-    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: {comment:comment,userId:userId} } }).populate('comments.userId').exec(function (error, result) {
-        if (error) {
-            commentesponse.error = true;
-            commentesponse.message = `Error :` + error.message;
-            commentesponse.status(500).json(commentesponse);
-        } else {
-            commentesponse.error = false;
-            commentesponse.result = result;
-            commentesponse.message = `Success`;
-            response.status(200).json(commentesponse);
-        }
-    });
 });
 
 module.exports = router;
