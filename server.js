@@ -16,6 +16,20 @@ const postRoute = require('./mitServer/post/socialPost.controller');
 
 //connect to mongodb
 mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
+// const server = http.createServer(app)
+//  var io = required('socket.io')(server)
+
+ // socket connection
+//  io.socket.on('connection', function(socket){
+//      console.log('Socket Connected'+ socket.id);
+//      //
+//      socket.on('update',function(update){
+//          io.emit('updated',update);
+//      });
+//  });
+ //socet disconnected
+//  io.socket.on('disconnected',function(socket){
+//  });
 
 //on successful connection
 mongoose.connection.on('connected', () => {
