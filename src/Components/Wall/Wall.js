@@ -30,7 +30,8 @@ class Wall extends Component {
   state = {
     loading: false,
     visible: false,
-    showPreviewIcon: true
+    showPreviewIcon: true,
+    showcomment: false
   }
 
   constructor(props) {
@@ -119,6 +120,8 @@ class Wall extends Component {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
       }
     });
+    // console.log(strip(this.state.postList[0]))
+    // console.log(this.state.postList[0].innerText)
   }
 
   //post title 
@@ -143,7 +146,9 @@ class Wall extends Component {
         title: this.state.posts.title,
         content: this.refs.quill_content.getEditorContents()
       }
+     
     })
+    // console.log(this.refs.quill_content.getEditorContents().textContent)
 
   }
 
@@ -286,11 +291,16 @@ class Wall extends Component {
     this.setState({ visible: false });
   }
 
+  // show comment box
+  showCommentBox = () => {
+    console.log('comment box')
+    this.setState({ showcomment: true })
+  }
 
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
-
+    const { showcomment } = this.state;
     function handleChange(value) {
       console.log(`selected ${value}`);
     }
@@ -394,75 +404,75 @@ class Wall extends Component {
                   </Video> */}
                   {item.imageId ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} /> : ''}
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
-                  <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.length > 15 ? (item.content.substring(0, 10)) + '<p>show mor</p>' : item.content }} ></p>
-                </div>
-                <div className="likecomment">
-                  <h3>{item.like.length}  likes</h3>{
-                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="dislike-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
-                  }
-
-                  <Button title="comment"><Icon type="message" />Comment</Button>
-
-                </div>
+                  <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
               </div>
-              {/* ****Comment section**** */}
-              <div className="commentSection">
-                <Row type="flex" justify="space-around" align="middle">
+              <div className="likecomment">
+                <h3>{item.like.length}  likes</h3>{
+                  (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="dislike-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
+                }
 
-                  <Col xs={3} sm={3} md={2}>
-                    <div className="commentImg">
-                      {
-                        (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
-                      }
-                    </div>
-                  </Col>
+                <Button title="comment"><Icon type="message" onClick={() => { this.showCommentBox }} />Comment</Button>
 
-                  <Col xs={21} sm={21} md={22}>
-                    <div className="commentText">
-                      <img src={camera} />
-                      <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
-                    </div>
-                  </Col>
+              </div>
+            </div>
+            {/* ****Comment section**** */}
+            <div className="commentSection">
+              <Row type="flex" justify="space-around" align="middle">
 
-                </Row>
+                <Col xs={3} sm={3} md={2}>
+                  <div className="commentImg">
+                    {
+                      (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                    }
+                  </div>
+                </Col>
+
+                <Col xs={21} sm={21} md={22}>
+                  <div className="commentText">
+                    <img src={camera} />
+                    <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
+                  </div>
+                </Col>
+
+              </Row>
 
 
-                <Row>
-                  {item.comments.map((list) => (
+              <Row >
+                {item.comments.map((list) => (
 
-                    <div className="contentsComment">
-                      <Col xs={3} sm={3} md={2}>
-                        <div className="commentImg">
-                          {
-                            (list.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
-                          }
-                        </div>
-                      </Col>
+                  <div className="contentsComment" key={list._id}>
+                    <Col xs={3} sm={3} md={2}>
+                      <div className="commentImg">
+                        {
+                          (list.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
+                        }
+                      </div>
+                    </Col>
 
-                      <Col xs={21} sm={21} md={22}>
-                        <div className="postComment">
-                          <p>{list.userId.userName}</p>
-                          <h3>{list.userId.designation}</h3>
-                          <h3>{list.comment}</h3>
-                          {/* <p className="likeReply">
+                    <Col xs={21} sm={21} md={22}>
+                      <div className="postComment">
+                        <p>{list.userId.userName}</p>
+                        <h3>{list.userId.designation}</h3>
+                        <h3>{list.comment}</h3>
+                        {/* <p className="likeReply">
                           <Button className="commentbutton">Like</Button>
                           <Button className="commentbutton4">Reply</Button>
                           <span className="likeTotal">1 Like</span>
-                        </p> */}
-                        </div>
-                      </Col>
-                    </div>
-                  ))
-                  }
-                </Row>
-              </div>
-              {/* ****Comment section**** */}
+                        </p> */} 
+                      </div>
+                    </Col>
+                  </div>
+                ))
+                }
+              </Row>
             </div>
+            {/* ****Comment section**** */}
+          </div>
           </div>
 
 
-        })
-        }
+      })
+      }
 
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">

@@ -439,6 +439,11 @@ p.likeReply button:hover {
     color: #6940ba;
     background: transparent;
 }
+.postComment {
+    padding: 10px 0;
+    border-bottom: 0.5px solid rgba(128, 128, 128, 0.26);
+   
+}
 span.likeTotal {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.56);
