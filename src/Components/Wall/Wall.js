@@ -58,7 +58,8 @@ class Wall extends Component {
     this.postLike = this.postLike.bind(this);
     this.imageUpload = this.imageUpload.bind(this);
     this.writeComment = this.writeComment.bind(this);
-    this.getProfileData = this.getProfileData.bind(this)
+    this.getProfileData = this.getProfileData.bind(this);
+    this.showCommentBox = this.showCommentBox.bind(this);
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -146,7 +147,7 @@ class Wall extends Component {
         title: this.state.posts.title,
         content: this.refs.quill_content.getEditorContents()
       }
-     
+
     })
     // console.log(this.refs.quill_content.getEditorContents().textContent)
 
@@ -232,6 +233,7 @@ class Wall extends Component {
           });
           this.getPosts();
           this.getComments(result.result._id);
+          this.setState({ showcomment: true})
           this.setState({
             comments: {
               comment: "",
@@ -294,7 +296,7 @@ class Wall extends Component {
   // show comment box
   showCommentBox = () => {
     console.log('comment box')
-    this.setState({ showcomment: true })
+    this.setState({ showcomment: !this.state.showcomment})
   }
 
   render() {
@@ -405,74 +407,74 @@ class Wall extends Component {
                   {item.imageId ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} /> : ''}
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
                   <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                </div>
+                <div className="likecomment">
+                  <h3>{item.like.length}  likes</h3>{
+                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="dislike-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
+                  }
+
+                  <Button title="comment" onClick={this.showCommentBox}><Icon type="message" />Comment</Button>
+
+                </div>
               </div>
-              <div className="likecomment">
-                <h3>{item.like.length}  likes</h3>{
-                  (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="dislike-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
-                }
+              {/* ****Comment section**** */}
+              <div className="commentSection">
+                <Row type="flex" justify="space-around" align="middle">
 
-                <Button title="comment"><Icon type="message" onClick={() => { this.showCommentBox }} />Comment</Button>
+                  <Col xs={3} sm={3} md={2}>
+                    <div className="commentImg">
+                      {
+                        (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                      }
+                    </div>
+                  </Col>
 
+                  <Col xs={21} sm={21} md={22}>
+                    <div className="commentText">
+                      <img src={camera} />
+                      <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
+                    </div>
+                  </Col>
+
+                </Row>
+
+
+                <Row >
+                  {item.comments.map((list) => (
+                    this.state.showcomment ?
+                      <div className="contentsComment" key={list._id}>
+                        <Col xs={3} sm={3} md={2}>
+                          <div className="commentImg">
+                            {
+                              (list.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
+                            }
+                          </div>
+                        </Col>
+
+                        <Col xs={21} sm={21} md={22}>
+                          <div className="postComment">
+                            <p>{list.userId.userName}</p>
+                            <h3>{list.userId.designation}</h3>
+                            <h3>{list.comment}</h3>
+                            {/* <p className="likeReply">
+      <Button className="commentbutton">Like</Button>
+      <Button className="commentbutton4">Reply</Button>
+      <span className="likeTotal">1 Like</span>
+    </p> */}
+                          </div>
+                        </Col>
+                      </div> : ''
+                  ))
+                  }
+                </Row>
               </div>
+              {/* ****Comment section**** */}
             </div>
-            {/* ****Comment section**** */}
-            <div className="commentSection">
-              <Row type="flex" justify="space-around" align="middle">
-
-                <Col xs={3} sm={3} md={2}>
-                  <div className="commentImg">
-                    {
-                      (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
-                    }
-                  </div>
-                </Col>
-
-                <Col xs={21} sm={21} md={22}>
-                  <div className="commentText">
-                    <img src={camera} />
-                    <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
-                  </div>
-                </Col>
-
-              </Row>
-
-
-              <Row >
-                {item.comments.map((list) => (
-
-                  <div className="contentsComment" key={list._id}>
-                    <Col xs={3} sm={3} md={2}>
-                      <div className="commentImg">
-                        {
-                          (list.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
-                        }
-                      </div>
-                    </Col>
-
-                    <Col xs={21} sm={21} md={22}>
-                      <div className="postComment">
-                        <p>{list.userId.userName}</p>
-                        <h3>{list.userId.designation}</h3>
-                        <h3>{list.comment}</h3>
-                        {/* <p className="likeReply">
-                          <Button className="commentbutton">Like</Button>
-                          <Button className="commentbutton4">Reply</Button>
-                          <span className="likeTotal">1 Like</span>
-                        </p> */} 
-                      </div>
-                    </Col>
-                  </div>
-                ))
-                }
-              </Row>
-            </div>
-            {/* ****Comment section**** */}
-          </div>
           </div>
 
 
-      })
-      }
+        })
+        }
 
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
