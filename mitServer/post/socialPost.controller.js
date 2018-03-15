@@ -105,6 +105,7 @@ router.put('/comment', (request, response) => {
             commentesponse.message = `Success`;
             response.status(200).json(commentesponse);
         }
+        // io.to(socket.id).emit("comment", data)
     });
 });
 // Api for getting all  comment through postId
