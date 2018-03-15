@@ -37,7 +37,6 @@ class Wall extends Component {
     this.socialPost = this.socialPost.bind(this);
     this.postLike = this.postLike.bind(this);
     this.getPosts();
-
   }
 
   //postdata on server
@@ -60,7 +59,6 @@ class Wall extends Component {
         }
       })
       this.getPosts();
-
     })
   }
 

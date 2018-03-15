@@ -10,11 +10,16 @@ import Profile from './Components/Profile/Profile';
 import Wall from './Components/Wall/Wall';
 import { Row, Col } from 'antd';
 
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="App">
-          {/* <Routes /> */}
+        {/* <Routes /> */}
         {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
@@ -25,8 +30,8 @@ class App extends Component {
         {/* <Signup></Signup> */}
         {/* <Signin></Signin> */}
         {/* <Header></Header> */}
-         {/*<Profile></Profile> */}
-                <Routes/>
+        {/*<Profile></Profile> */}
+        <Routes />
       </div>
     );
   }
