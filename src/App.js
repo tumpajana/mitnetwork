@@ -9,13 +9,21 @@ import Signin from './Components/Signin/Signin';
 import Profile from './Components/Profile/Profile';
 import Wall from './Components/Wall/Wall';
 import { Row, Col } from 'antd';
+import getStates from './Services/getStates';
+import getCities from './Services/getCities';
 
 class App extends Component {
- 
+
+  constructor() {
+    super();
+    getStates();
+    getCities();
+  }
+
   render() {
     return (
       <div className="App">
-          {/* <Routes /> */}
+        {/* <Routes /> */}
         {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
@@ -26,8 +34,8 @@ class App extends Component {
         {/* <Signup></Signup> */}
         {/* <Signin></Signin> */}
         {/* <Header></Header> */}
-         {/*<Profile></Profile> */}
-                <Routes/>
+        {/*<Profile></Profile> */}
+        <Routes />
       </div>
     );
   }

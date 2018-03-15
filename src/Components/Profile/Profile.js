@@ -12,11 +12,12 @@ import updateData from '../../Services/updateapi';
 import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
 import { ToastContainer, toast } from 'react-toastify';
-import {Cropper} from 'react-image-cropper'
+import { Cropper } from 'react-image-cropper'
 // import 'react-image-crop/dist/ReactCrop.css';
 class Profile extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       user: {
         userName: '',
@@ -40,7 +41,7 @@ class Profile extends Component {
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
     // this.onChangeValue = this.onChangeValue.bind(this);
-    this.myimagecropper=this.myimagecropper.bind(this);
+    this.myimagecropper = this.myimagecropper.bind(this);
     if (sessionStorage.userId) {
       this.UserProfileData();
     }
@@ -142,10 +143,10 @@ class Profile extends Component {
       console.log(result);
       this.setState({ userProfile: result.result });
       console.log('userData...', this.state.userProfile);
-      
+
       if (this.state.userProfile.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
-      }else if(this.state.userProfile.providerPic){
+      } else if (this.state.userProfile.providerPic) {
         console.log(this.state.userProfile.providerPic);
         this.setState({ imageUrl: this.state.userProfile.providerPic })
       }
@@ -185,10 +186,9 @@ class Profile extends Component {
   }
 
   //image cropper
-  myimagecropper=(e)=>
-  {
-  let   x = this.refs.myimage.crop()
-  console.log(x)
+  myimagecropper = (e) => {
+    let x = this.refs.myimage.crop()
+    console.log(x)
     const values = this.refs.myimage.values()
     console.log(values)
   }
@@ -331,22 +331,16 @@ class Profile extends Component {
           <Row>
             <Col span={24}>
               <div className="mitedituserback">
-              <h1 class="editIntro">Edit Intro</h1>
-                {/* <img src={editprofileimg} /> */}
+                <h1 class="editIntro">Edit Intro</h1>
                 <div className="userpic">{
                   (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
                 }
-                  {/* <img src={placegholderimg} /> */}
-                  {/* <Button className="editbtn" title="Edit Profile Image">
-                    <input type="file" name="file" onChange={this.profilePicUpload} />
-                    <Icon type="edit" />
-                  </Button> */}
-                  <Upload  onChange={this.profilePicUpload } >
-                  <Button className="editbtn">
-                    <Icon type="edit" />
-                  </Button>
+                  <Upload onChange={this.profilePicUpload} >
+                    <Button className="editbtn">
+                      <Icon type="edit" />
+                    </Button>
 
-                   </Upload>
+                  </Upload>
                 </div>
               </div>
             </Col>
@@ -359,7 +353,6 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <Input
-
                   placeholder="Enter your Name"
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   onChange={this.onChangeValue}
@@ -411,7 +404,7 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <div>
-                  <Select value={this.state.userProfile.city?this.state.userProfile.city:"0"}  onChange={this.onChangeCity}>
+                  <Select value={this.state.userProfile.city ? this.state.userProfile.city : "0"} onChange={this.onChangeCity}>
                     <Option value="0">City</Option>
                     <Option value="Kolkata">Kolkata</Option>
                     <Option value="Delhi">Delhi</Option>
@@ -421,7 +414,7 @@ class Profile extends Component {
               </Col>
               <Col span={12}>
                 <div>
-                  <Select value={this.state.userProfile.state?this.state.userProfile.state:"0"} onChange={this.onChangeState}>
+                  <Select value={this.state.userProfile.state ? this.state.userProfile.state : "0"} onChange={this.onChangeState}>
                     <Option value="0">State</Option>
                     <Option value="West Bengal">West Bengal</Option>
                     <Option value="Uttar Pradesh">Uttar Pradesh</Option>
