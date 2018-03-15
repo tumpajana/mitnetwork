@@ -1,16 +1,17 @@
-.postsec{
-    background:rgb(255, 255, 255);
+.postsec {
+    background: rgb(255, 255, 255);
     padding: 20px 15px 15px;
-    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
+    box-shadow: 0px 3px 8px 1px rgba(0, 0, 0, 0.05);
     width: 50%;
     margin: 30px auto 15px;
     height: auto;
-
 }
-.postsec hr{
+
+.postsec hr {
     border: none;
     margin-bottom: 1em;
 }
+
 button.ant-btn.postedit {
     width: auto;
     text-align: center;
@@ -23,12 +24,16 @@ button.ant-btn.postedit {
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
-.App .ant-menu-item > a {
+
+.App .ant-menu-item>a {
     color: rgba(255, 255, 255, 0.73);
 }
-.App .ant-menu-horizontal > .ant-menu-item > a:hover, .ant-menu-horizontal > .ant-menu-submenu > a:hover {
+
+.App .ant-menu-horizontal>.ant-menu-item>a:hover,
+.ant-menu-horizontal>.ant-menu-submenu>a:hover {
     color: rgba(255, 255, 255, 0.68);
 }
+
 button.ant-btn.upldbtnwall {
     width: auto;
     text-align: center;
@@ -42,31 +47,36 @@ button.ant-btn.upldbtnwall {
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
+
 .postedimg a {
     font-size: 14px;
     line-height: 20px;
     font-weight: 600;
-    color: rgba(0,0,0,.9);
+    color: rgba(0, 0, 0, .9);
     text-align: left;
     padding-left: 10px;
     margin: 0;
     /* float: left; */
 }
+
 .postedimg p.sub_content a {
     color: rgba(21, 20, 20, 0.77) !important;
     font-weight: 500;
 }
+
 button.ant-btn.upldbtnwall:hover {
-    color:rgb(105, 64, 186);
-    border-color:rgb(105, 64, 186);
+    color: rgb(105, 64, 186);
+    border-color: rgb(105, 64, 186);
     border: 1px solidrgb(105, 64, 186);
 }
+
 .showpostall {
     float: left;
     text-align: left;
 }
-button.ant-btn.postedit:hover{
-    border-color:rgb(105, 64, 186);
+
+button.ant-btn.postedit:hover {
+    border-color: rgb(105, 64, 186);
     color: rgb(105, 64, 186);
 }
 
@@ -81,6 +91,7 @@ button.ant-btn.postimg {
     font-size: 13px;
     border-color: rgba(0, 0, 0, 0.42);
 }
+
 button.ant-btn.post {
     width: auto;
     text-align: center;
@@ -90,7 +101,7 @@ button.ant-btn.post {
     padding: 0 19px;
     margin-right: 5px;
     margin-top: 4px;
-    background:rgb(105, 64, 186);
+    background: rgb(105, 64, 186);
     color: rgb(255, 255, 255);
     font-weight: 600;
     font-size: 14px;
@@ -98,27 +109,33 @@ button.ant-btn.post {
     border-radius: 2px;
     border: none;
 }
+
 button.ant-btn.post:hover {
     background: rgb(2, 102, 156);
 }
-.postsec i.anticon.anticon-edit{
+
+.postsec i.anticon.anticon-edit {
     vertical-align: middle;
 }
+
 .postsec .anticon:before {
     font-size: 16px;
-   font-weight: 500;
+    font-weight: 500;
 }
- button.ant-btn.postedit:hover {
-    color:rgb(105, 64, 186);
+
+button.ant-btn.postedit:hover {
+    color: rgb(105, 64, 186);
     border-color: rgb(105, 64, 186);
     border: 1px solid rgb(105, 64, 186);
 }
+
 button.ant-btn.postimg:hover {
-    color:rgb(105, 64, 186);
-    border-color:rgb(105, 64, 186);
+    color: rgb(105, 64, 186);
+    border-color: rgb(105, 64, 186);
     border: 1px solidrgb(105, 64, 186);
 }
-.postsec p{
+
+.postsec p {
     padding-bottom: 25px;
     font-size: 16px;
     font-weight: 400;
@@ -135,26 +152,30 @@ button.ant-btn.postimg:hover {
     box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
     width: 50%;
     margin: 2em auto;
-    position:relative;
+    position: relative;
+}
 
-}
-.ant-btn:hover, .ant-btn:focus {
+.ant-btn:hover,
+.ant-btn:focus {
     color: inherit;
-   
 }
+
 button.ant-btn.post:hover {
     background: rgb(92, 55, 165);
 }
+
 .ant-modal.mitprofileEditmodal button.ant-btn {
     border: 1px solid #a7a5ab;
     font-family: Lato;
     font-size: 14px;
 }
+
 .ant-modal.mitprofileEditmodal button.ant-btn:hover {
     /* background: #f7f7f7; */
     border: 1px solid #6940ba;
     color: #6940ba;
 }
+
 .ant-modal.mitprofileEditmodal button.ant-btn.ant-btn-primary {
     background: rgb(105, 64, 186);
     border: none;
@@ -180,83 +201,91 @@ button.ant-btn.post:hover {
     background-repeat: no-repeat;
 }
 
-.userpicpost img{
+.userpicpost img {
     height: 100%;
     width: 100%;
     border-radius: 50%;
     /* border: 2px solid rgb(255, 255, 255); */
 }
 
-.postedpartcard p{
-font-size: 14px;
-line-height: 20px;
-font-weight: 600;
-color: rgba(0,0,0,.9);
-text-align: left;
-padding-left: 10px;
-margin: 0;
-cursor:pointer;
+.postedpartcard p {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .9);
+    text-align: left;
+    padding-left: 10px;
+    margin: 0;
+    cursor: pointer;
 }
-.postedpartcard h3{
-    cursor:pointer;
+
+.postedpartcard h3 {
+    cursor: pointer;
     line-height: 20px;
     font-size: 12px;
-    color:rgba(0,0,0,.6);
+    color: rgba(0, 0, 0, .6);
     text-align: left;
     padding-left: 10px;
 }
-.postedimg p{
-   padding-left: 10px;
 
+.postedimg p {
+    padding-left: 10px;
 }
 
-.postedimg h3{
+.postedimg h3 {
     padding-left: 10px;
     font-size: 12px;
-    color:rgba(0,0,0,.6);
- }
-.postedimg img{
-    height:auto;
-    width:100%;
+    color: rgba(0, 0, 0, .6);
+}
+
+.postedimg img {
+    height: auto;
+    width: 100%;
     margin-bottom: 8px;
 }
+
 .postedimg {
     border: 1px solid rgb(230, 233, 236);
     margin: 15px 0 0 0;
     padding-bottom: 7px;
 }
+
 textarea.ant-input.showpost {
     border: none;
     outline: none;
     box-shadow: none;
     resize: none;
 }
-.likecomment{
+
+.likecomment {
     padding: 10px 0 5px;
     text-align: left;
 }
-.likecomment h3{
-padding: 0 0 10px 0;
-border-bottom: 1px solid rgb(230, 233, 236);
 
+.likecomment h3 {
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid rgb(230, 233, 236);
 }
-.likecomment button{
-border:0;
-font-size: 14px;
-line-height: 20px;
-font-weight: 600;
-color: rgba(0,0,0,.6);
+
+.likecomment button {
+    border: 0;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .6);
 }
 
 .likecomment button:hover {
     background-color: hsla(260, 49%, 49%, 0.3);
     color: rgb(105, 64, 186);
 }
-.likecomment button:focus{
+
+.likecomment button:focus {
     color: rgb(105, 64, 186);
 }
-.likecomment button:focus .anticon-like-o:before{
-content:'\E64C';
+
+.likecomment button:focus .anticon-like-o:before {
+    content: '\E64C';
 }
 .likecolor{
     color: rgb(105, 64, 186);
@@ -268,6 +297,7 @@ content:'\E64C';
     height: 115px;
     margin-bottom: 28px;
 }
+
 .textareawall .ql-container.ql-snow {
     /* border: none; */
 }
@@ -277,7 +307,7 @@ content:'\E64C';
 }
 
 .textareheadng .ql-editor.ql-blank::before {
-    color: rgba(0,0,0,0.4);
+    color: rgba(0, 0, 0, 0.4);
     content: attr(data-placeholder);
     font-style: normal;
     pointer-events: none;
@@ -304,6 +334,7 @@ content:'\E64C';
     background-size: cover;
     float: left;
 }
+
 h4.usrnamewall {
     text-align: left;
     font-family: Lato;
@@ -313,24 +344,28 @@ h4.usrnamewall {
     color: rgba(0, 0, 0, 0.81);
     margin-top: 4px;
 }
+
 hr.dividerwall {
     border-top: 1px solid #e2e2e2;
     margin-left: -15px;
     margin-right: -15px;
 }
+
 .usrview {
     margin-left: 7px;
 }
+
 p.degignationwall {
     padding-bottom: 11px;
     font-size: 12px;
     line-height: 16px;
-    color: rgba(0,0,0,.6);
+    color: rgba(0, 0, 0, .6);
     font-family: Lato;
-    border:none;
+    border: none;
 }
+
 .textareawall .ql-editor.ql-blank::before {
-    color: rgba(0,0,0,0.4);
+    color: rgba(0, 0, 0, 0.4);
     content: attr(data-placeholder);
     font-style: normal;
     pointer-events: none;
@@ -338,9 +373,8 @@ p.degignationwall {
     font-family: Lato;
     font-size: 14px;
 }
-@media only screen 
-and (min-width: 320px) 
-and (max-width: 767px) {
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
     .postsec {
         width: 95%;
     }
@@ -369,41 +403,44 @@ and (max-width: 767px) {
     .likecomment h3 {
         padding: 0 0 10px 4px;
     }
-
 }
 
 
 /* comment section */
 
 .commentImg {
-    margin:0 auto;
+    margin: 0 auto;
     height: 30px;
     width: 30px;
 }
 
-.commentImg img{
+.commentImg img {
     height: 100%;
     width: 100%;
     border-radius: 50%;
 }
+
 .commentSection {
     background: #f3f6f8;
     /* position: absolute; */
     z-index:1;
     padding: 10px 19px 10px 8px;
-    box-shadow: 0px 3px 8px 1px rgba(0,0,0,0.05);
+    box-shadow: 0px 3px 8px 1px rgba(0, 0, 0, 0.05);
     margin: 0 auto;
     left: 0;
     text-align: left;
     right: 0;
 }
+
 .commentText textarea {
     border-radius: 0;
     resize: none;
 }
+
 .contentsComment {
     padding: 1em 0;
 }
+
 .commentText img {
     height: 18px;
     width: 18px;
@@ -412,10 +449,12 @@ and (max-width: 767px) {
     top: 7px;
     right: 15px;
 }
+
 .postComment p {
     padding-left: 0;
     line-height: 10px;
 }
+
 .postComment h3 {
     padding-left: 0;
     margin-bottom: 0px;
@@ -446,6 +485,7 @@ span.likeTotal {
     border-left: 1px solid rgba(0, 0, 0, 0.51);
     padding-left: 1em;
 }
+
 button.ant-btn.commentbutton4 {
     width: 49px;
 }
@@ -455,4 +495,6 @@ button.ant-btn.commentbutton4 {
 .commentText {
     position: relative;
 }
+
+
 /* comment section */

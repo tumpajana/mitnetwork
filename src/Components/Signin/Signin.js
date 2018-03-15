@@ -40,7 +40,6 @@ class Signin extends Component {
     this.onChangeLoginName = this.onChangeLoginName.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
   responseFacebook = (response) => {
