@@ -50,7 +50,7 @@ class Wall extends Component {
       profileData: {},
       userInfo: {},
       imageUrl: '',
-      cPostid:''
+      cPostid: ''
     }
 
     this.postContent = this.postContent.bind(this);
@@ -73,7 +73,7 @@ class Wall extends Component {
   //postdata on server
   socialPost() {
     console.log('post')
-    if ((this.state.posts.title) && (this.state.posts.content)) {
+    if ((this.state.posts.content)) {
       if (this.state.imageId) {
         var dataSent = {
           title: this.state.posts.title,
@@ -101,6 +101,9 @@ class Wall extends Component {
             content: ""
           }
         })
+        console.log(this.refs.quill_content)
+      //  let x= this.refs.quill_content.props._id;
+      //  document.getElementById("editor-conten").innerHTML = " ";
         this.setState({ imageId: '' })
         this.setState({ showPreviewIcon: false })
         this.getPosts();
@@ -142,16 +145,15 @@ class Wall extends Component {
 
   // post content
   postContent = (e) => {
-
+    console.log(e)
     this.setState({
       posts: {
-        title: this.state.posts.title,
+        title: '',
         content: this.refs.quill_content.getEditorContents()
       }
 
     })
-    // console.log(this.refs.quill_content.getEditorContents().textContent)
-
+ console.log(this.refs.quill_content);
   }
 
   //postlike
@@ -234,7 +236,7 @@ class Wall extends Component {
           });
           this.getPosts();
           this.getComments(result.result._id);
-          this.setState({ showcomment: true})
+          this.setState({ showcomment: true })
           this.setState({
             comments: {
               comment: "",
@@ -258,7 +260,7 @@ class Wall extends Component {
 
       if (this.state.userInfo.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userInfo.imageId._id })
-      } else if (this.state.userProfile.providerPic) {
+      } else if (this.state.userInfo.providerPic) {
         console.log(this.state.userInfo.providerPic);
         this.setState({ imageUrl: this.state.userInfo.providerPic })
       }
@@ -298,8 +300,10 @@ class Wall extends Component {
   showCommentBox = (e) => {
     console.log(e)
     console.log('comment box')
-    this.setState({ showcomment: !this.state.showcomment})
-    this.state.cPostid=e;
+    this.setState({ showcomment: !this.state.showcomment })
+    // if (this.state.showcomment)
+      this.state.cPostid = e;
+    // else this.state.cPostid = "";
   }
 
   render() {
@@ -318,39 +322,41 @@ class Wall extends Component {
 
         {/* wall view section start */}
         <form className="postarticlesec">
-        <div className="wallcard">
-        <div className="usercard">
-          <div className="postsec clearfix">
-           
-              <Row>
-              <form>
-                <Col span={2}>
-               
-                  <div className="userprflimg">
-                    <img src={usrimgwall} />
-                  </div>
-                </Col>
-                <Col span={22}>
-                  <div className="usrview">                
-                <h3>payel dutta</h3>
-                  <p>software engineer,meme infotech</p>
-                  </div>
-                 
-                </Col>
-                </form>
-              </Row>
+          <div className="wallcard">
+            <div className="usercard">
+              <div className="postsec clearfix">
+
+                <Row>
+                  <form>
+                    <Col span={2}>
+
+                      <div className="userprflimg">
+                        {
+                          (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                        }
+                      </div>
+                    </Col>
+                    <Col span={22}>
+                      <div className="usrview">
+                        <h3>{this.state.userInfo.userName}</h3>
+                        <p>{this.state.userInfo.designation}</p>
+                      </div>
+
+                    </Col>
+                  </form>
+                </Row>
               </div>
               <div className="textSection">
-              <Row>
-                <Col span={24}>
-               
-                <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Write an article here" name="title" onChange={this.postTitle} />
-                {/* <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} /> */}
+                <Row>
+                  <Col span={24}>
 
-                
-                </Col>
-               </Row>
-               </div>
+                    <ReactQuill ref="quill_content" id="editor-content" className="textareheadng" placeholder="Write an article here" name="title" onChange={this.postContent} />
+                    {/* <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} /> */}
+
+
+                  </Col>
+                </Row>
+              </div>
               <Row type="flex" justify="center">
 
                 <Col span={24}>
@@ -363,37 +369,37 @@ class Wall extends Component {
 
                 </Col>
               </Row>
-          
 
-            <hr className="dividerwall" />
-<form className="uploadimgsec">
-            <Row >
 
-              {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
-              <div className="uploadalign">
-              <Col span={10}>
+              <hr className="dividerwall" />
+              <form className="uploadimgsec">
+                <Row >
 
-                <Upload onChange={this.imageUpload}
-                  showUploadList={this.state.showPreviewIcon}>
-                  <Button className="upldbtnwall">
-                    <Icon type="upload" />Upload Image
+                  {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
+                  <div className="uploadalign">
+                    <Col span={10}>
+
+                      <Upload onChange={this.imageUpload}
+                        showUploadList={this.state.showPreviewIcon}>
+                        <Button className="upldbtnwall">
+                          <Icon type="upload" />Upload Image
               </Button>
-                </Upload>
-              </Col>
-              </div>
-              <Col span={14}>
-                <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
-              </Col>
+                      </Upload>
+                    </Col>
+                  </div>
+                  <Col span={14}>
+                    <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
+                  </Col>
 
-            </Row>
-            </form>
+                </Row>
+              </form>
+            </div>
           </div>
-      </div>
-</form>
+        </form>
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        {this.state.postList.map((item,pIndex) => {
+        {this.state.postList.map((item, pIndex) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
               <div className="mitpic">
@@ -429,7 +435,7 @@ class Wall extends Component {
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
 
-                  <Button title="comment" onClick={()=>{this.showCommentBox(item._id)}}><Icon type="message" />Comment</Button>
+                  <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
 
                 </div>
               </div>
@@ -456,10 +462,10 @@ class Wall extends Component {
 
 
                 <Row >
-                  {item.comments.map((list,cIndex) => (
+                  {item.comments.map((list, cIndex) => (
 
-              this.state.showcomment && item._id===this.state.cPostid?
-                    // this.state.showcomment ?
+                   this.state.showcomment&& item._id === this.state.cPostid ?
+                      // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
@@ -481,7 +487,7 @@ class Wall extends Component {
     </p> */}
                           </div>
                         </Col>
-                      </div> :''
+                      </div> : ''
                   ))
                   }
                 </Row>
@@ -523,7 +529,7 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-       
+
         {/* ----------MODAL SECTION FOR write something end------------- */}
         <ToastContainer autoClose={2000} />
       </div>
