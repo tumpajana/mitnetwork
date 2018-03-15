@@ -113,11 +113,10 @@ router.get('/getCommentByPostId', (request, response) => {
     // var perPage = 5, page = request.param('page') > 0 ? request.param('page') : 0;
     let getResponse = {};
     let postId = request.query.postId;
-    post.findOne({ _id: postId })
+    post.findOne({ _id: postId }).populate('comments.userId').exec(function (error, result) {
         // .sort({ createdDate: 'descending' })
         // .limit({comments:'perPage'})
         // .skip(perPage * page)
-        .exec((error, result) => {
             console.log('error......',error);
             console.log('result.....',result);
             if (error) {
