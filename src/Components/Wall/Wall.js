@@ -299,7 +299,9 @@ class Wall extends Component {
     console.log(e)
     console.log('comment box')
     this.setState({ showcomment: !this.state.showcomment})
+    if(this.state.showcomment)
     this.state.cPostid=e;
+    else this.state.cPostid="";
   }
 
   render() {
@@ -416,7 +418,7 @@ class Wall extends Component {
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
 
-                  <Button title="comment" onClick={()=>{this.showCommentBox(item._id)}}><Icon type="message" />Comment</Button>
+                  <Button title="comment" onClick={()=>{this.showCommentBox(item._id)}}><Icon type="message" />Comment ({item.comments.length})</Button>
 
                 </div>
               </div>
@@ -445,7 +447,7 @@ class Wall extends Component {
                 <Row >
                   {item.comments.map((list,cIndex) => (
 
-              this.state.showcomment && item._id===this.state.cPostid?
+              item._id===this.state.cPostid?
                     // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
