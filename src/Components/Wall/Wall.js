@@ -49,7 +49,8 @@ class Wall extends Component {
       imageId: '',
       profileData: {},
       userInfo: {},
-      imageUrl: ''
+      imageUrl: '',
+      cPostid: ''
     }
 
     this.postContent = this.postContent.bind(this);
@@ -72,7 +73,7 @@ class Wall extends Component {
   //postdata on server
   socialPost() {
     console.log('post')
-    if ((this.state.posts.title) && (this.state.posts.content)) {
+    if ((this.state.posts.content)) {
       if (this.state.imageId) {
         var dataSent = {
           title: this.state.posts.title,
@@ -100,6 +101,9 @@ class Wall extends Component {
             content: ""
           }
         })
+        console.log(this.refs.quill_content)
+      //  let x= this.refs.quill_content.props._id;
+      //  document.getElementById("editor-conten").innerHTML = " ";
         this.setState({ imageId: '' })
         this.setState({ showPreviewIcon: false })
         this.getPosts();
@@ -141,16 +145,15 @@ class Wall extends Component {
 
   // post content
   postContent = (e) => {
-
+    console.log(e)
     this.setState({
       posts: {
-        title: this.state.posts.title,
+        title: '',
         content: this.refs.quill_content.getEditorContents()
       }
 
     })
-    // console.log(this.refs.quill_content.getEditorContents().textContent)
-
+ console.log(this.refs.quill_content);
   }
 
   //postlike
@@ -233,7 +236,7 @@ class Wall extends Component {
           });
           this.getPosts();
           this.getComments(result.result._id);
-          this.setState({ showcomment: true})
+          this.setState({ showcomment: true })
           this.setState({
             comments: {
               comment: "",
@@ -257,7 +260,7 @@ class Wall extends Component {
 
       if (this.state.userInfo.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userInfo.imageId._id })
-      } else if (this.state.userProfile.providerPic) {
+      } else if (this.state.userInfo.providerPic) {
         console.log(this.state.userInfo.providerPic);
         this.setState({ imageUrl: this.state.userInfo.providerPic })
       }
@@ -294,9 +297,13 @@ class Wall extends Component {
   }
 
   // show comment box
-  showCommentBox = () => {
+  showCommentBox = (e) => {
+    console.log(e)
     console.log('comment box')
-    this.setState({ showcomment: !this.state.showcomment})
+    this.setState({ showcomment: !this.state.showcomment })
+    // if (this.state.showcomment)
+      this.state.cPostid = e;
+    // else this.state.cPostid = "";
   }
 
   render() {
@@ -314,23 +321,42 @@ class Wall extends Component {
         {/* navbar section end */}
 
         {/* wall view section start */}
-        <div className="wallcard">
-          <div className="postsec clearfix">
-            <form>
-              <Row>
-                <Col span={2}>
+        <form className="postarticlesec">
+          <div className="wallcard">
+            <div className="usercard">
+              <div className="postsec clearfix">
 
-                  {/* <div className="userprflimg">
-                    <img src={usrimgwall} />
-                  </div> */}
-                </Col>
-                <Col span={22}>
-                  <div className="usrview">
-                    <h4 className="usrnamewall" contentEditable='flase' dangerouslySetInnerHTML={{ __html: this.state.posts.title }}></h4>
-                    <p className="degignationwall" contentEditable='false' dangerouslySetInnerHTML={{ __html: this.state.posts.content }}></p>
-                  </div>
-                </Col>
-              </Row>
+                <Row>
+                  <form>
+                    <Col span={2}>
+
+                      <div className="userprflimg">
+                        {
+                          (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                        }
+                      </div>
+                    </Col>
+                    <Col span={22}>
+                      <div className="usrview">
+                        <h3>{this.state.userInfo.userName}</h3>
+                        <p>{this.state.userInfo.designation}</p>
+                      </div>
+
+                    </Col>
+                  </form>
+                </Row>
+              </div>
+              <div className="textSection">
+                <Row>
+                  <Col span={24}>
+
+                    <ReactQuill ref="quill_content" id="editor-content" className="textareheadng" placeholder="Write an article here" name="title" onChange={this.postContent} />
+                    {/* <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} /> */}
+
+
+                  </Col>
+                </Row>
+              </div>
               <Row type="flex" justify="center">
 
                 <Col span={24}>
@@ -343,41 +369,37 @@ class Wall extends Component {
 
                 </Col>
               </Row>
-            </form>
 
-            <hr className="dividerwall" />
 
-            <Row >
+              <hr className="dividerwall" />
+              <form className="uploadimgsec">
+                <Row >
 
-              <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col>
-              <Col span={5}>
+                  {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
+                  <div className="uploadalign">
+                    <Col span={10}>
 
-                <Upload onChange={this.imageUpload}
-                  showUploadList={this.state.showPreviewIcon}>
-                  <Button className="upldbtnwall">
-                    <Icon type="upload" />Upload Image
+                      <Upload onChange={this.imageUpload}
+                        showUploadList={this.state.showPreviewIcon}>
+                        <Button className="upldbtnwall">
+                          <Icon type="upload" />Upload Image
               </Button>
-                </Upload>
-              </Col>
-              <Col span={14}>
+                      </Upload>
+                    </Col>
+                  </div>
+                  <Col span={14}>
+                    <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
+                  </Col>
 
-
-                <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
-              </Col>
-
-            </Row>
-
-            {/* <Button className="postimg" title="Images"><Icon type="camera-o" />Images</Button> */}
-
-
-
+                </Row>
+              </form>
+            </div>
           </div>
-        </div>
-
+        </form>
         {/* wall view section end */}
 
         {/* posted blog html start */}
-        {this.state.postList.map((item) => {
+        {this.state.postList.map((item, pIndex) => {
           return <div>
             <div className="postedpartcard" key={item._id}>
               <div className="mitpic">
@@ -393,7 +415,7 @@ class Wall extends Component {
                     <h3>{item.userId.designation}</h3>
                   </Col>
                 </Row>
-                <div className="postedimg">
+                <div className="postedimg onlytext">
                   {/* <img src={Wallpostimg} /> */}
                   {/* <Video autoPlay loop muted
                     controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
@@ -410,10 +432,10 @@ class Wall extends Component {
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
-                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="dislike-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
+                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
 
-                  <Button title="comment" onClick={this.showCommentBox}><Icon type="message" />Comment</Button>
+                  <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
 
                 </div>
               </div>
@@ -440,8 +462,10 @@ class Wall extends Component {
 
 
                 <Row >
-                  {item.comments.map((list) => (
-                    this.state.showcomment ?
+                  {item.comments.map((list, cIndex) => (
+
+                   this.state.showcomment&& item._id === this.state.cPostid ?
+                      // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
@@ -505,42 +529,7 @@ class Wall extends Component {
 
 
         {/* ----------MODAL SECTION write something  start------------- */}
-        <div className="modalcustom">
-          <Modal className="artclhead"
-            visible={visible}
-            title="Share Article"
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-            footer={[
-              <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
-              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-                Save
-           </Button>,
-            ]}
-            className="mitprofileEditmodal"
-          >
 
-
-
-            {/* ----------------edit profile form start--------------- */}
-            <form className="editprofileform">
-
-              <Row gutter={24}>
-                <Col span={24}>
-                  <form>
-
-
-                    <ReactQuill ref="quill_title" id="editor-title" className="textareheadng" placeholder="Headline" name="title" onChange={this.postTitle} />
-                    <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} />
-
-                  </form>
-                </Col>
-              </Row>
-
-            </form>
-          </Modal>
-
-        </div>
         {/* ----------MODAL SECTION FOR write something end------------- */}
         <ToastContainer autoClose={2000} />
       </div>
