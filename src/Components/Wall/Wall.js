@@ -102,8 +102,8 @@ class Wall extends Component {
           }
         })
         console.log(this.refs.quill_content)
-      //  let x= this.refs.quill_content.props._id;
-      //  document.getElementById("editor-conten").innerHTML = " ";
+        //  let x= this.refs.quill_content.props._id;
+        //  document.getElementById("editor-conten").innerHTML = " ";
         this.setState({ imageId: '' })
         this.setState({ showPreviewIcon: false })
         this.getPosts();
@@ -153,7 +153,7 @@ class Wall extends Component {
       }
 
     })
- console.log(this.refs.quill_content);
+    console.log(this.refs.quill_content);
   }
 
   //postlike
@@ -200,6 +200,7 @@ class Wall extends Component {
       // if (result.result.comments.length != 0) {
       //   this.setState({ commentList: result.result.comments })
       // }
+      this.setState({ showcomment: true })
     })
   }
 
@@ -239,11 +240,14 @@ class Wall extends Component {
           this.setState({ showcomment: true })
           this.setState({
             comments: {
-              comment: "",
+              comment: null,
               postid: ""
             }
           })
-
+          // var notes = this.refs.commentText;
+          // console.log(notes)
+          // notes.value = " ";
+          // component.replaceProps({updated: true});
         }
 
       })
@@ -302,7 +306,7 @@ class Wall extends Component {
     console.log('comment box')
     this.setState({ showcomment: !this.state.showcomment })
     // if (this.state.showcomment)
-      this.state.cPostid = e;
+    this.state.cPostid = e;
     // else this.state.cPostid = "";
   }
 
@@ -350,7 +354,7 @@ class Wall extends Component {
                 <Row>
                   <Col span={24}>
 
-                    <ReactQuill ref="quill_content" id="editor-content" className="textareheadng" placeholder="Write an article here" name="title" onChange={this.postContent} />
+                    <ReactQuill ref="quill_content" id="editor-content" className="textareheadng" placeholder="Write an article here" name="content" onChange={this.postContent} />
                     {/* <ReactQuill ref="quill_content" id="editor-content" placeholder="Write here .." className="textareawall" name="content" onChange={this.postContent} /> */}
 
 
@@ -454,7 +458,7 @@ class Wall extends Component {
                   <Col xs={21} sm={21} md={22}>
                     <div className="commentText">
                       <img src={camera} />
-                      <TextArea rows={1} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
+                      <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
 
@@ -464,7 +468,7 @@ class Wall extends Component {
                 <Row >
                   {item.comments.map((list, cIndex) => (
 
-                   this.state.showcomment&& item._id === this.state.cPostid ?
+                    this.state.showcomment && item._id === this.state.cPostid ?
                       // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
