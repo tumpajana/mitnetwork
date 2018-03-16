@@ -9,15 +9,15 @@ import Signin from './Components/Signin/Signin';
 import Profile from './Components/Profile/Profile';
 import Wall from './Components/Wall/Wall';
 import { Row, Col } from 'antd';
-import getStates from './Services/getStates';
-import getCities from './Services/getCities';
+// import getStates from './Services/getStates';
+// import getCities from './Services/getCities';
 
 class App extends Component {
 
   constructor() {
     super();
-    getStates();
-    getCities();
+    // getStates();
+    // getCities();
   }
 
   render() {

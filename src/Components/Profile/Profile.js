@@ -13,10 +13,13 @@ import ReactDOM from 'react-dom';
 import profilePic from '../../Services/profilepicapi';
 import { ToastContainer, toast } from 'react-toastify';
 import { Cropper } from 'react-image-cropper'
+import getStates from '../../Services/getStates';
+import getCities from '../../Services/getCities';
 // import 'react-image-crop/dist/ReactCrop.css';
 class Profile extends Component {
   constructor(props) {
     super(props);
+
 
     this.state = {
       user: {
@@ -32,7 +35,10 @@ class Profile extends Component {
       },
       imagUrl: '',
       userProfile: {},
-      userName: ''
+      userName: '',
+      stateArray: [],
+      cityArray: [],
+
     };
 
     this.UserProfileData = this.UserProfileData.bind(this);
@@ -47,6 +53,15 @@ class Profile extends Component {
       this.UserProfileData();
     }
 
+    //get states
+    getStates().then((result) => {
+      console.log(result);
+      // this.setState({ stateArray: result});
+      this.setState({ stateArray: result });
+      console.log("states",this.state.stateArray);
+    });
+
+  
 
   };
 
@@ -102,6 +117,13 @@ class Profile extends Component {
     let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
     userProfile.state = e;                        //updating value
     this.setState({ userProfile });
+    getCities(e).then((result) => {
+      console.log(result);
+      this.setState({ cityArray: result })
+      console.log(this.state.cityArray);
+    });
+    
+
   }
 
   //update profile
@@ -200,6 +222,8 @@ class Profile extends Component {
   edit = () => {
     console.log('Dispaly data');
   }
+
+
 
   render() {
 
@@ -410,9 +434,9 @@ class Profile extends Component {
                 <div>
                   <Select value={this.state.userProfile.city ? this.state.userProfile.city : "0"} onChange={this.onChangeCity}>
                     <Option value="0">City</Option>
-                    <Option value="Kolkata">Kolkata</Option>
-                    <Option value="Delhi">Delhi</Option>
-                    <Option value="Pune">Pune</Option>
+                    {this.state.cityArray.map((item) => {
+                    return<Option value={item.name}>{item.name}</Option>
+                  })}
                   </Select>
                 </div>
               </Col>
@@ -420,8 +444,9 @@ class Profile extends Component {
                 <div>
                   <Select value={this.state.userProfile.state ? this.state.userProfile.state : "0"} onChange={this.onChangeState}>
                     <Option value="0">State</Option>
-                    <Option value="West Bengal">West Bengal</Option>
-                    <Option value="Uttar Pradesh">Uttar Pradesh</Option>
+                    {this.state.stateArray.map((item) => {
+                      return <Option value={item}>{item}</Option> 
+                    })}
                   </Select>
                 </div>
               </Col>
