@@ -102,6 +102,7 @@ class Wall extends Component {
           }
         })
         console.log(this.refs.quill_content)
+        // e.target.value = "";
         //  let x= this.refs.quill_content.props._id;
         //  document.getElementById("editor-conten").innerHTML = " ";
         this.setState({ imageId: '' })
@@ -223,7 +224,9 @@ class Wall extends Component {
   postComment = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      console.log(this.state.comments)
+      e.target.value = "";
+      console.log(this.state.comments);
+    
       let data = {
         comment: this.state.comments.comment,
         postId: this.state.comments.postid,
@@ -236,18 +239,15 @@ class Wall extends Component {
             position: toast.POSITION.TOP_CENTER,
           });
           this.getPosts();
-          this.getComments(result.result._id);
-          this.setState({ showcomment: true })
+          this.showCommentBox(result.result._id)
+          // this.getComments(result.result._id);
           this.setState({
             comments: {
-              comment: null,
+              comment: "",
               postid: ""
             }
           })
-          // var notes = this.refs.commentText;
-          // console.log(notes)
-          // notes.value = " ";
-          // component.replaceProps({updated: true});
+        
         }
 
       })
@@ -304,9 +304,16 @@ class Wall extends Component {
   showCommentBox = (e) => {
     console.log(e)
     console.log('comment box')
-    this.setState({ showcomment: !this.state.showcomment })
+    if(e==this.state.cPostid){
+      this.setState({ showcomment: !this.state.showcomment })
+    }
+    else {
+      this.setState({showcomment:true});
+      this.state.cPostid = e;
+    }
+  
     // if (this.state.showcomment)
-    this.state.cPostid = e;
+    
     // else this.state.cPostid = "";
   }
 
@@ -466,7 +473,7 @@ class Wall extends Component {
 
 
                 <Row >
-                  {item.comments.map((list, cIndex) => (
+                  {item.comments.map((list) => (
 
                     this.state.showcomment && item._id === this.state.cPostid ?
                       // this.state.showcomment ?

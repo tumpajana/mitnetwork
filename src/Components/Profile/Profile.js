@@ -58,10 +58,10 @@ class Profile extends Component {
       console.log(result);
       // this.setState({ stateArray: result});
       this.setState({ stateArray: result });
-      console.log("states",this.state.stateArray);
+      console.log("states", this.state.stateArray);
     });
 
-  
+
 
   };
 
@@ -99,30 +99,30 @@ class Profile extends Component {
   //onchange of input feild binding
   onChangeValue = (e) => {
     console.log(e)
-    let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
-    userProfile[e.target.name] = e.target.value;                        //updating value
-    this.setState({ userProfile });
+    let user = Object.assign({}, this.state.user);    //creating copy of object
+    user[e.target.name] = e.target.value;                        //updating value
+    this.setState({ user });
   }
 
 
   //on selecting city
   onChangeCity = (e) => {
-    let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
-    userProfile.city = e;                        //updating value
-    this.setState({ userProfile });
+    let user = Object.assign({}, this.state.user);    //creating copy of object
+    user.city = e;                        //updating value
+    this.setState({ user });
   }
 
   //on selecting state
   onChangeState = (e) => {
-    let userProfile = Object.assign({}, this.state.userProfile);    //creating copy of object
-    userProfile.state = e;                        //updating value
-    this.setState({ userProfile });
+    let user = Object.assign({}, this.state.user);    //creating copy of object
+    user.state = e;                        //updating value
+    this.setState({ user });
     getCities(e).then((result) => {
       console.log(result);
       this.setState({ cityArray: result })
       console.log(this.state.cityArray);
     });
-    
+
 
   }
 
@@ -130,13 +130,13 @@ class Profile extends Component {
   updateProfile() {
     let userData = {
       _id: sessionStorage.getItem('userId'),
-      name: this.state.userProfile.name,
-      userName: this.state.userProfile.userName,
-      phoneNumber: this.state.userProfile.phoneNumber,
-      city: this.state.userProfile.city,
-      state: this.state.userProfile.state,
-      qualification: this.state.userProfile.qualification,
-      designation: this.state.userProfile.designation,
+      name: this.state.user.name,
+      userName: this.state.user.userName,
+      phoneNumber: this.state.user.phoneNumber,
+      city: this.state.user.city,
+      state: this.state.user.state,
+      qualification: this.state.user.qualification,
+      designation: this.state.user.designation,
     }
     console.log(this.state.userProfile)
     updateData(userData).then((result) => {
@@ -146,6 +146,7 @@ class Profile extends Component {
         toast.success("Profile Updated Successfuly!", {
           position: toast.POSITION.TOP_CENTER,
         });
+        this.UserProfileData();
       }
       console.log("Close")
       this.setState({ visible: false });
@@ -165,8 +166,8 @@ class Profile extends Component {
       console.log(this.refs);
       console.log(result);
       this.setState({ userProfile: result.result });
-      this.setState({ userName: result.result.name });
-      console.log(this.state.userName);
+      this.setState({ user: result.result })
+
       console.log('userData...', this.state.userProfile);
 
       if (this.state.userProfile.imageId) {
@@ -431,22 +432,22 @@ class Profile extends Component {
             {/* city and state input start */}
             <Row gutter={24}>
               <Col span={12}>
-              <div>
-                  <Select value={this.state.userProfile.state ? this.state.userProfile.state : "State"} onChange={this.onChangeState}>
+                <div>
+                  <Select value={this.state.user.state ? this.state.user.state : "State"} onChange={this.onChangeState}>
                     {/* <Option value="0">State</Option> */}
                     {this.state.stateArray.map((item) => {
-                      return <Option value={item}>{item}</Option> 
+                      return <Option value={item}>{item}</Option>
                     })}
                   </Select>
                 </div>
               </Col>
               <Col span={12}>
                 <div>
-                  <Select value={this.state.userProfile.city ? this.state.userProfile.city : "City"} onChange={this.onChangeCity}>
+                  <Select value={this.state.user.city ? this.state.user.city : "City"} onChange={this.onChangeCity}>
                     {/* <Option value="0">City</Option> */}
                     {this.state.cityArray.map((item) => {
-                    return<Option value={item.name}>{item.name}</Option>
-                  })}
+                      return <Option value={item.name}>{item.name}</Option>
+                    })}
                   </Select>
                 </div>
               </Col>
