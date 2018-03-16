@@ -431,22 +431,22 @@ class Profile extends Component {
             {/* city and state input start */}
             <Row gutter={24}>
               <Col span={12}>
-                <div>
-                  <Select value={this.state.userProfile.city ? this.state.userProfile.city : "0"} onChange={this.onChangeCity}>
-                    <Option value="0">City</Option>
-                    {this.state.cityArray.map((item) => {
-                    return<Option value={item.name}>{item.name}</Option>
-                  })}
+              <div>
+                  <Select value={this.state.userProfile.state ? this.state.userProfile.state : "State"} onChange={this.onChangeState}>
+                    {/* <Option value="0">State</Option> */}
+                    {this.state.stateArray.map((item) => {
+                      return <Option value={item}>{item}</Option> 
+                    })}
                   </Select>
                 </div>
               </Col>
               <Col span={12}>
                 <div>
-                  <Select value={this.state.userProfile.state ? this.state.userProfile.state : "0"} onChange={this.onChangeState}>
-                    <Option value="0">State</Option>
-                    {this.state.stateArray.map((item) => {
-                      return <Option value={item}>{item}</Option> 
-                    })}
+                  <Select value={this.state.userProfile.city ? this.state.userProfile.city : "City"} onChange={this.onChangeCity}>
+                    {/* <Option value="0">City</Option> */}
+                    {this.state.cityArray.map((item) => {
+                    return<Option value={item.name}>{item.name}</Option>
+                  })}
                   </Select>
                 </div>
               </Col>
