@@ -45,7 +45,7 @@ router.post('/socialPost', (request, response) => {
 
 router.get('/getAllPost', (request, response, next) => {
     console.log(" post detail");
-    var perPage = 2, page = request.param('page') > 0 ? request.param('page') : 0;
+    var perPage = 10, page = request.param('page') > 0 ? request.param('page') : 0;
 
     let perPageResponse = {};
 
