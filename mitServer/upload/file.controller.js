@@ -94,6 +94,7 @@ router.get('/getImage', (request, response) => {
                 "Content-Type": result.file.mimetype
             });
             fs.createReadStream(result.file.path).pipe(response);
+            console.log(result.file.path);
         }
         else {
             imageResponse.error = true;
