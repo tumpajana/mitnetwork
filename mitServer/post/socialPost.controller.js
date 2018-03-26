@@ -45,23 +45,28 @@ router.post('/socialPost', (request, response) => {
 
 router.get('/getAllPost', (request, response, next) => {
     console.log(" post detail");
-    var perPage = 10, page = request.param('page') > 0 ? request.param('page') : 0;
+    var perPage = 2, page = request.param('page') > 0 ? request.param('page') : 0;
 
-    let getResponse = {};
+    let perPageResponse = {};
 
     post.find({}).populate('comments.userId').sort({ createdDate: 'descending' })
         .limit(perPage)
         .skip(perPage * page)
         .exec((error, result) => {
             if (error) {
-                getResponse.error = true;
-                getResponse.message = `Error :` + error.message;
-                response.status(500).json(getResponse);
+                perPageResponse.error = true;
+                perPageResponse.message = `Error :` + error.message;
+                perPageResponse.status(500).json(perPageResponse);
             } else {
-                getResponse.error = false;
-                getResponse.result = result;
-                getResponse.message = `  getting all  post  successfully .`;
-                response.status(200).json(getResponse);
+                post.count({}, function (error, c) {
+                    console.log('Count is ' + c);
+                    perPageResponse.error = false;
+                    perPageResponse.total = c;
+                    perPageResponse.result = result;
+                    perPageResponse.message = ` projects for this page .`;
+                    response.status(200).json(perPageResponse);
+
+                });
             }
         });
 });
@@ -94,7 +99,7 @@ router.put('/comment', (request, response) => {
     let userId = request.body.userId;
     let comment = request.body.comment;
     console.log(userId);
-    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: {comment:comment,userId:userId} } }).populate('comments.userId').exec(function (error, result) {
+    post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: { comment: comment, userId: userId } } }).populate('comments.userId').exec(function (error, result) {
         if (error) {
             commentesponse.error = true;
             commentesponse.message = `Error :` + error.message;
@@ -118,19 +123,19 @@ router.get('/getCommentByPostId', (request, response) => {
         // .sort({ createdDate: 'descending' })
         // .limit({comments:'perPage'})
         // .skip(perPage * page)
-            console.log('error......',error);
-            console.log('result.....',result);
-            if (error) {
-                getResponse.error = true;
-                getResponse.message = `Error :` + error.message;
-                response.status(500).json(getResponse);
-            } else {
-                getResponse.error = false;
-                getResponse.result = result;
-                getResponse.message = ` getting all comment   successfully .`;
-                response.status(200).json(getResponse);
-            }
-        });
+        console.log('error......', error);
+        console.log('result.....', result);
+        if (error) {
+            getResponse.error = true;
+            getResponse.message = `Error :` + error.message;
+            response.status(500).json(getResponse);
+        } else {
+            getResponse.error = false;
+            getResponse.result = result;
+            getResponse.message = ` getting all comment   successfully .`;
+            response.status(200).json(getResponse);
+        }
+    });
 });
 
 // Api for likes
