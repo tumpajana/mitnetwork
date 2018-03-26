@@ -62,6 +62,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
+
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -321,6 +322,8 @@ class Wall extends Component {
     // else this.state.cPostid = "";
   }
 
+
+
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -394,8 +397,12 @@ class Wall extends Component {
                   <div className="uploadalign">
                     <Col span={10}>
 
-                      <Upload onChange={this.imageUpload}
-                        showUploadList={this.state.showPreviewIcon} multiple="true" listType="picture-card">
+                      <Upload className='upload-list-inline' onChange={this.imageUpload}
+                        showUploadList={() => { this.state.showPreviewIcon }} 
+                        multiple="true" listType="picture-card"
+                      // listType="picture"
+                      >
+
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Image
               </Button>
@@ -431,17 +438,22 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
+                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
+                    : (item.imageId.file.mimetype == "video/mp4") ? (
+                      <Video autoPlay loop muted
+                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+                        // poster="http://sourceposter.jpg"
+                        onCanPlayThrough={() => {
+                          {/* // Do stuff */ }
+                        }}>
+                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId._id} type="video/webm" />
+                        {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                      </Video>
+                    ) : ''
+                    : ''
+
+                  }
                   {/* <img src={Wallpostimg} /> */}
-                  {/* <Video autoPlay loop muted
-                    controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                    poster="http://sourceposter.jpg"
-                    onCanPlayThrough={() => { */}
-                  {/* // Do stuff */}
-                  {/* }}>
-                    <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
-                    <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
-                  </Video> */}
-                  {item.imageId ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} /> : ''}
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
                   <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
