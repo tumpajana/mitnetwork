@@ -19,12 +19,13 @@ import profilePic from '../../Services/profilepicapi';
 import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
-
 import { DefaultPlayer as Video } from 'react-html5video';
+import OnVisible, { setDefaultProps } from 'react-on-visible';
+
 import 'react-html5video/dist/styles.css';
-
-
-
+setDefaultProps({
+  bounce: true
+});
 const { TextArea } = Input;
 class Wall extends Component {
   state = {
@@ -46,11 +47,13 @@ class Wall extends Component {
         comment: '',
         postid: ''
       },
-      imageId: '',
+      imageId: [],
       profileData: {},
       userInfo: {},
       imageUrl: '',
-      cPostid: ''
+      cPostid: '',
+      files: [],
+      autoplay: ''
     }
 
     this.postContent = this.postContent.bind(this);
@@ -61,7 +64,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
-
+    this.videovisible = this.videovisible.bind(this);
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -75,13 +78,18 @@ class Wall extends Component {
   socialPost() {
     console.log('post')
     if ((this.state.posts.content)) {
-      if (this.state.imageId) {
-        var dataSent = {
-          title: this.state.posts.title,
-          content: this.state.posts.content,
-          userId: sessionStorage.getItem('userId'),
-          imageId: this.state.imageId
-        }
+      if (this.state.files.length != 0) {
+        let _base = this;
+        this.uploadFiles()
+          .then(function (success) {
+            var dataSent = {
+              title: _base.state.posts.title,
+              content: _base.state.posts.content,
+              userId: sessionStorage.getItem('userId'),
+              imageId: _base.state.imageId
+            }
+            _base.createPost(dataSent);
+          });
       }
       else {
         var dataSent = {
@@ -89,34 +97,35 @@ class Wall extends Component {
           content: this.state.posts.content,
           userId: sessionStorage.getItem('userId'),
         }
+        this.createPost(dataSent);
       }
-
-      WallPost(dataSent).then((result) => {               //api call for post
-        console.log(result);
-        toast.success("Post Uploaded Successfuly!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        this.setState({
-          posts: {
-            title: "",
-            content: ""
-          }
-        })
-        console.log(this.refs.quill_content)
-        // e.target.value = "";
-        //  let x= this.refs.quill_content.props._id;
-        //  document.getElementById("editor-conten").innerHTML = " ";
-        this.setState({ imageId: '' })
-        this.setState({ showPreviewIcon: false })
-        this.getPosts();
-
-      })
     }
     else {
       toast.warn(" No content for this post!", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+  }
+
+  // actual api call wrapper to create a post of any type
+  createPost = (postData) => {
+    WallPost(postData).then((result) => {
+      console.log(result);
+      toast.success("Post Uploaded Successfuly!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      this.setState({
+        posts: {
+          title: "",
+          content: ""
+        }
+      })
+      console.log(this.refs.quill_content)
+      this.setState({ imageId: [] })
+      this.setState({ showPreviewIcon: false })
+      this.getPosts();
+
+    })
   }
 
   //get all post
@@ -179,22 +188,46 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
-    // debugger;
-    console.log(event);
-    console.log(event.fileList)
-    let fileList = event.fileList[0];
-    if (event.fileList.length != 0) {
+    this.setState({
+      files: []
+    });
+    for (let i = 0; i < event.fileList.length; i++) {
+      let fileList = event.fileList[i];
       let file = fileList.originFileObj;
       console.log("File information :", file);
-      var form = new FormData();
-      form.append('file', file, file.name);
-      profilePic(form).then((result) => {
-        console.log(result)
-        this.setState({ imageId: result.upload._id });
-        this.setState({ thumburl: result.upload.file.path })
-      })
+      let files = this.state.files;
+      files.push(file);
+      this.setState({
+        files: files
+      });
     }
+  }
 
+  uploadFiles = () => {
+    let _base = this;
+    _base.setState({
+      imageId: []
+    });
+    let length = _base.state.files.length;
+    return new Promise(function (resolve, reject) {
+      for (let i = 0; i < length; i++) {
+        let file = _base.state.files[i];
+        var form = new FormData();
+        form.append('file', file, file.name);
+        profilePic(form).then((result) => {
+          console.log(result);
+          let id = result.upload._id;
+          let ids = _base.state.imageId;
+          ids.push(id);
+          _base.setState({
+            imageId: ids
+          });
+        })
+        if (i == length - 1) {
+          resolve(true);
+        }
+      }
+    });
   }
 
   // get comments for a post
@@ -320,7 +353,24 @@ class Wall extends Component {
     // else this.state.cPostid = "";
   }
 
-
+  //videovisibilty
+  videovisible = (event) => {
+    console.log('video', event)
+   console.log(this.refs.video)
+    
+    if (event) {
+      console.log('event true', event)
+      this.setState({ autoplay: event })
+      console.log('autoplay state',this.state.autoplay)
+      this.refs.video.paused==true;
+    }
+    else {
+      console.log('event false', event)
+      this.setState({ autoplay: event })
+      console.log('autoplay state',this.state.autoplay)
+      this.refs.video.paused==false;
+    }
+  }
 
   render() {
     const Option = Select.Option;
@@ -397,6 +447,7 @@ class Wall extends Component {
 
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
+                        multiple="true" listType="picture-card"
                       // listType="picture"
                       >
 
@@ -419,8 +470,8 @@ class Wall extends Component {
 
         {/* posted blog html start */}
         {this.state.postList.map((item, pIndex) => {
-          return <div>
-            <div className="postedpartcard" key={item._id}>
+          return <div key={item._id}>
+            <div className="postedpartcard">
               <div className="mitpic">
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
@@ -435,19 +486,20 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length>0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
                     : (item.imageId[0].file.mimetype == "video/mp4") ? (
-                      <Video autoPlay loop muted
-                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                        // poster="http://sourceposter.jpg"
-                        onCanPlayThrough={() => {
-                          {/* // Do stuff */ }
-                        }}>
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
-                        {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                      </Video>
-                    ) : ''
-                    : ''
+                      <OnVisible onChange={() => { console.log('video changed'); this.videovisible(true) }}>
+                       <Video ref="video" autoPlay
+                          loop muted
+                            controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+                            // poster="http://sourceposter.jpg"
+                            onCanPlayThrough={() => {
+                            }}>
+                            <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                            {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                          </Video>
+                     </OnVisible>
+                     ) : '' : ''
 
                   }
                   {/* <img src={Wallpostimg} /> */}

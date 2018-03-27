@@ -23,10 +23,10 @@ const postSchema = mongoose.Schema({
         type:Schema.ObjectId,
          ref: 'user'
         },
-    imageId:{
+    imageId:[{
         type:Schema.ObjectId,
         ref: 'image'
-        },
+        }],
     postId:{
             type:String
         },
