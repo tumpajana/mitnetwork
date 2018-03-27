@@ -21,6 +21,7 @@ import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
 import 'react-html5video/dist/styles.css';
+import { isPrimitive } from 'util';
 
 const { TextArea } = Input;
 class Wall extends Component {
@@ -48,7 +49,8 @@ class Wall extends Component {
       userInfo: {},
       imageUrl: '',
       cPostid: '',
-      files: []
+      files: [],
+      count: 0
     }
 
     this.postContent = this.postContent.bind(this);
@@ -75,16 +77,9 @@ class Wall extends Component {
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
-        this.uploadFiles()
-          .then(function (success) {
-            var dataSent = {
-              title: _base.state.posts.title,
-              content: _base.state.posts.content,
-              userId: sessionStorage.getItem('userId'),
-              imageId: _base.state.imageId
-            }
-            _base.createPost(dataSent);
-          });
+        this.uploadFiles();
+        // upload then post
+
       }
       else {
         var dataSent = {
@@ -203,24 +198,34 @@ class Wall extends Component {
     _base.setState({
       imageId: []
     });
-    let length = _base.state.files.length;
-    return new Promise(function (resolve, reject) {
-      for (let i = 0; i < length; i++) {
-        let file = _base.state.files[i];
-        var form = new FormData();
-        form.append('file', file, file.name);
-        profilePic(form).then((result) => {
-          console.log(result);
-          let id = result.upload._id;
-          let ids = _base.state.imageId;
-          ids.push(id);
-          _base.setState({
-            imageId: ids
-          });
-        })
-        if (i == length - 1) {
-          resolve(true);
+
+    this.uploadFile();
+  }
+
+  uploadFile = () => {
+    let _base = this;
+    let file = _base.state.files[_base.state.count];
+    var form = new FormData();
+    form.append('file', file, file.name);
+    profilePic(form).then((result) => {
+      let id = result.upload._id;
+      let ids = _base.state.imageId;
+      ids.push(id);
+      _base.setState({ imageId: ids });
+      if (_base.state.count == _base.state.files.length - 1) {
+        // post
+        var dataSent = {
+          title: _base.state.posts.title,
+          content: _base.state.posts.content,
+          userId: sessionStorage.getItem('userId'),
+          imageId: _base.state.imageId
         }
+        _base.createPost(dataSent);
+      } else {
+        this.setState({
+          count: _base.state.count + 1
+        });
+        _base.uploadFile();
       }
     });
   }
@@ -425,7 +430,7 @@ class Wall extends Component {
 
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
-                        multiple="true" listType="picture-card"
+                        multiple="true" listType="picture"
                       // listType="picture"
                       >
 
@@ -464,8 +469,8 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
-                    : (item.imageId.file.mimetype == "video/mp4") ? (
+                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
                       <Video loop muted
                         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                         // poster="http://sourceposter.jpg"
