@@ -3,6 +3,7 @@ import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'ant
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
+import Gallery from 'react-grid-gallery';
 import User from '../../Images/usr.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
@@ -23,6 +24,62 @@ import { DefaultPlayer as Video } from 'react-html5video';
 import 'react-html5video/dist/styles.css';
 
 const { TextArea } = Input;
+const IMAGES =
+[{
+        src: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
+        thumbnail: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
+        thumbnailWidth: 320,
+        thumbnailHeight: 174,
+        // isSelected: true,
+        // caption: "After Rain (Jeshu John - designerspics.com)"
+},
+{
+        src: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
+        thumbnail: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
+        thumbnailWidth: 320,
+        thumbnailHeight: 212,
+        // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+        // caption: "Boats (Jeshu John - designerspics.com)"
+},
+{
+  src: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
+  thumbnail: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
+  thumbnailWidth: 320,
+  thumbnailHeight: 174,
+  // isSelected: true,
+  // caption: "After Rain (Jeshu John - designerspics.com)"
+},
+{
+  src: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
+  thumbnail: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
+  thumbnailWidth: 320,
+  thumbnailHeight: 212,
+  // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+  // caption: "Boats (Jeshu John - designerspics.com)"
+},
+{
+  src: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
+  thumbnail: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
+  thumbnailWidth: 320,
+  thumbnailHeight: 212,
+  // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+  // caption: "Boats (Jeshu John - designerspics.com)"
+},
+{
+  src: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
+  thumbnail: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
+  thumbnailWidth: 320,
+  thumbnailHeight: 212,
+  // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+  // caption: "Boats (Jeshu John - designerspics.com)"
+},
+{
+        src: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
+        thumbnail: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
+        thumbnailWidth: 320,
+        thumbnailHeight: 212
+}]
+
 class Wall extends Component {
   state = {
     loading: false,
@@ -464,25 +521,29 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
-                    : (item.imageId.file.mimetype == "video/mp4") ? (
+
+                  {item.imageId.length>0? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
                       <Video loop muted
                         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                         // poster="http://sourceposter.jpg"
                         onCanPlayThrough={() => {
                           {/* // Do stuff */ }
                         }}>
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId._id} type="video/webm" />
+                       
+                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
                         {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
                       </Video>
                     ) : ''
                     : ''
-
+                  
                   }
+                   <Gallery images={IMAGES}/>
                   {/* <img src={Wallpostimg} /> */}
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
                   <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
+               
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
@@ -491,6 +552,7 @@ class Wall extends Component {
                   <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
 
                 </div>
+               
               </div>
               {/* ****Comment section**** */}
               <div className="commentSection">
