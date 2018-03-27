@@ -104,7 +104,7 @@ button.ant-btn.post {
     float: right;
     padding: 0 19px;
     margin-right: 5px;
-    margin-top: 4px;
+    margin-top: 30px;
     background: rgb(105, 64, 186);
     color: rgb(255, 255, 255);
     font-weight: 600;
@@ -168,7 +168,13 @@ button.ant-btn.postimg:hover {
 button.ant-btn.post:hover {
     background: rgb(92, 55, 165);
 }
-
+form.uploadimgsec .ant-upload {
+    background: white;
+    border:none !important;
+}
+form.uploadimgsec .ant-upload-list-picture .ant-upload-list-item-error, .ant-upload-list-picture-card .ant-upload-list-item-error {
+    border-color: #6940ba;
+}
 .ant-modal.mitprofileEditmodal button.ant-btn {
     border: 1px solid #a7a5ab;
     font-family: Lato;
