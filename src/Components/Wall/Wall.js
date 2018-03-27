@@ -435,15 +435,15 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
-                    : (item.imageId.file.mimetype == "video/mp4") ? (
+                  {item.imageId.length>0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
                       <Video autoPlay loop muted
                         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                         // poster="http://sourceposter.jpg"
                         onCanPlayThrough={() => {
                           {/* // Do stuff */ }
                         }}>
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId._id} type="video/webm" />
+                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
                         {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
                       </Video>
                     ) : ''
@@ -452,7 +452,13 @@ class Wall extends Component {
                   }
                   {/* <img src={Wallpostimg} /> */}
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
-                  <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                  {
+                    item.content.length > 800 ? <span><p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.substring(0, 800) }} ></p>
+                      <p onClick={() => {
+                      }}>...see more</p></span> : <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+
+                  }
+                  {/* <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.length>800?item.content.substring(801,item.content.length)}} ></p> */}
                 </div>
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
