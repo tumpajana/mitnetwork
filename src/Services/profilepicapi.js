@@ -6,7 +6,7 @@ function profilePic(filedata) {
         fetch(BaseURL, {
             headers: {
                 'Accept': 'application/json',
-                // 'Content-Type': 'application/json'
+            //     // 'Content-Type': 'application/json'
             },
             method: 'POST',
             body: filedata

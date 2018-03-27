@@ -47,6 +47,7 @@ class Wall extends Component {
         postid: ''
       },
       imageId: '',
+      imageArray: [],
       profileData: {},
       userInfo: {},
       imageUrl: '',
@@ -61,6 +62,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
+
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -178,20 +180,23 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
-    console.log(event);
-    console.log(event.fileList)
-    let fileList = event.fileList[0];
-    // let fileTarget = fileList;
-    let file = fileList.originFileObj;
-    console.log("File information :", file);
-    var form = new FormData();
-    form.append('file', file, file.name);
-    profilePic(form).then((result) => {
-      console.log(result)
-      this.setState({ imageId: result.upload._id });
-    })
-
-
+    for (let i = 0; i < event.fileList.length; i++) {
+      let fileList = event.fileList[i];
+      let file = fileList.originFileObj;
+      console.log("File information :", file);
+      var form = new FormData();
+      form.append('file', file, file.name);
+      profilePic(form).then((result) => {
+        console.log(result);
+        let ids = result.upload._id;
+        console.log(result.upload._id);
+        // this.state.imageArray.push(ids);
+        // console.log(this.state.ids.push(ids));
+        // console.log(ids);
+        // this.setState({imageArray: ids });
+        // console.log(imageArray);
+      })
+    }
   }
 
   // get comments for a post
@@ -226,7 +231,7 @@ class Wall extends Component {
       e.preventDefault();
       e.target.value = "";
       console.log(this.state.comments);
-    
+
       let data = {
         comment: this.state.comments.comment,
         postId: this.state.comments.postid,
@@ -247,7 +252,7 @@ class Wall extends Component {
               postid: ""
             }
           })
-        
+
         }
 
       })
@@ -304,18 +309,20 @@ class Wall extends Component {
   showCommentBox = (e) => {
     console.log(e)
     console.log('comment box')
-    if(e==this.state.cPostid){
+    if (e == this.state.cPostid) {
       this.setState({ showcomment: !this.state.showcomment })
     }
     else {
-      this.setState({showcomment:true});
+      this.setState({ showcomment: true });
       this.state.cPostid = e;
     }
-  
+
     // if (this.state.showcomment)
-    
+
     // else this.state.cPostid = "";
   }
+
+
 
   render() {
     const Option = Select.Option;
@@ -390,8 +397,12 @@ class Wall extends Component {
                   <div className="uploadalign">
                     <Col span={10}>
 
-                      <Upload onChange={this.imageUpload}
-                        showUploadList={this.state.showPreviewIcon}>
+                      <Upload className='upload-list-inline' onChange={this.imageUpload}
+                        showUploadList={() => { this.state.showPreviewIcon }} 
+                        multiple="true" listType="picture-card"
+                      // listType="picture"
+                      >
+
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Image
               </Button>
@@ -411,8 +422,8 @@ class Wall extends Component {
 
         {/* posted blog html start */}
         {this.state.postList.map((item, pIndex) => {
-          return <div>
-            <div className="postedpartcard" key={item._id}>
+          return <div key={item._id}>
+            <div className="postedpartcard">
               <div className="mitpic">
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
@@ -427,17 +438,22 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
+                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
+                    : (item.imageId.file.mimetype == "video/mp4") ? (
+                      <Video autoPlay loop muted
+                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+                        // poster="http://sourceposter.jpg"
+                        onCanPlayThrough={() => {
+                          {/* // Do stuff */ }
+                        }}>
+                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId._id} type="video/webm" />
+                        {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                      </Video>
+                    ) : ''
+                    : ''
+
+                  }
                   {/* <img src={Wallpostimg} /> */}
-                  {/* <Video autoPlay loop muted
-                    controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                    poster="http://sourceposter.jpg"
-                    onCanPlayThrough={() => { */}
-                  {/* // Do stuff */}
-                  {/* }}>
-                    <source src="https://www.youtube.com/embed/MdG4f5Y3ugk" type="video/webm" />
-                    <track label="English" kind="subtitles" srcLang="en" src="http://source.vtt" default />
-                  </Video> */}
-                  {item.imageId ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} /> : ''}
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
                   <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
                 </div>
