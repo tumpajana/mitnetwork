@@ -20,6 +20,7 @@ import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 
+import InfiniteScroll from 'react-infinite-scroller';
 import { DefaultPlayer as Video } from 'react-html5video';
 import 'react-html5video/dist/styles.css';
 
@@ -31,7 +32,10 @@ class Wall extends Component {
     loading: false,
     visible: false,
     showPreviewIcon: true,
-    showcomment: false
+    showcomment: false,
+    hasMore: true,
+
+
   }
 
   constructor(props) {
@@ -51,7 +55,10 @@ class Wall extends Component {
       profileData: {},
       userInfo: {},
       imageUrl: '',
-      cPostid: ''
+      cPostid: '',
+      limit: 0,
+      totalPost: '',
+      totalPages: ''
     }
 
     this.postContent = this.postContent.bind(this);
@@ -62,11 +69,15 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
+    // this.limitPostList = this.limitPostList.bind(this);
+
+
 
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
     }
+    // this.limitPostList();
   }
 
 
@@ -122,10 +133,19 @@ class Wall extends Component {
 
   //get all post
   getPosts() {
-    WallGet().then((result) => {
+    WallGet(0).then((result) => {
       console.log(result);
+      console.log('Total', result.total);
+      this.setState({ totalPost: result.total });
+      console.log(this.state.totalPost);
       if (result.result.length != 0) {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        console.log(this.state.postList.length)
+        // this.state.totalPages = Math.ceil(this.state.totalPost / this.state.postList.length);
+        // console.log(this.state.totalPages);
+        // console.log(this.state.limit);
+        // this.state.hasMore = (this.state.limit<=this.state.totalPages-1)?true:false;
+        // console.log(this.state.hasMore);
       }
     });
     // console.log(strip(this.state.postList[0]))
@@ -294,7 +314,7 @@ class Wall extends Component {
     //   // alert("please enter field");
     //   toast.warning("Field is empty!", {
     //     position: toast.POSITION.TOP_CENTER,
-    //   });
+    //   })getPosts;
     // }
     // else{
     //   alert("");
@@ -320,6 +340,20 @@ class Wall extends Component {
     // if (this.state.showcomment)
 
     // else this.state.cPostid = "";
+  }
+
+  loadFunc = (data) => {
+    // debugger;
+    console.log('page No. =', data);
+    console.log(this.state.postList.length);
+    console.log(this.state.totalPost);
+
+    console.log(this.state.limit);
+    // this.setState({ limit: this.state.limit + 1 })
+    console.log(this.state.limit)
+    
+
+
   }
 
 
@@ -398,7 +432,7 @@ class Wall extends Component {
                     <Col span={10}>
 
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
-                        showUploadList={() => { this.state.showPreviewIcon }} 
+                        showUploadList={() => { this.state.showPreviewIcon }}
                         multiple="true" listType="picture-card"
                       // listType="picture"
                       >
@@ -419,113 +453,122 @@ class Wall extends Component {
           </div>
         </form>
         {/* wall view section end */}
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={this.loadFunc}
+          hasMore={true}
+          loader={<div className="loader" key={0}>Loading .......</div>}
+        >
+          {/* {items} // <-- This is the content you want to load */}
 
-        {/* posted blog html start */}
-        {this.state.postList.map((item, pIndex) => {
-          return <div key={item._id}>
-            <div className="postedpartcard">
-              <div className="mitpic">
-                <Row type="flex" justify="space-around" align="middle">
-                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
-                    <div className="userpicpost">{
-                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <img src={User} />
-                    }
-                    </div>
-                  </Col>
-                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-                    <p>{item.userId.userName}</p>
-                    <h3>{item.userId.designation}</h3>
-                  </Col>
-                </Row>
-                <div className="postedimg onlytext">
-                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
-                    : (item.imageId.file.mimetype == "video/mp4") ? (
-                      <Video autoPlay loop muted
-                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                        // poster="http://sourceposter.jpg"
-                        onCanPlayThrough={() => {
-                          {/* // Do stuff */ }
-                        }}>
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId._id} type="video/webm" />
-                        {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                      </Video>
-                    ) : ''
-                    : ''
-
-                  }
-                  {/* <img src={Wallpostimg} /> */}
-                  <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
-                  <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
-                </div>
-                <div className="likecomment">
-                  <h3>{item.like.length}  likes</h3>{
-                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
-                  }
-
-                  <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
-
-                </div>
-              </div>
-              {/* ****Comment section**** */}
-              <div className="commentSection">
-                <Row type="flex" justify="space-around" align="middle">
-
-                  <Col xs={3} sm={3} md={2}>
-                    <div className="commentImg">
-                      {
-                        (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+          {/* posted blog html start */}
+          {this.state.postList.map((item, pIndex) => {
+            return <div key={item._id}>
+              <div className="postedpartcard">
+                <div className="mitpic">
+                  <Row type="flex" justify="space-around" align="middle">
+                    <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                      <div className="userpicpost">{
+                        (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <img src={User} />
                       }
-                    </div>
-                  </Col>
+                      </div>
+                    </Col>
+                    <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                      <p>{item.userId.userName}</p>
+                      <h3>{item.userId.designation}</h3>
+                    </Col>
+                  </Row>
+                  <div className="postedimg onlytext">
+                    {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                      : (item.imageId[0].file.mimetype == "video/mp4") ? (
+                        <Video autoPlay loop muted
+                          controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
+                          // poster="http://sourceposter.jpg"
+                          onCanPlayThrough={() => {
+                            {/* // Do stuff */ }
+                          }}>
+                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                          {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                        </Video>
+                      ) : ''
+                      : ''
 
-                  <Col xs={21} sm={21} md={22}>
-                    <div className="commentText">
-                      <img src={camera} />
-                      <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
-                    </div>
-                  </Col>
+                    }
+                    {/* <img src={Wallpostimg} /> */}
+                    <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
+                    <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                  </div>
+                  <div className="likecomment">
+                    <h3>{item.like.length}  likes</h3>{
+                      (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
+                    }
 
-                </Row>
+                    <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
+
+                  </div>
+                </div>
+                {/* ****Comment section**** */}
+                <div className="commentSection">
+                  <Row type="flex" justify="space-around" align="middle">
+
+                    <Col xs={3} sm={3} md={2}>
+                      <div className="commentImg">
+                        {
+                          (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                        }
+                      </div>
+                    </Col>
+
+                    <Col xs={21} sm={21} md={22}>
+                      <div className="commentText">
+                        <img src={camera} />
+                        <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
+                      </div>
+                    </Col>
+
+                  </Row>
 
 
-                <Row >
-                  {item.comments.map((list) => (
+                  <Row >
+                    {item.comments.map((list) => (
 
-                    this.state.showcomment && item._id === this.state.cPostid ?
-                      // this.state.showcomment ?
-                      <div className="contentsComment" key={list._id}>
-                        <Col xs={3} sm={3} md={2}>
-                          <div className="commentImg">
-                            {
-                              (list.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
-                            }
-                          </div>
-                        </Col>
+                      this.state.showcomment && item._id === this.state.cPostid ?
+                        // this.state.showcomment ?
+                        <div className="contentsComment" key={list._id}>
+                          <Col xs={3} sm={3} md={2}>
+                            <div className="commentImg">
+                              {
+                                (list.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
+                              }
+                            </div>
+                          </Col>
 
-                        <Col xs={21} sm={21} md={22}>
-                          <div className="postComment">
-                            <p>{list.userId.userName}</p>
-                            <h3>{list.userId.designation}</h3>
-                            <h3>{list.comment}</h3>
-                            {/* <p className="likeReply">
+                          <Col xs={21} sm={21} md={22}>
+                            <div className="postComment">
+                              <p>{list.userId.userName}</p>
+                              <h3>{list.userId.designation}</h3>
+                              <h3>{list.comment}</h3>
+                              {/* <p className="likeReply">
       <Button className="commentbutton">Like</Button>
       <Button className="commentbutton4">Reply</Button>
       <span className="likeTotal">1 Like</span>
     </p> */}
-                          </div>
-                        </Col>
-                      </div> : ''
-                  ))
-                  }
-                </Row>
+                            </div>
+                          </Col>
+                        </div> : ''
+                    ))
+                    }
+                  </Row>
+                </div>
+                {/* ****Comment section**** */}
               </div>
-              {/* ****Comment section**** */}
             </div>
-          </div>
 
 
-        })
-        }
+          })
+          }
+        </InfiniteScroll>
+
 
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
