@@ -19,11 +19,8 @@ import profilePic from '../../Services/profilepicapi';
 import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
-
 import { DefaultPlayer as Video } from 'react-html5video';
 import 'react-html5video/dist/styles.css';
-
-
 
 const { TextArea } = Input;
 class Wall extends Component {
