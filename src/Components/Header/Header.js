@@ -89,7 +89,7 @@ class Header extends Component {
     return (
       <div className="navbarsocial">
         <Row>
-          <Col lg={12}>
+          <Col lg={12} xs={10}>
             <Menu >
               <div className="navlogo">
                 <Anchor className="logoanchor">
@@ -98,7 +98,7 @@ class Header extends Component {
               </div>
             </Menu>
           </Col>
-          <Col lg={12}>
+          <Col lg={12} xs={14}>
             <div className="navbarright">
               <Menu
                 onClick={this.onClickButton}
