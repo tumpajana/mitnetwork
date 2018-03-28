@@ -183,6 +183,8 @@ class Wall extends Component {
       if (result.result.length != 0) {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
       }
+      console.log(this.state.postList);
+
     });
     // console.log(strip(this.state.postList[0]))
     // console.log(this.state.postList[0].innerText)
@@ -546,7 +548,8 @@ class Wall extends Component {
                   {/* reactgallery html start */}
                   <Row>
                     <Col md={24} sm={24} xs={24}>
-                      <Gallery images={IMAGES} />
+                      <CustomGallery src={item.imageId}></CustomGallery>
+
                     </Col>
                   </Row>
                   {/* reactgallery html end */}
@@ -667,3 +670,31 @@ class Wall extends Component {
 }
 
 export default Wall;
+
+
+
+class CustomGallery extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+    console.log(this.props.src);
+    this.state = {
+      images: this.props.src.map((item) => {
+        return {
+          src: "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item._id,
+          thumbnail: "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item._id,
+          thumbnailWidth: 320,
+          thumbnailHeight: 212
+        }
+      })
+    }
+    console.log(this.state.images);
+  }
+  render() {
+    {
+        return (
+          <Gallery images={this.state.images} />
+        )
+    }
+  }
+}
