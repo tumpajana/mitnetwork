@@ -109,7 +109,8 @@ class Wall extends Component {
       imageUrl: '',
       cPostid: '',
       files: [],
-      fileUploadList: [],
+      imageUploadList: [],
+      videoUploadList:[],
       count: 0
     }
 
@@ -121,6 +122,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
+    this.videoUpload =this.videoUpload.bind(this);
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -128,12 +130,11 @@ class Wall extends Component {
   }
 
 
-  
+
 
   //postdata on server
   socialPost() {
     console.log('post')
-    this.setState({fileUploadList:[]});
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
@@ -176,6 +177,8 @@ class Wall extends Component {
       console.log(this.refs.quill_content)
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
+      this.setState({ imageUploadList: [] });
+      this.setState({videoUploadList:[]});
       this.getPosts();
       console.log(this.refs.quill_content);
     })
@@ -219,7 +222,7 @@ class Wall extends Component {
       }
 
     })
-    // this.setState({fileUploadList: event.fileList});
+    // this.setState({imageUploadList: event.fileList});
     console.log(this.refs.quill_content);
   }
 
@@ -248,7 +251,7 @@ class Wall extends Component {
     this.setState({
       files: []
     });
-        this.setState({fileUploadList: event.fileList});
+    this.setState({ imageUploadList: event.fileList });
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
@@ -415,12 +418,27 @@ class Wall extends Component {
       this.setState({ showcomment: true });
       this.state.cPostid = e;
     }
-
-    // if (this.state.showcomment)
-
-    // else this.state.cPostid = "";
   }
 
+  
+  // upload video
+  videoUpload = (event) => {
+    console.log(event);
+    this.setState({
+      files: []
+    });
+    this.setState({ videoUploadList: event.fileList });
+    for (let i = 0; i < event.fileList.length; i++) {
+      let fileList = event.fileList[i];
+      let file = fileList.originFileObj;
+      console.log("File information :", file);
+      let files = this.state.files;
+      files.push(file);
+      this.setState({
+        files: files
+      });
+    }
+  }
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -493,17 +511,28 @@ class Wall extends Component {
                   {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
                   <div className="uploadalign">
                     <Col span={10}>
-
+                      {/* ************************ UPLOAD SECTION FOR IMAGE****************** */}
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
-                        multiple="true" listType="picture" fileList={this.state.fileUploadList}
-                      // listType="picture"
-                      >
-
+                        multiple="true" listType="picture" fileList={this.state.imageUploadList}
+                        accept="image/*" >
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Image
-              </Button>
+                     </Button>
                       </Upload>
+                      {/* ************************ UPLOAD SECTION FOR IMAGE ENDS****************** */}
+
+                      {/* ************************ UPLOAD SECTION FOR VIDEO****************** */}
+                      <Upload className='upload-list-inline' onChange={this.videoUpload}
+                        showUploadList={() => { this.state.showPreviewIcon }}
+                        multiple="false" listType="picture" fileList={this.state.videoUploadList}
+                        accept="video/*" >
+                        <Button className="upldbtnwall">
+                          <Icon type="upload" />Upload Video
+                      </Button>
+                      </Upload>
+                      {/* ************************ UPLOAD SECTION FOR VIDEO ENDS****************** */}
+
                     </Col>
                   </div>
                   <Col span={14}>
@@ -535,7 +564,14 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ?
+                    <Row>
+                      <Col md={24} sm={24} xs={24}>
+                        <CustomGallery src={item.imageId}></CustomGallery>
+
+                      </Col>
+                    </Row>
+                    // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
                     : (item.imageId[0].file.mimetype == "video/mp4") ? (
                       <Video autoPlay loop muted
                         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
