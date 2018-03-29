@@ -21,67 +21,12 @@ import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
-
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
-
+import Waypoint from 'react-waypoint';
 
 const { TextArea } = Input;
-const IMAGES =
-  [{
-    src: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 174,
-    // isSelected: true,
-    // caption: "After Rain (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 174,
-    // isSelected: true,
-    // caption: "After Rain (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212
-  }]
+
 
 class Wall extends Component {
   state = {
@@ -110,7 +55,7 @@ class Wall extends Component {
       cPostid: '',
       files: [],
       imageUploadList: [],
-      videoUploadList:[],
+      videoUploadList: [],
       count: 0
     }
 
@@ -122,7 +67,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
-    this.videoUpload =this.videoUpload.bind(this);
+    this.videoUpload = this.videoUpload.bind(this);
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -174,12 +119,12 @@ class Wall extends Component {
           content: ""
         }
       })
-    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
       this.setState({ imageUploadList: [] });
-      this.setState({videoUploadList:[]});
+      this.setState({ videoUploadList: [] });
       this.getPosts();
       console.log(this.refs.quill_content);
     })
@@ -420,7 +365,7 @@ class Wall extends Component {
     }
   }
 
-  
+
   // upload video
   videoUpload = (event) => {
     console.log(event);
@@ -439,6 +384,11 @@ class Wall extends Component {
       });
     }
   }
+
+  // myfunction(){
+  //   console.log('kdsdfgj')
+  //   console.log(this.refs.video)
+  // }
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -564,7 +514,7 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/" ) ) ?
+                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/")) ?
                     <Row>
                       <Col md={24} sm={24} xs={24}>
                         <CustomGallery src={item.imageId}></CustomGallery>
@@ -572,16 +522,16 @@ class Wall extends Component {
                       </Col>
                     </Row>
                     // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : ((item.imageId[0].file.mimetype).match("video/mp4")) ? (
-                      <Video autoPlay loop muted
-                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                        // poster="http://sourceposter.jpg"
-                        onCanPlayThrough={() => {
-                        }}>
-
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
-                        {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                      </Video>
+                    : ((item.imageId[0].file.mimetype).match("video/")) ? (
+                      <div>
+                        {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
+                        <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
+                        <video ref="video" >
+                          {/* // poster="http://sourceposter.jpg" */}
+                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                          {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                        </video>
+                      </div>
                     ) : ''
                     : ''
 
@@ -702,6 +652,7 @@ class Wall extends Component {
 
         {/* ----------MODAL SECTION FOR write something end------------- */}
         <ToastContainer autoClose={2000} />
+
       </div>
     );
   }
