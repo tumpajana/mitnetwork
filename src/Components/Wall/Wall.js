@@ -26,61 +26,6 @@ import { isPrimitive } from 'util';
 
 
 const { TextArea } = Input;
-const IMAGES =
-  [{
-    src: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 174,
-    // isSelected: true,
-    // caption: "After Rain (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 174,
-    // isSelected: true,
-    // caption: "After Rain (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212,
-    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
-    // caption: "Boats (Jeshu John - designerspics.com)"
-  },
-  {
-    src: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnail: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
-    thumbnailWidth: 320,
-    thumbnailHeight: 212
-  }]
 
 class Wall extends Component {
   state = {
@@ -406,8 +351,6 @@ class Wall extends Component {
 
   // show comment box
   showCommentBox = (e) => {
-    console.log(e)
-    console.log('comment box')
     if (e == this.state.cPostid) {
       this.setState({ showcomment: !this.state.showcomment })
     }
@@ -446,8 +389,6 @@ class Wall extends Component {
           <div className="wallcard">
             <div className="usercard">
               <div className="postsec clearfix">
-                <span onClick={this.playVideo}>Play / Pause</span>
-
                 <Row>
                   <form>
                     <Col span={3}>
@@ -606,7 +547,6 @@ class Wall extends Component {
                   {item.comments.map((list) => (
 
                     this.state.showcomment && item._id === this.state.cPostid ?
-                      // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
@@ -621,11 +561,6 @@ class Wall extends Component {
                             <p>{list.userId.userName}</p>
                             <h3>{list.userId.designation}</h3>
                             <h3>{list.comment}</h3>
-                            {/* <p className="likeReply">
-      <Button className="commentbutton">Like</Button>
-      <Button className="commentbutton4">Reply</Button>
-      <span className="likeTotal">1 Like</span>
-    </p> */}
                           </div>
                         </Col>
                       </div> : ''
@@ -640,31 +575,6 @@ class Wall extends Component {
 
         })
         }
-
-        {/* <div className="postedpartcard"  ng-repeat="item in postList">
-          <Row type="flex" justify="space-around" align="middle">
-            <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
-              <div className="userpicpost">
-                <img src={User} />
-              </div>
-            </Col>
-            <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
-              <p>{item.userId.userName}</p>
-              <h3>Senior manager at denali bank</h3>
-            </Col>
-          </Row>
-          <div className="postedimg">
-            <img src={Wallpostimg} />
-            <p>{item.title}</p>
-            <h3>{item.content}</h3>
-          </div>
-          <div className="likecomment">
-            <h3>2k likes</h3>
-            <Button title="like"><Icon type="like-o" />Likes</Button>
-            <Button title="comment"><Icon type="message" />Comment</Button>
-
-          </div>
-        </div> */}
 
         {/* posted blog html start */}
 
@@ -681,6 +591,8 @@ class Wall extends Component {
 export default Wall;
 
 
+
+/** to show images **/
 
 class CustomGallery extends React.Component {
   constructor(props) {
