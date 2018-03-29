@@ -174,7 +174,8 @@ class Wall extends Component {
           content: ""
         }
       })
-      console.log(this.refs.quill_content)
+    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
       this.setState({ imageUploadList: [] });
@@ -222,7 +223,6 @@ class Wall extends Component {
       }
 
     })
-    // this.setState({imageUploadList: event.fileList});
     console.log(this.refs.quill_content);
   }
 
@@ -564,7 +564,7 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ?
+                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/" ) ) ?
                     <Row>
                       <Col md={24} sm={24} xs={24}>
                         <CustomGallery src={item.imageId}></CustomGallery>
@@ -572,7 +572,7 @@ class Wall extends Component {
                       </Col>
                     </Row>
                     // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
+                    : ((item.imageId[0].file.mimetype).match("video/mp4")) ? (
                       <Video autoPlay loop muted
                         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                         // poster="http://sourceposter.jpg"
@@ -586,14 +586,6 @@ class Wall extends Component {
                     : ''
 
                   }
-                  {/* reactgallery html start */}
-                  <Row>
-                    <Col md={24} sm={24} xs={24}>
-                      <CustomGallery src={item.imageId}></CustomGallery>
-
-                    </Col>
-                  </Row>
-                  {/* reactgallery html end */}
 
                   {/* <img src={Wallpostimg} /> */}
 
