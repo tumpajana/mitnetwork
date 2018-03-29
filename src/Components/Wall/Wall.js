@@ -350,6 +350,10 @@ class Wall extends Component {
   }
 
 
+  playVideo = () => {
+    console.log(this.refs.video);
+  }
+
 
   render() {
     const Option = Select.Option;
@@ -370,11 +374,11 @@ class Wall extends Component {
           <div className="wallcard">
             <div className="usercard">
               <div className="postsec clearfix">
+                <span onClick={this.playVideo}>Play / Pause</span>
 
                 <Row>
                   <form>
                     <Col span={2}>
-
                       <div className="userprflimg">
                         {
                           (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
@@ -465,17 +469,12 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId ? (item.imageId.file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId._id} />
-                    : (item.imageId.file.mimetype == "video/mp4") ? (
-                      <Video loop muted
-                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-                        // poster="http://sourceposter.jpg"
-                        onCanPlayThrough={() => {
-                          {/* // Do stuff */ }
-                        }}>
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId._id} type="video/webm" />
+                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
+                      <video ref="video" controls>
+                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
                         {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                      </Video>
+                      </video>
                     ) : ''
                     : ''
 
