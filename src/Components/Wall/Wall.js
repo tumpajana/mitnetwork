@@ -108,6 +108,7 @@ class Wall extends Component {
       imageUrl: '',
       cPostid: '',
       files: [],
+      fileUploadList: [],
       count: 0
     }
 
@@ -127,17 +128,20 @@ class Wall extends Component {
   }
 
 
-
+  
 
   //postdata on server
   socialPost() {
     console.log('post')
+    this.setState({fileUploadList:[]});
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
         this.uploadFiles();
         // upload then post
-
+        // this.setState({
+        //     files: "",
+        // })
       }
       else {
         var dataSent = {
@@ -162,6 +166,7 @@ class Wall extends Component {
       toast.success("Post Uploaded Successfuly!", {
         position: toast.POSITION.TOP_CENTER,
       });
+      this.setState({ fileNew: [] })
       this.setState({
         posts: {
           title: "",
@@ -172,7 +177,7 @@ class Wall extends Component {
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
       this.getPosts();
-
+      console.log(this.refs.quill_content);
     })
   }
 
@@ -214,6 +219,7 @@ class Wall extends Component {
       }
 
     })
+    // this.setState({fileUploadList: event.fileList});
     console.log(this.refs.quill_content);
   }
 
@@ -238,9 +244,11 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
+    console.log(event);
     this.setState({
       files: []
     });
+        this.setState({fileUploadList: event.fileList});
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
@@ -490,7 +498,7 @@ class Wall extends Component {
 
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
-                        multiple="true" listType="picture"
+                        multiple="true" listType="picture" fileList={this.state.fileUploadList}
                       // listType="picture"
                       >
 
@@ -692,9 +700,9 @@ class CustomGallery extends React.Component {
   }
   render() {
     {
-        return (
-          <Gallery images={this.state.images} />
-        )
+      return (
+        <Gallery images={this.state.images} />
+      )
     }
   }
 }
