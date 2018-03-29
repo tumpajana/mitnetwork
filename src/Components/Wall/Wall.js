@@ -133,7 +133,6 @@ class Wall extends Component {
   //postdata on server
   socialPost() {
     console.log('post')
-    this.setState({fileUploadList:[]});
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
@@ -173,7 +172,9 @@ class Wall extends Component {
           content: ""
         }
       })
-      console.log(this.refs.quill_content)
+      this.setState({fileUploadList:[]});
+    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
       this.getPosts();
@@ -219,7 +220,6 @@ class Wall extends Component {
       }
 
     })
-    // this.setState({fileUploadList: event.fileList});
     console.log(this.refs.quill_content);
   }
 
