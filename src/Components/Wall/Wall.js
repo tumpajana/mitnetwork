@@ -21,6 +21,7 @@ import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
+
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 
@@ -108,7 +109,8 @@ class Wall extends Component {
       imageUrl: '',
       cPostid: '',
       files: [],
-      fileUploadList: [],
+      imageUploadList: [],
+      videoUploadList:[],
       count: 0
       // loading: false
     }
@@ -121,7 +123,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
-
+    this.videoUpload =this.videoUpload.bind(this);
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -129,7 +131,7 @@ class Wall extends Component {
   }
 
 
-  
+
 
   //postdata on server
   socialPost() {
@@ -174,11 +176,12 @@ class Wall extends Component {
           content: ""
         }
       })
-      this.setState({fileUploadList:[]});
     this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
+      this.setState({ imageUploadList: [] });
+      this.setState({videoUploadList:[]});
       this.getPosts();
       console.log(this.refs.quill_content);
     })
@@ -250,7 +253,7 @@ class Wall extends Component {
     this.setState({
       files: []
     });
-        this.setState({fileUploadList: event.fileList});
+    this.setState({ imageUploadList: event.fileList });
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
@@ -417,16 +420,31 @@ class Wall extends Component {
       this.setState({ showcomment: true });
       this.state.cPostid = e;
     }
-
-    // if (this.state.showcomment)
-
-    // else this.state.cPostid = "";
   }
 
-  // enterLoading = () => {
+  
+  // upload video
+  videoUpload = (event) => {
+    console.log(event);
+    this.setState({
+      files: []
+    });
+    this.setState({ videoUploadList: event.fileList });
+    for (let i = 0; i < event.fileList.length; i++) {
+      let fileList = event.fileList[i];
+      let file = fileList.originFileObj;
+      console.log("File information :", file);
+      let files = this.state.files;
+      files.push(file);
+      this.setState({
+        files: files
+      });
+    }
+  }
+
+    // enterLoading = () => {
   //   this.setState({ loading: true });
   // }
-
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -499,17 +517,28 @@ class Wall extends Component {
                   {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
                   <div className="uploadalign">
                     <Col span={10}>
-
+                      {/* ************************ UPLOAD SECTION FOR IMAGE****************** */}
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
-                        multiple="true" listType="picture" fileList={this.state.fileUploadList}
-                      // listType="picture"
-                      >
-
+                        multiple="true" listType="picture" fileList={this.state.imageUploadList}
+                        accept="image/*" >
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Image
-              </Button>
+                     </Button>
                       </Upload>
+                      {/* ************************ UPLOAD SECTION FOR IMAGE ENDS****************** */}
+
+                      {/* ************************ UPLOAD SECTION FOR VIDEO****************** */}
+                      <Upload className='upload-list-inline' onChange={this.videoUpload}
+                        showUploadList={() => { this.state.showPreviewIcon }}
+                        multiple="false" listType="picture" fileList={this.state.videoUploadList}
+                        accept="video/*" >
+                        <Button className="upldbtnwall">
+                          <Icon type="upload" />Upload Video
+                      </Button>
+                      </Upload>
+                      {/* ************************ UPLOAD SECTION FOR VIDEO ENDS****************** */}
+
                     </Col>
                   </div>
                   <Col span={14}>
@@ -541,13 +570,19 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
-                      <Video loop muted
+                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/" ) ) ?
+                    <Row>
+                      <Col md={24} sm={24} xs={24}>
+                        <CustomGallery src={item.imageId}></CustomGallery>
+
+                      </Col>
+                    </Row>
+                    // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                    : ((item.imageId[0].file.mimetype).match("video/mp4")) ? (
+                      <Video autoPlay loop muted
                         controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
                         // poster="http://sourceposter.jpg"
                         onCanPlayThrough={() => {
-                          {/* // Do stuff */ }
                         }}>
 
                         <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
@@ -557,20 +592,17 @@ class Wall extends Component {
                     : ''
 
                   }
-                  {/* reactgallery html start */}
-                  <Row>
-                    <Col md={24} sm={24} xs={24}>
-                      <CustomGallery src={item.imageId}></CustomGallery>
-
-                    </Col>
-                  </Row>
-                  {/* reactgallery html end */}
 
                   {/* <img src={Wallpostimg} /> */}
 
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
-                  <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                  {
+                    item.content.length > 800 ? <span><p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.substring(0, 800) }} ></p>
+                      <p onClick={() => {
+                      }}>...see more</p></span> : <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
 
+                  }
+                  {/* <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.length>800?item.content.substring(801,item.content.length)}} ></p> */}
                 </div>
 
                 <div className="likecomment">
