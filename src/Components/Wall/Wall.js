@@ -538,7 +538,7 @@ class Wall extends Component {
                       <div>
                         {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
                         <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
-                        <video ref="video" controls muted>
+                        <video className="videoWall" ref="video" controls muted>
                           {/* // poster="http://sourceposter.jpg" */}
                           <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
                           {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
