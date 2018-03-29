@@ -110,6 +110,7 @@ class Wall extends Component {
       files: [],
       fileUploadList: [],
       count: 0
+      // loading: false
     }
 
     this.postContent = this.postContent.bind(this);
@@ -148,6 +149,7 @@ class Wall extends Component {
           content: this.state.posts.content,
           userId: sessionStorage.getItem('userId'),
         }
+        // this.enterLoading();
         this.createPost(dataSent);
       }
     }
@@ -421,7 +423,9 @@ class Wall extends Component {
     // else this.state.cPostid = "";
   }
 
-
+  // enterLoading = () => {
+  //   this.setState({ loading: true });
+  // }
 
   render() {
     const Option = Select.Option;
