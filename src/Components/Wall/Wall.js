@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, Spin } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -25,6 +25,7 @@ import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 import Waypoint from 'react-waypoint';
 
+
 const { TextArea } = Input;
 
 
@@ -33,7 +34,8 @@ class Wall extends Component {
     loading: false,
     visible: false,
     showPreviewIcon: true,
-    showcomment: false
+    showcomment: false,
+    spinner: false
   }
 
   constructor(props) {
@@ -56,7 +58,10 @@ class Wall extends Component {
       files: [],
       imageUploadList: [],
       videoUploadList: [],
-      count: 0
+      count: 0,
+      pageNumber: 0,
+      totalPost: '',
+      totalPostList: []
     }
 
     this.postContent = this.postContent.bind(this);
@@ -79,15 +84,10 @@ class Wall extends Component {
 
   //postdata on server
   socialPost() {
-    console.log('post')
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
         this.uploadFiles();
-        // upload then post
-        // this.setState({
-        //     files: "",
-        // })
       }
       else {
         var dataSent = {
@@ -108,7 +108,7 @@ class Wall extends Component {
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
     WallPost(postData).then((result) => {
-      console.log(result);
+      console.log('wall post',result);
       toast.success("Post Uploaded Successfuly!", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -126,22 +126,26 @@ class Wall extends Component {
       this.setState({ imageUploadList: [] });
       this.setState({ videoUploadList: [] });
       this.getPosts();
-      console.log(this.refs.quill_content);
     })
   }
 
   //get all post
   getPosts() {
-    WallGet().then((result) => {
-      console.log(result);
+    WallGet(this.state.pageNumber).then((result) => {
+      // console.log(result);
       if (result.result.length != 0) {
-        this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        // this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        this.setState({ totalPost: result.total });
+        result.result.forEach(element => {
+          let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
+          this.state.totalPostList.push(element)
+        });
+        console.log('api callpost  list', this.state.totalPostList)
+        this.setState({ postList: this.state.totalPostList })
+        this.setState({ spinner: false })
       }
-      console.log(this.state.postList);
 
     });
-    // console.log(strip(this.state.postList[0]))
-    // console.log(this.state.postList[0].innerText)
   }
 
   //post title 
@@ -160,7 +164,6 @@ class Wall extends Component {
 
   // post content
   postContent = (e) => {
-    console.log(e)
     this.setState({
       posts: {
         title: '',
@@ -168,13 +171,12 @@ class Wall extends Component {
       }
 
     })
-    console.log(this.refs.quill_content);
+    // console.log(this.refs.quill_content);
   }
 
   //postlike
   postLike(id) {
-    console.log('mjhngfds')
-    console.log(id)
+    // console.log(id)
     let likeData = {
       userId: sessionStorage.getItem("userId"),
       postId: id
@@ -182,7 +184,7 @@ class Wall extends Component {
 
     postLike(likeData).then((result) => {
       let response = result;
-      console.log(result)
+      // console.log(result)
       // toast.success("Post Liked Successfuly!", {
       //   position: toast.POSITION.TOP_CENTER,
       // });
@@ -192,7 +194,7 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
-    console.log(event);
+    // console.log(event);
     this.setState({
       files: []
     });
@@ -200,7 +202,7 @@ class Wall extends Component {
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
-      console.log("File information :", file);
+      // console.log("File information :", file);
       let files = this.state.files;
       files.push(file);
       this.setState({
@@ -249,7 +251,7 @@ class Wall extends Component {
   // get comments for a post
   getComments(id) {
     getPostComments(id).then((result) => {
-      console.log(result);
+      // console/.log(result);
       // if (result.result.comments.length != 0) {
       //   this.setState({ commentList: result.result.comments })
       // }
@@ -260,16 +262,13 @@ class Wall extends Component {
 
   // write comment in comment box
   writeComment(i, e) {
-    console.log(i)
-    console.log(e.target.value);
-    console.log(i)
     this.setState({
       comments: {
         comment: e.target.value,
         postid: i
       }
     })
-    console.log(this.state.comments)
+    // console.log(this.state.comments)
   }
 
   // post comment entered
@@ -277,7 +276,7 @@ class Wall extends Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       e.target.value = "";
-      console.log(this.state.comments);
+      // console.log(this.state.comments);
 
       let data = {
         comment: this.state.comments.comment,
@@ -285,7 +284,7 @@ class Wall extends Component {
         userId: sessionStorage.getItem('userId')
       }
       commentPost(data).then((result) => {
-        console.log('comment', result);
+        // console.log('comment', result);
         if (result.error == false) {
           toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
@@ -311,13 +310,13 @@ class Wall extends Component {
   getProfileData() {
     getUserProfile(sessionStorage.getItem("userId")).then((result) => {
       let response = result;
-      console.log(result);
+      // console.log(result);
       this.setState({ userInfo: result.result });
 
       if (this.state.userInfo.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userInfo.imageId._id })
       } else if (this.state.userInfo.providerPic) {
-        console.log(this.state.userInfo.providerPic);
+        // console.log(this.state.userInfo.providerPic);
         this.setState({ imageUrl: this.state.userInfo.providerPic })
       }
 
@@ -334,18 +333,10 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
-      console.log("Quill Title data", this.refs.quill_title.getEditorContents());
-      console.log("Quill Content data", this.refs.quill_content.getEditorContents());
+      // console.log("Quill Title data", this.refs.quill_title.getEditorContents());
+      // console.log("Quill Content data", this.refs.quill_content.getEditorContents());
     }, 2000);
-    // if(!(this.refs.quill_title.getEditorContents() && this.refs.quill_content.getEditorContents())){
-    //   // alert("please enter field");
-    //   toast.warning("Field is empty!", {
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // }
-    // else{
-    //   alert("");
-    // }
+   
   }
 
   handleCancel = () => {
@@ -354,8 +345,8 @@ class Wall extends Component {
 
   // show comment box
   showCommentBox = (e) => {
-    console.log(e)
-    console.log('comment box')
+    // console.log(e)
+    // console.log('comment box')
     if (e == this.state.cPostid) {
       this.setState({ showcomment: !this.state.showcomment })
     }
@@ -368,7 +359,7 @@ class Wall extends Component {
 
   // upload video
   videoUpload = (event) => {
-    console.log(event);
+    // console.log(event);
     this.setState({
       files: []
     });
@@ -376,7 +367,7 @@ class Wall extends Component {
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
-      console.log("File information :", file);
+      // console.log("File information :", file);
       let files = this.state.files;
       files.push(file);
       this.setState({
@@ -389,12 +380,32 @@ class Wall extends Component {
   //   console.log('kdsdfgj')
   //   console.log(this.refs.video)
   // }
+
+  // GET ALL OTHER POSTS
+  getAllpost() {
+    console.log('total post list', this.state.totalPostList)
+    if (this.state.totalPostList.length <= this.state.totalPost) {
+      this.setState({ spinner: true })
+      let x = this.state.pageNumber;
+      this.setState({ pageNumber: x + 1 });
+      console.log(this.state.pageNumber)
+      this.getPosts();
+    }
+    //  
+  }
+
+  // ON MOVING TOP OF POSTS
+  leavingBottom() {
+    let x = this.state.pageNumber;
+    this.setState({ pageNumber: x - 1 })
+  }
+
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
     const { showcomment } = this.state;
     function handleChange(value) {
-      console.log(`selected ${value}`);
+      // console.log(`selected ${value}`);
     }
 
     return (
@@ -614,12 +625,20 @@ class Wall extends Component {
               </div>
               {/* ****Comment section**** */}
             </div>
+
           </div>
 
 
         })
         }
+        <div>
+          <Waypoint
+            onEnter={() => { console.log('last end'); this.getAllpost(); }}
+            onLeave={() => { console.log('Waypoint left') }}
+          />
+          <Spin size="large" spinning={this.state.spinner} style={{ fontSize: 40 }} />
 
+        </div>
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
             <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
