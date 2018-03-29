@@ -293,7 +293,10 @@ textarea.ant-input.showpost {
     background-color: hsla(260, 49%, 49%, 0.3);
     color: rgb(105, 64, 186);
 }
-
+img.clapicon {
+    width: 15px;
+    margin-right: 6px;
+}
 .likecomment button:focus {
     color: rgb(105, 64, 186);
 }

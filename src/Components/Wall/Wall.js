@@ -21,6 +21,7 @@ import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
+import clapbutton from '../../Images/clap.svg';
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 import Waypoint from 'react-waypoint';
@@ -549,14 +550,34 @@ class Wall extends Component {
                   {/* <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.length>800?item.content.substring(801,item.content.length)}} ></p> */}
                 </div>
 
-                <div className="likecomment">
+                {/* <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
 
                   <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
 
-                </div>
+                </div> */}
+
+
+
+<div class="likecomment">
+<h3>0  likes</h3>
+<button title="like" type="button" class="ant-btn">
+<img className="clapicon" src={clapbutton} />
+<span>Clap</span>
+</button>
+<button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
+</div>
+
+
+
+
+
+
+
+
+
 
               </div>
               {/* ****Comment section**** */}
