@@ -3,6 +3,7 @@ import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'ant
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
+import Gallery from 'react-grid-gallery';
 import User from '../../Images/usr.jpg';
 import Wallpostimg from '../../Images/wallimg.jpg';
 import editprofileimg from '../../Images/editprofileimg.svg';
@@ -21,9 +22,66 @@ import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
 import 'react-html5video/dist/styles.css';
+import { isPrimitive } from 'util';
 
 
 const { TextArea } = Input;
+const IMAGES =
+  [{
+    src: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 174,
+    // isSelected: true,
+    // caption: "After Rain (Jeshu John - designerspics.com)"
+  },
+  {
+    src: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 212,
+    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+    // caption: "Boats (Jeshu John - designerspics.com)"
+  },
+  {
+    src: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 174,
+    // isSelected: true,
+    // caption: "After Rain (Jeshu John - designerspics.com)"
+  },
+  {
+    src: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/36762/scarlet-honeyeater-bird-red-feathers.jpg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 212,
+    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+    // caption: "Boats (Jeshu John - designerspics.com)"
+  },
+  {
+    src: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/53957/striped-core-butterflies-butterfly-brown-53957.jpeg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 212,
+    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+    // caption: "Boats (Jeshu John - designerspics.com)"
+  },
+  {
+    src: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/33688/delicate-arch-night-stars-landscape.jpg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 212,
+    // tags: [{value: "Ocean", title: "Ocean"}, {value: "People", title: "People"}],
+    // caption: "Boats (Jeshu John - designerspics.com)"
+  },
+  {
+    src: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
+    thumbnail: "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&h=350",
+    thumbnailWidth: 320,
+    thumbnailHeight: 212
+  }]
+
 class Wall extends Component {
   state = {
     loading: false,
@@ -49,7 +107,9 @@ class Wall extends Component {
       userInfo: {},
       imageUrl: '',
       cPostid: '',
-      files: []
+      files: [],
+      fileUploadList: [],
+      count: 0
     }
 
     this.postContent = this.postContent.bind(this);
@@ -73,19 +133,15 @@ class Wall extends Component {
   //postdata on server
   socialPost() {
     console.log('post')
+    this.setState({ fileUploadList: [] });
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
-        this.uploadFiles()
-          .then(function (success) {
-            var dataSent = {
-              title: _base.state.posts.title,
-              content: _base.state.posts.content,
-              userId: sessionStorage.getItem('userId'),
-              imageId: _base.state.imageId
-            }
-            _base.createPost(dataSent);
-          });
+        this.uploadFiles();
+        // upload then post
+        // this.setState({
+        //     files: "",
+        // })
       }
       else {
         var dataSent = {
@@ -110,6 +166,7 @@ class Wall extends Component {
       toast.success("Post Uploaded Successfuly!", {
         position: toast.POSITION.TOP_CENTER,
       });
+      this.setState({ fileNew: [] })
       this.setState({
         posts: {
           title: "",
@@ -120,7 +177,7 @@ class Wall extends Component {
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
       this.getPosts();
-
+      console.log(this.refs.quill_content);
     })
   }
 
@@ -131,6 +188,8 @@ class Wall extends Component {
       if (result.result.length != 0) {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
       }
+      console.log(this.state.postList);
+
     });
     // console.log(strip(this.state.postList[0]))
     // console.log(this.state.postList[0].innerText)
@@ -160,6 +219,7 @@ class Wall extends Component {
       }
 
     })
+    // this.setState({fileUploadList: event.fileList});
     console.log(this.refs.quill_content);
   }
 
@@ -184,9 +244,11 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
+    console.log(event);
     this.setState({
       files: []
     });
+    this.setState({ fileUploadList: event.fileList });
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
@@ -204,24 +266,34 @@ class Wall extends Component {
     _base.setState({
       imageId: []
     });
-    let length = _base.state.files.length;
-    return new Promise(function (resolve, reject) {
-      for (let i = 0; i < length; i++) {
-        let file = _base.state.files[i];
-        var form = new FormData();
-        form.append('file', file, file.name);
-        profilePic(form).then((result) => {
-          console.log(result);
-          let id = result.upload._id;
-          let ids = _base.state.imageId;
-          ids.push(id);
-          _base.setState({
-            imageId: ids
-          });
-        })
-        if (i == length - 1) {
-          resolve(true);
+
+    this.uploadFile();
+  }
+
+  uploadFile = () => {
+    let _base = this;
+    let file = _base.state.files[_base.state.count];
+    var form = new FormData();
+    form.append('file', file, file.name);
+    profilePic(form).then((result) => {
+      let id = result.upload._id;
+      let ids = _base.state.imageId;
+      ids.push(id);
+      _base.setState({ imageId: ids });
+      if (_base.state.count == _base.state.files.length - 1) {
+        // post
+        var dataSent = {
+          title: _base.state.posts.title,
+          content: _base.state.posts.content,
+          userId: sessionStorage.getItem('userId'),
+          imageId: _base.state.imageId
         }
+        _base.createPost(dataSent);
+      } else {
+        this.setState({
+          count: _base.state.count + 1
+        });
+        _base.uploadFile();
       }
     });
   }
@@ -378,14 +450,15 @@ class Wall extends Component {
 
                 <Row>
                   <form>
-                    <Col span={2}>
+                    <Col span={3}>
+
                       <div className="userprflimg">
                         {
                           (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
                         }
                       </div>
                     </Col>
-                    <Col span={22}>
+                    <Col span={21}>
                       <div className="usrview">
                         <h3>{this.state.userInfo.userName}</h3>
                         <p>{this.state.userInfo.designation}</p>
@@ -430,7 +503,7 @@ class Wall extends Component {
 
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
-                        multiple="true" listType="picture-card"
+                        multiple="true" listType="picture" fileList={this.state.fileUploadList}
                       // listType="picture"
                       >
 
@@ -457,13 +530,13 @@ class Wall extends Component {
             <div className="postedpartcard">
               <div className="mitpic">
                 <Row type="flex" justify="space-around" align="middle">
-                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+                  <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 5 }}>
                     <div className="userpicpost">{
                       (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <img src={User} />
                     }
                     </div>
                   </Col>
-                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+                  <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 19 }}>
                     <p>{item.userId.userName}</p>
                     <h3>{item.userId.designation}</h3>
                   </Col>
@@ -471,7 +544,9 @@ class Wall extends Component {
                 <div className="postedimg onlytext">
                   {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
                     : (item.imageId[0].file.mimetype == "video/mp4") ? (
-                      <video ref="video" controls>
+                      <video loop muted
+                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}>
+
                         <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
                         {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
                       </video>
@@ -479,10 +554,22 @@ class Wall extends Component {
                     : ''
 
                   }
+                  {/* reactgallery html start */}
+                  <Row>
+                    <Col md={24} sm={24} xs={24}>
+                      <CustomGallery src={item.imageId}></CustomGallery>
+
+                    </Col>
+                  </Row>
+                  {/* reactgallery html end */}
+
                   {/* <img src={Wallpostimg} /> */}
+
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
                   <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+
                 </div>
+
                 <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
@@ -491,12 +578,13 @@ class Wall extends Component {
                   <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
 
                 </div>
+
               </div>
               {/* ****Comment section**** */}
               <div className="commentSection">
                 <Row type="flex" justify="space-around" align="middle">
 
-                  <Col xs={3} sm={3} md={2}>
+                  <Col xs={5} sm={3} md={2}>
                     <div className="commentImg">
                       {
                         (this.state.userInfo.imageId || this.state.userInfo.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
@@ -504,7 +592,7 @@ class Wall extends Component {
                     </div>
                   </Col>
 
-                  <Col xs={21} sm={21} md={22}>
+                  <Col xs={19} sm={21} md={22}>
                     <div className="commentText">
                       <img src={camera} />
                       <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
@@ -591,3 +679,31 @@ class Wall extends Component {
 }
 
 export default Wall;
+
+
+
+class CustomGallery extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+    console.log(this.props.src);
+    this.state = {
+      images: this.props.src.map((item) => {
+        return {
+          src: "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item._id,
+          thumbnail: "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item._id,
+          thumbnailWidth: 320,
+          thumbnailHeight: 212
+        }
+      })
+    }
+    console.log(this.state.images);
+  }
+  render() {
+    {
+      return (
+        <Gallery images={this.state.images} />
+      )
+    }
+  }
+}
