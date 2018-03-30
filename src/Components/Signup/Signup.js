@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Form, Input, Icon, Radio, Button } from 'antd';
+import { Form, Input, Icon, Radio, Button, notification } from 'antd';
 import './Signup.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
@@ -152,18 +152,14 @@ class Signup extends Component {
         let response = result;
         console.log(result)
         if (response.error == false) {
-          toast.success("You have been registered successfully!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          this.openNotificationWithIcon('success',"You have been registered successfully!");
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
           }
         }
         else if (response.error == true) {
-          toast.warn("Phonenumber/Email already exist !", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          this.openNotificationWithIcon('warning',"Phonenumber/Email already exist !");
         }
 
       });
@@ -179,18 +175,17 @@ class Signup extends Component {
       let response = result;
       console.log("registration", result);
       if (response.error == false) {
-        toast.success("You have been registered successfully!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        this.openNotificationWithIcon('success',"You have been registered successfully!");
         console.log(response.result);
         if (response.result) {
           sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
         else {
-          toast.warn("Number already exist!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          // toast.warn("Number already exist!", {
+          //   position: toast.POSITION.TOP_CENTER,
+          // });
+          this.openNotificationWithIcon('warning',"Number already exist!");
         }
       }
 
@@ -213,6 +208,13 @@ class Signup extends Component {
   //   });
   // }
 
+  // notification show
+  openNotificationWithIcon = (type,content) => {
+    notification[type]({
+      message: type,
+      description: content,
+    });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;

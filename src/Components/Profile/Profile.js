@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification } from 'antd';
 import 'antd/dist/antd.css';
 import './Profile.css';
 import editprofileimg from '../../Images/editprofileimg.svg';
@@ -143,9 +143,7 @@ class Profile extends Component {
       let response = result;
       console.log(result);
       if (response.error == false) {
-        toast.success("Profile Updated Successfuly!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        this.openNotificationWithIcon('success',"Profile Updated Successfuly!");
         this.UserProfileData();
       }
       console.log("Close")
@@ -192,9 +190,7 @@ class Profile extends Component {
     profilePic(form).then((result) => {
       console.log('pic uploaded', result);
       if (result.error == false) {
-        toast.success("Image Uploaded Successfuly!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        this.openNotificationWithIcon('success',"Image Uploaded Successfuly!");
         // console.log(result.upload.filr._id)
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + result.upload._id })
         let userData = {
@@ -224,6 +220,13 @@ class Profile extends Component {
     console.log('Dispaly data');
   }
 
+  // notification show
+  openNotificationWithIcon = (type,content) => {
+    notification[type]({
+      message: type,
+      description: content,
+    });
+  };
 
 
   render() {

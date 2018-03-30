@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification, Spin  } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -21,8 +21,10 @@ import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
+import clapbutton from '../../Images/clap.svg';
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
+import Waypoint from 'react-waypoint';
 
 
 const { TextArea } = Input;
@@ -32,7 +34,8 @@ class Wall extends Component {
     loading: false,
     visible: false,
     showPreviewIcon: true,
-    showcomment: false
+    showcomment: false,
+    spinner: false
   }
 
   constructor(props) {
@@ -53,8 +56,13 @@ class Wall extends Component {
       imageUrl: '',
       cPostid: '',
       files: [],
-      fileUploadList: [],
-      count: 0
+      imageUploadList: [],
+      videoUploadList: [],
+      count: 0,
+      pageNumber: 0,
+      totalPost: '',
+      totalPostList: [],
+      iconLoading: false
     }
 
     this.postContent = this.postContent.bind(this);
@@ -65,7 +73,7 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
-
+    this.videoUpload = this.videoUpload.bind(this);
     this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
@@ -77,16 +85,13 @@ class Wall extends Component {
 
   //postdata on server
   socialPost() {
+    this.setState({ iconLoading: true });
     console.log('post')
     this.setState({ fileUploadList: [] });
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
         this.uploadFiles();
-        // upload then post
-        // this.setState({
-        //     files: "",
-        // })
       }
       else {
         var dataSent = {
@@ -94,13 +99,12 @@ class Wall extends Component {
           content: this.state.posts.content,
           userId: sessionStorage.getItem('userId'),
         }
+        // this.enterLoading();
         this.createPost(dataSent);
       }
     }
     else {
-      toast.warn(" No content for this post!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      this.openNotificationWithIcon('warning'," No content for this post!");
     }
   }
 
@@ -108,9 +112,7 @@ class Wall extends Component {
   createPost = (postData) => {
     WallPost(postData).then((result) => {
       console.log(result);
-      toast.success("Post Uploaded Successfuly!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      this.openNotificationWithIcon('success'," Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -118,26 +120,34 @@ class Wall extends Component {
           content: ""
         }
       })
-      console.log(this.refs.quill_content)
+      this.setState({ iconLoading: false });
+    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
+      this.setState({ imageUploadList: [] });
+      this.setState({ videoUploadList: [] });
       this.getPosts();
-      console.log(this.refs.quill_content);
     })
   }
 
   //get all post
   getPosts() {
-    WallGet().then((result) => {
-      console.log(result);
+    WallGet(this.state.pageNumber).then((result) => {
+      // console.log(result);
       if (result.result.length != 0) {
-        this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        // this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        this.setState({ totalPost: result.total });
+        result.result.forEach(element => {
+          let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
+          this.state.totalPostList.push(element)
+        });
+        console.log('api callpost  list', this.state.totalPostList)
+        this.setState({ postList: this.state.totalPostList })
+        this.setState({ spinner: false })
       }
-      console.log(this.state.postList);
 
     });
-    // console.log(strip(this.state.postList[0]))
-    // console.log(this.state.postList[0].innerText)
   }
 
   //post title 
@@ -156,7 +166,6 @@ class Wall extends Component {
 
   // post content
   postContent = (e) => {
-    console.log(e)
     this.setState({
       posts: {
         title: '',
@@ -164,14 +173,12 @@ class Wall extends Component {
       }
 
     })
-    // this.setState({fileUploadList: event.fileList});
-    console.log(this.refs.quill_content);
+    // console.log(this.refs.quill_content);
   }
 
   //postlike
   postLike(id) {
-    console.log('mjhngfds')
-    console.log(id)
+    // console.log(id)
     let likeData = {
       userId: sessionStorage.getItem("userId"),
       postId: id
@@ -179,7 +186,7 @@ class Wall extends Component {
 
     postLike(likeData).then((result) => {
       let response = result;
-      console.log(result)
+      // console.log(result)
       // toast.success("Post Liked Successfuly!", {
       //   position: toast.POSITION.TOP_CENTER,
       // });
@@ -189,15 +196,15 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
-    console.log(event);
+    // console.log(event);
     this.setState({
       files: []
     });
-    this.setState({ fileUploadList: event.fileList });
+    this.setState({ imageUploadList: event.fileList });
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
-      console.log("File information :", file);
+      // console.log("File information :", file);
       let files = this.state.files;
       files.push(file);
       this.setState({
@@ -212,8 +219,9 @@ class Wall extends Component {
       imageId: []
     });
 
-    this.uploadFile();
+    this.uploadFile();  
   }
+
 
   uploadFile = () => {
     let _base = this;
@@ -246,7 +254,7 @@ class Wall extends Component {
   // get comments for a post
   getComments(id) {
     getPostComments(id).then((result) => {
-      console.log(result);
+      // console/.log(result);
       // if (result.result.comments.length != 0) {
       //   this.setState({ commentList: result.result.comments })
       // }
@@ -257,16 +265,13 @@ class Wall extends Component {
 
   // write comment in comment box
   writeComment(i, e) {
-    console.log(i)
-    console.log(e.target.value);
-    console.log(i)
     this.setState({
       comments: {
         comment: e.target.value,
         postid: i
       }
     })
-    console.log(this.state.comments)
+    // console.log(this.state.comments)
   }
 
   // post comment entered
@@ -274,7 +279,7 @@ class Wall extends Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       e.target.value = "";
-      console.log(this.state.comments);
+      // console.log(this.state.comments);
 
       let data = {
         comment: this.state.comments.comment,
@@ -282,7 +287,7 @@ class Wall extends Component {
         userId: sessionStorage.getItem('userId')
       }
       commentPost(data).then((result) => {
-        console.log('comment', result);
+        // console.log('comment', result);
         if (result.error == false) {
           toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
@@ -308,13 +313,13 @@ class Wall extends Component {
   getProfileData() {
     getUserProfile(sessionStorage.getItem("userId")).then((result) => {
       let response = result;
-      console.log(result);
+      // console.log(result);
       this.setState({ userInfo: result.result });
 
       if (this.state.userInfo.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userInfo.imageId._id })
       } else if (this.state.userInfo.providerPic) {
-        console.log(this.state.userInfo.providerPic);
+        // console.log(this.state.userInfo.providerPic);
         this.setState({ imageUrl: this.state.userInfo.providerPic })
       }
 
@@ -331,18 +336,10 @@ class Wall extends Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
-      console.log("Quill Title data", this.refs.quill_title.getEditorContents());
-      console.log("Quill Content data", this.refs.quill_content.getEditorContents());
+      // console.log("Quill Title data", this.refs.quill_title.getEditorContents());
+      // console.log("Quill Content data", this.refs.quill_content.getEditorContents());
     }, 2000);
-    // if(!(this.refs.quill_title.getEditorContents() && this.refs.quill_content.getEditorContents())){
-    //   // alert("please enter field");
-    //   toast.warning("Field is empty!", {
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // }
-    // else{
-    //   alert("");
-    // }
+   
   }
 
   handleCancel = () => {
@@ -351,6 +348,8 @@ class Wall extends Component {
 
   // show comment box
   showCommentBox = (e) => {
+    // console.log(e)
+    // console.log('comment box')
     if (e == this.state.cPostid) {
       this.setState({ showcomment: !this.state.showcomment })
     }
@@ -358,24 +357,66 @@ class Wall extends Component {
       this.setState({ showcomment: true });
       this.state.cPostid = e;
     }
-
-    // if (this.state.showcomment)
-
-    // else this.state.cPostid = "";
   }
 
 
-  playVideo = () => {
-    console.log(this.refs.video);
+  // upload video
+  videoUpload = (event) => {
+    // console.log(event);
+    this.setState({
+      files: []
+    });
+    this.setState({ videoUploadList: event.fileList });
+    for (let i = 0; i < event.fileList.length; i++) {
+      let fileList = event.fileList[i];
+      let file = fileList.originFileObj;
+      // console.log("File information :", file);
+      let files = this.state.files;
+      files.push(file);
+      this.setState({
+        files: files
+      });
+    }
   }
 
+  // myfunction(){
+  //   console.log('kdsdfgj')
+  //   console.log(this.refs.video)
+  // }
+
+  // GET ALL OTHER POSTS
+  getAllpost() {
+    console.log('total post list', this.state.totalPostList)
+    if (this.state.totalPostList.length <= this.state.totalPost) {
+      this.setState({ spinner: true })
+      let x = this.state.pageNumber;
+      this.setState({ pageNumber: x + 1 });
+      console.log(this.state.pageNumber)
+      this.getPosts();
+    }
+    //  
+  }
+
+  // ON MOVING TOP OF POSTS
+  leavingBottom() {
+    let x = this.state.pageNumber;
+    this.setState({ pageNumber: x - 1 })
+  }
+  
+  // notification show
+  openNotificationWithIcon = (type,content) => {
+    notification[type]({
+      message: type,
+      description: content,
+    });
+  };
 
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
     const { showcomment } = this.state;
     function handleChange(value) {
-      console.log(`selected ${value}`);
+      // console.log(`selected ${value}`);
     }
 
     return (
@@ -441,21 +482,32 @@ class Wall extends Component {
                   {/* <Col span={5}> <Button onClick={this.showModal} className="postedit" title="Article"><Icon type="edit" />Write an Article</Button></Col> */}
                   <div className="uploadalign">
                     <Col span={10}>
-
+                      {/* ************************ UPLOAD SECTION FOR IMAGE****************** */}
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
-                        multiple="true" listType="picture" fileList={this.state.fileUploadList}
-                      // listType="picture"
-                      >
-
+                        multiple="true" listType="picture" fileList={this.state.imageUploadList}
+                        accept="image/*" >
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Image
-              </Button>
+                     </Button>
                       </Upload>
+                      {/* ************************ UPLOAD SECTION FOR IMAGE ENDS****************** */}
+
+                      {/* ************************ UPLOAD SECTION FOR VIDEO****************** */}
+                      <Upload className='upload-list-inline' onChange={this.videoUpload}
+                        showUploadList={() => { this.state.showPreviewIcon }}
+                        multiple="false" listType="picture" fileList={this.state.videoUploadList}
+                        accept="video/*" >
+                        <Button className="upldbtnwall">
+                          <Icon type="upload" />Upload Video
+                      </Button>
+                      </Upload>
+                      {/* ************************ UPLOAD SECTION FOR VIDEO ENDS****************** */}
+
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post"  loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
@@ -483,42 +535,69 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? (item.imageId[0].file.mimetype == "image/png") ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : (item.imageId[0].file.mimetype == "video/mp4") ? (
-                      <video loop muted
-                        controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}>
+                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/")) ?
+                    <Row>
+                      <Col md={24} sm={24} xs={24}>
+                        <CustomGallery src={item.imageId}></CustomGallery>
 
-                        <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
-                        {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                      </video>
+                      </Col>
+                    </Row>
+                    // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                    : ((item.imageId[0].file.mimetype).match("video/")) ? (
+                      <div>
+                        {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
+                        <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
+                        <video className="videoWall" ref="video" controls muted>
+                          {/* // poster="http://sourceposter.jpg" */}
+                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                          {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                        </video>
+                      </div>
                     ) : ''
                     : ''
 
                   }
-                  {/* reactgallery html start */}
-                  <Row>
-                    <Col md={24} sm={24} xs={24}>
-                      <CustomGallery src={item.imageId}></CustomGallery>
-
-                    </Col>
-                  </Row>
-                  {/* reactgallery html end */}
 
                   {/* <img src={Wallpostimg} /> */}
 
                   <p contentEditable='false' dangerouslySetInnerHTML={{ __html: item.title }} ></p>
-                  <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
+                  {
+                    item.content.length > 800 ? <span><p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.substring(0, 800) }} ></p>
+                      <p onClick={() => {
+                      }}>...see more</p></span> : <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content }} ></p>
 
+                  }
+                  {/* <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: item.content.length>800?item.content.substring(801,item.content.length)}} ></p> */}
                 </div>
 
-                <div className="likecomment">
+                {/* <div className="likecomment">
                   <h3>{item.like.length}  likes</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ? <Button title="like"><Icon type="like-o" />Unlike</Button> : <Button title="like" className={((item.like).indexOf(sessionStorage.getItem('userId')) > -1) ? 'messagecomment' : ''} onClick={() => { this.postLike(item._id) }}><Icon type="like-o" />Like</Button>
                   }
 
                   <Button title="comment" onClick={() => { this.showCommentBox(item._id) }}><Icon type="message" />Comment ({item.comments.length})</Button>
 
-                </div>
+                </div> */}
+
+
+
+<div class="likecomment">
+<h3>0  likes</h3>
+<button title="like" type="button" class="ant-btn">
+<img className="clapicon" src={clapbutton} />
+<span>Clap</span>
+</button>
+<button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
+</div>
+
+
+
+
+
+
+
+
+
 
               </div>
               {/* ****Comment section**** */}
@@ -570,11 +649,44 @@ class Wall extends Component {
               </div>
               {/* ****Comment section**** */}
             </div>
+
           </div>
 
 
         })
         }
+        <div>
+          <Waypoint
+            onEnter={() => { console.log('last end'); this.getAllpost(); }}
+            onLeave={() => { console.log('Waypoint left') }}
+          />
+          <Spin size="large" spinning={this.state.spinner} style={{ fontSize: 40 }} />
+
+        </div>
+        {/* <div className="postedpartcard"  ng-repeat="item in postList">
+          <Row type="flex" justify="space-around" align="middle">
+            <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
+              <div className="userpicpost">
+                <img src={User} />
+              </div>
+            </Col>
+            <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 21 }}>
+              <p>{item.userId.userName}</p>
+              <h3>Senior manager at denali bank</h3>
+            </Col>
+          </Row>
+          <div className="postedimg">
+            <img src={Wallpostimg} />
+            <p>{item.title}</p>
+            <h3>{item.content}</h3>
+          </div>
+          <div className="likecomment">
+            <h3>2k likes</h3>
+            <Button title="like"><Icon type="like-o" />Likes</Button>
+            <Button title="comment"><Icon type="message" />Comment</Button>
+
+          </div>
+        </div> */}
 
         {/* posted blog html start */}
 
@@ -583,6 +695,7 @@ class Wall extends Component {
 
         {/* ----------MODAL SECTION FOR write something end------------- */}
         <ToastContainer autoClose={2000} />
+
       </div>
     );
   }
