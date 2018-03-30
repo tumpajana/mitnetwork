@@ -32,6 +32,7 @@ class Profile extends Component {
         designation: '',
         state: '',
         redirectToReferrer: false,
+        iconLoading: false,
       },
       imagUrl: '',
       userProfile: {},
@@ -128,6 +129,7 @@ class Profile extends Component {
 
   //update profile
   updateProfile() {
+    this.setState({ iconLoading: true });
     let userData = {
       _id: sessionStorage.getItem('userId'),
       name: this.state.user.name,
@@ -144,6 +146,7 @@ class Profile extends Component {
       console.log(result);
       if (response.error == false) {
         this.openNotificationWithIcon('success',"Profile Updated Successfuly!");
+        this.setState({ iconLoading: false });
         this.UserProfileData();
       }
       console.log("Close")
@@ -354,7 +357,7 @@ class Profile extends Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
-            <Button key="submit" loading={loading} onClick={this.updateProfile} className="savebtn">
+            <Button key="submit" loading={loading} loading={this.state.iconLoading} onClick={this.updateProfile} className="savebtn">
               Save
                         </Button>,
           ]}
