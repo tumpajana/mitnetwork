@@ -106,7 +106,7 @@ class Wall extends Component {
       }
     }
     else {
-      this.openNotificationWithIcon('warning'," No content for this post!");
+      this.openNotificationWithIcon('warning', " No content for this post!");
     }
   }
 
@@ -114,7 +114,7 @@ class Wall extends Component {
   createPost = (postData) => {
     WallPost(postData).then((result) => {
       console.log(result);
-      this.openNotificationWithIcon('success'," Post Uploaded Successfuly!");
+      this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -123,7 +123,7 @@ class Wall extends Component {
         }
       })
       this.setState({ iconLoading: false });
-    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
@@ -151,7 +151,7 @@ class Wall extends Component {
       }
 
     }, error => {
-     
+
     });
   }
 
@@ -201,7 +201,7 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
-    // console.log(event);
+    console.log(event)
     this.setState({
       files: []
     });
@@ -209,7 +209,6 @@ class Wall extends Component {
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
-      // console.log("File information :", file);
       let files = this.state.files;
       files.push(file);
       this.setState({
@@ -224,7 +223,7 @@ class Wall extends Component {
       imageId: []
     });
 
-    this.uploadFile();  
+    this.uploadFile();
   }
 
 
@@ -368,21 +367,23 @@ class Wall extends Component {
 
   // upload video
   videoUpload = (event) => {
-    // console.log(event);
+    console.log(event);
     this.setState({
       files: []
     });
-    this.setState({ videoUploadList: event.fileList });
-    for (let i = 0; i < event.fileList.length; i++) {
-      let fileList = event.fileList[i];
-      let file = fileList.originFileObj;
-      // console.log("File information :", file);
-      let files = this.state.files;
-      files.push(file);
-      this.setState({
-        files: files
-      });
+      this.setState({ videoUploadList: event.fileList });
+      for (let i = 0; i < event.fileList.length; i++) {
+        let fileList = event.fileList[i];
+        let file = fileList.originFileObj;
+        // console.log("File information :", file);
+        let files = this.state.files;
+        files.push(file);
+        this.setState({
+          files: files
+        });
+      }
     }
+  
   }
 
 
@@ -406,9 +407,9 @@ class Wall extends Component {
     // let x = this.state.pageNumber;
     // this.setState({ pageNumber: x - 1 })
   }
-  
+
   // notification show
-  openNotificationWithIcon = (type,content) => {
+  openNotificationWithIcon = (type, content) => {
     notification[type]({
       message: type,
       description: content,
@@ -502,7 +503,7 @@ class Wall extends Component {
                       <Upload className='upload-list-inline' onChange={this.videoUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
                         multiple="false" listType="picture" fileList={this.state.videoUploadList}
-                        accept="video/*" >
+                        accept='video/'>
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Video
                       </Button>
@@ -512,7 +513,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post"  loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post"loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
@@ -540,28 +541,28 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? 
-                  ((item.imageId[0].file.mimetype).match("image/")) ?
-                  item.imageId.length==1? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />:
+                  {item.imageId.length > 0 ?
+                    ((item.imageId[0].file.mimetype).match("image/")) ?
+                      item.imageId.length == 1 ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} /> :
 
-                <Row>
-                      <Col md={24} sm={24} xs={24}>
-                        <CustomGallery src={item.imageId}></CustomGallery>
+                        <Row>
+                          <Col md={24} sm={24} xs={24}>
+                            <CustomGallery src={item.imageId}></CustomGallery>
 
-                      </Col>
-                    </Row>
-                    // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : ((item.imageId[0].file.mimetype).match("video/")) ? (
-                      <div>
-                        {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
-                        <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
-                        <video className="videoWall" ref="video" controls muted>
-                          {/* // poster="http://sourceposter.jpg" */}
-                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
-                          {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                        </video>
-                      </div>
-                    ) : ''
+                          </Col>
+                        </Row>
+                      // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                      : ((item.imageId[0].file.mimetype).match("video/")) ? (
+                        <div>
+                          {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
+                          <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
+                          <video className="videoWall" ref="video" controls muted>
+                            {/* // poster="http://sourceposter.jpg" */}
+                            <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                            {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                          </video>
+                        </div>
+                      ) : ''
                     : ''
 
                   }
@@ -677,7 +678,7 @@ class Wall extends Component {
 
         })
         }
-      
+
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
             <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
@@ -740,6 +741,7 @@ class CustomGallery extends React.Component {
   render() {
     {
       return (
+      
         <Gallery images={this.state.images} />
       )
     }
