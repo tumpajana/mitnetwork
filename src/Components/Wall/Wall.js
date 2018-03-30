@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification, Spin  } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -29,19 +29,16 @@ import Waypoint from 'react-waypoint';
 
 const { TextArea } = Input;
 
-
 class Wall extends Component {
-  state = {
-    loading: false,
-    visible: false,
-    showPreviewIcon: true,
-    showcomment: false,
-    spinner: false
-  }
 
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
+      visible: false,
+      showPreviewIcon: true,
+      showcomment: false,
+      spinner: false,
       posts: {
         title: '',
         content: ''
@@ -75,7 +72,7 @@ class Wall extends Component {
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
     this.videoUpload = this.videoUpload.bind(this);
-    this.getPosts();
+    // this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
     }
@@ -90,6 +87,7 @@ class Wall extends Component {
   socialPost() {
     this.setState({ iconLoading: true });
     console.log('post')
+    this.setState({ fileUploadList: [] });
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
@@ -129,14 +127,14 @@ class Wall extends Component {
       this.setState({ showPreviewIcon: false })
       this.setState({ imageUploadList: [] });
       this.setState({ videoUploadList: [] });
-      this.getPosts();
+      // this.getPosts();
     })
   }
 
   //get all post
-  getPosts() {
+  getPosts(pageNumber) {
 
-    WallGet().then((result) => {
+    WallGet(pageNumber).then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
@@ -176,7 +174,6 @@ class Wall extends Component {
         title: '',
         content: this.refs.quill_content.getEditorContents()
       }
-
     })
     // console.log(this.refs.quill_content);
   }
@@ -195,7 +192,7 @@ class Wall extends Component {
       // toast.success("Post Liked Successfuly!", {
       //   position: toast.POSITION.TOP_CENTER,
       // });
-      this.getPosts();
+      // this.getPosts();
     });
   }
 
@@ -297,9 +294,9 @@ class Wall extends Component {
             position: toast.POSITION.TOP_CENTER,
           });
           //  this.state.totalPostList=[];
-          this.getPosts();
+          // this.getPosts();
           this.showCommentBox(result.result._id)
-          // this.getComments(result.result._id);
+          this.getComments(result.result._id);
           this.setState({
             comments: {
               comment: "",
@@ -384,20 +381,18 @@ class Wall extends Component {
       }
     }
   
-  }
+  
 
 
 
   // GET ALL OTHER POSTS
   getAllpost = () => {
-
-    console.log('total post list', this.state.totalPostList)
-    if (this.state.totalPostList.length < this.state.totalPost) {
+    if (this.state.totalPostList.length == 0 || (this.state.totalPostList.length < this.state.totalPost)) {
+      this.getPosts(this.state.pageNumber);
       this.setState({ spinner: true })
       let x = this.state.pageNumber;
       this.setState({ pageNumber: x + 1 });
       console.log(this.state.pageNumber)
-      this.getPosts();
     }
     //  
   }
@@ -435,7 +430,6 @@ class Wall extends Component {
           <div className="wallcard">
             <div className="usercard">
               <div className="postsec clearfix">
-
                 <Row>
                   <form>
                     <Col span={3}>
@@ -643,7 +637,6 @@ class Wall extends Component {
                   {item.comments.map((list) => (
 
                     this.state.showcomment && item._id === this.state.cPostid ?
-                      // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
@@ -658,11 +651,6 @@ class Wall extends Component {
                             <p>{list.userId.userName}</p>
                             <h3>{list.userId.designation}</h3>
                             <h3>{list.comment}</h3>
-                            {/* <p className="likeReply">
-      <Button className="commentbutton">Like</Button>
-      <Button className="commentbutton4">Reply</Button>
-      <span className="likeTotal">1 Like</span>
-    </p> */}
                           </div>
                         </Col>
                       </div> : ''
@@ -678,7 +666,10 @@ class Wall extends Component {
 
         })
         }
-
+        <div>
+          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
+          <Icon type="loading" spinning={this.state.spinner} style={{ fontSize: 40 }} spin />
+        </div>
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
             <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
@@ -720,6 +711,8 @@ class Wall extends Component {
 export default Wall;
 
 
+
+/** to show images **/
 
 class CustomGallery extends React.Component {
   constructor(props) {
