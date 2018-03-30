@@ -668,7 +668,7 @@ class Wall extends Component {
         }
         <div>
           <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
-          <Spin size="large" spinning={this.state.spinner} style={{ fontSize: 40 }} />
+          <Icon type="loading"  spinning={this.state.spinner} style={{ fontSize: 40 }} spin />
         </div>
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
