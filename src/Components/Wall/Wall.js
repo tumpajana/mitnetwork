@@ -61,7 +61,7 @@ class Wall extends Component {
       videoUploadList: [],
       count: 0,
       pageNumber: 0,
-      totalPost: '',
+      totalPost: 0,
       totalPostList: []
     }
 
@@ -80,7 +80,9 @@ class Wall extends Component {
     }
   }
 
-
+  // componentDidMount() {
+  //   this.getPosts();
+  // }
 
 
   //postdata on server
@@ -109,7 +111,7 @@ class Wall extends Component {
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
     WallPost(postData).then((result) => {
-      console.log('wall post',result);
+      console.log('wall post', result);
       toast.success("Post Uploaded Successfuly!", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -132,21 +134,23 @@ class Wall extends Component {
 
   //get all post
   getPosts() {
-    // debugger;
-    WallGet(this.state.pageNumber).then((result) => {
+
+    WallGet().then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
-        // this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
-        this.setState({ totalPost: result.total });
-        result.result.forEach(element => {
-          let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
-          this.state.totalPostList.push(element)
-        });
-        console.log('api callpost  list', this.state.totalPostList)
-        this.setState({ postList: this.state.totalPostList })
-        this.setState({ spinner: false })
+        this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        // this.setState({ totalPost: result.total });
+        // result.result.forEach(element => {
+        //   let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
+        //   this.state.totalPostList.push(element)
+        // });
+        // console.log('api callpost  list', this.state.totalPostList)
+        // this.setState({ postList: this.state.totalPostList })
+        // this.setState({ spinner: false })
       }
 
+    }, error => {
+     
     });
   }
 
@@ -291,7 +295,7 @@ class Wall extends Component {
           toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
           });
-        //  this.state.totalPostList=[];
+          //  this.state.totalPostList=[];
           this.getPosts();
           this.showCommentBox(result.result._id)
           // this.getComments(result.result._id);
@@ -339,7 +343,7 @@ class Wall extends Component {
       // console.log("Quill Title data", this.refs.quill_title.getEditorContents());
       // console.log("Quill Content data", this.refs.quill_content.getEditorContents());
     }, 2000);
-   
+
   }
 
   handleCancel = () => {
@@ -382,10 +386,10 @@ class Wall extends Component {
 
 
   // GET ALL OTHER POSTS
-  getAllpost() {
-    // debugger;
+  getAllpost = () => {
+
     console.log('total post list', this.state.totalPostList)
-    if (this.state.totalPostList.length <= this.state.totalPost) {
+    if (this.state.totalPostList.length < this.state.totalPost) {
       this.setState({ spinner: true })
       let x = this.state.pageNumber;
       this.setState({ pageNumber: x + 1 });
@@ -526,8 +530,11 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/")) ?
-                    <Row>
+                  {item.imageId.length > 0 ? 
+                  ((item.imageId[0].file.mimetype).match("image/")) ?
+                  item.imageId.length==1? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />:
+
+                <Row>
                       <Col md={24} sm={24} xs={24}>
                         <CustomGallery src={item.imageId}></CustomGallery>
 
@@ -572,14 +579,22 @@ class Wall extends Component {
 
 
 
-<div class="likecomment">
-<h3>0  likes</h3>
-<button title="like" type="button" class="ant-btn">
-<img className="clapicon" src={clapbutton} />
-<span>Clap</span>
-</button>
-<button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
-</div>
+                <div className="likecomment">
+                  <h3>{item.like.length}  Claps</h3>{
+                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
+                      <button title="like" type="button" className="ant-btn" >
+                        <img className="clapicon" src={clapbutton} />
+                        <span>UnClap</span>
+                      </button>
+                      :
+                      <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
+                        <img className="clapicon" src={clapbutton} />
+                        <span>Clap</span>
+                      </button>
+                  }
+
+                  <button title="comment" type="button" className="ant-btn" onClick={() => { this.showCommentBox(item._id) }}><i className="anticon anticon-message"></i><span>Comment (</span> ({item.comments.length})<span>)</span></button>
+                </div>
 
 
 
@@ -652,14 +667,7 @@ class Wall extends Component {
 
         })
         }
-        <div>
-          <Waypoint
-            onEnter={() => { console.log('last end'); this.getAllpost(); }}
-            onLeave={() => { console.log('Waypoint left') }}
-          />
-          <Spin size="large" spinning={this.state.spinner} style={{ fontSize: 40 }} />
-
-        </div>
+      
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
             <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 3 }}>
@@ -727,3 +735,6 @@ class CustomGallery extends React.Component {
     }
   }
 }
+
+
+
