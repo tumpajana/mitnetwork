@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification, Spin  } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -29,19 +29,16 @@ import Waypoint from 'react-waypoint';
 
 const { TextArea } = Input;
 
-
 class Wall extends Component {
-  state = {
-    loading: false,
-    visible: false,
-    showPreviewIcon: true,
-    showcomment: false,
-    spinner: false
-  }
 
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
+      visible: false,
+      showPreviewIcon: true,
+      showcomment: false,
+      spinner: false,
       posts: {
         title: '',
         content: ''
@@ -61,7 +58,7 @@ class Wall extends Component {
       videoUploadList: [],
       count: 0,
       pageNumber: 0,
-      totalPost: '',
+      totalPost: 0,
       totalPostList: [],
       iconLoading: false
     }
@@ -75,19 +72,22 @@ class Wall extends Component {
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
     this.videoUpload = this.videoUpload.bind(this);
-    this.getPosts();
+    // this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
     }
   }
 
-
+  // componentDidMount() {
+  //   this.getPosts();
+  // }
 
 
   //postdata on server
   socialPost() {
     this.setState({ iconLoading: true });
     console.log('post')
+    this.setState({ fileUploadList: [] });
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
@@ -104,7 +104,7 @@ class Wall extends Component {
       }
     }
     else {
-      this.openNotificationWithIcon('warning'," No content for this post!");
+      this.openNotificationWithIcon('warning', " No content for this post!");
     }
   }
 
@@ -112,7 +112,7 @@ class Wall extends Component {
   createPost = (postData) => {
     WallPost(postData).then((result) => {
       console.log(result);
-      this.openNotificationWithIcon('success'," Post Uploaded Successfuly!");
+      this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -121,31 +121,34 @@ class Wall extends Component {
         }
       })
       this.setState({ iconLoading: false });
-    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
       this.setState({ imageUploadList: [] });
       this.setState({ videoUploadList: [] });
-      this.getPosts();
+      // this.getPosts();
     })
   }
 
   //get all post
-  getPosts() {
-    WallGet(this.state.pageNumber).then((result) => {
+  getPosts(pageNumber) {
+
+    WallGet(pageNumber).then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
-        // this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
-        this.setState({ totalPost: result.total });
-        result.result.forEach(element => {
-          let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
-          this.state.totalPostList.push(element)
-        });
-        console.log('api callpost  list', this.state.totalPostList)
-        this.setState({ postList: this.state.totalPostList })
-        this.setState({ spinner: false })
+        this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        // this.setState({ totalPost: result.total });
+        // result.result.forEach(element => {
+        //   let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
+        //   this.state.totalPostList.push(element)
+        // });
+        // console.log('api callpost  list', this.state.totalPostList)
+        // this.setState({ postList: this.state.totalPostList })
+        // this.setState({ spinner: false })
       }
+
+    }, error => {
 
     });
   }
@@ -171,7 +174,6 @@ class Wall extends Component {
         title: '',
         content: this.refs.quill_content.getEditorContents()
       }
-
     })
     // console.log(this.refs.quill_content);
   }
@@ -190,7 +192,7 @@ class Wall extends Component {
       // toast.success("Post Liked Successfuly!", {
       //   position: toast.POSITION.TOP_CENTER,
       // });
-      this.getPosts();
+      // this.getPosts();
     });
   }
 
@@ -219,7 +221,7 @@ class Wall extends Component {
       imageId: []
     });
 
-    this.uploadFile();  
+    this.uploadFile();
   }
 
 
@@ -254,7 +256,7 @@ class Wall extends Component {
   // get comments for a post
   getComments(id) {
     getPostComments(id).then((result) => {
-      // console/.log(result);
+      console.log(result);
       // if (result.result.comments.length != 0) {
       //   this.setState({ commentList: result.result.comments })
       // }
@@ -292,9 +294,10 @@ class Wall extends Component {
           toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
           });
-          this.getPosts();
+          //  this.state.totalPostList=[];
+          // this.getPosts();
           this.showCommentBox(result.result._id)
-          // this.getComments(result.result._id);
+          this.getComments(result.result._id);
           this.setState({
             comments: {
               comment: "",
@@ -339,7 +342,7 @@ class Wall extends Component {
       // console.log("Quill Title data", this.refs.quill_title.getEditorContents());
       // console.log("Quill Content data", this.refs.quill_content.getEditorContents());
     }, 2000);
-   
+
   }
 
   handleCancel = () => {
@@ -379,32 +382,28 @@ class Wall extends Component {
     }
   }
 
-  // myfunction(){
-  //   console.log('kdsdfgj')
-  //   console.log(this.refs.video)
-  // }
+
 
   // GET ALL OTHER POSTS
-  getAllpost() {
-    console.log('total post list', this.state.totalPostList)
-    if (this.state.totalPostList.length <= this.state.totalPost) {
+  getAllpost = () => {
+    if (this.state.totalPostList.length == 0 || (this.state.totalPostList.length < this.state.totalPost)) {
+      this.getPosts(this.state.pageNumber);
       this.setState({ spinner: true })
       let x = this.state.pageNumber;
       this.setState({ pageNumber: x + 1 });
       console.log(this.state.pageNumber)
-      this.getPosts();
     }
     //  
   }
 
   // ON MOVING TOP OF POSTS
   leavingBottom() {
-    let x = this.state.pageNumber;
-    this.setState({ pageNumber: x - 1 })
+    // let x = this.state.pageNumber;
+    // this.setState({ pageNumber: x - 1 })
   }
-  
+
   // notification show
-  openNotificationWithIcon = (type,content) => {
+  openNotificationWithIcon = (type, content) => {
     notification[type]({
       message: type,
       description: content,
@@ -430,7 +429,6 @@ class Wall extends Component {
           <div className="wallcard">
             <div className="usercard">
               <div className="postsec clearfix">
-
                 <Row>
                   <form>
                     <Col span={3}>
@@ -508,7 +506,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post"  loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post" loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
@@ -536,25 +534,28 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/")) ?
-                    <Row>
-                      <Col md={24} sm={24} xs={24}>
-                        <CustomGallery src={item.imageId}></CustomGallery>
+                  {item.imageId.length > 0 ?
+                    ((item.imageId[0].file.mimetype).match("image/")) ?
+                      item.imageId.length == 1 ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} /> :
 
-                      </Col>
-                    </Row>
-                    // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : ((item.imageId[0].file.mimetype).match("video/")) ? (
-                      <div>
-                        {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
-                        <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
-                        <video className="videoWall" ref="video" controls muted>
-                          {/* // poster="http://sourceposter.jpg" */}
-                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
-                          {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                        </video>
-                      </div>
-                    ) : ''
+                        <Row>
+                          <Col md={24} sm={24} xs={24}>
+                            <CustomGallery src={item.imageId}></CustomGallery>
+
+                          </Col>
+                        </Row>
+                      // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                      : ((item.imageId[0].file.mimetype).match("video/")) ? (
+                        <div>
+                          {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
+                          <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
+                          <video className="videoWall" ref="video" controls muted>
+                            {/* // poster="http://sourceposter.jpg" */}
+                            <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                            {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                          </video>
+                        </div>
+                      ) : ''
                     : ''
 
                   }
@@ -582,14 +583,22 @@ class Wall extends Component {
 
 
 
-<div class="likecomment">
-<h3>0  likes</h3>
-<button title="like" type="button" class="ant-btn">
-<img className="clapicon" src={clapbutton} />
-<span>Clap</span>
-</button>
-<button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
-</div>
+                <div className="likecomment">
+                  <h3>{item.like.length}  Claps</h3>{
+                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
+                      <button title="like" type="button" className="ant-btn" >
+                        <img className="clapicon" src={clapbutton} />
+                        <span>UnClap</span>
+                      </button>
+                      :
+                      <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
+                        <img className="clapicon" src={clapbutton} />
+                        <span>Clap</span>
+                      </button>
+                  }
+
+                  <button title="comment" type="button" className="ant-btn" onClick={() => { this.showCommentBox(item._id) }}><i className="anticon anticon-message"></i><span>Comment (</span> ({item.comments.length})<span>)</span></button>
+                </div>
 
 
 
@@ -627,7 +636,6 @@ class Wall extends Component {
                   {item.comments.map((list) => (
 
                     this.state.showcomment && item._id === this.state.cPostid ?
-                      // this.state.showcomment ?
                       <div className="contentsComment" key={list._id}>
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
@@ -642,11 +650,6 @@ class Wall extends Component {
                             <p>{list.userId.userName}</p>
                             <h3>{list.userId.designation}</h3>
                             <h3>{list.comment}</h3>
-                            {/* <p className="likeReply">
-      <Button className="commentbutton">Like</Button>
-      <Button className="commentbutton4">Reply</Button>
-      <span className="likeTotal">1 Like</span>
-    </p> */}
                           </div>
                         </Col>
                       </div> : ''
@@ -663,12 +666,8 @@ class Wall extends Component {
         })
         }
         <div>
-          <Waypoint
-            onEnter={() => { console.log('last end'); this.getAllpost(); }}
-            onLeave={() => { console.log('Waypoint left') }}
-          />
+          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
           <Spin size="large" spinning={this.state.spinner} style={{ fontSize: 40 }} />
-
         </div>
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
@@ -712,6 +711,8 @@ export default Wall;
 
 
 
+/** to show images **/
+
 class CustomGallery extends React.Component {
   constructor(props) {
     super(props);
@@ -737,3 +738,6 @@ class CustomGallery extends React.Component {
     }
   }
 }
+
+
+
