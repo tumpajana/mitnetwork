@@ -30,17 +30,15 @@ import Waypoint from 'react-waypoint';
 const { TextArea } = Input;
 
 class Wall extends Component {
-  state = {
-    loading: false,
-    visible: false,
-    showPreviewIcon: true,
-    showcomment: false,
-    spinner: false
-  }
 
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
+      visible: false,
+      showPreviewIcon: true,
+      showcomment: false,
+      spinner: false,
       posts: {
         title: '',
         content: ''
@@ -74,7 +72,7 @@ class Wall extends Component {
     this.getProfileData = this.getProfileData.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
     this.videoUpload = this.videoUpload.bind(this);
-    this.getPosts();
+    // this.getPosts();
     if (sessionStorage.userId) {
       this.getProfileData()
     }
@@ -129,14 +127,14 @@ class Wall extends Component {
       this.setState({ showPreviewIcon: false })
       this.setState({ imageUploadList: [] });
       this.setState({ videoUploadList: [] });
-      this.getPosts();
+      // this.getPosts();
     })
   }
 
   //get all post
-  getPosts() {
+  getPosts(pageNumber) {
 
-    WallGet().then((result) => {
+    WallGet(pageNumber).then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
         this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
@@ -176,7 +174,6 @@ class Wall extends Component {
         title: '',
         content: this.refs.quill_content.getEditorContents()
       }
-
     })
     // console.log(this.refs.quill_content);
   }
@@ -195,7 +192,7 @@ class Wall extends Component {
       // toast.success("Post Liked Successfuly!", {
       //   position: toast.POSITION.TOP_CENTER,
       // });
-      this.getPosts();
+      // this.getPosts();
     });
   }
 
@@ -298,9 +295,9 @@ class Wall extends Component {
             position: toast.POSITION.TOP_CENTER,
           });
           //  this.state.totalPostList=[];
-          this.getPosts();
+          // this.getPosts();
           this.showCommentBox(result.result._id)
-          // this.getComments(result.result._id);
+          this.getComments(result.result._id);
           this.setState({
             comments: {
               comment: "",
@@ -389,14 +386,12 @@ class Wall extends Component {
 
   // GET ALL OTHER POSTS
   getAllpost = () => {
-
-    console.log('total post list', this.state.totalPostList)
-    if (this.state.totalPostList.length < this.state.totalPost) {
+    if (this.state.totalPostList.length == 0 || (this.state.totalPostList.length < this.state.totalPost)) {
+      this.getPosts(this.state.pageNumber);
       this.setState({ spinner: true })
       let x = this.state.pageNumber;
       this.setState({ pageNumber: x + 1 });
       console.log(this.state.pageNumber)
-      this.getPosts();
     }
     //  
   }
