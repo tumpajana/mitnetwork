@@ -132,6 +132,7 @@ class Wall extends Component {
 
   //get all post
   getPosts() {
+    // debugger;
     WallGet(this.state.pageNumber).then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
@@ -252,7 +253,7 @@ class Wall extends Component {
   // get comments for a post
   getComments(id) {
     getPostComments(id).then((result) => {
-      // console/.log(result);
+      console.log(result);
       // if (result.result.comments.length != 0) {
       //   this.setState({ commentList: result.result.comments })
       // }
@@ -290,6 +291,7 @@ class Wall extends Component {
           toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
           });
+        //  this.state.totalPostList=[];
           this.getPosts();
           this.showCommentBox(result.result._id)
           // this.getComments(result.result._id);
@@ -377,13 +379,11 @@ class Wall extends Component {
     }
   }
 
-  // myfunction(){
-  //   console.log('kdsdfgj')
-  //   console.log(this.refs.video)
-  // }
+
 
   // GET ALL OTHER POSTS
   getAllpost() {
+    // debugger;
     console.log('total post list', this.state.totalPostList)
     if (this.state.totalPostList.length <= this.state.totalPost) {
       this.setState({ spinner: true })
@@ -397,8 +397,8 @@ class Wall extends Component {
 
   // ON MOVING TOP OF POSTS
   leavingBottom() {
-    let x = this.state.pageNumber;
-    this.setState({ pageNumber: x - 1 })
+    // let x = this.state.pageNumber;
+    // this.setState({ pageNumber: x - 1 })
   }
 
   render() {
