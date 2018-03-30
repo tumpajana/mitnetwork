@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification, Spin  } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -104,7 +104,7 @@ class Wall extends Component {
       }
     }
     else {
-      this.openNotificationWithIcon('warning'," No content for this post!");
+      this.openNotificationWithIcon('warning', " No content for this post!");
     }
   }
 
@@ -112,7 +112,7 @@ class Wall extends Component {
   createPost = (postData) => {
     WallPost(postData).then((result) => {
       console.log(result);
-      this.openNotificationWithIcon('success'," Post Uploaded Successfuly!");
+      this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -121,7 +121,7 @@ class Wall extends Component {
         }
       })
       this.setState({ iconLoading: false });
-    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
+      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
@@ -219,7 +219,7 @@ class Wall extends Component {
       imageId: []
     });
 
-    this.uploadFile();  
+    this.uploadFile();
   }
 
 
@@ -339,7 +339,7 @@ class Wall extends Component {
       // console.log("Quill Title data", this.refs.quill_title.getEditorContents());
       // console.log("Quill Content data", this.refs.quill_content.getEditorContents());
     }, 2000);
-   
+
   }
 
   handleCancel = () => {
@@ -402,9 +402,9 @@ class Wall extends Component {
     let x = this.state.pageNumber;
     this.setState({ pageNumber: x - 1 })
   }
-  
+
   // notification show
-  openNotificationWithIcon = (type,content) => {
+  openNotificationWithIcon = (type, content) => {
     notification[type]({
       message: type,
       description: content,
@@ -507,7 +507,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post"  loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post" loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
@@ -581,14 +581,14 @@ class Wall extends Component {
 
 
 
-<div class="likecomment">
-<h3>0  likes</h3>
-<button title="like" type="button" class="ant-btn">
-<img className="clapicon" src={clapbutton} />
-<span>Clap</span>
-</button>
-<button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
-</div>
+                <div class="likecomment">
+                  <h3>0  likes</h3>
+                  <button title="like" type="button" class="ant-btn">
+                    <img className="clapicon" src={clapbutton} />
+                    <span>Clap</span>
+                  </button>
+                  <button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
+                </div>
 
 
 
@@ -656,12 +656,8 @@ class Wall extends Component {
         })
         }
         <div>
-          <Waypoint
-            onEnter={() => { console.log('last end'); this.getAllpost(); }}
-            onLeave={() => { console.log('Waypoint left') }}
-          />
+          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
           <Spin size="large" spinning={this.state.spinner} style={{ fontSize: 40 }} />
-
         </div>
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
