@@ -1,5 +1,5 @@
-function WallGet(pagenumber) {
-    let BaseURL =" http://mitapi.memeinfotech.com:5000/post/getAllPost?page="+ pagenumber ;
+function WallGet() {
+    let BaseURL =" http://mitapi.memeinfotech.com:5000/post/getAllPost" ;
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {

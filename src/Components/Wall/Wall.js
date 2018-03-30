@@ -60,7 +60,7 @@ class Wall extends Component {
       videoUploadList: [],
       count: 0,
       pageNumber: 0,
-      totalPost: '',
+      totalPost: 0,
       totalPostList: [],
       iconLoading: false
     }
@@ -80,7 +80,9 @@ class Wall extends Component {
     }
   }
 
-
+  // componentDidMount() {
+  //   this.getPosts();
+  // }
 
 
   //postdata on server
@@ -133,19 +135,22 @@ class Wall extends Component {
 
   //get all post
   getPosts() {
-    WallGet(this.state.pageNumber).then((result) => {
+
+    WallGet().then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
-        // this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
-        this.setState({ totalPost: result.total });
-        result.result.forEach(element => {
-          let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
-          this.state.totalPostList.push(element)
-        });
-        console.log('api callpost  list', this.state.totalPostList)
-        this.setState({ postList: this.state.totalPostList })
-        this.setState({ spinner: false })
+        this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        // this.setState({ totalPost: result.total });
+        // result.result.forEach(element => {
+        //   let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
+        //   this.state.totalPostList.push(element)
+        // });
+        // console.log('api callpost  list', this.state.totalPostList)
+        // this.setState({ postList: this.state.totalPostList })
+        // this.setState({ spinner: false })
       }
+
+    }, error => {
 
     });
   }
@@ -254,7 +259,7 @@ class Wall extends Component {
   // get comments for a post
   getComments(id) {
     getPostComments(id).then((result) => {
-      // console/.log(result);
+      console.log(result);
       // if (result.result.comments.length != 0) {
       //   this.setState({ commentList: result.result.comments })
       // }
@@ -292,6 +297,7 @@ class Wall extends Component {
           toast.success("Commented on Post Successfuly!", {
             position: toast.POSITION.TOP_CENTER,
           });
+          //  this.state.totalPostList=[];
           this.getPosts();
           this.showCommentBox(result.result._id)
           // this.getComments(result.result._id);
@@ -379,15 +385,13 @@ class Wall extends Component {
     }
   }
 
-  // myfunction(){
-  //   console.log('kdsdfgj')
-  //   console.log(this.refs.video)
-  // }
+
 
   // GET ALL OTHER POSTS
-  getAllpost() {
+  getAllpost = () => {
+
     console.log('total post list', this.state.totalPostList)
-    if (this.state.totalPostList.length <= this.state.totalPost) {
+    if (this.state.totalPostList.length < this.state.totalPost) {
       this.setState({ spinner: true })
       let x = this.state.pageNumber;
       this.setState({ pageNumber: x + 1 });
@@ -399,8 +403,8 @@ class Wall extends Component {
 
   // ON MOVING TOP OF POSTS
   leavingBottom() {
-    let x = this.state.pageNumber;
-    this.setState({ pageNumber: x - 1 })
+    // let x = this.state.pageNumber;
+    // this.setState({ pageNumber: x - 1 })
   }
 
   // notification show
@@ -535,25 +539,28 @@ class Wall extends Component {
                   </Col>
                 </Row>
                 <div className="postedimg onlytext">
-                  {item.imageId.length > 0 ? ((item.imageId[0].file.mimetype).match("image/")) ?
-                    <Row>
-                      <Col md={24} sm={24} xs={24}>
-                        <CustomGallery src={item.imageId}></CustomGallery>
+                  {item.imageId.length > 0 ?
+                    ((item.imageId[0].file.mimetype).match("image/")) ?
+                      item.imageId.length == 1 ? <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} /> :
 
-                      </Col>
-                    </Row>
-                    // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
-                    : ((item.imageId[0].file.mimetype).match("video/")) ? (
-                      <div>
-                        {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
-                        <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
-                        <video className="videoWall" ref="video" controls muted>
-                          {/* // poster="http://sourceposter.jpg" */}
-                          <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
-                          {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
-                        </video>
-                      </div>
-                    ) : ''
+                        <Row>
+                          <Col md={24} sm={24} xs={24}>
+                            <CustomGallery src={item.imageId}></CustomGallery>
+
+                          </Col>
+                        </Row>
+                      // <img src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + item.imageId[0]._id} />
+                      : ((item.imageId[0].file.mimetype).match("video/")) ? (
+                        <div>
+                          {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
+                          <Waypoint onEnter={() => { console.log('entered'); this.refs.video.play() }} onLeave={() => { console.log('left'); this.refs.video.pause() }} />
+                          <video className="videoWall" ref="video" controls muted>
+                            {/* // poster="http://sourceposter.jpg" */}
+                            <source src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.imageId[0]._id} type="video/webm" />
+                            {/* <track label="English" kind="subtitles" srcLang="en" crossorigin="" src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="+item.imageId._id}  default /> */}
+                          </video>
+                        </div>
+                      ) : ''
                     : ''
 
                   }
@@ -581,13 +588,21 @@ class Wall extends Component {
 
 
 
-                <div class="likecomment">
-                  <h3>0  likes</h3>
-                  <button title="like" type="button" class="ant-btn">
-                    <img className="clapicon" src={clapbutton} />
-                    <span>Clap</span>
-                  </button>
-                  <button title="comment" type="button" class="ant-btn"><i class="anticon anticon-message"></i><span>Comment (</span>0<span>)</span></button>
+                <div className="likecomment">
+                  <h3>{item.like.length}  Claps</h3>{
+                    (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
+                      <button title="like" type="button" className="ant-btn" >
+                        <img className="clapicon" src={clapbutton} />
+                        <span>UnClap</span>
+                      </button>
+                      :
+                      <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
+                        <img className="clapicon" src={clapbutton} />
+                        <span>Clap</span>
+                      </button>
+                  }
+
+                  <button title="comment" type="button" className="ant-btn" onClick={() => { this.showCommentBox(item._id) }}><i className="anticon anticon-message"></i><span>Comment (</span> ({item.comments.length})<span>)</span></button>
                 </div>
 
 
@@ -728,3 +743,6 @@ class CustomGallery extends React.Component {
     }
   }
 }
+
+
+
