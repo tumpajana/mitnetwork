@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Form, Input, Icon, Radio, Button } from 'antd';
+import { Form, Input, Icon, Radio, Button, notification } from 'antd';
 import './Signin.css';
 import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
@@ -112,18 +112,14 @@ class Signin extends Component {
         let response = result;
         console.log(response)
         if (response.error == false) {
-          toast.success("You have been login successfully!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          this.openNotificationWithIcon('success',"You have been login successfully!");
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
           }
         }
         else if (response.error == true) {
-          toast.warn("Wrong password", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          this.openNotificationWithIcon('warning',"Wrong password");
         }
 
       });
@@ -140,6 +136,14 @@ class Signin extends Component {
       }
     });
   }
+
+    // notification show
+    openNotificationWithIcon = (type,content) => {
+      notification[type]({
+        message: type,
+        description: content,
+      });
+    };
 
   render() {
     const { getFieldDecorator } = this.props.form;

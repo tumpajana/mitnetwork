@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, Spin } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification, Spin  } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -62,7 +62,8 @@ class Wall extends Component {
       count: 0,
       pageNumber: 0,
       totalPost: 0,
-      totalPostList: []
+      totalPostList: [],
+      iconLoading: false
     }
 
     this.postContent = this.postContent.bind(this);
@@ -87,6 +88,8 @@ class Wall extends Component {
 
   //postdata on server
   socialPost() {
+    this.setState({ iconLoading: true });
+    console.log('post')
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
         let _base = this;
@@ -98,23 +101,20 @@ class Wall extends Component {
           content: this.state.posts.content,
           userId: sessionStorage.getItem('userId'),
         }
+        // this.enterLoading();
         this.createPost(dataSent);
       }
     }
     else {
-      toast.warn(" No content for this post!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      this.openNotificationWithIcon('warning'," No content for this post!");
     }
   }
 
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
     WallPost(postData).then((result) => {
-      console.log('wall post', result);
-      toast.success("Post Uploaded Successfuly!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      console.log(result);
+      this.openNotificationWithIcon('success'," Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -122,7 +122,8 @@ class Wall extends Component {
           content: ""
         }
       })
-      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
+      this.setState({ iconLoading: false });
+    this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
       this.setState({ showPreviewIcon: false })
@@ -223,8 +224,9 @@ class Wall extends Component {
       imageId: []
     });
 
-    this.uploadFile();
+    this.uploadFile();  
   }
+
 
   uploadFile = () => {
     let _base = this;
@@ -404,6 +406,14 @@ class Wall extends Component {
     // let x = this.state.pageNumber;
     // this.setState({ pageNumber: x - 1 })
   }
+  
+  // notification show
+  openNotificationWithIcon = (type,content) => {
+    notification[type]({
+      message: type,
+      description: content,
+    });
+  };
 
   render() {
     const Option = Select.Option;
@@ -502,7 +512,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post"  loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
