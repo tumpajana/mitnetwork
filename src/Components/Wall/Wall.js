@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification } from 'antd';
 import Header from '../Header/Header.js';
 import 'antd/dist/antd.css';
 import './Wall.css';
@@ -21,6 +21,7 @@ import commentPost from "../../Services/postCommentApi";
 import getPostComments from "../../Services/getPostCommentsApi";
 import getUserProfile from '../../Services/profileapi';
 import { DefaultPlayer as Video } from 'react-html5video';
+
 
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
@@ -111,8 +112,8 @@ class Wall extends Component {
       files: [],
       imageUploadList: [],
       videoUploadList:[],
-      count: 0
-      // loading: false
+      count: 0,
+      iconLoading: false
     }
 
     this.postContent = this.postContent.bind(this);
@@ -135,6 +136,7 @@ class Wall extends Component {
 
   //postdata on server
   socialPost() {
+    this.setState({ iconLoading: true });
     console.log('post')
     if ((this.state.posts.content)) {
       if (this.state.files.length != 0) {
@@ -156,9 +158,7 @@ class Wall extends Component {
       }
     }
     else {
-      toast.warn(" No content for this post!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      this.openNotificationWithIcon('warning'," No content for this post!");
     }
   }
 
@@ -166,9 +166,7 @@ class Wall extends Component {
   createPost = (postData) => {
     WallPost(postData).then((result) => {
       console.log(result);
-      toast.success("Post Uploaded Successfuly!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      this.openNotificationWithIcon('success'," Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -176,6 +174,7 @@ class Wall extends Component {
           content: ""
         }
       })
+      this.setState({ iconLoading: false });
     this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(),"");
       // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
       this.setState({ imageId: [] })
@@ -272,8 +271,9 @@ class Wall extends Component {
       imageId: []
     });
 
-    this.uploadFile();
+    this.uploadFile();  
   }
+
 
   uploadFile = () => {
     let _base = this;
@@ -442,9 +442,14 @@ class Wall extends Component {
     }
   }
 
-    // enterLoading = () => {
-  //   this.setState({ loading: true });
-  // }
+// notification show
+  openNotificationWithIcon = (type,content) => {
+    notification[type]({
+      message: type,
+      description: content,
+    });
+  };
+
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -542,7 +547,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post" onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post"  loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
