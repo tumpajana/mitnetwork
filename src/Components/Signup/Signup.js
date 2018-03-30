@@ -30,6 +30,7 @@ class Signup extends Component {
       confirmPassword: '',
       phoneNumber: '',
       redirectToReferrer: false,
+      iconLoading: false,
 
       facebookInfo: {
         name: '',
@@ -54,6 +55,7 @@ class Signup extends Component {
 
   //Login with Facebook
   responseFacebook = (response) => {
+    this.setState({ iconLoading: true });
     console.log(response);
     this.facebookInfo = response;
     console.log(this.facebookInfo)
@@ -71,6 +73,7 @@ class Signup extends Component {
 
   //login with Google
   responseGoogle = (response) => {
+    this.setState({ iconLoading: true });
     console.log(response, 'google');
     this.facebookInfo = response;
     console.log(this.facebookInfo)
@@ -143,6 +146,7 @@ class Signup extends Component {
   }
   //submit registration form
   register = () => {
+    this.setState({ iconLoading: true });
     console.log('submit button');
     console.log(this.state.name)
     // if(this.handleValidation()){     // validation function
@@ -153,6 +157,7 @@ class Signup extends Component {
         console.log(result)
         if (response.error == false) {
           this.openNotificationWithIcon('success',"You have been registered successfully!");
+          this.setState({ iconLoading: false });
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
@@ -417,7 +422,7 @@ class Signup extends Component {
                   <Col lg={12} sm={12} xs={24} className="submitArea">
                   {/* <Row> */}
                         <div className="registerbtn">
-                          <Button className="sbmtbtn" type="primary" onClick={this.handleSubmit} htmlType="submit">Submit</Button>
+                          <Button className="sbmtbtn" type="primary" onClick={this.handleSubmit} htmlType="submit" loading={this.state.iconLoading}>Submit</Button>
                          
 
                           <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>

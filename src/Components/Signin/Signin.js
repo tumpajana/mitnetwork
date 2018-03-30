@@ -24,6 +24,7 @@ class Signin extends Component {
       email: '',
       password: '',
       redirectToReferrer: false,
+      iconLoading: false,
       facebookInfo: {
         name: '',
         providerName: '',
@@ -43,6 +44,7 @@ class Signin extends Component {
   }
 
   responseFacebook = (response) => {
+    this.setState({ iconLoading: true });
     console.log(response);
     this.facebookInfo = response;
     console.log(this.facebookInfo)
@@ -59,6 +61,7 @@ class Signin extends Component {
   }
 
   responseGoogle = (response) => {
+    this.setState({ iconLoading: true });
     console.log(response, 'google');
     this.facebookInfo = response;
     console.log(this.facebookInfo)
@@ -107,12 +110,14 @@ class Signin extends Component {
   }
 
   login = () => {
+     this.setState({ iconLoading: true });
     if (this.state.email && this.state.password) {
       loginData(this.state).then((result) => {
         let response = result;
         console.log(response)
         if (response.error == false) {
           this.openNotificationWithIcon('success',"You have been login successfully!");
+          this.setState({ iconLoading: false });
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
             this.setState({ redirectToReferrer: true });
@@ -129,6 +134,7 @@ class Signin extends Component {
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
+      this.setState({ iconLoading: false });
       console.log(response)
       if (response.error == false) {
         sessionStorage.setItem('userId', response.result._id);
@@ -236,6 +242,7 @@ class Signin extends Component {
                         appId="312775355854012"
                         autoLoad={false}
                         fields="name,email,picture"
+                        loading={this.state.iconLoading}                        
                         // onClick={componentClicked}
                         callback={this.responseFacebook}
                         className="facebooksignin"
@@ -246,6 +253,7 @@ class Signin extends Component {
                         clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
                         buttonText="Login with Googleplus"
                         className="googleplussign"
+                        loading={this.state.iconLoading}
                         onSuccess={this.responseGoogle}
                         onFailure={this.responseGoogle}
                       // icon="google-plus"
@@ -260,7 +268,7 @@ class Signin extends Component {
                   </Col>
                   <Col lg={12} sm={12} xs={24} className="submitlogin">
                       <div className="registerbtn">
-                        <Button className="sbmtbtn" type="primary" htmlType="submit" onClick={this.handleSubmit}>Submit</Button>
+                        <Button className="sbmtbtn" type="primary" htmlType="submit" loading={this.state.iconLoading} onClick={this.handleSubmit}>Submit</Button>
                         {/* <Button className="cnclbtn">Cancel</Button> */}
                         <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
                       </div>
