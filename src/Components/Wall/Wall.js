@@ -199,7 +199,7 @@ class Wall extends Component {
 
   // upload image 
   imageUpload = (event) => {
-    // console.log(event);
+    console.log(event)
     this.setState({
       files: []
     });
@@ -207,7 +207,6 @@ class Wall extends Component {
     for (let i = 0; i < event.fileList.length; i++) {
       let fileList = event.fileList[i];
       let file = fileList.originFileObj;
-      // console.log("File information :", file);
       let files = this.state.files;
       files.push(file);
       this.setState({
@@ -366,22 +365,24 @@ class Wall extends Component {
 
   // upload video
   videoUpload = (event) => {
-    // console.log(event);
+    console.log(event);
     this.setState({
       files: []
     });
-    this.setState({ videoUploadList: event.fileList });
-    for (let i = 0; i < event.fileList.length; i++) {
-      let fileList = event.fileList[i];
-      let file = fileList.originFileObj;
-      // console.log("File information :", file);
-      let files = this.state.files;
-      files.push(file);
-      this.setState({
-        files: files
-      });
+      this.setState({ videoUploadList: event.fileList });
+      for (let i = 0; i < event.fileList.length; i++) {
+        let fileList = event.fileList[i];
+        let file = fileList.originFileObj;
+        // console.log("File information :", file);
+        let files = this.state.files;
+        files.push(file);
+        this.setState({
+          files: files
+        });
+      }
     }
-  }
+  
+  
 
 
 
@@ -497,7 +498,7 @@ class Wall extends Component {
                       <Upload className='upload-list-inline' onChange={this.videoUpload}
                         showUploadList={() => { this.state.showPreviewIcon }}
                         multiple="false" listType="picture" fileList={this.state.videoUploadList}
-                        accept="video/*" >
+                        accept='video/'>
                         <Button className="upldbtnwall">
                           <Icon type="upload" />Upload Video
                       </Button>
@@ -507,7 +508,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post" loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post"loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
@@ -734,6 +735,7 @@ class CustomGallery extends React.Component {
   render() {
     {
       return (
+      
         <Gallery images={this.state.images} />
       )
     }
