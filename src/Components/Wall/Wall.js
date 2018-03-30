@@ -137,7 +137,8 @@ class Wall extends Component {
     WallGet(pageNumber).then((result) => {
       // console.log(result);
       if (result.result.length != 0) {
-        this.setState({ postList: result.result.filter((element) => { return (element.userId != null || element.userId != undefined) }) });
+        let posts = this.state.postList;
+        this.setState({ postList: posts.concat(result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })) });
         // this.setState({ totalPost: result.total });
         // result.result.forEach(element => {
         //   let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
