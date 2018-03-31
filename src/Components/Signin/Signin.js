@@ -15,9 +15,7 @@ const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 
 class Signin extends Component {
-  state = {
-    value: 1,
-  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -33,8 +31,10 @@ class Signin extends Component {
         email: '',
         phoneNumber: '',
         token: ''
-      }
-
+      },
+      fbIcon: 'fa fa-facebook',
+      fbDisabled: false,
+      gDisabled: false
     };
 
     this.login = this.login.bind(this);
@@ -44,7 +44,10 @@ class Signin extends Component {
   }
 
   responseFacebook = (response) => {
-    this.setState({ iconLoading: true });
+    this.setState({
+      fbIcon: 'fa fa-circle-o-notch	fa-spin',
+      fbDisabled: true
+    });
     console.log(response);
     this.facebookInfo = response;
     console.log(this.facebookInfo)
@@ -61,19 +64,27 @@ class Signin extends Component {
   }
 
   responseGoogle = (response) => {
-    this.setState({ iconLoading: true });
     console.log(response, 'google');
-    this.facebookInfo = response;
-    console.log(this.facebookInfo)
-    this.state.facebookInfo = {
-      name: response.w3.ig,
-      providerName: 'Google',
-      providerPic: response.w3.Paa,
-      providerId: response.El,
-      email: response.profileObj.email,
-      token: response.tokenObj.access_token
+    if (response.hasOwnProperty('error')) {
+      this.setState({
+        gDisabled: false
+      });
+    } else {
+      this.setState({
+        gDisabled: true
+      });
+      this.facebookInfo = response;
+      console.log(this.facebookInfo)
+      this.state.facebookInfo = {
+        name: response.w3.ig,
+        providerName: 'Google',
+        providerPic: response.w3.Paa,
+        providerId: response.El,
+        email: response.profileObj.email,
+        token: response.tokenObj.access_token
+      }
+      this.facebookLogin(response, 'google');
     }
-    this.facebookLogin(response, 'google')
   }
 
   emitEmpty = () => {
@@ -110,13 +121,12 @@ class Signin extends Component {
   }
 
   login = () => {
-     this.setState({ iconLoading: true });
+    this.setState({ iconLoading: true });
     if (this.state.email && this.state.password) {
       loginData(this.state).then((result) => {
         let response = result;
-        console.log(response)
+        this.setState({ iconLoading: false });
         if (response.error == false) {
-          this.openNotificationWithIcon('success',"You have been login successfully!");
           this.setState({ iconLoading: false });
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
@@ -124,7 +134,7 @@ class Signin extends Component {
           }
         }
         else if (response.error == true) {
-          this.openNotificationWithIcon('warning',"Wrong password");
+          this.openNotificationWithIcon('error', response.message);
         }
 
       });
@@ -133,8 +143,12 @@ class Signin extends Component {
 
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
+      this.setState({
+        fbIcon: 'fa fa-facebook',
+        fbDisabled: false,
+        gDisabled: false
+      });
       let response = result;
-      this.setState({ iconLoading: false });
       console.log(response)
       if (response.error == false) {
         sessionStorage.setItem('userId', response.result._id);
@@ -143,13 +157,14 @@ class Signin extends Component {
     });
   }
 
-    // notification show
-    openNotificationWithIcon = (type,content) => {
-      notification[type]({
-        message: type,
-        description: content,
-      });
-    };
+  // notification show
+  openNotificationWithIcon = (type, content) => {
+    let notificationContent = {
+      message: type.ucfirst(),
+      description: content,
+    }
+    notification[type](notificationContent);
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -181,99 +196,96 @@ class Signin extends Component {
                   </div>
                 </div>
                 <form className="signinflds">
-                <Row type="flex" >
+                  <Row type="flex" >
 
-                  <Col lg={10} sm={10} xs={24} className="signinarea">
-                    <form onSubmit={this.handleSubmit} className="formsinput">
-                    <FormItem>
-                        {getFieldDecorator('email', {
-                          rules: [{
-                            type: 'email', message: '*please enter a valid email',
-                          }, { required: true, message: '*email required' }],
-                        })(
-                          <Input
-                            placeholder="Email"
-                            type="email"
-                            name="email"
-                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            onChange={this.onChangeLoginName}
-                          />
-                        )}
-                      </FormItem>
+                    <Col lg={10} sm={10} xs={24} className="signinarea">
+                      <form onSubmit={this.handleSubmit} className="formsinput">
+                        <FormItem>
+                          {getFieldDecorator('email', {
+                            rules: [{
+                              type: 'email', message: 'email is not valid',
+                            }, { required: true, message: 'email is required' }],
+                          })(
+                            <Input
+                              placeholder="Email"
+                              type="email"
+                              name="email"
+                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              onChange={this.onChangeLoginName}
+                              autocomplete="off"
+                            />
+                          )}
+                        </FormItem>
 
-                      <FormItem>
-                        {getFieldDecorator('password', {
-                          rules: [{ required: true, message: '*password required' }],
-                        })(
-                          <Input
-                            placeholder=" Password"
-                            type="password"
-                            name="password"
-                            minlength="6"
-                            maxlength="10"
-                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            onChange={this.onChangeLoginName}
-                          />
-                        )}
-                      </FormItem>
+                        <FormItem>
+                          {getFieldDecorator('password', {
+                            rules: [{ required: true, message: 'password is required' }],
+                          })(
+                            <Input
+                              placeholder=" Password"
+                              type="password"
+                              name="password"
+                              minlength="6"
+                              maxlength="10"
+                              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              onChange={this.onChangeLoginName}
+                            />
+                          )}
+                        </FormItem>
 
 
 
-                    </form>
-                  </Col>
-                  <Col lg={2} sm={2} xs={0}>
+                      </form>
+                    </Col>
+                    <Col lg={2} sm={2} xs={0}>
 
-                    <div className="wrapper">
-                      <div className="line"></div>
-                      <div className="wordwrapper">
-                        <div className="ordivider">OR</div>
+                      <div className="wrapper">
+                        <div className="line"></div>
+                        <div className="wordwrapper">
+                          <div className="ordivider">OR</div>
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                  <Col lg={12} sm={12} xs={24} className="sociallogin">
+                    </Col>
+                    <Col lg={12} sm={12} xs={24} className="sociallogin">
 
-                    <div className="signupwithsocial">
-                      <p className="ordividerres">OR</p>
-                      {/* <Button className="facebooksignin">Sign in
-                        <Icon type="facebook" />
-                      </Button> */}
+                      <div className="signupwithsocial">
+                        <p className="ordividerres">OR</p>
 
-                      <FacebookLogin
-                        appId="312775355854012"
-                        autoLoad={false}
-                        fields="name,email,picture"
-                        loading={this.state.iconLoading}                        
-                        // onClick={componentClicked}
-                        callback={this.responseFacebook}
-                        className="facebooksignin"
-                      // icon="fa-facebook-square" 
-                      />
 
-                      <GoogleLogin
-                        clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
-                        buttonText="Login with Googleplus"
-                        className="googleplussign"
-                        loading={this.state.iconLoading}
-                        onSuccess={this.responseGoogle}
-                        onFailure={this.responseGoogle}
-                      // icon="google-plus"
+                        <FacebookLogin
+                          appId="312775355854012"
+                          autoLoad={false}
+                          fields="name,email,picture"
+                          callback={this.responseFacebook}
+                          className="facebooksignin"
+                          textButton="Facebook"
+                          icon={this.state.fbIcon}
+                          isDisabled={this.state.fbDisabled}
+                        />
 
-                      />
+                        <GoogleLogin
+                          clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
+                          buttonText="Googleplus"
+                          className="googleplussign"
+                          onSuccess={this.responseGoogle}
+                          onFailure={this.responseGoogle}
+                          disabled={this.state.gDisabled}
+                        />
 
-                      {/* <Button className="googleplussign">Sign in
+                        {/* <Button className="googleplussign">Sign in
                         <Icon type="google-plus" />
                       </Button> */}
-                    </div>
+                      </div>
 
-                  </Col>
-                  <Col lg={12} sm={12} xs={24} className="submitlogin">
+                    </Col>
+                    <Col lg={12} sm={12} xs={24} className="submitlogin">
                       <div className="registerbtn">
                         <Button className="sbmtbtn" type="primary" htmlType="submit" loading={this.state.iconLoading} onClick={this.handleSubmit}>Submit</Button>
                         {/* <Button className="cnclbtn">Cancel</Button> */}
                         <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
                       </div>
-                   </Col>
-                </Row>
+                    </Col>
+                  </Row>
                 </form>
                 {/* <Row>
                   <div className="registerbtn">
@@ -282,9 +294,9 @@ class Signin extends Component {
                     <p className="regtext"> New User ? &nbsp;&nbsp; <NavLink to="/Signup">Register now</NavLink></p>
                   </div>
                 </Row> */}
-                </div>
-                
-              
+              </div>
+
+
             </Col>
 
           </Row>

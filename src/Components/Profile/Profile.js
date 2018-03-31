@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select,notification } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification } from 'antd';
 import 'antd/dist/antd.css';
 import './Profile.css';
-import editprofileimg from '../../Images/editprofileimg.svg';
+import editprofileimg from '../../Images/avatar.png';
 import placegholderimg from '../../Images/avatar.png';
 import Header from '../Header/Header.js';
-import User from '../../Images/user10.jpg';
+import User from '../../Images/avatar.png';
 import backprofile from '../../Images/backpro.svg';
 import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
@@ -15,7 +15,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Cropper } from 'react-image-cropper'
 import getStates from '../../Services/getStates';
 import getCities from '../../Services/getCities';
-// import 'react-image-crop/dist/ReactCrop.css';
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +47,6 @@ class Profile extends Component {
     this.updateProfile = this.updateProfile.bind(this);
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
-    // this.onChangeValue = this.onChangeValue.bind(this);
     this.myimagecropper = this.myimagecropper.bind(this);
     if (sessionStorage.userId) {
       this.UserProfileData();
@@ -145,7 +143,7 @@ class Profile extends Component {
       let response = result;
       console.log(result);
       if (response.error == false) {
-        this.openNotificationWithIcon('success',"Profile Updated Successfuly!");
+        this.openNotificationWithIcon('success', "Profile Updated Successfuly!");
         this.setState({ iconLoading: false });
         this.UserProfileData();
       }
@@ -163,14 +161,8 @@ class Profile extends Component {
   UserProfileData = () => {
     let _base = this;
     getUserProfile(sessionStorage.getItem("userId")).then((result) => {
-      let response = result;
-      console.log(this.refs);
-      console.log(result);
       this.setState({ userProfile: result.result });
-      this.setState({ user: result.result })
-
-      console.log('userData...', this.state.userProfile);
-
+      this.setState({ user: result.result });
       if (this.state.userProfile.imageId) {
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
       } else if (this.state.userProfile.providerPic) {
@@ -193,7 +185,7 @@ class Profile extends Component {
     profilePic(form).then((result) => {
       console.log('pic uploaded', result);
       if (result.error == false) {
-        this.openNotificationWithIcon('success',"Image Uploaded Successfuly!");
+        this.openNotificationWithIcon('success', "Image Uploaded Successfuly!");
         // console.log(result.upload.filr._id)
         this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + result.upload._id })
         let userData = {
@@ -224,7 +216,7 @@ class Profile extends Component {
   }
 
   // notification show
-  openNotificationWithIcon = (type,content) => {
+  openNotificationWithIcon = (type, content) => {
     notification[type]({
       message: type,
       description: content,
@@ -240,18 +232,6 @@ class Profile extends Component {
     function handleChange(value) {
       console.log(`selected ${value}`);
     }
-    // const { firstName } = this.state;
-    // const { lastName } = this.state;
-    // const { userName } = this.state;
-    // const { phn } = this.state;
-    // const { address } = this.state;
-    // const { education } = this.state;
-    // const suffix = firstName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = lastName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = phn ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = address ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = education ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
 
     return (
       <div className="App">
@@ -267,7 +247,7 @@ class Profile extends Component {
           <div className="procard">
             <div className="userdetail">
               <div className="userpic">{
-                (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
+                (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
               }
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
@@ -458,23 +438,6 @@ class Profile extends Component {
                 </div>
               </Col>
             </Row>
-            {/* /city and state input end */}
-
-
-            {/* city and state input start */}
-            {/*<Row gutter={24}>
-              <Col span={24}>
-                <div>
-                  <Input
-                    placeholder="Enter your Address"
-                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    onChange={this.onChangeValue}
-                    ref={node => this.userNameInput = node}
-                    name="address"
-                  />
-                </div>
-              </Col>
-            </Row>*/}
             {/* /city and state input end */}
 
           </form>

@@ -11,14 +11,12 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 const Routes = () => (
     <BrowserRouter>
         <Switch>
-        <Route exact path='/' component= {Profile} />
-        <Route  path='/header' component= {Header} />
-        <Route  path='/profile' component= {Profile} />
-        <Route  path='/login' component= {Signin} />
-        <Route  path='/signup' component= {Signup} />
-        <Route  path='/wall' component= {Wall} />
-        <Route exact path='/' component= {Profile} />
-        <Route  path='/postdetails' component= {PostDetails} />
+            <Route exact path='/' component={Signin} />
+            <Route path='/profile' component={Profile} />
+            <Route path='/login' component={Signin} />
+            <Route path='/signup' component={Signup} />
+            <Route path='/wall' component={Wall} />
+            <Route path='/postdetails' component={PostDetails} />
         </Switch>
     </BrowserRouter>
 );
