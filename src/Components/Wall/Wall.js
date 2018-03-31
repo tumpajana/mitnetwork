@@ -369,20 +369,20 @@ class Wall extends Component {
     this.setState({
       files: []
     });
-      this.setState({ videoUploadList: event.fileList });
-      for (let i = 0; i < event.fileList.length; i++) {
-        let fileList = event.fileList[i];
-        let file = fileList.originFileObj;
-        // console.log("File information :", file);
-        let files = this.state.files;
-        files.push(file);
-        this.setState({
-          files: files
-        });
-      }
+    this.setState({ videoUploadList: event.fileList });
+    for (let i = 0; i < event.fileList.length; i++) {
+      let fileList = event.fileList[i];
+      let file = fileList.originFileObj;
+      // console.log("File information :", file);
+      let files = this.state.files;
+      files.push(file);
+      this.setState({
+        files: files
+      });
     }
-  
-  
+  }
+
+
 
 
 
@@ -508,7 +508,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
-                    <Button className="post" title="Post"loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
+                    <Button className="post" title="Post" loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
                 </Row>
@@ -669,7 +669,7 @@ class Wall extends Component {
         }
         <div>
           <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
-          <Icon type="loading"  spinning={this.state.spinner} style={{ fontSize: 40 }} spin />
+          <Icon type="loading" spinning={this.state.spinner} style={{ fontSize: 40 }} spin />
         </div>
         {/* <div className="postedpartcard"  ng-repeat="item in postList">
           <Row type="flex" justify="space-around" align="middle">
@@ -735,7 +735,7 @@ class CustomGallery extends React.Component {
   render() {
     {
       return (
-      
+
         <Gallery images={this.state.images} />
       )
     }
