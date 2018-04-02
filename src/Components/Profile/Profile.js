@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select } from 'antd';
+import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification } from 'antd';
 import 'antd/dist/antd.css';
 import './Profile.css';
-import editprofileimg from '../../Images/editprofileimg.svg';
+import editprofileimg from '../../Images/avatar.png';
 import placegholderimg from '../../Images/avatar.png';
 import Header from '../Header/Header.js';
-import User from '../../Images/user10.jpg';
+import User from '../../Images/avatar.png';
 import backprofile from '../../Images/backpro.svg';
 import getUserProfile from '../../Services/profileapi';
 import updateData from '../../Services/updateapi';
@@ -15,7 +15,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Cropper } from 'react-image-cropper'
 import getStates from '../../Services/getStates';
 import getCities from '../../Services/getCities';
-// import 'react-image-crop/dist/ReactCrop.css';
+import Data_Store from './../../redux';
+import getUserInfo from '../../Services/getUserInfo';
+import Image from '../Image/Image';
+
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -31,60 +34,78 @@ class Profile extends Component {
         qualification: '',
         designation: '',
         state: '',
-        redirectToReferrer: false,
+        imageId: ''
       },
       imagUrl: '',
       userProfile: {},
       userName: '',
       stateArray: [],
       cityArray: [],
-
+      loading: false,
+      visible: false,
+      iconLoading: false,
+      DispalyPicList: []
     };
 
-    this.UserProfileData = this.UserProfileData.bind(this);
+    // getImage('5ac04a2349da1517aa25d328');
+
     this.showModal = this.showModal.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
-    // this.onChangeValue = this.onChangeValue.bind(this);
     this.myimagecropper = this.myimagecropper.bind(this);
-    if (sessionStorage.userId) {
-      this.UserProfileData();
-    }
-
-    //get states
-    getStates().then((result) => {
-      console.log(result);
-      // this.setState({ stateArray: result});
-      this.setState({ stateArray: result });
-      console.log("states", this.state.stateArray);
-    });
 
 
+    // get states
+    getStates()
+      .then((result) => {
+        this.setState({ stateArray: result });
+      });
 
+    let _base = this;
+    getUserInfo()
+      .then(function (result) {
+        Data_Store.dispatch({
+          type: 'ProfileData',
+          value: result
+        })
+      }, function (error) {
+        console.log(error);
+      });
+
+    // subscribe to store for profile data
+    Data_Store.subscribe(() => {
+      console.log(Data_Store.getState());
+      let result = Data_Store.getState();
+      _base.renderUser(result);
+    })
   };
 
 
-
-  onChange = (e) => {
-    console.log('radio checked', e.target.value);
-    this.setState({
-      value: e.target.value,
+  renderUser = (result) => {
+    console.log("user", result);
+    this.setState({ userProfile: result });
+    this.setState({ user: result });
+    this.setState({ avatar: sessionStorage.getItem("avatar") });
+    getCities(this.state.user.state).then((result) => {
+      this.setState({ cityArray: result })
     });
   }
 
 
-  state = {
-    loading: false,
-    visible: false,
+
+
+  onChange = (e) => {
+    this.setState({
+      value: e.target.value,
+    });
   }
 
   showModal = () => {
     this.setState({
       visible: true,
     })
-    //  this.refs.username.value="abcd";
   }
 
   handleOk = () => {
@@ -92,13 +113,11 @@ class Profile extends Component {
     setTimeout(() => {
       this.setState({ loading: false, visible: false });
     }, 3000);
-    console.log('button')
   }
 
 
   //onchange of input feild binding
   onChangeValue = (e) => {
-    console.log(e)
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user[e.target.name] = e.target.value;                        //updating value
     this.setState({ user });
@@ -118,16 +137,14 @@ class Profile extends Component {
     user.state = e;                        //updating value
     this.setState({ user });
     getCities(e).then((result) => {
-      console.log(result);
-      this.setState({ cityArray: result })
-      console.log(this.state.cityArray);
+      this.setState({ cityArray: result });
+      this.onChangeCity(null);
     });
-
-
   }
 
   //update profile
   updateProfile() {
+    this.setState({ iconLoading: true });
     let userData = {
       _id: sessionStorage.getItem('userId'),
       name: this.state.user.name,
@@ -138,18 +155,23 @@ class Profile extends Component {
       qualification: this.state.user.qualification,
       designation: this.state.user.designation,
     }
-    console.log(this.state.userProfile)
     updateData(userData).then((result) => {
       let response = result;
-      console.log(result);
+      console.log(response);
       if (response.error == false) {
-        toast.success("Profile Updated Successfuly!", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        this.UserProfileData();
+        Data_Store.dispatch({
+          type: 'ProfileData',
+          value: response.user
+        })
+        this.openNotificationWithIcon('success', response.message);
+        this.setState({ iconLoading: false });
+      } else {
+        this.openNotificationWithIcon('error', response.message);
       }
-      console.log("Close")
       this.setState({ visible: false });
+    }, (error) => {
+      this.openNotificationWithIcon('error', 'Connection error');
+      this.setState({ iconLoading: false });
     });
   }
 
@@ -158,57 +180,39 @@ class Profile extends Component {
     this.setState({ visible: false });
   }
 
-  // get user profile details
-  UserProfileData = () => {
-    let _base = this;
-    getUserProfile(sessionStorage.getItem("userId")).then((result) => {
-      let response = result;
-      console.log(this.refs);
-      console.log(result);
-      this.setState({ userProfile: result.result });
-      this.setState({ user: result.result })
-
-      console.log('userData...', this.state.userProfile);
-
-      if (this.state.userProfile.imageId) {
-        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
-      } else if (this.state.userProfile.providerPic) {
-        console.log(this.state.userProfile.providerPic);
-        this.setState({ imageUrl: this.state.userProfile.providerPic })
-      }
-    });
-  }
-
   //image upload of profile pic
   profilePicUpload = (event) => {
-    console.log(event);
-    console.log(event.fileList)
-    let fileList = event.fileList[0];
-    // let fileTarget = fileList;
-    let file = fileList.originFileObj;
-    console.log("File information :", file);
-    var form = new FormData();
-    form.append('file', file, file.name);
-    profilePic(form).then((result) => {
-      console.log('pic uploaded', result);
-      if (result.error == false) {
-        toast.success("Image Uploaded Successfuly!", {
-          position: toast.POSITION.TOP_CENTER,
+    if (event.fileList.length != 0) {
+      let fileList = event.fileList[0];
+      let file = fileList.originFileObj;
+      var form = new FormData();
+      form.append('file', file, file.name);
+      profilePic(form).then((result) => {
+        this.setState({
+          DispalyPicList: []
         });
-        // console.log(result.upload.filr._id)
-        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + result.upload._id })
-        let userData = {
-          _id: sessionStorage.getItem('userId'),
-          imageId: result.upload._id
-        }
-        updateData(userData).then((result) => {
-          let response = result;
+        if (result.error == false) {
           console.log(result);
-          this.setState({ visible: false });
-          // this.UserProfileData();
-        });
-      }
-    })
+          let userData = {
+            _id: sessionStorage.getItem('userId'),
+            imageId: result.upload
+          }
+          updateData(userData).then((response) => {
+            if (response.error == false) {
+              Data_Store.dispatch({
+                type: 'ProfileData',
+                value: response.user
+              })
+              this.openNotificationWithIcon('success', 'Display picture changed');
+            } else {
+              this.openNotificationWithIcon('error', response.message);
+            }
+          });
+        } else {
+          this.openNotificationWithIcon('error', result.message);
+        }
+      })
+    }
   }
 
   //image cropper
@@ -224,45 +228,32 @@ class Profile extends Component {
     console.log('Dispaly data');
   }
 
+  // notification show
+  openNotificationWithIcon = (type, content) => {
+    notification[type]({
+      message: type,
+      description: content,
+    });
+  };
 
 
   render() {
-
     const Option = Select.Option;
     const { visible, loading } = this.state;
 
     function handleChange(value) {
       console.log(`selected ${value}`);
     }
-    // const { firstName } = this.state;
-    // const { lastName } = this.state;
-    // const { userName } = this.state;
-    // const { phn } = this.state;
-    // const { address } = this.state;
-    // const { education } = this.state;
-    // const suffix = firstName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = lastName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = phn ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = address ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
-    // const suffix = education ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
 
     return (
-      <div className="App">
-
-        {/* navbar section start */}
-
-        <Header ></Header>
-        {/* navbar section end */}
-
+      <div>
         {/* profile view section start */}
         <section className="profilesec">
 
           <div className="procard">
             <div className="userdetail">
-              <div className="userpic">{
-                (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={User} />
-              }
+              <div className="userpic">
+                <Image src={this.state.avatar} type='avatar' />
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
@@ -351,24 +342,22 @@ class Profile extends Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
-            <Button key="submit" loading={loading} onClick={this.updateProfile} className="savebtn">
+            <Button key="submit" loading={loading} loading={this.state.iconLoading} onClick={this.updateProfile} className="savebtn">
               Save
-                        </Button>,
+            </Button>
           ]}
           className="mitprofileEditmodal"
         >
           <Row>
             <Col span={24}>
               <div className="mitedituserback">
-                <h1 class="editIntro">Edit Intro</h1>
-                <div className="userpic">{
-                  (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img src={this.state.imageUrl} /> : <img src={placegholderimg} />
-                }
-                  <Upload onChange={this.profilePicUpload} >
+                <h1 className="editIntro">Edit Intro</h1>
+                <div className="userpic">
+                  <Image src={this.state.avatar} type='avatar' />
+                  <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
                     <Button className="editbtn">
                       <Icon type="edit" />
                     </Button>
-
                   </Upload>
                 </div>
               </div>
@@ -433,10 +422,9 @@ class Profile extends Component {
             <Row gutter={24}>
               <Col span={12}>
                 <div>
-                  <Select value={this.state.user.state ? this.state.user.state : "State"} onChange={this.onChangeState}>
-                    {/* <Option value="0">State</Option> */}
-                    {this.state.stateArray.map((item) => {
-                      return <Option value={item}>{item}</Option>
+                  <Select ref="state" value={this.state.user.state ? this.state.user.state : "State"} onSelect={this.onChangeState}>
+                    {this.state.stateArray.map((item,index) => {
+                      return <Option key={index} value={item}>{item}</Option>
                     })}
                   </Select>
                 </div>
@@ -444,9 +432,8 @@ class Profile extends Component {
               <Col span={12}>
                 <div>
                   <Select value={this.state.user.city ? this.state.user.city : "City"} onChange={this.onChangeCity}>
-                    {/* <Option value="0">City</Option> */}
-                    {this.state.cityArray.map((item) => {
-                      return <Option value={item.name}>{item.name}</Option>
+                    {this.state.cityArray.map((item,index) => {
+                      return <Option key={index} value={item.name}>{item.name}</Option>
                     })}
                   </Select>
                 </div>
@@ -454,30 +441,8 @@ class Profile extends Component {
             </Row>
             {/* /city and state input end */}
 
-
-            {/* city and state input start */}
-            {/*<Row gutter={24}>
-              <Col span={24}>
-                <div>
-                  <Input
-                    placeholder="Enter your Address"
-                    prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    onChange={this.onChangeValue}
-                    ref={node => this.userNameInput = node}
-                    name="address"
-                  />
-                </div>
-              </Col>
-            </Row>*/}
-            {/* /city and state input end */}
-
           </form>
           {/* ----------------/ edit profile form end--------------- */}
-
-
-
-
-
         </Modal>
         {/* ----------MODAL SECTION FOR EDIT PROFILE end------------- */}
         <ToastContainer autoClose={2000} />

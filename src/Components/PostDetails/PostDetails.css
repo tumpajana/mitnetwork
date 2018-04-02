@@ -1,0 +1,156 @@
+/* --postdetails content-- */
+.greatContent {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    text-align:left;
+    padding: 1em 0;
+}
+
+p.publish {
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    color: rgba(4, 4, 4, 0.66);
+    font-weight: 500;
+}
+.postdetails {
+    width: 50%;
+    margin: 0 auto;
+}
+.doYour h1 {
+    text-align: left;
+    margin-top: 1em;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 1em;
+}
+.imageuser img {
+    height: 50px;
+    border-radius: 50px;
+    width: 50px;
+}
+.mariryan p {
+    margin-bottom: 0;
+}
+p.nameEmployee {
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+}
+.mariryan {
+    text-align: left;
+}
+p.worksite {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    color: rgba(90, 88, 88, 0.9);
+}
+p.articles {
+    color: #7833e8;
+    font-weight: 700;
+}
+img.sceneryimage {
+    width: 100%;
+}
+.iconpost img {
+    height: 29px;
+    width: 15px;
+}
+button.ant-btn.clapButton {
+    border: 1.4px solid #808080;
+    border-radius: 50px;
+    padding: 0px;
+    height: 30px;
+    width: 30px;
+}
+.backgroundstem {
+    background: #fff;
+}
+.dummyContent {
+    margin-top: 2em;
+}
+span.number {
+    font-family: 'Lato', sans-serif;
+    margin: 0 8px;
+}
+.iconpost {
+    text-align:right;
+    margin-top: 1em;
+}
+h1.reasonLorem {
+    font-family: 'Lato', sans-serif;
+    padding: 1em 0;
+    font-size: 17px;
+    text-align: left;
+    font-weight: 600;
+}
+
+/* --postdetails content-- */
+/* --postdetails comment content-- */
+.imageuserprofile img {
+    height: 50px;
+    border-radius: 50px;
+    width: 50px;
+}
+.imageuserprofile img {
+    margin-right: 1em;
+}
+p.this {
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    color: #656060;
+    text-align: right;
+}
+.greatContentcomment {
+    text-align: left;
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 1em 0;
+}
+p.totalnmber {
+    font-weight: 700;
+    font-size:12px;
+    font-family: 'Lato', sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+    padding-left:9px;
+}
+.commentSectionpost {
+    text-align: left;
+    background: #f3f6f8;
+}
+p.totalComments {
+    text-align: left;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+    margin: 1em 0;
+}
+/* --postdetails comment content-- */
+/* --postdetails completecomment content-- */
+.postCommentborder p {
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 0;
+}
+p.postName {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.78);
+    font-weight: 600;
+}
+p.postDesignation {
+    font-size: 12px;
+    color: rgb(118, 132, 143);
+}
+p.postMessage {
+    color: rgb(118, 132, 143);
+    font-size: 13px;
+    margin-top: 6px;
+}
+.postCommentborder {
+    margin-bottom: 2em;
+}
+.contentspostComment {
+    margin-top: 1em;
+}
+.commentcSection {
+    text-align: left;
+}
+/* --postdetails completecomment content-- */
