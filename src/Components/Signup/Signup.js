@@ -209,7 +209,7 @@ class Signup extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
-      return <Redirect to="/wall" />
+      return <Redirect to="/layout/profile" />
     }
     const { userName } = this.state;
 
@@ -234,11 +234,11 @@ class Signup extends Component {
                     <p className="signfont">Sign Up </p>
                   </div>
                 </div>
-                <form className="inputflds">
+                <div className="inputflds">
                   <Row type="flex">
 
                     <Col lg={10} sm={10} xs={24}>
-                      <form onSubmit={this.handleSubmit} className="formsinput">
+                      <Form onSubmit={this.handleSubmit} className="formsinput">
                         <FormItem>
                           {getFieldDecorator('name', {
                             rules: [{ required: true, message: 'name is required' }],
@@ -246,7 +246,7 @@ class Signup extends Component {
                             <Input
                               placeholder="Your Name"
                               name="name"
-                              maxlength="30"
+                              maxLength="30"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               suffix={suffix}
                               onChange={this.onChangeValue}
@@ -310,8 +310,8 @@ class Signup extends Component {
                             <Input type="password"
                               placeholder=" Password"
                               name="password"
-                              minlength="6"
-                              maxlength="10"
+                              minLength="6"
+                              maxLength="10"
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeValue}
                             />
@@ -328,8 +328,8 @@ class Signup extends Component {
                           })(
                             <Input type="password" onBlur={this.handleConfirmBlur}
                               placeholder="Confirm Password"
-                              minlength="6"
-                              maxlength="10"
+                              minLength="6"
+                              maxLength="10"
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               name="confirmPassword"
                               onChange={this.onChangeValue}
@@ -337,7 +337,7 @@ class Signup extends Component {
                           )}
                         </FormItem>
 
-                      </form>
+                      </Form>
                     </Col>
                     <Col lg={2} sm={2} xs={0}>
 
@@ -380,8 +380,6 @@ class Signup extends Component {
                       {/* <Row> */}
                       <div className="registerbtn">
                         <Button className="sbmtbtn" type="primary" onClick={this.handleSubmit} htmlType="submit" loading={this.state.iconLoading}>Submit</Button>
-
-
                         <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
                       </div>
                       {/* </Row> */}
@@ -390,7 +388,7 @@ class Signup extends Component {
 
 
                   </Row>
-                </form>
+                </div>
 
               </div>
             </Col>

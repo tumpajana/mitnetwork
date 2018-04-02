@@ -169,7 +169,7 @@ class Signin extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
-      return <Redirect to="/wall" />
+      return <Redirect to="/layout/wall" />
     }
     const { userName } = this.state;
 
@@ -195,11 +195,11 @@ class Signin extends Component {
                     <p className="signfont">Sign In </p>
                   </div>
                 </div>
-                <form className="signinflds">
+                <div className="signinflds">
                   <Row type="flex" >
 
                     <Col lg={10} sm={10} xs={24} className="signinarea">
-                      <form onSubmit={this.handleSubmit} className="formsinput">
+                      <Form onSubmit={this.handleSubmit} className="formsinput">
                         <FormItem>
                           {getFieldDecorator('email', {
                             rules: [{
@@ -212,7 +212,7 @@ class Signin extends Component {
                               name="email"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeLoginName}
-                              autocomplete="off"
+                              autoComplete="off"
                             />
                           )}
                         </FormItem>
@@ -225,8 +225,8 @@ class Signin extends Component {
                               placeholder=" Password"
                               type="password"
                               name="password"
-                              minlength="6"
-                              maxlength="10"
+                              minLength="6"
+                              maxLength="10"
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeLoginName}
                             />
@@ -235,7 +235,7 @@ class Signin extends Component {
 
 
 
-                      </form>
+                      </Form>
                     </Col>
                     <Col lg={2} sm={2} xs={0}>
 
@@ -286,7 +286,7 @@ class Signin extends Component {
                       </div>
                     </Col>
                   </Row>
-                </form>
+                </div>
                 {/* <Row>
                   <div className="registerbtn">
                     <Button className="sbmtbtn" type="primary" htmlType="submit" onClick={this.login}>Submit</Button>
