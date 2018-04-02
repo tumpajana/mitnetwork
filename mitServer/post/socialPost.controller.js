@@ -4,11 +4,13 @@ var express = require('express');
 var path = require('path');
 var router = express.Router();
 var post = require('./socialPost.model');
+var helper =require('./../../helper');
 // var ObjectId = require("mongodb").ObjectId;
 
 
 //  Api for post
-
+const returnRouter= function(io){
+    
 router.post('/socialPost', (request, response) => {
     console.log("post upload ");
     console.log(request.body);
@@ -32,6 +34,7 @@ router.post('/socialPost', (request, response) => {
             response.status(500).json(postResponse);
         } else {
             console.log(result);
+            io.emit('getUserInfo',{ description: 'Success'});
             postResponse.error = false;
             postResponse.user = result;
             postResponse.message = ` Post  is uploded  successfully.`;
@@ -206,5 +209,6 @@ router.delete('/delete', (request, response) => {
     });
 
 });
-
-module.exports = router;
+return router;
+}
+module.exports = returnRouter;
