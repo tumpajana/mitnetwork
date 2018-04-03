@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import Avatar, { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Header from '../Header/Header.js';
@@ -680,7 +681,7 @@ class VideoTemplate extends Component {
     return (
       <div>
         {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
-        <Waypoint onEnter={() => { console.log('entered');this.playVideo() }} onLeave={() => { console.log('left');this.pauseVideo() }} />
+        <Waypoint onEnter={() => { console.log('entered'); this.playVideo() }} onLeave={() => { console.log('left'); this.pauseVideo() }} />
         <video className="videoWall" ref="video" controls muted>
           <source src={this.props.src} type="video/webm" />
         </video>
@@ -699,6 +700,5 @@ class ImageTemplate extends Component {
     return (<Image src={this.props.src} />);
   }
 }
-
 
 
