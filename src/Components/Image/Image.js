@@ -7,16 +7,20 @@ import './Image.css';
 //convert image to base 64
 function getImage(src) {
     return new Promise(function (resolve, reject) {
-        if (src.includes("base64") && src.includes("image/") && src.includes("data:")) {
-            resolve(src);
+        if (src) {
+            if (src.includes("base64") && src.includes("image/") && src.includes("data:")) {
+                resolve(src);
+            } else {
+                base64Img.requestBase64(src, function (err, res, body) {
+                    if (!err) {
+                        resolve(body);
+                    } else {
+                        reject(err);
+                    }
+                });
+            }
         } else {
-            base64Img.requestBase64(src, function (err, res, body) {
-                if (!err) {
-                    resolve(body);
-                } else {
-                    reject(err);
-                }
-            });
+            reject(false);
         }
     });
 }
