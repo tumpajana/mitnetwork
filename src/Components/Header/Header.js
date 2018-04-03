@@ -10,6 +10,7 @@ import Data_Store from './../../redux';
 import isAuthenticated from '../../Services/auth';
 import getUserInfo from '../../Services/getUserInfo';
 import Image from '../Image/Image';
+import User from '../../Images/avatar.png';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -96,6 +97,14 @@ class Header extends Component {
     _base.setState({ userProfile: result });
     _base.setState({ userName: result.name });
     _base.setState({ avatar: sessionStorage.getItem("avatar") });
+    if (this.state.userProfile.imageId) {
+      this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+    } else if (this.state.userProfile.providerPic) {
+      console.log(this.state.userProfile.providerPic);
+      this.setState({ imageUrl: this.state.userProfile.providerPic })
+    } else {
+      this.setState({ imageUrl: User })
+    }
   }
 
   render() {
@@ -132,7 +141,7 @@ class Header extends Component {
 
 
                 <SubMenu title={<span>{
-                  <img type="setting" className="leftalign" src={this.state.avatar} />
+                  <img type="setting" className="leftalign" src={this.state.imageUrl} />
                 }{this.state.userName}<Icon type="down" /></span>} className="headersubmenu">
                   <MenuItemGroup title="">
                     <Menu.Item key="setting:1" className="linkprfl"><NavLink to="/layout/profile">Edit Profile</NavLink></Menu.Item>

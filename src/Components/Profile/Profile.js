@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification } from 'antd';
+import { Upload, Row, Col, Form, Input, Icon, Radio, Button, Modal, Select, notification } from 'antd';
 import 'antd/dist/antd.css';
 import './Profile.css';
 import editprofileimg from '../../Images/avatar.png';
@@ -91,6 +91,14 @@ class Profile extends Component {
     getCities(this.state.user.state).then((result) => {
       this.setState({ cityArray: result })
     });
+    if (this.state.userProfile.imageId) {
+      this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+    } else if (this.state.userProfile.providerPic) {
+      console.log(this.state.userProfile.providerPic);
+      this.setState({ imageUrl: this.state.userProfile.providerPic })
+    } else {
+      this.setState({ imageUrl: User })
+    }
   }
 
 
@@ -253,7 +261,7 @@ class Profile extends Component {
           <div className="procard">
             <div className="userdetail">
               <div className="userpic">
-                <Image src={this.state.avatar} type='avatar' />
+                <Image src={this.state.imageUrl} type='avatar' />
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
@@ -353,7 +361,7 @@ class Profile extends Component {
               <div className="mitedituserback">
                 <h1 className="editIntro">Edit Intro</h1>
                 <div className="userpic">
-                  <Image src={this.state.avatar} type='avatar' />
+                  <Image src={this.state.imageUrl} type='avatar' />
                   <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
                     <Button className="editbtn">
                       <Icon type="edit" />
@@ -366,7 +374,7 @@ class Profile extends Component {
 
 
           {/* ----------------edit profile form start--------------- */}
-          <form className="editprofileform">
+          <Form className="editprofileform">
             {/* name and username input start*/}
             <Row gutter={24}>
               <Col span={12}>
@@ -423,7 +431,7 @@ class Profile extends Component {
               <Col span={12}>
                 <div>
                   <Select ref="state" value={this.state.user.state ? this.state.user.state : "State"} onSelect={this.onChangeState}>
-                    {this.state.stateArray.map((item,index) => {
+                    {this.state.stateArray.map((item, index) => {
                       return <Option key={index} value={item}>{item}</Option>
                     })}
                   </Select>
@@ -432,7 +440,7 @@ class Profile extends Component {
               <Col span={12}>
                 <div>
                   <Select value={this.state.user.city ? this.state.user.city : "City"} onChange={this.onChangeCity}>
-                    {this.state.cityArray.map((item,index) => {
+                    {this.state.cityArray.map((item, index) => {
                       return <Option key={index} value={item.name}>{item.name}</Option>
                     })}
                   </Select>
@@ -441,7 +449,7 @@ class Profile extends Component {
             </Row>
             {/* /city and state input end */}
 
-          </form>
+          </Form>
           {/* ----------------/ edit profile form end--------------- */}
         </Modal>
         {/* ----------MODAL SECTION FOR EDIT PROFILE end------------- */}
