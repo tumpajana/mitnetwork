@@ -29,6 +29,9 @@ import Waypoint from 'react-waypoint';
 import Image from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
+import io from 'socket.io-client';
+
+const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
@@ -64,6 +67,7 @@ class Wall extends Component {
       totalPost: 0,
       totalPostList: [],
       iconLoading: false,
+      message: '',
       avatar: sessionStorage.getItem("avatar")
     }
 
@@ -93,6 +97,11 @@ class Wall extends Component {
       let result = Data_Store.getState();
       _base.renderUser(result);
     })
+
+    socket.on('getUserInfo', function (postData) {
+      console.log(postData);
+    });
+
   }
 
   renderUser = (result) => {
@@ -130,7 +139,7 @@ class Wall extends Component {
   createPost = (postData) => {
     WallPost(postData).then((result) => {
       console.log(result);
-      this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
+        this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       this.setState({ fileNew: [] })
       this.setState({
         posts: {
@@ -153,8 +162,9 @@ class Wall extends Component {
   getPosts(pageNumber) {
 
     WallGet(pageNumber).then((result) => {
+      // debugger;
       // console.log(result);
-      if (result.result.length != 0) {
+      if (result.result.length != 0) {     
         let posts = this.state.postList;
         this.setState({ postList: posts.concat(result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })) });
         // this.setState({ totalPost: result.total });
@@ -165,10 +175,16 @@ class Wall extends Component {
         // console.log('api callpost  list', this.state.totalPostList)
         // this.setState({ postList: this.state.totalPostList })
         // this.setState({ spinner: false })
+        this.setState({message: ''})
       }
+    else{
+      this.setState({ spinner: false });
+      console.log(this.state.spinner);
+       this.setState({message:"No Post For Today"});
+     }
 
     }, error => {
-
+      this.setState({})
     });
   }
 
@@ -296,9 +312,10 @@ class Wall extends Component {
       }
       commentPost(data).then((result) => {
         if (result.error == false) {
-          toast.success("Commented on Post Successfuly!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          this.openNotificationWithIcon('success', "Commented on Post Successfuly!");
+          // toast.success("Commented on Post Successfuly!", {
+          //   position: toast.POSITION.TOP_CENTER,
+          // });
           this.showCommentBox(result.result._id)
           this.getComments(result.result._id);
           this.setState({
@@ -450,7 +467,7 @@ class Wall extends Component {
                     <Col span={10}>
                       {/* ************************ UPLOAD SECTION FOR IMAGE****************** */}
                       <Upload className='upload-list-inline' onChange={this.imageUpload}
-                        showUploadList={() => { this.state.showPreviewIcon }}
+                        showUploadList={() => { this.state.showPreviewIcon } }
                         multiple={true} listType="picture" fileList={this.state.imageUploadList}
                         accept="image/*" >
                         <Button className="upldbtnwall">
@@ -461,7 +478,7 @@ class Wall extends Component {
 
                       {/* ************************ UPLOAD SECTION FOR VIDEO****************** */}
                       <Upload className='upload-list-inline' onChange={this.videoUpload}
-                        showUploadList={() => { this.state.showPreviewIcon }}
+                        showUploadList={() => { this.state.showPreviewIcon } }
                         multiple={false} listType="picture" fileList={this.state.videoUploadList}
                         accept='video/*'>
                         <Button className="upldbtnwall">
@@ -484,6 +501,7 @@ class Wall extends Component {
         {/* wall view section end */}
 
         {/* posted blog html start */}
+        <span>{this.state.message}</span>
         {this.state.postList.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
@@ -507,20 +525,20 @@ class Wall extends Component {
 
 
                 <div className="likecomment">
-                  <h3>{item.like.length}  Claps</h3>{
+                  <h3>{item.like.length}Claps</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
                       <button title="like" type="button" className="ant-btn" >
                         <Image className="clapicon" src={clapbutton} />
                         <span>UnClap</span>
                       </button>
                       :
-                      <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
+                      <button onClick={() => { this.postLike(item._id) } } title="like" type="button" className="ant-btn">
                         <Image className="clapicon" src={clapbutton} />
                         <span>Clap</span>
                       </button>
                   }
 
-                  <button title="comment" type="button" className="ant-btn" onClick={() => { this.showCommentBox(item._id) }}><i className="anticon anticon-message"></i><span>Comment (</span> ({item.comments.length})<span>)</span></button>
+                  <button title="comment" type="button" className="ant-btn" onClick={() => { this.showCommentBox(item._id) } }><i className="anticon anticon-message"></i><span>Comment (</span> ({item.comments.length})<span>)</span></button>
                 </div>
 
 
@@ -565,7 +583,8 @@ class Wall extends Component {
                             <h3>{list.comment}</h3>
                           </div>
                         </Col>
-                      </div> : ''
+                      </div>
+                       : ''
                   ))
                   }
                 </Row>
@@ -579,8 +598,8 @@ class Wall extends Component {
         })
         }
         <div>
-          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
-          <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} />
+          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); } } onLeave={() => { console.log('Waypoint left') } } />
+          <Icon type="loading" spinning={this.state.spinner} style={{ fontSize: 40 }} />
         </div>
       </div>
     );
@@ -618,7 +637,7 @@ class PostContent extends Component {
         {
           this.props.item.content.length > 800 ? <span><p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: this.props.item.content.substring(0, 800) }} ></p>
             <p onClick={() => {
-            }}>...see more</p></span> : <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: this.props.item.content }} ></p>
+            } }>...see more</p></span> : <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: this.props.item.content }} ></p>
         }
       </div>
     );
@@ -681,7 +700,7 @@ class VideoTemplate extends Component {
     return (
       <div>
         {/* ******** PLAY VIDEO WHEN IN VIEWPORT RANGE*********** */}
-        <Waypoint onEnter={() => { console.log('entered'); this.playVideo() }} onLeave={() => { console.log('left'); this.pauseVideo() }} />
+        <Waypoint onEnter={() => { console.log('entered'); this.playVideo() } } onLeave={() => { console.log('left'); this.pauseVideo() } } />
         <video className="videoWall" ref="video" controls muted>
           <source src={this.props.src} type="video/webm" />
         </video>

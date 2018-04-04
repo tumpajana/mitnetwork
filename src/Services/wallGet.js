@@ -1,5 +1,7 @@
+import {APIURL} from '../urlconfig';
+
 function WallGet(pagenumber) {
-  let BaseURL = " http://mitapi.memeinfotech.com:5000/post/getAllPost?page=" + pagenumber;
+  let BaseURL = APIURL+"post/getAllPost?page=" + pagenumber;
   return new Promise((resolve, reject) => {
     fetch(BaseURL, {
       headers: {
