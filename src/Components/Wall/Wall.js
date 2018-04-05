@@ -29,9 +29,11 @@ import Waypoint from 'react-waypoint';
 import Image from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 
-const socket = io('http://mitapi.memeinfotech.com:5000');
+// const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
@@ -40,6 +42,7 @@ class Wall extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      show: false,
       loading: false,
       visible: false,
       showPreviewIcon: true,
@@ -67,6 +70,7 @@ class Wall extends Component {
       totalPost: 0,
       totalPostList: [],
       iconLoading: false,
+      // enablePost: false,
       message: '',
       avatar: sessionStorage.getItem("avatar")
     }
@@ -79,6 +83,8 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
     this.videoUpload = this.videoUpload.bind(this);
+
+
 
     let _base = this;
     getUserInfo()
@@ -98,9 +104,9 @@ class Wall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on('getUserInfo', function (postData) {
-      console.log(postData);
-    });
+    // socket.on('getUserInfo', function (postData) {
+    //   console.log(postData);
+    // });
 
   }
 
@@ -137,23 +143,28 @@ class Wall extends Component {
 
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
+    this.setState({ show: true });
     WallPost(postData).then((result) => {
+      
       console.log(result);
-        this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
-      this.setState({ fileNew: [] })
-      this.setState({
+      let _base=this
+      setTimeout(function(){
+         _base.setState({ show: false });
+        _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
+      },2000);
+      _base.setState({ fileNew: [] })
+      _base.setState({
         posts: {
           title: "",
           content: ""
         }
       })
-      this.setState({ iconLoading: false });
-      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
-      // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
-      this.setState({ imageId: [] })
-      this.setState({ showPreviewIcon: false })
-      this.setState({ imageUploadList: [] });
-      this.setState({ videoUploadList: [] });
+      _base.setState({ iconLoading: false });
+      _base.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
+      _base.setState({ imageId: [] })
+      _base.setState({ showPreviewIcon: false })
+      _base.setState({ imageUploadList: [] });
+      _base.setState({ videoUploadList: [] });
       // this.getPosts();
     })
   }
@@ -179,7 +190,6 @@ class Wall extends Component {
       }
     else{
       this.setState({ spinner: false });
-      console.log(this.state.spinner);
        this.setState({message:"No Post For Today"});
      }
 
@@ -407,6 +417,10 @@ class Wall extends Component {
     });
   };
 
+  // onChangeValue = (e) => {
+  //  this.setState({enablePost: true})
+  // [e.target.name] = e.target.value;                        //updating value
+  // }
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -417,6 +431,11 @@ class Wall extends Component {
 
     return (
       <div>
+                     <Loading
+          show={this.state.show}
+            color=" orange"
+            showSpinner={false}
+        />
         {/* wall view section start */}
         <div className="postarticlesec">
           <div className="wallcard">
@@ -490,6 +509,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
+
                     <Button className="post" title="Post" loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
@@ -545,6 +565,7 @@ class Wall extends Component {
               </div>
               {/* ****Comment section**** */}
               <div className="commentSection">
+
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={5} sm={3} md={2}>
@@ -599,6 +620,7 @@ class Wall extends Component {
         }
         <div>
           <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); } } onLeave={() => { console.log('Waypoint left') } } />
+
           <Icon type="loading" spinning={this.state.spinner} style={{ fontSize: 40 }} />
         </div>
       </div>

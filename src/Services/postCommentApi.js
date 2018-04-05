@@ -2,7 +2,7 @@ import {APIURL} from '../urlconfig';
 
 function commentPost( commentData) {
     console.log(commentData);
-    let BaseURL =APIURL+'post/comment ';
+    let BaseURL =APIURL+'post/comment';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {

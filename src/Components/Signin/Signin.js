@@ -10,6 +10,8 @@ import mitlogo from '../../Images/mitlogo.png';
 import loginData from '../../Services/signipapi'
 import FacebookloginData from '../../Services/socialapi'
 import { ToastContainer, toast } from 'react-toastify';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -19,6 +21,7 @@ class Signin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+       show: false,
       email: '',
       password: '',
       redirectToReferrer: false,
@@ -121,16 +124,21 @@ class Signin extends Component {
   }
 
   login = () => {
+     this.setState({ show: true });
     this.setState({ iconLoading: true });
     if (this.state.email && this.state.password) {
       loginData(this.state).then((result) => {
+         this.setState({ show: false });
         let response = result;
         this.setState({ iconLoading: false });
         if (response.error == false) {
           this.setState({ iconLoading: false });
           if (response.user) {
             sessionStorage.setItem('userId', response.user._id);
-            this.setState({ redirectToReferrer: true });
+            let _base = this;
+            setTimeout(function(){
+                _base.setState({ redirectToReferrer: true });
+            },500);
           }
         }
         else if (response.error == true) {
@@ -142,12 +150,14 @@ class Signin extends Component {
   }
 
   facebookLogin = (res, type) => {
+    this.setState({ show: false });
     FacebookloginData(this.state.facebookInfo).then((result) => {
       this.setState({
         fbIcon: 'fa fa-facebook',
         fbDisabled: false,
         gDisabled: false
       });
+      this.setState({ show: true });
       let response = result;
       console.log(response)
       if (response.error == false) {
@@ -177,6 +187,12 @@ class Signin extends Component {
 
     return (
       <div className="signuparea signinarea">
+                <Loading
+          show={this.state.show}
+          color=" orange"
+            showSpinner={false}
+
+        />
         <div className="signupcard">
           <Row type="flex" justify="center" >
             <Col lg={9} sm={0} xs={0}>
