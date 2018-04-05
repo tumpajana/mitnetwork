@@ -5,6 +5,9 @@ const imageSchema = mongoose.Schema({
 file:{
     type : Object
 },
+thumbnail:{
+    type : Object 
+},
 createdDate: {
     type: Date,
     default: Date.now
