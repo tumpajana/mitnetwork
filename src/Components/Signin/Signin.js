@@ -123,6 +123,7 @@ class Signin extends Component {
     });
   }
 
+
   login = () => {
      this.setState({ show: true });
     this.setState({ iconLoading: true });
@@ -172,6 +173,7 @@ class Signin extends Component {
     let notificationContent = {
       message: type.ucfirst(),
       description: content,
+      duration: 1,
     }
     notification[type](notificationContent);
   };

@@ -139,6 +139,7 @@ class Profile extends Component {
 
   //on selecting city
   onChangeCity = (e) => {
+    this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user.city = e;                        //updating value
     this.setState({ user });
@@ -146,6 +147,7 @@ class Profile extends Component {
 
   //on selecting state
   onChangeState = (e) => {
+    this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user.state = e;                        //updating value
     this.setState({ user });
@@ -258,6 +260,7 @@ class Profile extends Component {
     notification[type]({
       message: type,
       description: content,
+      duration: 1,
     });
   };
 

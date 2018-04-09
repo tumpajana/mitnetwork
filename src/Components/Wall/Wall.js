@@ -414,6 +414,7 @@ class Wall extends Component {
     notification[type]({
       message: type,
       description: content,
+      duration: 1,
     });
   };
 
