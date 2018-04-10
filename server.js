@@ -8,29 +8,40 @@ var cors = require('cors');
 var app = express();
 var http = require('http');
 
+//middleware
+app.use(cors());
+app.use(expressValidator());
+// app.use (multer());
+//body-parser
+app.use(bodyParser.json())
+const server = http.createServer(app);
+
+
+var io = require('socket.io')(server,{origins:'*:*'});
+
 // put const here
 const userRoute = require('./mitServer/user.controller');
 const uploadRoute = require('./mitServer/upload/file.controller');
-const postRoute = require('./mitServer/post/socialPost.controller');
+const postRoute = require('./mitServer/post/socialPost.controller')(io);
 
 
 
 //connect to mongodb
 mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
-const server = http.createServer(app)
- var io = require('socket.io')(server)
 
  // socket connection
- io.sockets.on('connection', function(socket){
+ io.on('connection', function(socket){
      console.log('Socket Connected'+ socket.id);
    //
      socket.on('comment',function(post){
          io.emit('comment',comment);
      });
  });
+
+ io.use((socket)=>{
+    console.log("using "+socket.id)
+ })
  //socet disconnected
- io.sockets.on('disconnected',function(socket){
- });
 
 //on successful connection
 mongoose.connection.on('connected', () => {
@@ -47,12 +58,7 @@ mongoose.connection.on('error', (err) => {
 //port no
 const port = 5000;
 
-//middleware
-app.use(cors());
-app.use(expressValidator());
-// app.use (multer());
-//body-parser
-app.use(bodyParser.json());
+
 
 //routes
 app.use('/user', userRoute);

@@ -11,6 +11,8 @@ import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 // import NumberFormat from 'react-number-format';
 
 const RadioGroup = Radio.Group;
@@ -30,6 +32,7 @@ class Signup extends Component {
       confirmPassword: '',
       phoneNumber: '',
       redirectToReferrer: false,
+      iconLoading: false,
 
       facebookInfo: {
         name: '',
@@ -39,7 +42,11 @@ class Signup extends Component {
         email: '',
         phoneNumber: '',
         token: ''
-      }
+      },
+      fbIcon: 'fa fa-facebook',
+      fbDisabled: false,
+      gDisabled: false,
+      show: false
 
     };
 
@@ -54,6 +61,10 @@ class Signup extends Component {
 
   //Login with Facebook
   responseFacebook = (response) => {
+    this.setState({
+      fbIcon: 'fa fa-circle-o-notch	fa-spin',
+      fbDisabled: true
+    });
     console.log(response);
     this.facebookInfo = response;
     console.log(this.facebookInfo)
@@ -72,17 +83,23 @@ class Signup extends Component {
   //login with Google
   responseGoogle = (response) => {
     console.log(response, 'google');
-    this.facebookInfo = response;
-    console.log(this.facebookInfo)
-    this.state.facebookInfo = {
-      name: response.w3.ig,
-      providerName: 'Google',
-      providerPic: response.w3.Paa,
-      providerId: response.El,
-      email: response.profileObj.email,
-      token: response.tokenObj.access_token
+    if (response.hasOwnProperty('error')) {
+      this.setState({
+        gDisabled: false
+      });
+    } else {
+      this.facebookInfo = response;
+      console.log(this.facebookInfo)
+      this.state.facebookInfo = {
+        name: response.w3.ig,
+        providerName: 'Google',
+        providerPic: response.w3.Paa,
+        providerId: response.El,
+        email: response.profileObj.email,
+        token: response.tokenObj.access_token
+      }
+      this.facebookLogin(response, 'google');
     }
-    this.facebookLogin(response, 'google')
   }
 
   emitEmpty = () => {
@@ -107,7 +124,7 @@ class Signup extends Component {
 
     this.setState({ [e.target.name]: e.target.value });
     console.log('onchangeusername', e.target.value, '+', e.target.name)
- 
+
   }
   //validation
 
@@ -129,7 +146,7 @@ class Signup extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue('password')) {
-      callback('*password mismatch');
+      callback('password mismatch');
     } else {
       callback();
     }
@@ -145,90 +162,77 @@ class Signup extends Component {
   
   //submit registration form
   register = () => {
-    console.log('submit button');
-    console.log(this.state.name)
-    // if(this.handleValidation()){     // validation function
-
-    if (this.state.userName && this.state.password && this.state.email && this.state.name && this.state.phoneNumber) {
-      PostData(this.state).then((result) => {
-        let response = result;
-        console.log(result)
-        if (response.error == false) {
-          this.openNotificationWithIcon('success',"You have been registered successfully!");
-          if (response.user) {
-            sessionStorage.setItem('userId', response.user._id);
-            this.setState({ redirectToReferrer: true });
-          }
+     this.setState({ show: true });
+    this.setState({ iconLoading: true });
+    PostData(this.state).then((result) => {
+       this.setState({ show: false });
+      let response = result;
+      console.log(result)
+      if (response.error == false) {
+        this.openNotificationWithIcon('success', response.message);
+        this.setState({ iconLoading: false });
+        if (response.user) {
+           sessionStorage.setItem('userId', response.user._id);
+          let _base = this;
+            setTimeout(function(){
+                _base.setState({ redirectToReferrer: true });
+            },500);
         }
-        else if (response.error == true) {
-          this.openNotificationWithIcon('warning',"Phonenumber/Email already exist !");
-        }
+      }
+      else if (response.error == true) {
+        this.openNotificationWithIcon('warning', response.message);
+      }
 
-      });
-    }
-    //else{
-    // alert("Form has errors.")
-    // }
-
+    });
   }
 
   facebookLogin = (res, type) => {
     FacebookloginData(this.state.facebookInfo).then((result) => {
       let response = result;
       console.log("registration", result);
+      this.setState({
+        fbIcon: 'fa fa-facebook',
+        fbDisabled: false,
+        gDisabled: false
+      });
       if (response.error == false) {
-        this.openNotificationWithIcon('success',"You have been registered successfully!");
-        console.log(response.result);
         if (response.result) {
           sessionStorage.setItem('userId', response.result._id);
           this.setState({ redirectToReferrer: true });
         }
-        else {
-          // toast.warn("Number already exist!", {
-          //   position: toast.POSITION.TOP_CENTER,
-          // });
-          this.openNotificationWithIcon('warning',"Number already exist!");
-        }
+      } else {
+        this.openNotificationWithIcon('warning', response.message);
       }
 
     });
   }
-  
-  //else{
-  // alert("Form has errors.")
-  // }
 
-
-  // facebookLogin = (res, type) => {
-  //   FacebookloginData(this.state.facebookInfo).then((result) => {
-  //     let response = result;
-  //     console.log(response)
-  //     if (response.userData) {
-  //       sessionStorage.setItem('loginData', JSON.stringify(response));
-  //       this.setState({ redirectToReferrer: true });
-  //     }
-
-  //   });
-  // }
 
   // notification show
-  openNotificationWithIcon = (type,content) => {
+  openNotificationWithIcon = (type, content) => {
     notification[type]({
-      message: type,
+      message: type.ucfirst(),
       description: content,
+      duration: 1,
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     if (this.state.redirectToReferrer) {
-      return <Redirect to="/wall" />
+      return <Redirect to="/layout/profile" />
     }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
       <div className="signuparea">
+             <Loading
+          show={this.state.show}
+          color=" orange"
+            showSpinner={false}
+
+        />
         <div className="signupcard">
           <Row type="flex" justify="center">
             <Col lg={9} sm={0} xs={0}>
@@ -247,203 +251,160 @@ class Signup extends Component {
                     <p className="signfont">Sign Up </p>
                   </div>
                 </div>
-                 <form className="inputflds">
-                <Row type="flex">
+                <div className="inputflds">
+                  <Row type="flex">
 
-                  <Col lg={10} sm={10} xs={24}>
-                    <form onSubmit={this.handleSubmit} className="formsinput">
-                      <FormItem>
-                        {getFieldDecorator('name', {
-                          rules: [{ required: true, message: '*name required' }],
-                        })(
-                          <Input
+                    <Col lg={10} sm={10} xs={24}>
+                      <Form onSubmit={this.handleSubmit} className="formsinput">
+                        <FormItem>
+                          {getFieldDecorator('name', {
+                            rules: [{ required: true, message: 'name is required' }],
+                          })(
+                            <Input
+                              placeholder="Your Name"
+                              name="name"
+                              maxLength="30"
+                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              suffix={suffix}
+                              onChange={this.onChangeValue}
+                            />
+                          )}
+                        </FormItem>
+                        <FormItem>
+                          {getFieldDecorator('Username', {
+                            rules: [{ required: true, message: 'username is required' }],
+                          })(
+                            <Input
+                              placeholder="Username"
+                              name="userName"
+                              maxLength="20"
+                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              onChange={this.onChangeValue}
+                            />
+                          )}
+                        </FormItem>
 
-                            placeholder="Your Name"
-                            name="name"
+                        <FormItem>
+                          {getFieldDecorator('email', {
+                            rules: [{
+                              type: 'email', message: 'email is not valid',
+                            }, { required: true, message: 'email is required' }],
+                          })(
+                            <Input
+                              placeholder=" Email"
+                              name="email"
+                              maxLength="30"
+                              autoComplete="off"
+                              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              onChange={this.onChangeValue}
+                            />
+                          )}
+                        </FormItem>
+                        <FormItem>
+                          {getFieldDecorator('phoneNumber', {
+                            rules: [{ required: true, message: 'phonenumber is required' }],
+                          })(
 
-                            maxlength="30"
-                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            suffix={suffix}
-                            // value={userName}
-                            // onChange={this.onChangeUserName}
-                            // onChange={this.handleChange.bind(this, "name")} 
-                            //value={this.state.fields["name"]}
-                            onChange={this.onChangeValue}
-                          // ref={node => this.userNameInput = node}
+                            <Input
+                              type="test"
+                              placeholder=" Phone Number"
+                              name="phoneNumber"
+                              maxLength="10"
+                              autoComplete="off"
+                              prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              onChange={this.onChangeValue}
+                            />
+                          )}
+                        </FormItem>
+                        <FormItem>
+                          {getFieldDecorator('password', {
+                            rules: [{ required: true, message: 'password is required', },
+                            {
+                              validator: this.validateToNextPassword,
+                            }],
+                          })(
+                            <Input type="password"
+                              placeholder=" Password"
+                              name="password"
+                              minLength="6"
+                              maxLength="10"
+                              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              onChange={this.onChangeValue}
+                            />
+                          )}
+                        </FormItem>
+                        <FormItem >
 
-                          />
-                        )}
-                      </FormItem>
-                      <FormItem>
-                        {getFieldDecorator('Username', {
-                          rules: [{ required: true, message: '*username required' }],
-                        })(
-                          <Input
-                            placeholder="Username"
-                            name="userName"
+                          {getFieldDecorator('confirmPassword', {
+                            rules: [{
+                              required: true, message: 'confirm password is required',
+                            }, {
+                              validator: this.compareToFirstPassword,
+                            }],
+                          })(
+                            <Input type="password" onBlur={this.handleConfirmBlur}
+                              placeholder="Confirm Password"
+                              minLength="6"
+                              maxLength="10"
+                              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              name="confirmPassword"
+                              onChange={this.onChangeValue}
+                            />
+                          )}
+                        </FormItem>
 
-                            maxlength="20"
-                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                      </Form>
+                    </Col>
+                    <Col lg={2} sm={2} xs={0}>
 
-                            onChange={this.onChangeValue}
-
-                          />
-                        )}
-                      </FormItem>
-
-                      {/* <Input
-                      placeholder="Username"
-                      prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    
-                    /> */}
-                      {/* <p class="genderchoose"> Gender</p>
-                    <RadioGroup onChange={this.onChange} value={this.state.value}>
-                      <Radio value={1} className="gendervalue">Male</Radio>
-                      <Radio value={2} className="gendervalue">Female</Radio>
-                    </RadioGroup> */}
-                      <FormItem>
-                        {getFieldDecorator('email', {
-                          rules: [{
-                            type: 'email', message: '*please enter a valid email',
-                          }, { required: true, message: '*email required' }],
-                        })(
-                          <Input
-                            placeholder=" Email"
-                            name="email"
-                            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            //<input ref="name" type="text" size="30" placeholder="Name" onChange={this.handleChange.bind(this, "name")} value={this.state.fields["name"]}/>
-                            onChange={this.onChangeValue}
-
-                          />
-                        )}
-                      </FormItem>
-                      <FormItem>
-                        {getFieldDecorator('phoneNumber', {
-                          rules: [{ required: true, message: '*phonenumber required' }],
-                        })(
-                          
-                          // <NumberFormat format="#### #### #### ####" />
-                          <Input 
-                            type="number"
-                            placeholder=" Phone Number"
-                            name="phoneNumber"
-                            minlength="10"
-                            maxlength="10"
-                            prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            onChange={this.onChangeValue}
-                            // onKeyDown={this.isVaildNumber} 
-                          // value={this.state.fields["phoneNumber"]}
-                          />
-                        )}
-                      </FormItem>
-                      <FormItem>
-                        {getFieldDecorator('password', {
-                          rules: [{ required: true, message: '*password required', },
-                          {
-                            validator: this.validateToNextPassword,
-                          }],
-                        })(
-                          <Input type="password" 
-                            placeholder=" Password"
-                            name="password"
-                            minlength="6"
-                            maxlength="8"
-                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}
-                            onblur="checkLength(this)"
-                             />}
-                            
-                            onChange={this.onChangeValue}
-
-                          />
-                        )}
-                      </FormItem>
-                      <FormItem >
-
-                        {getFieldDecorator('confirmPassword', {
-                          rules: [{
-                            required: true, message: '*confirmpassword required',
-                          }, {
-                            validator: this.compareToFirstPassword,
-                          }],
-                        })(
-                          <Input type="password" onBlur={this.handleConfirmBlur}
-                            placeholder="Confirm Password"
-                            minlength="6"
-                            maxlength="10"
-                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            name="confirmPassword"
-
-                            onChange={this.onChangeValue}
-                          />
-                        )}
-                      </FormItem>
-                   
-                    </form>
-                  </Col>
-                  <Col lg={2} sm={2} xs={0}>
-
-                    <div className="wrapper">
-                      <div className="line"></div>
-                      <div className="wordwrapper">
-                        <div className="ordivider">OR</div>
+                      <div className="wrapper">
+                        <div className="line"></div>
+                        <div className="wordwrapper">
+                          <div className="ordivider">OR</div>
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                  <Col lg={12} sm={12} xs={24} className="sociallogin">
+                    </Col>
+                    <Col lg={12} sm={12} xs={24} className="sociallogin">
 
-                    <div className="signupwithsocial">
-                      <p className="ordividerres">OR</p>
-                      {/* <Button className="facebooklogin">Sign in 
-                  <Icon type="facebook" />
-                  </Button>
-                  <Button className="googlepluslogin">Sign in 
-                  <Icon type="google-plus" />
-                  </Button> */}
-                      <FacebookLogin
-                        appId="312775355854012"
-                        autoLoad={true}
-                        fields="name,email,picture"
-                        // onClick={componentClicked}
-                        callback={this.responseFacebook}
-                        className="facebooksignin"
-                        icon="fa-facebook" />
-                      <GoogleLogin
-                        clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
-                        buttonText="Login"
-                        className="googleplussign"
-                        onSuccess={this.responseGoogle}
-                        onFailure={this.responseGoogle}
-                        icon="google-plus"
+                      <div className="signupwithsocial">
+                        <p className="ordividerres">OR</p>
 
-                      />
-                    </div>
+                        <FacebookLogin
+                          appId="312775355854012"
+                          autoLoad={false}
+                          fields="name,email,picture"
+                          callback={this.responseFacebook}
+                          className="facebooksignin"
+                          icon="fa-facebook"
+                          textButton="Facebook"
+                          icon={this.state.fbIcon}
+                          isDisabled={this.state.fbDisabled}
+                        />
 
-                  </Col>
-                  <Col lg={12} sm={12} xs={24} className="submitArea">
-                  {/* <Row> */}
-                        <div className="registerbtn">
-                          <Button className="sbmtbtn" type="primary" onClick={this.handleSubmit} htmlType="submit">Submit</Button>
-                         
+                        <GoogleLogin
+                          clientId="1039315261739-cesl5gtd6vqk00bancklm039rcjo3orq.apps.googleusercontent.com"
+                          buttonText="Googleplus"
+                          className="googleplussign"
+                          onSuccess={this.responseGoogle}
+                          onFailure={this.responseGoogle}
+                          disabled={this.state.gDisabled}
+                        />
+                      </div>
 
-                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                        </div>
+                    </Col>
+                    <Col lg={12} sm={12} xs={24} className="submitArea">
+                      {/* <Row> */}
+                      <div className="registerbtn">
+                        <Button className="sbmtbtn" type="primary" onClick={this.handleSubmit} htmlType="submit" loading={this.state.iconLoading}>Submit</Button>
+                        <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
+                      </div>
                       {/* </Row> */}
-                  </Col>
+                    </Col>
 
 
 
-                </Row>
-                </form>
-                {/* <Row>
-                        <div className="registerbtn">
-                          <Button className="sbmtbtn" type="primary" htmlType="submit">Submit</Button>
-                          <Button className="cnclbtn">Cancel</Button>
-
-                          <p className="regtext"> Already Registered ? &nbsp;&nbsp;<NavLink to="/login">Login</NavLink> &nbsp;here</p>
-                        </div>
-                      </Row> */}
-
-
+                  </Row>
+                </div>
 
               </div>
             </Col>

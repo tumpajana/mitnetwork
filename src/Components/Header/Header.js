@@ -4,31 +4,33 @@ import { Row, Col } from 'antd';
 import './Header.css';
 import navbarlogo from '../../Images/mitlogo.png';
 import userpic from '../../Images/userprofilepic.jpg';
-import { Redirect,NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import getUserProfile from '../../Services/profileapi';
-// import { Redirect, NavLink } from 'react-router-dom';
+import Data_Store from './../../redux';
 import isAuthenticated from '../../Services/auth';
+import getUserInfo from '../../Services/getUserInfo';
+import Image from '../Image/Image';
+import User from '../../Images/avatar.png';
 
-// import Wall from '../Components/Wall';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+
 const { Link } = Anchor;
 
 class Header extends Component {
-  state = {
-    current: 'mail',
-   
-  }
-  constructor(props) {
 
+  constructor(props) {
     super(props);
     this.state = {
       redirectToReferrer: false,
-       imageUrl:'',
-    userProfile: {},
-    username:'',
-    userNameNew: '',
+      imageUrl: '',
+      userProfile: {},
+      username: '',
+      userNameNew: '',
+      current: 'mail',
+      avatar: sessionStorage.getItem("avatar")
     }
+
     this.UserProfileData = this.UserProfileData.bind(this);
     if (sessionStorage.userId) {
       this.UserProfileData();
@@ -41,12 +43,25 @@ class Header extends Component {
       }, function (error) {
         _base.logout();
       });
+
+
+    //subscribe to profile store
+    Data_Store.subscribe(() => {
+      console.log(Data_Store.getState());
+      let result = Data_Store.getState();
+      _base.renderUser(result);
+    })
+
   }
 
 
   onClickButton = (ev) => {
     if (ev.key === 'setting:2') { // light is the value of menuitem in string
       this.logout()
+    } else {
+      this.setState({
+        current: ev.key,
+      });
     }
   }
 
@@ -60,23 +75,36 @@ class Header extends Component {
   // get user profile details
   UserProfileData = () => {
     let _base = this;
+    getUserInfo()
+      .then(function (result) {
+        Data_Store.dispatch({
+          type: 'ProfileData',
+          value: result
+        })
+      }, function (error) {
+        console.log(error);
+      });
     getUserProfile(sessionStorage.getItem("userId")).then((result) => {
-      // debugger;
-      let response = result;
-      console.log(this.refs);
-      console.log(result);
-      this.setState({ userProfile: result.result });
-      this.setState({ userName: result.result.name });
-      console.log('userData...', this.state.userProfile);
-      if (this.state.userProfile.imageId) {
-        this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
-        console.log( this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id }));
-      }else if(this.state.userProfile.providerPic){
-      console.log(this.state.userName);
-        console.log(this.state.userProfile.providerPic);
-        this.setState({ imageUrl: this.state.userProfile.providerPic })
-      }
+      Data_Store.dispatch({
+        type: 'ProfileData',
+        value: result.result
+      })
     });
+  }
+
+  renderUser = (result) => {
+    let _base = this;
+    _base.setState({ userProfile: result });
+    _base.setState({ userName: result.name });
+    _base.setState({ avatar: sessionStorage.getItem("avatar") });
+    if (this.state.userProfile.imageId) {
+      this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+    } else if (this.state.userProfile.providerPic) {
+      console.log(this.state.userProfile.providerPic);
+      this.setState({ imageUrl: this.state.userProfile.providerPic })
+    } else {
+      this.setState({ imageUrl: User })
+    }
   }
 
   render() {
@@ -91,11 +119,13 @@ class Header extends Component {
         <Row>
           <Col lg={12} xs={10}>
             <Menu >
-              <div className="navlogo">
-                <Anchor className="logoanchor">
-                  <Link href="#Home"><img src={navbarlogo} /></Link>
-                </Anchor>
-              </div>
+              <Menu.Item key="logo">
+                <div className="navlogo">
+                  <Anchor className="logoanchor">
+                    <Link href="#Home"><img src={navbarlogo} /></Link>
+                  </Anchor>
+                </div>
+              </Menu.Item>
             </Menu>
           </Col>
           <Col lg={12} xs={14}>
@@ -104,23 +134,17 @@ class Header extends Component {
                 onClick={this.onClickButton}
                 selectedKeys={[this.state.current]}
                 mode="horizontal"
-
               >
                 <Menu.Item key="mail">
-                  <Icon type="home" /><NavLink to="/wall">Home</NavLink>
-             </Menu.Item>
-                {/* <Menu.Item >
-                  <Icon type="usergroup-add" />My Networks
-             </Menu.Item> */}
-                {/* <Menu.Item >
-                  <Icon type="wechat" />Messaging
-             </Menu.Item> */}
+                  <Icon type="home" /><NavLink to="/layout/wall">Home</NavLink>
+                </Menu.Item>
+
 
                 <SubMenu title={<span>{
-  (this.state.userProfile.imageId || this.state.userProfile.providerPic) ? <img  type="setting" className="leftalign"src={this.state.imageUrl} /> : <img type="setting" className="leftalign" src={userpic} />
-}Me<Icon type="down" /></span>} className="headersubmenu">
+                  <img type="setting" className="leftalign" src={this.state.imageUrl} />
+                }{this.state.userName}<Icon type="down" /></span>} className="headersubmenu">
                   <MenuItemGroup title="">
-                    <Menu.Item key="setting:1" className="linkprfl"><NavLink to="/profile">Edit Profile</NavLink></Menu.Item>
+                    <Menu.Item key="setting:1" className="linkprfl"><NavLink to="/layout/profile">Edit Profile</NavLink></Menu.Item>
                     <Menu.Item key="setting:2" className="linkprfl">Log out</Menu.Item>
                   </MenuItemGroup>
                 </SubMenu>
@@ -137,4 +161,11 @@ class Header extends Component {
 }
 
 export default Header;
-// onClick={this.logout}
+
+
+{/* <Menu.Item >
+                  <Icon type="usergroup-add" />My Networks
+             </Menu.Item> */}
+{/* <Menu.Item >
+                  <Icon type="wechat" />Messaging
+             </Menu.Item> */}

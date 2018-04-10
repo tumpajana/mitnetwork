@@ -1,6 +1,7 @@
+import {APIURL} from '../urlconfig';
+
 function postLike( filedata) {
-    //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
-    let BaseURL ='http://mitapi.memeinfotech.com:5000/post/like';
+    let BaseURL =APIURL+'post/like';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
         headers: {

@@ -189,7 +189,7 @@ h1.editIntro {
     /* filter: blur(1px); */
 }
 .userpic{
-    background-image: url('../../Images/male.png');
+    /* background-image: url('../../Images/male.png'); */
     margin: 0 auto;
     height: 130px;
     width: 130px;

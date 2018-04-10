@@ -1,5 +1,13 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/** form validation **/
+
+.formsinput .has-error .ant-form-explain {
+    text-align: left;
+    margin-top: 0px !important;
+    font-size: auto !important;
 }

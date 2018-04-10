@@ -1,6 +1,8 @@
+import {APIURL} from '../urlconfig';
+
 function WallPost( postData) {
     console.log(postData);
-    let BaseURL =' http://mitapi.memeinfotech.com:5000/post/socialPost '  ;
+    let BaseURL =APIURL+'post/socialPost'  ;
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {
