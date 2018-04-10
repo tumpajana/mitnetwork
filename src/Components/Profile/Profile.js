@@ -18,7 +18,8 @@ import getCities from '../../Services/getCities';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
 import Image from '../Image/Image';
-
+import ReactFileReader from 'react-file-reader';
+import base64Img from 'base64-img';
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +45,9 @@ class Profile extends Component {
       loading: false,
       visible: false,
       iconLoading: false,
-      DispalyPicList: []
+      DispalyPicList: [],
+      srcurl: '',
+      filedata: ''
     };
 
     // getImage('5ac04a2349da1517aa25d328');
@@ -55,7 +58,7 @@ class Profile extends Component {
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
     this.myimagecropper = this.myimagecropper.bind(this);
-
+    this.b64toBlob = this.b64toBlob.bind(this);
 
     // get states
     getStates()
@@ -190,6 +193,7 @@ class Profile extends Component {
 
   //image upload of profile pic
   profilePicUpload = (event) => {
+
     if (event.fileList.length != 0) {
       let fileList = event.fileList[0];
       let file = fileList.originFileObj;
@@ -223,18 +227,6 @@ class Profile extends Component {
     }
   }
 
-  //image cropper
-  myimagecropper = (e) => {
-    let x = this.refs.myimage.crop()
-    console.log(x)
-    const values = this.refs.myimage.values()
-    console.log(values)
-  }
-
-
-  edit = () => {
-    console.log('Dispaly data');
-  }
 
   // notification show
   openNotificationWithIcon = (type, content) => {
@@ -243,7 +235,6 @@ class Profile extends Component {
       description: content,
     });
   };
-
 
   render() {
     const Option = Select.Option;
@@ -362,14 +353,16 @@ class Profile extends Component {
                 <h1 className="editIntro">Edit Intro</h1>
                 <div className="userpic">
                   <Image src={this.state.imageUrl} type='avatar' />
-                  <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
+                    <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
                     <Button className="editbtn">
                       <Icon type="edit" />
                     </Button>
-                  </Upload>
+                    </Upload>
+              
                 </div>
               </div>
             </Col>
+
           </Row>
 
 

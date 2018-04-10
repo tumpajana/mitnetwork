@@ -26,7 +26,7 @@ import clapbutton from '../../Images/clap.svg';
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 import Waypoint from 'react-waypoint';
-import Image from '../Image/Image';
+import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
 
@@ -410,7 +410,7 @@ class Wall extends Component {
                     <Col span={3}>
 
                       <div className="userprflimg">
-                        <Image src={this.state.avatar} />
+                        <ImageLoader src={this.state.avatar} />
                       </div>
                     </Col>
                     <Col span={21}>
@@ -491,7 +491,7 @@ class Wall extends Component {
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 5 }}>
                     <div className="userpicpost">{
-                      (item.userId.imageId) ? <Image src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <Image src={item.userId.providerPic} /> : <Image src={User} />
+                      (item.userId.imageId) ? <ImageLoader src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <ImageLoader src={item.userId.providerPic} /> : <ImageLoader src={User} />
                     }
                     </div>
                   </Col>
@@ -510,12 +510,12 @@ class Wall extends Component {
                   <h3>{item.like.length}  Claps</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
                       <button title="like" type="button" className="ant-btn" >
-                        <Image className="clapicon" src={clapbutton} />
+                        <ImageLoader className="clapicon" src={clapbutton} />
                         <span>UnClap</span>
                       </button>
                       :
                       <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
-                        <Image className="clapicon" src={clapbutton} />
+                        <ImageLoader className="clapicon" src={clapbutton} />
                         <span>Clap</span>
                       </button>
                   }
@@ -531,13 +531,13 @@ class Wall extends Component {
 
                   <Col xs={5} sm={3} md={2}>
                     <div className="commentImg">
-                      <Image src={this.state.avatar} />
+                      <ImageLoader src={this.state.avatar} />
                     </div>
                   </Col>
 
                   <Col xs={19} sm={21} md={22}>
                     <div className="commentText">
-                      <Image src={camera} />
+                      <ImageLoader src={camera} />
                       <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
@@ -553,7 +553,7 @@ class Wall extends Component {
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
                             {
-                              (list.userId.imageId) ? <Image src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <Image src={list.userId.providerPic} /> : <Image src={User} />
+                              (list.userId.imageId) ? <ImageLoader src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <ImageLoader src={list.userId.providerPic} /> : <ImageLoader src={User} />
                             }
                           </div>
                         </Col>
@@ -600,13 +600,33 @@ export default Wall;
 class PostContent extends Component {
   constructor(props) {
     super(props);
+    console.log('post content0',props)
+    this.state = {
+      imgsrc:(this.props.item.imageId.length>0)?"" + this.props.item.imageId[0]._id + '&select=thumbnail':''
+    }
   }
+
+  // componentWillMount() {
+  //   console.log('post comment component will mount')
+  //  if(this.props.item.imageId.length>0){
+  //   var primaryImage = new Image() ;// create an image object programmatically
+
+  //   // console.log(primaryImage)
+  //   primaryImage.onload=()=> { 
+  //     this.setState({ imgsrc: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.props.item.imageId[0]._id })
+  //   }
+  //   primaryImage.src = this.state.imgsrc // do it
+  //  }
+     
+  // }
+  
+  
   render() {
     return (
       <div className="postedimg onlytext">
         {this.props.item.imageId.length > 0 ?
           ((this.props.item.imageId[0].file.mimetype).match("image/")) ?
-            this.props.item.imageId.length == 1 ? <ImageTemplate src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.props.item.imageId[0]._id}></ImageTemplate> :
+            this.props.item.imageId.length == 1 ? <ImageTemplate src={this.props.item.imageId[0]._id}></ImageTemplate> :
               <CustomGallery src={this.props.item.imageId}></CustomGallery>
             : ((this.props.item.imageId[0].file.mimetype).match("video/")) ? (
               <VideoTemplate src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.item.imageId[0]._id}></VideoTemplate>
@@ -695,9 +715,12 @@ class VideoTemplate extends Component {
 class ImageTemplate extends Component {
   constructor(props) {
     super(props);
+    console.log('iagetemplateprops',props);
+  
   }
+  
   render() {
-    return (<Image src={this.props.src} />);
+    return (<ImageLoader src={this.props.src} />);
   }
 }
 
