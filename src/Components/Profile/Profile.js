@@ -18,6 +18,8 @@ import getCities from '../../Services/getCities';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
 import Image from '../Image/Image';
+import ReactFileReader from 'react-file-reader';
+import base64Img from 'base64-img';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 
@@ -47,6 +49,8 @@ class Profile extends Component {
       visible: false,
       iconLoading: false,
       DispalyPicList: [],
+      srcurl: '',
+      filedata: '',
       show: false,
       enableUser: false
     };
@@ -58,8 +62,7 @@ class Profile extends Component {
     this.updateProfile = this.updateProfile.bind(this);
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
-    this.myimagecropper = this.myimagecropper.bind(this);
-
+   
 
     // get states
     getStates()
@@ -139,6 +142,7 @@ class Profile extends Component {
 
   //on selecting city
   onChangeCity = (e) => {
+    this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user.city = e;                        //updating value
     this.setState({ user });
@@ -146,6 +150,7 @@ class Profile extends Component {
 
   //on selecting state
   onChangeState = (e) => {
+    this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user.state = e;                        //updating value
     this.setState({ user });
@@ -207,6 +212,7 @@ class Profile extends Component {
 
   //image upload of profile pic
   profilePicUpload = (event) => {
+
     if (event.fileList.length != 0) {
       let fileList = event.fileList[0];
       let file = fileList.originFileObj;
@@ -240,27 +246,15 @@ class Profile extends Component {
     }
   }
 
-  //image cropper
-  myimagecropper = (e) => {
-    let x = this.refs.myimage.crop()
-    console.log(x)
-    const values = this.refs.myimage.values()
-    console.log(values)
-  }
-
-
-  edit = () => {
-    console.log('Dispaly data');
-  }
 
   // notification show
   openNotificationWithIcon = (type, content) => {
     notification[type]({
       message: type,
       description: content,
+      duration: 1,
     });
   };
-
 
   render() {
     const Option = Select.Option;
@@ -385,14 +379,16 @@ class Profile extends Component {
                 <h1 className="editIntro">Edit Intro</h1>
                 <div className="userpic">
                   <Image src={this.state.imageUrl} type='avatar' />
-                  <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
+                    <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
                     <Button className="editbtn">
                       <Icon type="edit" />
                     </Button>
-                  </Upload>
+                    </Upload>
+              
                 </div>
               </div>
             </Col>
+
           </Row>
 
 

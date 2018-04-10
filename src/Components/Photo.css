@@ -1,0 +1,36 @@
+.photoBlock {
+  display: inline-block;
+  width: 500px;
+  height: 500px;
+}
+
+.cell_1h {
+  width: 496px;
+  height: 496px;
+}
+
+.cell_2h {
+  width: 496px;
+  height: 246px;
+}
+.cell_3h {
+  width: 200px;
+  height: 200px;
+}
+.cell_4h {
+  width: 200px;
+  height: 200px;
+  font-size: 50px; 
+  position: absolute;
+  text-align: center;
+  font-weight: 700;
+}
+.cell_5h {
+  width: 200px;
+  height: 200px;
+  font-size: 50px; 
+  position: absolute;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 60px;
+}

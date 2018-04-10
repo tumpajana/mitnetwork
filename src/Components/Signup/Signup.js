@@ -158,6 +158,8 @@ class Signup extends Component {
     }
     callback();
   }
+  
+  
   //submit registration form
   register = () => {
      this.setState({ show: true });
@@ -211,6 +213,7 @@ class Signup extends Component {
     notification[type]({
       message: type.ucfirst(),
       description: content,
+      duration: 1,
     });
   };
 
@@ -277,7 +280,6 @@ class Signup extends Component {
                               maxLength="20"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeValue}
-
                             />
                           )}
                         </FormItem>
