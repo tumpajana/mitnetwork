@@ -25,6 +25,20 @@ import clapbutton from '../../Images/clap.svg';
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 import Waypoint from 'react-waypoint';
+import Lightbox from 'react-image-lightbox';
+import LightboxExample from "../../Components/Photogallery";
+
+
+let urls = [
+    // "http://magickalgraphics.com/Graphics/Miscellaneous/Flowers/flowers140.jpg",
+    // "http://cdn2.stylecraze.com/wp-content/uploads/2013/07/dahlia-flowers.jpg",
+    // "http://cdn.wonderfulengineering.com/wp-content/uploads/2016/01/Desktop-Wallpaper-4.jpg",
+    // "https://i.pinimg.com/originals/57/50/dc/5750dcbce6fdaaf8ec79dade90d2790a.jpg",
+    // "http://cdn2.stylecraze.com/wp-content/uploads/2013/07/dahlia-flowers.jpg",
+    // "http://hdfreewallpaper.net/wp-content/uploads/2015/12/Corgi-Wallpaper-small-free-hd-for-desktop.jpg",
+    // "http://www.blackcatcoffeeservice.com/wp-content/uploads/2017/11/small-apple-logo-fire-apple-logo-hd-wallpaper-vector-designs-wallpapers-creat-business-card.jpg",
+
+];
 
 
 const { TextArea } = Input;
@@ -193,6 +207,10 @@ class Wall extends Component {
       this.getPosts();
     });
   }
+
+
+
+
 
   // upload image 
   imageUpload = (event) => {

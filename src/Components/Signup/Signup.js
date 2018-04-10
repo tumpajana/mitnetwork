@@ -141,6 +141,8 @@ class Signup extends Component {
     }
     callback();
   }
+  
+  
   //submit registration form
   register = () => {
     console.log('submit button');
@@ -191,6 +193,7 @@ class Signup extends Component {
 
     });
   }
+  
   //else{
   // alert("Form has errors.")
   // }
@@ -340,13 +343,15 @@ class Signup extends Component {
                             validator: this.validateToNextPassword,
                           }],
                         })(
-                          <Input type="password"
+                          <Input type="password" 
                             placeholder=" Password"
                             name="password"
                             minlength="6"
-                            maxlength="10"
-                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                            maxlength="8"
+                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}
+                            onblur="checkLength(this)"
+                             />}
+                            
                             onChange={this.onChangeValue}
 
                           />
