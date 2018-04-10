@@ -20,6 +20,9 @@ import getUserInfo from '../../Services/getUserInfo';
 import Image from '../Image/Image';
 import ReactFileReader from 'react-file-reader';
 import base64Img from 'base64-img';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
+
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +50,9 @@ class Profile extends Component {
       iconLoading: false,
       DispalyPicList: [],
       srcurl: '',
-      filedata: ''
+      filedata: '',
+      show: false,
+      enableUser: false
     };
 
     // getImage('5ac04a2349da1517aa25d328');
@@ -129,6 +134,7 @@ class Profile extends Component {
 
   //onchange of input feild binding
   onChangeValue = (e) => {
+   this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user[e.target.name] = e.target.value;                        //updating value
     this.setState({ user });
@@ -137,6 +143,7 @@ class Profile extends Component {
 
   //on selecting city
   onChangeCity = (e) => {
+    this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user.city = e;                        //updating value
     this.setState({ user });
@@ -144,6 +151,7 @@ class Profile extends Component {
 
   //on selecting state
   onChangeState = (e) => {
+    this.setState({enableUser: true})
     let user = Object.assign({}, this.state.user);    //creating copy of object
     user.state = e;                        //updating value
     this.setState({ user });
@@ -155,6 +163,7 @@ class Profile extends Component {
 
   //update profile
   updateProfile() {
+    this.setState({ show: true });
     this.setState({ iconLoading: true });
     let userData = {
       _id: sessionStorage.getItem('userId'),
@@ -167,6 +176,7 @@ class Profile extends Component {
       designation: this.state.user.designation,
     }
     updateData(userData).then((result) => {
+      // _base.setState({ show: false });
       let response = result;
       console.log(response);
       if (response.error == false) {
@@ -174,14 +184,24 @@ class Profile extends Component {
           type: 'ProfileData',
           value: response.user
         })
-        this.openNotificationWithIcon('success', response.message);
+           let _base=this
+      setTimeout(function(){
+      _base.setState({ show: false });
+      _base.openNotificationWithIcon('success', response.message);
+      },2000);
         this.setState({ iconLoading: false });
       } else {
-        this.openNotificationWithIcon('error', response.message);
+        let _base=this
+        setTimeout(function(){
+          _base.openNotificationWithIcon('error', response.message);
+        },2000);
       }
       this.setState({ visible: false });
     }, (error) => {
-      this.openNotificationWithIcon('error', 'Connection error');
+      let _base=this
+        setTimeout(function(){
+      _base.openNotificationWithIcon('error', 'Connection error');
+       },2000);
       this.setState({ iconLoading: false });
     });
   }
@@ -233,6 +253,7 @@ class Profile extends Component {
     notification[type]({
       message: type,
       description: content,
+      duration: 1,
     });
   };
 
@@ -246,6 +267,12 @@ class Profile extends Component {
 
     return (
       <div>
+             <Loading
+          show={this.state.show}
+          color=" orange"
+            showSpinner={false}
+
+        />
         {/* profile view section start */}
         <section className="profilesec">
 
@@ -341,7 +368,7 @@ class Profile extends Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel} className="backbtn">Back</Button>,
-            <Button key="submit" loading={loading} loading={this.state.iconLoading} onClick={this.updateProfile} className="savebtn">
+            <Button key="submit" loading={loading} loading={this.state.iconLoading} disabled={!this.state.enableUser} onClick={this.updateProfile} className="savebtn">
               Save
             </Button>
           ]}

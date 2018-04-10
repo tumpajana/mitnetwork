@@ -11,6 +11,8 @@ import PostData from '../../Services/signupapi';
 import FacebookloginData from '../../Services/socialapi';
 import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 // import NumberFormat from 'react-number-format';
 
 const RadioGroup = Radio.Group;
@@ -43,7 +45,8 @@ class Signup extends Component {
       },
       fbIcon: 'fa fa-facebook',
       fbDisabled: false,
-      gDisabled: false
+      gDisabled: false,
+      show: false
 
     };
 
@@ -157,16 +160,21 @@ class Signup extends Component {
   }
   //submit registration form
   register = () => {
+     this.setState({ show: true });
     this.setState({ iconLoading: true });
     PostData(this.state).then((result) => {
+       this.setState({ show: false });
       let response = result;
       console.log(result)
       if (response.error == false) {
         this.openNotificationWithIcon('success', response.message);
         this.setState({ iconLoading: false });
         if (response.user) {
-          sessionStorage.setItem('userId', response.user._id);
-          this.setState({ redirectToReferrer: true });
+           sessionStorage.setItem('userId', response.user._id);
+          let _base = this;
+            setTimeout(function(){
+                _base.setState({ redirectToReferrer: true });
+            },500);
         }
       }
       else if (response.error == true) {
@@ -203,6 +211,7 @@ class Signup extends Component {
     notification[type]({
       message: type.ucfirst(),
       description: content,
+      duration: 1,
     });
   };
 
@@ -216,6 +225,12 @@ class Signup extends Component {
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
       <div className="signuparea">
+             <Loading
+          show={this.state.show}
+          color=" orange"
+            showSpinner={false}
+
+        />
         <div className="signupcard">
           <Row type="flex" justify="center">
             <Col lg={9} sm={0} xs={0}>
@@ -263,7 +278,6 @@ class Signup extends Component {
                               maxLength="20"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               onChange={this.onChangeValue}
-
                             />
                           )}
                         </FormItem>

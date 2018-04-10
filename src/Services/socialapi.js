@@ -1,6 +1,7 @@
+import {APIURL} from '../urlconfig';
+
 function FacebookloginData(FacebookData) {
-    //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
-    let BaseURL = 'http://mitapi.memeinfotech.com:5000/user/socialRegistration';
+    let BaseURL = APIURL+'user/socialRegistration';
     return new Promise((resolve, reject) => {
         fetch(BaseURL, {
             headers: {
