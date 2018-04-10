@@ -61,15 +61,17 @@ router.post('/upload', (request, response) => {
                 .resize(64, 64)
                 .write(resizedImagePath, (err, resizedImage) => {
                     gm(resizedImagePath).identify((err, imageData) => {
-                        console.log(imageData);
+                        if(imageData)
+                        {
+                        console.log("imageData------->",imageData);
                         let resizedImage = {
                             mimetype: imageData['Mime type'],
                             size: imageData.Filesize,
                             path: imageData.path,
-                            originalname: imageData.Artifacts.filename,
+                            // originalname: imageData.Artifacts.filename,
                         }
                         console.log(resizedImage);
-                   
+                    }
 
                     let data = new file({
                         thumbnail: resizedImage,
