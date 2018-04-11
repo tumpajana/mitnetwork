@@ -1,7 +1,8 @@
+import {APIURL} from '../urlconfig';
+
 function commentPost( commentData) {
-    //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
     console.log(commentData);
-    let BaseURL ='http://mitapi.memeinfotech.com:5000/post/comment ';
+    let BaseURL =APIURL+'post/comment';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {

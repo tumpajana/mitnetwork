@@ -1,7 +1,8 @@
+ import {APIURL} from '../urlconfig';
+ 
   function updateData( userData) {
-    //let BaseURL = '   let BaseURL = 'https://api.thewallscript.com/restful/';';
     console.log(userData);
-    let BaseURL ='http://mitapi.memeinfotech.com:5000/user/update';
+    let BaseURL =APIURL+'user/update';
     return new Promise((resolve, reject) =>{
     fetch(BaseURL, {
       headers: {

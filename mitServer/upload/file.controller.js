@@ -1,3 +1,5 @@
+
+
 var express = require('express');
 var multer = require('multer');
 var upload = multer({ dest: 'imageUploads/' });
@@ -5,6 +7,7 @@ var path = require('path');
 var fs = require('fs');
 var router = express.Router();
 var file = require('./file.model');
+var gm = require('gm').subClass({ imageMagick: true });
 
 
 //storage for files
@@ -16,12 +19,12 @@ var storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 });
-// Api for Image Upload
 
+// Api for Image Upload
 router.post('/upload', (request, response) => {
     var image;
     console.log("file upload");
-    console.log(file);
+    // console.log(file);
 
     let imageResponse = {};
 
@@ -34,44 +37,71 @@ router.post('/upload', (request, response) => {
     }).single('file');
 
     upload(request, response, function (error) {
-        console.log('......body....',request.body);
+        console.log('......body....', request.body);
 
         if (error) {
-            console.log('////error///',error)
+            console.log('////error///', error)
             throw error;
             imageResponse.error = true;
             imageResponse.message = `Error :` + error.message;
             response.status(500).json(imageResponse);
         }
         else if (request.file) {
-            // console.log(request);
+            console.log(request.file);
             image = request.file;
+            //             var readStream = fs.createReadStream(image.path);
+            // gm(readStream)
+            // .resize('70', '70')
+            // .stream(function (err, stdout, stderr) {
+            //   var writeStream = fs.createWriteStream('./imageUploads/resizm.jpeg');
+            //   stdout.pipe(writeStream);
+            // });
+            let resizedImagePath = 'imageUploads/thumb-' + image.filename;
+            gm(image.path)
+                .resize(64, 64)
+                .write(resizedImagePath, (err, resizedImage) => {
+                    gm(resizedImagePath).identify((err, imageData) => {
+                        if(imageData)
+                        {
+                        console.log("imageData------->",imageData);
+                        let resizedImage = {
+                            mimetype: imageData['Mime type'],
+                            size: imageData.Filesize,
+                            path: imageData.path,
+                            // originalname: imageData.Artifacts.filename,
+                        }
+                        console.log(resizedImage);
+                    }
 
-            let data = new file({
-                file: image
-            });
+                    let data = new file({
+                        thumbnail: resizedImage,
+                        file: image
+                    });
 
-            data.save((error, result) => {
-                console.log('......error...',error);
-                console.log('......result...',result);
-                
-                if (error) {
-                    imageResponse.error = true;
-                    imageResponse.message = `Error :` + error.message;
-                    response.status(500).json(imageResponse);
-                }
-                else if (result) {
-                    imageResponse.error = false;
-                    imageResponse.upload = result;
-                    imageResponse.message = `file upload successful.`;
-                    response.status(200).json(imageResponse);
-                }
-                else {
-                    imageResponse.error = true;
-                    imageResponse.message = `file upload unsuccessful.`;
-                    response.status(500).json(imageResponse);
-                }
-            });
+                    data.save((error, result) => {
+                        console.log('......error...', error);
+                        console.log('......result...', result);
+
+                        if (error) {
+                            imageResponse.error = true;
+                            imageResponse.message = `Error :` + error.message;
+                            response.status(500).json(imageResponse);
+                        }
+                        else if (result) {
+                            imageResponse.error = false;
+                            imageResponse.upload = result;
+                            imageResponse.message = `file upload successful.`;
+                            response.status(200).json(imageResponse);
+                        }
+                        else {
+                            imageResponse.error = true;
+                            imageResponse.message = `file upload unsuccessful.`;
+                            response.status(500).json(imageResponse);
+                        }
+                    });
+                })
+                })
+
         }
     });
 });
@@ -81,20 +111,35 @@ router.post('/upload', (request, response) => {
 router.get('/getImage', (request, response) => {
     let imageResponse = {};
     console.log("image display");
+
     console.log(request.query);
+    let select = request.query.select;
+
     file.findById(request.query.imageId, (error, result) => {
+        console.log(result);
+        console.log(error);
         if (error) {
             imageResponse.error = true;
             imageResponse.message = `Server error : ` + error.message;
             response.status(500).json(imageResponse);
         }
         else if (result) {
-            response.set({
-                "Content-Disposition": 'attachment; filename="' + result.file.originalname + '"',
-                "Content-Type": result.file.mimetype
-            });
-            fs.createReadStream(result.file.path).pipe(response);
-            console.log(result.file.path);
+            if (select == "thumbnail") {
+                response.set({
+                    "Content-Disposition": 'attachment; filename="' + result.thumbnail.originalname + '"',
+                    "Content-Type": result.thumbnail.mimetype
+                });
+                fs.createReadStream(result.thumbnail.path).pipe(response);
+                console.log(result.thumbnail.path);
+            }
+            else {
+                response.set({
+                    "Content-Disposition": 'attachment; filename="' + result.file.originalname + '"',
+                    "Content-Type": result.file.mimetype
+                });
+                fs.createReadStream(result.file.path).pipe(response);
+                console.log(result.file.path);
+            }
         }
         else {
             imageResponse.error = true;

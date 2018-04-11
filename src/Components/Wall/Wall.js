@@ -26,9 +26,28 @@ import clapbutton from '../../Images/clap.svg';
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 import Waypoint from 'react-waypoint';
-import Image from '../Image/Image';
+import Lightbox from 'react-image-lightbox';
+import LightboxExample from "../../Components/Photogallery";
+import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
+// import io from 'socket.io-client';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
+
+
+let urls = [
+  // "http://magickalgraphics.com/Graphics/Miscellaneous/Flowers/flowers140.jpg",
+  // "http://cdn2.stylecraze.com/wp-content/uploads/2013/07/dahlia-flowers.jpg",
+  // "http://cdn.wonderfulengineering.com/wp-content/uploads/2016/01/Desktop-Wallpaper-4.jpg",
+  // "https://i.pinimg.com/originals/57/50/dc/5750dcbce6fdaaf8ec79dade90d2790a.jpg",
+  // "http://cdn2.stylecraze.com/wp-content/uploads/2013/07/dahlia-flowers.jpg",
+  // "http://hdfreewallpaper.net/wp-content/uploads/2015/12/Corgi-Wallpaper-small-free-hd-for-desktop.jpg",
+  // "http://www.blackcatcoffeeservice.com/wp-content/uploads/2017/11/small-apple-logo-fire-apple-logo-hd-wallpaper-vector-designs-wallpapers-creat-business-card.jpg",
+
+];
+
+// const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
@@ -37,6 +56,7 @@ class Wall extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      show: false,
       loading: false,
       visible: false,
       showPreviewIcon: true,
@@ -64,6 +84,8 @@ class Wall extends Component {
       totalPost: 0,
       totalPostList: [],
       iconLoading: false,
+      // enablePost: false,
+      message: '',
       avatar: sessionStorage.getItem("avatar")
     }
 
@@ -75,6 +97,8 @@ class Wall extends Component {
     this.writeComment = this.writeComment.bind(this);
     this.showCommentBox = this.showCommentBox.bind(this);
     this.videoUpload = this.videoUpload.bind(this);
+
+
 
     let _base = this;
     getUserInfo()
@@ -93,6 +117,11 @@ class Wall extends Component {
       let result = Data_Store.getState();
       _base.renderUser(result);
     })
+
+    // socket.on('getUserInfo', function (postData) {
+    //   console.log(postData);
+    // });
+
   }
 
   renderUser = (result) => {
@@ -128,23 +157,29 @@ class Wall extends Component {
 
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
+    // debugger;
+    this.setState({ show: true });
     WallPost(postData).then((result) => {
+      // debugger;
       console.log(result);
-      this.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
-      this.setState({ fileNew: [] })
-      this.setState({
+      let _base = this
+      setTimeout(function () {
+        _base.setState({ show: false });
+        _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
+      }, 2000);
+      _base.setState({ fileNew: [] })
+      _base.setState({
         posts: {
           title: "",
           content: ""
         }
       })
-      this.setState({ iconLoading: false });
-      this.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
-      // this.refs.quill_content.props.onChange(this.refs.quill_content.getEditor(),"theme");
-      this.setState({ imageId: [] })
-      this.setState({ showPreviewIcon: false })
-      this.setState({ imageUploadList: [] });
-      this.setState({ videoUploadList: [] });
+      _base.setState({ iconLoading: false });
+      _base.refs.quill_content.setEditorContents(this.refs.quill_content.getEditor(), "");
+      _base.setState({ imageId: [] })
+      _base.setState({ showPreviewIcon: false })
+      _base.setState({ imageUploadList: [] });
+      _base.setState({ videoUploadList: [] });
       // this.getPosts();
     })
   }
@@ -153,6 +188,7 @@ class Wall extends Component {
   getPosts(pageNumber) {
 
     WallGet(pageNumber).then((result) => {
+      // debugger;
       // console.log(result);
       if (result.result.length != 0) {
         let posts = this.state.postList;
@@ -165,10 +201,15 @@ class Wall extends Component {
         // console.log('api callpost  list', this.state.totalPostList)
         // this.setState({ postList: this.state.totalPostList })
         // this.setState({ spinner: false })
+        this.setState({ message: '' })
+      }
+      else {
+        this.setState({ spinner: false });
+        this.setState({ message: "No Post For Today" });
       }
 
     }, error => {
-
+      this.setState({})
     });
   }
 
@@ -207,6 +248,10 @@ class Wall extends Component {
       let response = result;
     });
   }
+
+
+
+
 
   // upload image 
   imageUpload = (event) => {
@@ -296,9 +341,10 @@ class Wall extends Component {
       }
       commentPost(data).then((result) => {
         if (result.error == false) {
-          toast.success("Commented on Post Successfuly!", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          this.openNotificationWithIcon('success', "Commented on Post Successfuly!");
+          // toast.success("Commented on Post Successfuly!", {
+          //   position: toast.POSITION.TOP_CENTER,
+          // });
           this.showCommentBox(result.result._id)
           this.getComments(result.result._id);
           this.setState({
@@ -387,9 +433,14 @@ class Wall extends Component {
     notification[type]({
       message: type,
       description: content,
+      duration: 1,
     });
   };
 
+  // onChangeValue = (e) => {
+  //  this.setState({enablePost: true})
+  // [e.target.name] = e.target.value;                        //updating value
+  // }
   render() {
     const Option = Select.Option;
     const { visible, loading } = this.state;
@@ -400,6 +451,11 @@ class Wall extends Component {
 
     return (
       <div>
+        <Loading
+          show={this.state.show}
+          color=" orange"
+          showSpinner={false}
+        />
         {/* wall view section start */}
         <div className="postarticlesec">
           <div className="wallcard">
@@ -410,7 +466,7 @@ class Wall extends Component {
                     <Col span={3}>
 
                       <div className="userprflimg">
-                        <Image src={this.state.avatar} />
+                        <ImageLoader src={this.state.avatar} />
                       </div>
                     </Col>
                     <Col span={21}>
@@ -473,6 +529,7 @@ class Wall extends Component {
                     </Col>
                   </div>
                   <Col span={14}>
+
                     <Button className="post" title="Post" loading={this.state.iconLoading} onClick={this.socialPost}>Post</Button>
                   </Col>
 
@@ -484,6 +541,7 @@ class Wall extends Component {
         {/* wall view section end */}
 
         {/* posted blog html start */}
+        <span>{this.state.message}</span>
         {this.state.postList.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
@@ -491,7 +549,7 @@ class Wall extends Component {
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 5 }}>
                     <div className="userpicpost">{
-                      (item.userId.imageId) ? <Image src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <Image src={item.userId.providerPic} /> : <Image src={User} />
+                      (item.userId.imageId) ? <ImageLoader src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <ImageLoader src={item.userId.providerPic} /> : <ImageLoader src={User} />
                     }
                     </div>
                   </Col>
@@ -507,15 +565,15 @@ class Wall extends Component {
 
 
                 <div className="likecomment">
-                  <h3>{item.like.length}  Claps</h3>{
+                  <h3>{item.like.length}Claps</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
                       <button title="like" type="button" className="ant-btn" >
-                        <Image className="clapicon" src={clapbutton} />
+                        <ImageLoader className="clapicon" src={clapbutton} />
                         <span>UnClap</span>
                       </button>
                       :
                       <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
-                        <Image className="clapicon" src={clapbutton} />
+                        <ImageLoader className="clapicon" src={clapbutton} />
                         <span>Clap</span>
                       </button>
                   }
@@ -527,17 +585,18 @@ class Wall extends Component {
               </div>
               {/* ****Comment section**** */}
               <div className="commentSection">
+
                 <Row type="flex" justify="space-around" align="middle">
 
                   <Col xs={5} sm={3} md={2}>
                     <div className="commentImg">
-                      <Image src={this.state.avatar} />
+                      <ImageLoader src={this.state.avatar} />
                     </div>
                   </Col>
 
                   <Col xs={19} sm={21} md={22}>
                     <div className="commentText">
-                      <Image src={camera} />
+                      <ImageLoader src={camera} />
                       <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
@@ -553,7 +612,7 @@ class Wall extends Component {
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
                             {
-                              (list.userId.imageId) ? <Image src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <Image src={list.userId.providerPic} /> : <Image src={User} />
+                              (list.userId.imageId) ? <ImageLoader src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <ImageLoader src={list.userId.providerPic} /> : <ImageLoader src={User} />
                             }
                           </div>
                         </Col>
@@ -565,7 +624,8 @@ class Wall extends Component {
                             <h3>{list.comment}</h3>
                           </div>
                         </Col>
-                      </div> : ''
+                      </div>
+                      : ''
                   ))
                   }
                 </Row>
@@ -580,6 +640,7 @@ class Wall extends Component {
         }
         <div>
           <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
+
           <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} />
         </div>
       </div>
@@ -600,14 +661,33 @@ export default Wall;
 class PostContent extends Component {
   constructor(props) {
     super(props);
+    console.log('post content0', this.props.item.imageId)
+    this.state = {
+      imgsrc: (this.props.item.imageId.length > 0) ? "" + this.props.item.imageId[0]._id + '&select=thumbnail' : ''
+    }
   }
+
+  // componentWillMount() {
+  //   console.log('post comment component will mount')
+  //  if(this.props.item.imageId.length>0){
+  //   var primaryImage = new Image() ;// create an image object programmatically
+
+  //   // console.log(primaryImage)
+  //   primaryImage.onload=()=> { 
+  //     this.setState({ imgsrc: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.props.item.imageId[0]._id })
+  //   }
+  //   primaryImage.src = this.state.imgsrc // do it
+  //  }
+
+  // }
+
+
   render() {
     return (
       <div className="postedimg onlytext">
         {this.props.item.imageId.length > 0 ?
           ((this.props.item.imageId[0].file.mimetype).match("image/")) ?
-            this.props.item.imageId.length == 1 ? <ImageTemplate src={'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.props.item.imageId[0]._id}></ImageTemplate> :
-              <CustomGallery src={this.props.item.imageId}></CustomGallery>
+            <LightboxExample imageUrls={this.props.item.imageId}></LightboxExample>
             : ((this.props.item.imageId[0].file.mimetype).match("video/")) ? (
               <VideoTemplate src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.item.imageId[0]._id}></VideoTemplate>
             ) : ''
@@ -695,9 +775,12 @@ class VideoTemplate extends Component {
 class ImageTemplate extends Component {
   constructor(props) {
     super(props);
+    console.log('iagetemplateprops', props);
+
   }
+
   render() {
-    return (<Image src={this.props.src} />);
+    return (<ImageLoader src={this.props.src} />);
   }
 }
 
