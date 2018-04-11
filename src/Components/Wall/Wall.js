@@ -31,23 +31,11 @@ import LightboxExample from "../../Components/Photogallery";
 import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 
-
-let urls = [
-  // "http://magickalgraphics.com/Graphics/Miscellaneous/Flowers/flowers140.jpg",
-  // "http://cdn2.stylecraze.com/wp-content/uploads/2013/07/dahlia-flowers.jpg",
-  // "http://cdn.wonderfulengineering.com/wp-content/uploads/2016/01/Desktop-Wallpaper-4.jpg",
-  // "https://i.pinimg.com/originals/57/50/dc/5750dcbce6fdaaf8ec79dade90d2790a.jpg",
-  // "http://cdn2.stylecraze.com/wp-content/uploads/2013/07/dahlia-flowers.jpg",
-  // "http://hdfreewallpaper.net/wp-content/uploads/2015/12/Corgi-Wallpaper-small-free-hd-for-desktop.jpg",
-  // "http://www.blackcatcoffeeservice.com/wp-content/uploads/2017/11/small-apple-logo-fire-apple-logo-hd-wallpaper-vector-designs-wallpapers-creat-business-card.jpg",
-
-];
-
-// const socket = io('http://mitapi.memeinfotech.com:5000');
+const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
@@ -118,9 +106,9 @@ class Wall extends Component {
       _base.renderUser(result);
     })
 
-    // socket.on('getUserInfo', function (postData) {
-    //   console.log(postData);
-    // });
+    socket.on('getUserInfo', function (postData) {
+      console.log(postData);
+    });
 
   }
 
