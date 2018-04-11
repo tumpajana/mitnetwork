@@ -26,6 +26,8 @@ import clapbutton from '../../Images/clap.svg';
 import 'react-html5video/dist/styles.css';
 import { isPrimitive } from 'util';
 import Waypoint from 'react-waypoint';
+import Lightbox from 'react-image-lightbox';
+import LightboxExample from "../../Components/Photogallery";
 import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
@@ -143,9 +145,10 @@ class Wall extends Component {
 
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
+    // debugger;
     this.setState({ show: true });
     WallPost(postData).then((result) => {
-
+      // debugger;
       console.log(result);
       let _base = this
       setTimeout(function () {
@@ -233,6 +236,10 @@ class Wall extends Component {
       let response = result;
     });
   }
+
+
+
+
 
   // upload image 
   imageUpload = (event) => {
@@ -622,7 +629,7 @@ class Wall extends Component {
         <div>
           <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
 
-          <Icon type="loading" spinning={this.state.spinner} style={{ fontSize: 40 }} />
+          <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} />
         </div>
       </div>
     );
@@ -642,7 +649,7 @@ export default Wall;
 class PostContent extends Component {
   constructor(props) {
     super(props);
-    console.log('post content0', props)
+    console.log('post content0', this.props.item.imageId)
     this.state = {
       imgsrc: (this.props.item.imageId.length > 0) ? "" + this.props.item.imageId[0]._id + '&select=thumbnail' : ''
     }
@@ -668,8 +675,7 @@ class PostContent extends Component {
       <div className="postedimg onlytext">
         {this.props.item.imageId.length > 0 ?
           ((this.props.item.imageId[0].file.mimetype).match("image/")) ?
-            this.props.item.imageId.length == 1 ? <ImageTemplate src={this.props.item.imageId[0]._id}></ImageTemplate> :
-              <CustomGallery src={this.props.item.imageId}></CustomGallery>
+            <LightboxExample imageUrls={this.props.item.imageId}></LightboxExample>
             : ((this.props.item.imageId[0].file.mimetype).match("video/")) ? (
               <VideoTemplate src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.item.imageId[0]._id}></VideoTemplate>
             ) : ''

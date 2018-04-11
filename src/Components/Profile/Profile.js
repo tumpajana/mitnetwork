@@ -62,8 +62,7 @@ class Profile extends Component {
     this.updateProfile = this.updateProfile.bind(this);
     this.onChangeCity = this.onChangeCity.bind(this);
     this.onChangeState = this.onChangeState.bind(this);
-    this.myimagecropper = this.myimagecropper.bind(this);
-    this.b64toBlob = this.b64toBlob.bind(this);
+   
 
     // get states
     getStates()
