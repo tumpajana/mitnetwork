@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 const server = http.createServer(app);
 
 
-var io = require('socket.io')(server,{origins:'*:*'});
+var io = require('socket.io')(server);
 
 // put const here
 const userRoute = require('./mitServer/user.controller');

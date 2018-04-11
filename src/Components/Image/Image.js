@@ -8,7 +8,6 @@ import './Image.css';
 class ImageLoader extends Component {
     constructor(props) {
         super(props);
-        console.log('image component', props)
         this.state = {
             imageSrc: (this.props.src) ? "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.src + "&select=thumbnail" : loading,
             spin: true,
@@ -22,8 +21,6 @@ class ImageLoader extends Component {
         let imageSrc = (this.props.src) ? "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.src : loading;
 
         primaryImage.onload = () => { // use arrow function here
-            console.log(`image is loaded!`)
-            console.log('jhgf')
             this.setState({ imageSrc: imageSrc })
         }
 
