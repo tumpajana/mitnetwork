@@ -151,16 +151,10 @@ class Wall extends Component {
     WallPost(postData).then((result) => {
       // debugger;
       console.log(result);
-<<<<<<< HEAD
 
       let _base=this
       setTimeout(function(){
          _base.setState({ show: false });
-=======
-      let _base = this
-      setTimeout(function () {
-        _base.setState({ show: false });
->>>>>>> eb832f258d926d2d691805c4e3cf8e5df4c3c7ac
         _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       }, 2000);
       _base.setState({ fileNew: [] })
