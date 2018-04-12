@@ -307,6 +307,9 @@ h1.editIntro {
     right: 0;
 
 }
+.cropper-container.cropper-bg{
+    width: 100% !important;
+}
 
 .prodetail .anticon:before {
     color: rgb(105, 64, 186);

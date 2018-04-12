@@ -540,7 +540,7 @@ class ActualWall extends Component {
 
         {/* posted blog html start */}
         <span>{this.state.message}</span>
-        {wall.map((item, pIndex) => {
+        {this.state.postList.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
               <div className="mitpic">
