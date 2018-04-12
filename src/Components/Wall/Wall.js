@@ -138,6 +138,7 @@ class Wall extends Component {
     }
     else {
       this.openNotificationWithIcon('warning', " No content for this post!");
+      this.setState({ iconLoading: false });
     }
   }
 
@@ -147,6 +148,7 @@ class Wall extends Component {
     WallPost(postData).then((result) => {
       
       console.log(result);
+
       let _base=this
       setTimeout(function(){
          _base.setState({ show: false });
