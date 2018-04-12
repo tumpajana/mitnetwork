@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 const server = http.createServer(app);
 
 
-var io = require('socket.io')(server,{origins:'*:*'});
+var io = require('socket.io')(server);
 
 // put const here
 const userRoute = require('./mitServer/user.controller');
@@ -33,8 +33,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
  io.on('connection', function(socket){
      console.log('Socket Connected'+ socket.id);
    //
-     socket.on('comment',function(post){
-         io.emit('comment',comment);
+     socket.on('post',function(data){
+        io.to(socket.id).emit('post');
      });
  });
 

@@ -17,6 +17,8 @@ import getCities from '../../Services/getCities';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
 import Image from '../Image/Image';
+import ReactFileReader from 'react-file-reader';
+import base64Img from 'base64-img';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import Cropper from 'react-cropper';
@@ -532,6 +534,7 @@ class Profile extends Component {
                   </div>
                 </div> : ""}
             </Col>
+
           </Row>
 
 

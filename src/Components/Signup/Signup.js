@@ -158,6 +158,8 @@ class Signup extends Component {
     }
     callback();
   }
+  
+  
   //submit registration form
   register = () => {
      this.setState({ show: true });

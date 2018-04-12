@@ -1,0 +1,75 @@
+.photoBlock {
+    /* display: inline-block; */
+    width: 100%;
+    height: auto;
+    padding: 20px 0;
+    background: white;
+}
+
+.ImgGrid3 {
+  width: 220px;
+  height: auto;
+}
+ImgGrid3 img{
+  width:100%;
+  height: 100%;
+}
+
+.ImgGrid2 {
+  width: 220px;
+  height: 246px;
+  margin: 0 5px;
+}
+.ImgGrid2 img{
+  width:100%;
+  height: 100%;
+}
+/* .cell_3h {
+  width: 200px;
+  height: 200px;
+} */
+/* .cell_4h {
+  width: 200px;
+  height: 200px;
+  font-size: 50px; 
+  position: absolute;
+  text-align: center;
+  font-weight: 700;
+} */
+/* .cell_5h {
+  width: 200px;
+  height: 200px;
+  font-size: 50px; 
+  position: absolute;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 60px;
+} */
+.ImgGrid{
+  width: 225px;
+  height: 250px;
+  margin: 5px;
+}
+.ImgGrid img{
+  width:100%;
+  height: 100%;
+}
+.ImgGrid1{
+  width: 225px;
+  height: 250px;
+  margin: 5px;
+  position: relative;
+}
+.ImgGrid1 span{
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 80px;
+  font-size: 50px;
+  position: absolute;
+  font-weight: 700;
+}
+.ImgGrid1 img{
+  width:100%;
+  height: 100%;
+}
