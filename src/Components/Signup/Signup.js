@@ -180,6 +180,7 @@ class Signup extends Component {
         }
       }
       else if (response.error == true) {
+        this.setState({ iconLoading: false });
         this.openNotificationWithIcon('warning', response.message);
       }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Lightbox from 'react-image-lightbox';
 import './Photo.css';
-
+import {Row,Col} from 'antd';
 export default class LightboxExample extends Component {
     constructor(props) {
         super(props);
@@ -87,38 +87,97 @@ export default class LightboxExample extends Component {
 
     PhotoBlock() {
         var numImages = this.props.imageUrls.length;
+        var divStyle = {
+            color: 'white',
+            backgroundImage: 'url("http://mitapi.memeinfotech.com:5000/file/getImage?imageId=5acc6ac482366c7c1ead2fe5")',
+            WebkitTransition: 'all', // note the capital 'W' here
+            msTransition: 'all' // 'ms' is the only lowercase vendor prefix
+          };
+          
 
         if (numImages === 1) {
             return (
                 <div className="photoBlock">
+                     <Row>
+                    <Col md={24}>
+                <div className="ImgGrid3">
                     <img onClick={() => this.showImage(0)} className="cell_1h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                    </div>
+                    </Col>
+                </Row>
                 </div>
             );
         }
         if (numImages === 2) {
             return (
                 <div className="photoBlock">
+              <Row>
+                    <Col md={6}>
+                <div className="ImgGrid2">
                     <img onClick={() => this.showImage(0)} className="cell_2h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                    </div>
+                    </Col>
+                    <Col md={6}>
+                    <div className="ImgGrid2">
                     <img onClick={() => this.showImage(1)} className="cell_2h" src={this.state.imagePath+this.props.imageUrls[1]._id} />
+                    </div>
+                    </Col>
+                </Row>
                 </div>
             );
         }
         if (numImages === 3) {
             return (
                 <div className="photoBlock">
+                 <Row>
+                    <Col md={12}>
+                <div className="ImgGrid">
                     <img onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
-                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[1]._id} />
+                    </div>
+                    </Col>
+                    <Col md={12}>
+                    <div className="ImgGrid">
+                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+                    </div>
+                    </Col>
+                    <Col md={12}>
+                    <div className="ImgGrid">
                     <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+                    </div>
+                    </Col>
+                </Row>
                 </div>
             );
         }
         if (numImages === 4) {
             return (
                 <div className="photoBlock">
+                <Row>
+                    <Col md={6}>
+                <div className="ImgGrid">
                     <img onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
-                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[1]._id} />
+                    </div>
+                    </Col>
+                    <Col md={6}>
+                    <div className="ImgGrid">
+                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+                    </div>
+                    </Col>
+                    </Row>
+                    <Row>
+                    <Col md={6}>
+                    <div className="ImgGrid">
                     <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+                    </div>
+                    </Col>
+                    <Col md={6}>
+                    <div className="ImgGrid">
                     <img onClick={() => this.showImage(3)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+
+                 
+                </div>
+                </Col>
+                </Row>
                 </div>
             );
 
@@ -127,12 +186,32 @@ export default class LightboxExample extends Component {
         else {
             return (
                 <div className="photoBlock">
+             <Row>
+                 <Col md={6}>
+                <div className="ImgGrid">
                     <img onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
-                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[1]._id} />
-                    <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
-                    <img onClick={() => this.showImage(3)} className="cell_4h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+                    </div>
+                </Col>
+                <Col md={6}>
+                    <div className="ImgGrid">
+                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+                    </div>
+                 </Col>
+                 </Row>
+                 <Row>
+                 <Col md={6}>
+                    <div className="ImgGrid">
+                    <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                    </div>
+                   </Col>
+                   <Col md={6}>
+                    <div className="ImgGrid1">
+                    <img onClick={() => this.showImage(3)} className="cell_4h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
                     <span className="cell_5h">+{numImages - 3}</span>
-
+                 
+                </div>
+             </Col>
+             </Row>
                 </div>
 
             );
