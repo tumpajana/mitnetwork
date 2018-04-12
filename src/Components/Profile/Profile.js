@@ -23,7 +23,6 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import ReactFileReader from 'react-file-reader';
 
 class Profile extends Component {
   constructor(props) {
