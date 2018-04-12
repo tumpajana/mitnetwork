@@ -283,20 +283,22 @@ class Profile extends Component {
 
   // crop image
   _crop() {
-    let _base = this;
-    this.setState({ image: this.refs.cropper.getCroppedCanvas().toDataURL() });
-    console.log(this.refs.cropper);
-
-    // let image = this.refs.cropper.getCroppedCanvas().toDataURL();
-    this.refs.cropper.getCroppedCanvas().toBlob(function (image) {
-      console.log(image);
-      var file = new File([image], 'hello.png', { type: image.type, lastModified: Date.now() });
-      console.log("file", file);
-      _base.setState({ file: file });
-    });
-    // this.setState({ preview: this.refs.cropper.getCroppedCanvas().toDataURL() });
-    // this.setState({ file: this.dataURLtoFile(this.state.image, 'hello.png') });
-    console.log(this.state.file);
+    if(this.refs.cropper){
+      let _base = this;
+      this.setState({ image: this.refs.cropper.getCroppedCanvas().toDataURL() });
+      console.log(this.refs.cropper);
+  
+      // let image = this.refs.cropper.getCroppedCanvas().toDataURL();
+      this.refs.cropper.getCroppedCanvas().toBlob(function (image) {
+        console.log(image);
+        var file = new File([image], 'hello.png', { type: image.type, lastModified: Date.now() });
+        console.log("file", file);
+        _base.setState({ file: file });
+      });
+      // this.setState({ preview: this.refs.cropper.getCroppedCanvas().toDataURL() });
+      // this.setState({ file: this.dataURLtoFile(this.state.image, 'hello.png') });
+      console.log(this.state.file);
+    }
   }
 
   dataURLtoFile(dataurl, filename) {
@@ -491,7 +493,7 @@ class Profile extends Component {
           </div>
         </section>
         {/* profile view section end */}
-        {/* disabled={!this.state.enableUser} */}
+        
         {/* ----------MODAL SECTION FOR EDIT PROFILE start------------- */}
         <Modal
           visible={visible}
@@ -506,7 +508,7 @@ class Profile extends Component {
               }
               {this.state.hideSaveButton == true ?
                 <Button onClick={this.cropPictureUpload} loading={this.state.iconLoading} className="savebtn">Upload </Button> :
-                <Button key="submit" loading={loading} loading={this.state.iconLoading} onClick={this.updateProfile} className="savebtn">Save</Button>
+                <Button key="submit" loading={loading} loading={this.state.iconLoading} disabled={!this.state.enableUser} onClick={this.updateProfile}  className="savebtn">Save</Button>
 
               }
             </div>

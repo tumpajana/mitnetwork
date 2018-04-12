@@ -31,11 +31,11 @@ import LightboxExample from "../../Components/Photogallery";
 import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 
-const socket = io('http://mitapi.memeinfotech.com:5000');
+// const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
@@ -106,9 +106,9 @@ class Wall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on('getUserInfo', function (postData) {
-      console.log(postData);
-    });
+    // socket.on('getUserInfo', function (postData) {
+    //   console.log(postData);
+    // });
 
   }
 
