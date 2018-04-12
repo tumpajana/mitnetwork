@@ -34,12 +34,14 @@ import getUserInfo from '../../Services/getUserInfo';
 // import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import { connect } from 'react-redux';
+import { wallActions } from '../../actions';
 
 // const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
-class Wall extends Component {
+class ActualWall extends Component {
 
   constructor(props) {
     super(props);
@@ -54,7 +56,7 @@ class Wall extends Component {
         title: '',
         content: ''
       },
-      postList: [],
+      postList: this.props.wall,
       comments: {
         comment: '',
         postid: ''
@@ -110,6 +112,11 @@ class Wall extends Component {
     //   console.log(postData);
     // });
 
+  }
+
+  componentDidMount() {
+    //get post
+    this.props.dispatch(wallActions.getAll());
   }
 
   renderUser = (result) => {
@@ -432,6 +439,7 @@ class Wall extends Component {
   // [e.target.name] = e.target.value;                        //updating value
   // }
   render() {
+    const { wall } = this.props;
     const Option = Select.Option;
     const { visible, loading } = this.state;
     const { showcomment } = this.state;
@@ -532,7 +540,7 @@ class Wall extends Component {
 
         {/* posted blog html start */}
         <span>{this.state.message}</span>
-        {this.state.postList.map((item, pIndex) => {
+        {wall.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
               <div className="mitpic">
@@ -628,8 +636,9 @@ class Wall extends Component {
 
         })
         }
+        {/*this.getAllpost(); */}
         <div>
-          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
+          <Waypoint onEnter={() => { console.log('last end'); }} onLeave={() => { console.log('Waypoint left') }} />
 
           <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} />
         </div>
@@ -638,6 +647,17 @@ class Wall extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  console.log("redux state", state);
+  const { wall } = state;
+  console.log("Posts", wall);
+  return {
+    wall
+  };
+}
+
+
+const Wall = connect(mapStateToProps)(ActualWall);
 export default Wall;
 
 
