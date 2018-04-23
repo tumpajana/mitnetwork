@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import Avatar, { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Header from '../Header/Header.js';
@@ -35,7 +34,7 @@ import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 
-const socket = io('http://mitapi.memeinfotech.com:5000');
+const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
 
 const { TextArea } = Input;
 
@@ -106,7 +105,7 @@ class Wall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on('getUserInfo', function (postData) {
+    socket.on('postUploded', function (postData) {
       console.log(postData);
     });
 
