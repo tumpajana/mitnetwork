@@ -143,6 +143,7 @@ class Signin extends Component {
           }
         }
         else if (response.error == true) {
+          this.setState({ iconLoading: false });
           this.openNotificationWithIcon('error', response.message);
         }
 

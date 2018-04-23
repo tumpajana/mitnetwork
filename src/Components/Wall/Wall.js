@@ -30,15 +30,17 @@ import LightboxExample from "../../Components/Photogallery";
 import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import { connect } from 'react-redux';
+import { wallActions } from '../../actions';
 
-const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
+// const socket = io('http://mitapi.memeinfotech.com:5000');
 
 const { TextArea } = Input;
 
-class Wall extends Component {
+class ActualWall extends Component {
 
   constructor(props) {
     super(props);
@@ -53,7 +55,7 @@ class Wall extends Component {
         title: '',
         content: ''
       },
-      postList: [],
+      postList: this.props.wall,
       comments: {
         comment: '',
         postid: ''
@@ -105,10 +107,15 @@ class Wall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on('postUploded', function (postData) {
-      console.log(postData);
-    });
+    // socket.on('getUserInfo', function (postData) {
+    //   console.log(postData);
+    // });
 
+  }
+
+  componentDidMount() {
+    //get post
+    this.props.dispatch(wallActions.getAll());
   }
 
   renderUser = (result) => {
@@ -139,6 +146,7 @@ class Wall extends Component {
     }
     else {
       this.openNotificationWithIcon('warning', " No content for this post!");
+      this.setState({ iconLoading: false });
     }
   }
 
@@ -149,9 +157,10 @@ class Wall extends Component {
     WallPost(postData).then((result) => {
       // debugger;
       console.log(result);
-      let _base = this
-      setTimeout(function () {
-        _base.setState({ show: false });
+
+      let _base=this
+      setTimeout(function(){
+         _base.setState({ show: false });
         _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       }, 2000);
       _base.setState({ fileNew: [] })
@@ -429,6 +438,7 @@ class Wall extends Component {
   // [e.target.name] = e.target.value;                        //updating value
   // }
   render() {
+    const { wall } = this.props;
     const Option = Select.Option;
     const { visible, loading } = this.state;
     const { showcomment } = this.state;
@@ -625,8 +635,9 @@ class Wall extends Component {
 
         })
         }
+        {/*this.getAllpost(); */}
         <div>
-          <Waypoint onEnter={() => { console.log('last end'); this.getAllpost(); }} onLeave={() => { console.log('Waypoint left') }} />
+          <Waypoint onEnter={() => { console.log('last end'); }} onLeave={() => { console.log('Waypoint left') }} />
 
           <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} />
         </div>
@@ -635,6 +646,17 @@ class Wall extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  console.log("redux state", state);
+  const { wall } = state;
+  console.log("Posts", wall);
+  return {
+    wall
+  };
+}
+
+
+const Wall = connect(mapStateToProps)(ActualWall);
 export default Wall;
 
 
