@@ -23,6 +23,7 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import ImageLoader from '../Image/Image.js';
 
 class Profile extends Component {
   constructor(props) {
@@ -104,8 +105,9 @@ class Profile extends Component {
     getCities(this.state.user.state).then((result) => {
       this.setState({ cityArray: result })
     });
+    console.log(this.state.userProfile.imageId);
     if (this.state.userProfile.imageId) {
-      this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+      this.setState({ imageUrl: this.state.userProfile.imageId._id })
     } else if (this.state.userProfile.providerPic) {
       console.log(this.state.userProfile.providerPic);
       this.setState({ imageUrl: this.state.userProfile.providerPic })
@@ -221,43 +223,7 @@ class Profile extends Component {
     this.setState({ hideText: false });
   }
 
-  // //image upload of profile pic
-  // profilePicUpload = (e) => {
-  //   // if (event.fileList.length != 0) {
-  //     this.setState({ hideText: true });
-  //     console.log("File selected", e);
-  //     this.setState({ cropImage: e.base64 });
-  //     console.log(this.state.cropImage)
-  //     this.setState({ file: this.dataURLtoFile(this.state.imageUrl, 'hello.png') });
-  //     var form = new FormData();
-  //     form.append('file', this.state.file,'hello.png');
-  //     profilePic(form).then((result) => {
-  //       this.setState({
-  //         DispalyPicList: []
-  //       });
-  //       if (result.error == false) {
-  //         console.log(result);
-  //         let userData = {
-  //           _id: sessionStorage.getItem('userId'),
-  //           imageId: result.upload
-  //         }
-  //         updateData(userData).then((response) => {
-  //           if (response.error == false) {
-  //             Data_Store.dispatch({
-  //               type: 'ProfileData',
-  //               value: response.user
-  //             })
-  //             this.openNotificationWithIcon('success', 'Display picture changed');
-  //           } else {
-  //             this.openNotificationWithIcon('error', response.message);
-  //           }
-  //         });
-  //       } else {
-  //         this.openNotificationWithIcon('error', result.message);
-  //       }
-  //     })
-  //   // }
-  // }
+
 
   edit = () => {
     console.log('Dispaly data');
@@ -367,6 +333,7 @@ class Profile extends Component {
       _id: sessionStorage.getItem('userId'),
       imageId: data
     }
+    let _base = this
     updateData(userinfo).then((result) => {
       console.log(result);
       if (result.error == false) {
@@ -374,14 +341,14 @@ class Profile extends Component {
           type: 'ProfileData',
           value: result.user
         })
-        this.openNotificationWithIcon('success', 'Profile picture updated');
+        _base.openNotificationWithIcon('success', 'Profile picture updated');
       } else {
-        this.openNotificationWithIcon('error', result.message);
+        _base.openNotificationWithIcon('error', result.message);
       }
-      this.handleCancelEdit();
+      _base.handleCancelEdit();
     }, function (error) {
-      this.openNotificationWithIcon('error', 'Profile picture not updated');
-      this.handleCancelEdit();
+      _base.openNotificationWithIcon('error', 'Profile picture not updated');
+      _base.handleCancelEdit();
     });
   }
 
@@ -410,7 +377,8 @@ class Profile extends Component {
 
             <div className="userdetail">
               <div className="userpic">
-                <img src={this.state.imageUrl} type='avatar' />
+              {(this.state.imageUrl!="" )? <ImageLoader src={this.state.imageUrl} type='avatar' /> : ''}
+                
               </div>
               <Button onClick={this.showModal} className="vieweditbtn" title="Edit Profile"><Icon type="edit" /></Button>
               <p>{this.state.userProfile.name}</p>
@@ -521,12 +489,7 @@ class Profile extends Component {
                 <div className="mitedituserback">
                   <h1 className="editIntro">Edit Intro</h1>
                   <div className="userpic">
-                    <img src={this.state.imageUrl} />
-                    {/* <Upload onChange={this.profilePicUpload} accept="image/*" fileList={this.state.DispalyPicList}>
-                    <Button className="editbtn">
-                      <Icon type="edit" />
-                    </Button>
-                  </Upload> */}
+                  {(this.state.imageUrl!="" )? <ImageLoader src={this.state.imageUrl} type='avatar' /> : ''}
                     <ReactFileReader base64={true} handleFiles={this.profilePicUpload} accept="image/*" >
                       <Button className="editbtn">
                         <Icon type="edit" />

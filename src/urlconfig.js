@@ -1,1 +1,1 @@
-export const APIURL = "http://mitapi.memeinfotech.com:5000/";
+export const APIURL = "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/";

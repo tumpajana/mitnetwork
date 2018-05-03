@@ -25,7 +25,7 @@ const Data_Store = createStore((state, action) => {
             sessionStorage.setItem("user", JSON.stringify(action.value));
             let imageSrc = "";
             if (action.value.imageId) {
-                imageSrc = "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + action.value.imageId._id;
+                imageSrc = "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + action.value.imageId._id;
             } else if (action.value.providerPic) {
                 imageSrc = action.value.providerPic;
             } else {

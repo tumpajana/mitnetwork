@@ -98,7 +98,7 @@ class Header extends Component {
     _base.setState({ userName: result.name });
     _base.setState({ avatar: sessionStorage.getItem("avatar") });
     if (this.state.userProfile.imageId) {
-      this.setState({ imageUrl: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+      this.setState({ imageUrl: 'http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
     } else if (this.state.userProfile.providerPic) {
       console.log(this.state.userProfile.providerPic);
       this.setState({ imageUrl: this.state.userProfile.providerPic })

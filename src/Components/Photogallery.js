@@ -11,7 +11,7 @@ export default class LightboxExample extends Component {
             images: this.props.imageUrls,
             hasPrevious: false,
             hasNext: (this.props.imageUrls.length > 1) ? true : false,
-            imagePath:"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="
+            imagePath:"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId="
         };
     }
 
@@ -89,7 +89,7 @@ export default class LightboxExample extends Component {
         var numImages = this.props.imageUrls.length;
         var divStyle = {
             color: 'white',
-            backgroundImage: 'url("http://mitapi.memeinfotech.com:5000/file/getImage?imageId=5acc6ac482366c7c1ead2fe5")',
+            backgroundImage: 'url("http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/?imageId=5acc6ac482366c7c1ead2fe5")',
             WebkitTransition: 'all', // note the capital 'W' here
             msTransition: 'all' // 'ms' is the only lowercase vendor prefix
           };
