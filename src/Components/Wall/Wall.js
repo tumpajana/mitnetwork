@@ -117,7 +117,12 @@ class ActualWall extends Component {
 
   componentDidMount() {
     //get post
+    console.log(this.props);
     this.props.dispatch(wallActions.getAll());
+  }
+
+  componentWillReceiveProps() {
+    console.log(this.props);
   }
 
   renderUser = (result) => {
@@ -557,7 +562,7 @@ class ActualWall extends Component {
 
         {/* posted blog html start */}
         <span>{this.state.message}</span>
-        {this.state.postList.map((item, pIndex) => {
+        {this.props.wall.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
               <div className="mitpic">
