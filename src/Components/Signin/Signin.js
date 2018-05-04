@@ -12,6 +12,7 @@ import FacebookloginData from '../../Services/socialapi'
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import * as actions from '../../reducers/action';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -117,38 +118,25 @@ class Signin extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.login();
+        this.login(values);
       }
 
     });
   }
 
 
-  login = () => {
+  login = (values) => {
+    console.log(values)
      this.setState({ show: true });
     this.setState({ iconLoading: true });
-    if (this.state.email && this.state.password) {
-      loginData(this.state).then((result) => {
-         this.setState({ show: false });
-        let response = result;
-        this.setState({ iconLoading: false });
-        if (response.error == false) {
-          this.setState({ iconLoading: false });
-          if (response.user) {
-            sessionStorage.setItem('userId', response.user._id);
-            let _base = this;
-            setTimeout(function(){
-                _base.setState({ redirectToReferrer: true });
-            },500);
-          }
-        }
-        else if (response.error == true) {
-          this.setState({ iconLoading: false });
-          this.openNotificationWithIcon('error', response.message);
-        }
-
-      });
-    }
+  console.log(values.email,values.password)
+  let data={
+    email:values.email,
+    password:values.password
+  }
+      actions.Login(data,this.props.history);
+      this.setState({ show: false });
+      this.setState({ iconLoading: false });
   }
 
   facebookLogin = (res, type) => {
@@ -181,9 +169,9 @@ class Signin extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    if (this.state.redirectToReferrer) {
-      return <Redirect to="/layout/wall" />
-    }
+    // if (this.state.redirectToReferrer) {
+      // return <Redirect to="/layout/wall" />
+    // }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
@@ -230,7 +218,7 @@ class Signin extends Component {
                               type="email"
                               name="email"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeLoginName}
+                              // onChange={this.onChangeLoginName}
                               autoComplete="off"
                             />
                           )}
@@ -247,7 +235,7 @@ class Signin extends Component {
                               minLength="6"
                               maxLength="10"
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeLoginName}
+                              // onChange={this.onChangeLoginName}
                             />
                           )}
                         </FormItem>

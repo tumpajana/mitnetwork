@@ -486,7 +486,7 @@ class ActualWall extends Component {
                     <Col span={3}>
 
                       <div className="userprflimg">
-                        <img src={this.state.imageUrl} />
+                        {/* <img src={this.state.imageUrl} /> */}
                       </div>
                     </Col>
                     <Col span={21}>
@@ -569,7 +569,7 @@ class ActualWall extends Component {
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 5 }}>
                     <div className="userpicpost">{
-                      (item.userId.imageId) ? <ImageLoader src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <ImageLoader src={item.userId.providerPic} /> : <ImageLoader src={User} />
+                      (item.userId.imageId) ? <img src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <ImageLoader src={User} />
                     }
                     </div>
                   </Col>
@@ -588,12 +588,12 @@ class ActualWall extends Component {
                   <h3>{item.like.length}Claps</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
                       <button title="like" type="button" className="ant-btn" >
-                        <ImageLoader className="clapicon" src={clapbutton} />
+                        <img className="clapicon" src={clapbutton} />
                         <span>UnClap</span>
                       </button>
                       :
                       <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
-                        <ImageLoader className="clapicon" src={clapbutton} />
+                        <img className="clapicon" src={clapbutton} />
                         <span>Clap</span>
                       </button>
                   }
@@ -610,13 +610,13 @@ class ActualWall extends Component {
 
                   <Col xs={5} sm={3} md={2}>
                     <div className="commentImg">
-                      <ImageLoader src={this.state.avatar} />
+                      <img src={this.state.avatar} />
                     </div>
                   </Col>
 
                   <Col xs={19} sm={21} md={22}>
                     <div className="commentText">
-                      <ImageLoader src={camera} />
+                      <img src={camera} />
                       <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
@@ -632,7 +632,7 @@ class ActualWall extends Component {
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
                             {
-                              (list.userId.imageId) ? <ImageLoader src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <ImageLoader src={list.userId.providerPic} /> : <ImageLoader src={User} />
+                              (list.userId.imageId) ? <img src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
                             }
                           </div>
                         </Col>
@@ -693,25 +693,7 @@ export default Wall;
 class PostContent extends Component {
   constructor(props) {
     super(props);
-    console.log('post content0', this.props.item.imageId)
-    this.state = {
-      imgsrc: (this.props.item.imageId.length > 0) ? "" + this.props.item.imageId[0]._id + '&select=thumbnail' : ''
-    }
   }
-
-  // componentWillMount() {
-  //   console.log('post comment component will mount')
-  //  if(this.props.item.imageId.length>0){
-  //   var primaryImage = new Image() ;// create an image object programmatically
-
-  //   // console.log(primaryImage)
-  //   primaryImage.onload=()=> { 
-  //     this.setState({ imgsrc: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.props.item.imageId[0]._id })
-  //   }
-  //   primaryImage.src = this.state.imgsrc // do it
-  //  }
-
-  // }
 
 
   render() {

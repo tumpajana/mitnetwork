@@ -16,19 +16,19 @@ class ImageLoader extends Component {
             className: (this.props.className) ? this.props.className : '',
             // type: (this.props.type=='avatar') 
         }
-        console.log(this.state.imageSrc)
+        console.log("Image Src is",this.state.imageSrc)
     }
 
-    // componentDidMount() {
-    //     let primaryImage = new Image();
-    //     let imageSrc = "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src;
+    componentDidMount() {
+        let primaryImage = new Image();
+        let imageSrc = "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src;
 
-    //     primaryImage.onload = () => { // use arrow function here
-    //         this.setState({ imageSrc: imageSrc })
-    //     }
+        primaryImage.onload = () => { // use arrow function here
+            this.setState({ imageSrc: imageSrc })
+        }
 
-    //     primaryImage.src = imageSrc // do it after you set onload handler
-    // }
+        primaryImage.src = imageSrc // do it after you set onload handler
+    }
 
     componentWillReceiveProps() {
         console.log(this.props);
