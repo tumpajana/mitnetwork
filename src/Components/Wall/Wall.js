@@ -35,6 +35,7 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import { connect } from 'react-redux';
 import { wallActions } from '../../actions';
+import getCities from '../../Services/getCities';
 
 const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
 
@@ -115,7 +116,12 @@ class ActualWall extends Component {
 
   componentDidMount() {
     //get post
+    console.log(this.props);
     this.props.dispatch(wallActions.getAll());
+  }
+
+  componentWillReceiveProps() {
+    console.log(this.props);
   }
 
   renderUser = (result) => {
@@ -433,6 +439,22 @@ class ActualWall extends Component {
     });
   };
 
+
+  renderUser = (result) => {
+    let _base = this;
+    _base.setState({ userProfile: result });
+    _base.setState({ userName: result.name });
+    _base.setState({ avatar: sessionStorage.getItem("avatar") });
+    if (this.state.userProfile.imageId) {
+      this.setState({ imageUrl: 'http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=' + this.state.userProfile.imageId._id })
+    } else if (this.state.userProfile.providerPic) {
+      console.log(this.state.userProfile.providerPic);
+      this.setState({ imageUrl: this.state.userProfile.providerPic })
+    } else {
+      this.setState({ imageUrl: User })
+    }
+  }
+
   // onChangeValue = (e) => {
   //  this.setState({enablePost: true})
   // [e.target.name] = e.target.value;                        //updating value
@@ -463,7 +485,7 @@ class ActualWall extends Component {
                     <Col span={3}>
 
                       <div className="userprflimg">
-                        <img src={this.state.avatar} />
+                        {/* <img src={this.state.imageUrl} /> */}
                       </div>
                     </Col>
                     <Col span={21}>
@@ -539,14 +561,14 @@ class ActualWall extends Component {
 
         {/* posted blog html start */}
         <span>{this.state.message}</span>
-        {this.state.postList.map((item, pIndex) => {
+        {this.props.wall.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
               <div className="mitpic">
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 5 }}>
                     <div className="userpicpost">{
-                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <img src={User} />
+                      (item.userId.imageId) ? <img src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <ImageLoader src={User} />
                     }
                     </div>
                   </Col>
@@ -565,12 +587,12 @@ class ActualWall extends Component {
                   <h3>{item.like.length}Claps</h3>{
                     (item.like).indexOf(sessionStorage.getItem('userId')) > -1 ?
                       <button title="like" type="button" className="ant-btn" >
-                        <ImageLoader className="clapicon" src={clapbutton} />
+                        <img className="clapicon" src={clapbutton} />
                         <span>UnClap</span>
                       </button>
                       :
                       <button onClick={() => { this.postLike(item._id) }} title="like" type="button" className="ant-btn">
-                        <ImageLoader className="clapicon" src={clapbutton} />
+                        <img className="clapicon" src={clapbutton} />
                         <span>Clap</span>
                       </button>
                   }
@@ -587,13 +609,13 @@ class ActualWall extends Component {
 
                   <Col xs={5} sm={3} md={2}>
                     <div className="commentImg">
-                      <ImageLoader src={this.state.avatar} />
+                      <img src={this.state.avatar} />
                     </div>
                   </Col>
 
                   <Col xs={19} sm={21} md={22}>
                     <div className="commentText">
-                      <ImageLoader src={camera} />
+                      <img src={camera} />
                       <TextArea rows={1} ref="commentText" defaultValue={this.state.comments.comment} onChange={(e) => this.writeComment(item._id, e)} onKeyPress={this.postComment} />
                     </div>
                   </Col>
@@ -609,7 +631,7 @@ class ActualWall extends Component {
                         <Col xs={3} sm={3} md={2}>
                           <div className="commentImg">
                             {
-                              (list.userId.imageId) ? <ImageLoader src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <ImageLoader src={list.userId.providerPic} /> : <ImageLoader src={User} />
+                              (list.userId.imageId) ? <img src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + list.userId.imageId._id} /> : (list.userId.providerPic) ? <img src={list.userId.providerPic} /> : <img src={User} />
                             }
                           </div>
                         </Col>
@@ -670,25 +692,7 @@ export default Wall;
 class PostContent extends Component {
   constructor(props) {
     super(props);
-    console.log('post content0', this.props.item.imageId)
-    this.state = {
-      imgsrc: (this.props.item.imageId.length > 0) ? "" + this.props.item.imageId[0]._id + '&select=thumbnail' : ''
-    }
   }
-
-  // componentWillMount() {
-  //   console.log('post comment component will mount')
-  //  if(this.props.item.imageId.length>0){
-  //   var primaryImage = new Image() ;// create an image object programmatically
-
-  //   // console.log(primaryImage)
-  //   primaryImage.onload=()=> { 
-  //     this.setState({ imgsrc: 'http://mitapi.memeinfotech.com:5000/file/getImage?imageId=' + this.props.item.imageId[0]._id })
-  //   }
-  //   primaryImage.src = this.state.imgsrc // do it
-  //  }
-
-  // }
 
 
   render() {
@@ -698,7 +702,7 @@ class PostContent extends Component {
           ((this.props.item.imageId[0].file.mimetype).match("image/")) ?
             <LightboxExample imageUrls={this.props.item.imageId}></LightboxExample>
             : ((this.props.item.imageId[0].file.mimetype).match("video/")) ? (
-              <VideoTemplate src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.item.imageId[0]._id}></VideoTemplate>
+              <VideoTemplate src={"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.item.imageId[0]._id}></VideoTemplate>
             ) : ''
           : ''
         }
@@ -723,8 +727,8 @@ class CustomGallery extends React.Component {
     this.state = {
       images: this.props.src.map((item) => {
         return {
-          src: "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item._id,
-          thumbnail: "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item._id,
+          src: "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + item._id,
+          thumbnail: "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + item._id,
           thumbnailWidth: 320,
           thumbnailHeight: 212
         }

@@ -8,17 +8,20 @@ import './Image.css';
 class ImageLoader extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props.src);
         this.state = {
-            imageSrc: (this.props.src) ? "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.src + "&select=thumbnail" : loading,
+            imageSrc:  (this.props.type == 'avatar')?"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src : "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src + "&select=thumbnail",
+            // imageSrc:  (this.props.type == 'avatar')?"http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src:"",
             spin: true,
             className: (this.props.className) ? this.props.className : '',
-            type: (this.props.type) ? this.props.type : ''
+            // type: (this.props.type=='avatar') 
         }
+        console.log("Image Src is",this.state.imageSrc)
     }
 
     componentDidMount() {
         let primaryImage = new Image();
-        let imageSrc = (this.props.src) ? "http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + this.props.src : loading;
+        let imageSrc = "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src;
 
         primaryImage.onload = () => { // use arrow function here
             this.setState({ imageSrc: imageSrc })
@@ -26,37 +29,23 @@ class ImageLoader extends Component {
 
         primaryImage.src = imageSrc // do it after you set onload handler
     }
-    // componentWillMount(){
-    //     const primaryImage = new Image() // create an image object programmatically
-    //     console.log(primaryImage)
-    //     // primaryImage.onload = () => { // use arrow function here
-    //     //     //   console.log(`image #${index + 1} is loaded!`)
-    //     //     // copy images array from state
-    //     //     console.log('jhgf')
-    //     //     this.setState({ imageUrl: this.props.src})
-    //     // }
-    //     // primaryImage.src = this.state.imageUrl // do it after you set onload handler
-    // }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.props.src != nextProps.src) {
-    //         this.setState({
-    //             imageUrl: this.props.src
-    //         });
-    //         let _base = this;
-    //         getImage(nextProps.src)
-    //             .then(function (success) {
-    //                 _base.setState({ imageUrl: success });
-    //             }, function (error) {
-    //                 console.log(error);
-    //             });
-    //     } else {
-    //         console.log("same image");
-    //     }
-    // }
+    componentWillReceiveProps() {
+        console.log(this.props);
+         let primaryImage = new Image();
+        let imageSrc = "http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/file/getImage?imageId=" + this.props.src;
+        primaryImage.onload = () => { // use arrow function here
+            this.setState({ imageSrc: imageSrc })
+        }
+
+        primaryImage.src = imageSrc // do it after you set onload handler
+    }
+    
+
 
     render() {
         return (
+         
             <img src={this.state.imageSrc} className={this.state.className} />
         );
     }

@@ -2,21 +2,25 @@ import React, { Component } from 'react';
 import Lightbox from 'react-image-lightbox';
 import './Photo.css';
 import {Row,Col} from 'antd';
+import ImageLoader from './Image/Image.js';
 export default class LightboxExample extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props)
         this.state = {
             photoIndex: 0,
             isOpen: false,
             images: this.props.imageUrls,
             hasPrevious: false,
             hasNext: (this.props.imageUrls.length > 1) ? true : false,
-            imagePath:"http://mitapi.memeinfotech.com:5000/file/getImage?imageId="
+            imagePath:this.props.imageUrls[0]._id
+
         };
     }
 
     calculateState = () => {
         let length = this.state.images.length;
+        console.log(this.state.images);
         let index = this.state.photoIndex; 0
         console.log(length, index);
         if (index > 0 && index < length - 1) {
@@ -89,7 +93,7 @@ export default class LightboxExample extends Component {
         var numImages = this.props.imageUrls.length;
         var divStyle = {
             color: 'white',
-            backgroundImage: 'url("http://mitapi.memeinfotech.com:5000/file/getImage?imageId=5acc6ac482366c7c1ead2fe5")',
+            backgroundImage: 'url("http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000/?imageId=5acc6ac482366c7c1ead2fe5")',
             WebkitTransition: 'all', // note the capital 'W' here
             msTransition: 'all' // 'ms' is the only lowercase vendor prefix
           };
@@ -101,7 +105,7 @@ export default class LightboxExample extends Component {
                      <Row>
                     <Col md={24}>
                 <div className="ImgGrid3">
-                    <img onClick={() => this.showImage(0)} className="cell_1h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                <ImageLoader onClick={() => this.showImage(0)} className="cell_1h" src={this.props.imageUrls[0]._id} type="thumnail" />
                     </div>
                     </Col>
                 </Row>
@@ -114,12 +118,12 @@ export default class LightboxExample extends Component {
               <Row>
                     <Col md={6}>
                 <div className="ImgGrid2">
-                    <img onClick={() => this.showImage(0)} className="cell_2h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+               <ImageLoader onClick={() => this.showImage(0)} className="cell_2h" src={this.props.imageUrls[0]._id} type="thumnail" />
                     </div>
                     </Col>
                     <Col md={6}>
                     <div className="ImgGrid2">
-                    <img onClick={() => this.showImage(1)} className="cell_2h" src={this.state.imagePath+this.props.imageUrls[1]._id} />
+                     <ImageLoader onClick={() => this.showImage(1)} className="cell_2h" src={this.props.imageUrls[1]._id} type="thumnail" />
                     </div>
                     </Col>
                 </Row>
@@ -132,17 +136,17 @@ export default class LightboxExample extends Component {
                  <Row>
                     <Col md={12}>
                 <div className="ImgGrid">
-                    <img onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                 <ImageLoader onClick={() => this.showImage(0)} className="cell_3h" src={this.props.imageUrls[0]._id} type="thumnail" />
                     </div>
                     </Col>
                     <Col md={12}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+                    <ImageLoader onClick={() => this.showImage(1)} className="cell_3h" src={this.props.imageUrls[1]._id} type="thumnail" />
                     </div>
                     </Col>
                     <Col md={12}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+                    <ImageLoader onClick={() => this.showImage(2)} className="cell_3h" src={this.props.imageUrls[2]._id} type="thumnail" />
                     </div>
                     </Col>
                 </Row>
@@ -155,24 +159,24 @@ export default class LightboxExample extends Component {
                 <Row>
                     <Col md={6}>
                 <div className="ImgGrid">
-                    <img onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                <ImageLoader onClick={() => this.showImage(0)} className="cell_3h" src={this.props.imageUrls[0]._id} type="thumnail" />
                     </div>
                     </Col>
                     <Col md={6}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+                    <ImageLoader onClick={() => this.showImage(1)} className="cell_3h" src={this.props.imageUrls[1]._id} type="thumnail" />
                     </div>
                     </Col>
                     </Row>
                     <Row>
                     <Col md={6}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+             <ImageLoader onClick={() => this.showImage(2)} className="cell_3h" src={this.props.imageUrls[2]._id} type="thumnail" />
                     </div>
                     </Col>
                     <Col md={6}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(3)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[3]._id} />
+                 <ImageLoader onClick={() => this.showImage(3)} className="cell_3h" src={this.props.imageUrls[3]._id} type="thumnail" />
 
                  
                 </div>
@@ -189,24 +193,24 @@ export default class LightboxExample extends Component {
              <Row>
                  <Col md={6}>
                 <div className="ImgGrid">
-                    <img onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                {(this.state.imagePath!="" )? <ImageLoader onClick={() => this.showImage(0)} className="cell_3h" src={this.state.imagePath} type="thumnail" />:""}
                     </div>
                 </Col>
                 <Col md={6}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+                    {(this.state.imagePath!="" )? <ImageLoader onClick={() => this.showImage(1)} className="cell_3h" src={this.state.imagePath} type="thumnail" />:""}
                     </div>
                  </Col>
                  </Row>
                  <Row>
                  <Col md={6}>
                     <div className="ImgGrid">
-                    <img onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath+this.props.imageUrls[0]._id} />
+                    {(this.state.imagePath!="" )? <ImageLoader onClick={() => this.showImage(2)} className="cell_3h" src={this.state.imagePath} type="thumnail" />:""}
                     </div>
                    </Col>
                    <Col md={6}>
                     <div className="ImgGrid1">
-                    <img onClick={() => this.showImage(3)} className="cell_4h" src={this.state.imagePath+this.props.imageUrls[2]._id} />
+                    {(this.state.imagePath!="" )? <ImageLoader onClick={() => this.showImage(3)} className="cell_4h" src={this.state.imagePath} type="thumnail" />:""}
                     <span className="cell_5h">+{numImages - 3}</span>
                  
                 </div>

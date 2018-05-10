@@ -13,6 +13,7 @@ import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import * as actions from '../../reducers/action';
 // import NumberFormat from 'react-number-format';
 
 const RadioGroup = Radio.Group;
@@ -133,7 +134,7 @@ class Signup extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.register();
+        this.register(values);
       }
 
     });
@@ -161,30 +162,20 @@ class Signup extends Component {
   
   
   //submit registration form
-  register = () => {
+  register = (values) => {
+    console.log(values);
      this.setState({ show: true });
     this.setState({ iconLoading: true });
-    PostData(this.state).then((result) => {
-       this.setState({ show: false });
-      let response = result;
-      console.log(result)
-      if (response.error == false) {
-        this.openNotificationWithIcon('success', response.message);
-        this.setState({ iconLoading: false });
-        if (response.user) {
-           sessionStorage.setItem('userId', response.user._id);
-          let _base = this;
-            setTimeout(function(){
-                _base.setState({ redirectToReferrer: true });
-            },500);
-        }
-      }
-      else if (response.error == true) {
-        this.setState({ iconLoading: false });
-        this.openNotificationWithIcon('warning', response.message);
-      }
-
-    });
+    let data={
+      userName: values.Username,
+      email: values.email,
+      name: values.name,
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+      phoneNumber: values.phoneNumber,
+    }
+    console.log(data);
+        actions.Register(data);
   }
 
   facebookLogin = (res, type) => {
@@ -220,9 +211,9 @@ class Signup extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    if (this.state.redirectToReferrer) {
-      return <Redirect to="/layout/profile" />
-    }
+    // if (this.state.redirectToReferrer) {
+    //   return <Redirect to="/layout/profile" />
+    // }
     const { userName } = this.state;
 
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
@@ -267,7 +258,7 @@ class Signup extends Component {
                               maxLength="30"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               suffix={suffix}
-                              onChange={this.onChangeValue}
+                              // onChange={this.onChangeValue}
                             />
                           )}
                         </FormItem>
@@ -280,7 +271,7 @@ class Signup extends Component {
                               name="userName"
                               maxLength="20"
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeValue}
+                              // onChange={this.onChangeValue}
                             />
                           )}
                         </FormItem>
@@ -297,7 +288,7 @@ class Signup extends Component {
                               maxLength="30"
                               autoComplete="off"
                               prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeValue}
+                              // onChange={this.onChangeValue}
                             />
                           )}
                         </FormItem>
@@ -313,7 +304,7 @@ class Signup extends Component {
                               maxLength="10"
                               autoComplete="off"
                               prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeValue}
+                              // onChange={this.onChangeValue}
                             />
                           )}
                         </FormItem>
@@ -330,7 +321,7 @@ class Signup extends Component {
                               minLength="6"
                               maxLength="10"
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              onChange={this.onChangeValue}
+                              // onChange={this.onChangeValue}
                             />
                           )}
                         </FormItem>
@@ -349,7 +340,7 @@ class Signup extends Component {
                               maxLength="10"
                               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               name="confirmPassword"
-                              onChange={this.onChangeValue}
+                              // onChange={this.onChangeValue}
                             />
                           )}
                         </FormItem>
