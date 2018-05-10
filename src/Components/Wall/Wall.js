@@ -30,13 +30,13 @@ import LightboxExample from "../../Components/Photogallery";
 import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import { connect } from 'react-redux';
 import { wallActions } from '../../actions';
 
-// const socket = io('http://mitapi.memeinfotech.com:5000');
+const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
 
 const { TextArea } = Input;
 
@@ -158,9 +158,9 @@ class ActualWall extends Component {
       // debugger;
       console.log(result);
 
-      let _base=this
-      setTimeout(function(){
-         _base.setState({ show: false });
+      let _base = this
+      setTimeout(function () {
+        _base.setState({ show: false });
         _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       }, 2000);
       _base.setState({ fileNew: [] })
@@ -463,7 +463,7 @@ class ActualWall extends Component {
                     <Col span={3}>
 
                       <div className="userprflimg">
-                        <ImageLoader src={this.state.avatar} />
+                        <img src={this.state.avatar} />
                       </div>
                     </Col>
                     <Col span={21}>
@@ -546,7 +546,7 @@ class ActualWall extends Component {
                 <Row type="flex" justify="space-around" align="middle">
                   <Col md={{ span: 2 }} sm={{ span: 3 }} xs={{ span: 5 }}>
                     <div className="userpicpost">{
-                      (item.userId.imageId) ? <ImageLoader src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <ImageLoader src={item.userId.providerPic} /> : <ImageLoader src={User} />
+                      (item.userId.imageId) ? <img src={"http://mitapi.memeinfotech.com:5000/file/getImage?imageId=" + item.userId.imageId._id} /> : (item.userId.providerPic) ? <img src={item.userId.providerPic} /> : <img src={User} />
                     }
                     </div>
                   </Col>
