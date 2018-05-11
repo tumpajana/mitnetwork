@@ -12,7 +12,9 @@ import FacebookloginData from '../../Services/socialapi'
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actions from '../../reducers/action';
+import * as actionCreater from '../../reducers/action';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -134,7 +136,7 @@ class Signin extends Component {
     email:values.email,
     password:values.password
   }
-      actions.Login(data,this.props.history);
+      this.props.actions.Login(data,this.props.history);
       this.setState({ show: false });
       this.setState({ iconLoading: false });
   }
@@ -313,8 +315,15 @@ class Signin extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return state
+}
+function mapDispatchToProps(dispatch, state) {
+  return ({
+      actions: bindActionCreators(actionCreater, dispatch)
+  })
+}
+const WrappedNewProject = Form.create()(Signin);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);
 
-Form.create()(Signin);
-
-export default Form.create()(Signin);
 

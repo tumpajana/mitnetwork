@@ -13,7 +13,9 @@ import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actions from '../../reducers/action';
+import * as actionCreater from '../../reducers/action';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 // import NumberFormat from 'react-number-format';
 
 const RadioGroup = Radio.Group;
@@ -175,7 +177,7 @@ class Signup extends Component {
       phoneNumber: values.phoneNumber,
     }
     console.log(data);
-        actions.Register(data);
+        this.props.actions.Register(data);
   }
 
   facebookLogin = (res, type) => {
@@ -408,6 +410,13 @@ class Signup extends Component {
     );
   }
 }
-Form.create()(Signup);
-
-export default Form.create()(Signup);
+const mapStateToProps = (state) => {
+  return state
+}
+function mapDispatchToProps(dispatch, state) {
+  return ({
+      actions: bindActionCreators(actionCreater, dispatch)
+  })
+}
+const WrappedNewProject = Form.create()(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);
