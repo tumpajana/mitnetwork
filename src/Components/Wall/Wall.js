@@ -34,9 +34,8 @@ import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import { connect } from 'react-redux';
-import { wallActions } from '../../actions';
+import * as actionCreater from '../../redux/action';
 import getCities from '../../Services/getCities';
-import * as actionCreater from '../../reducers/action';
 
 // const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
 
@@ -118,7 +117,7 @@ class ActualWall extends Component {
   componentDidMount() {
     //get post
     console.log(this.props);
-    this.props.dispatch(wallActions.getAll());
+    // this.props.dispatch(wallActions.getAll());
   }
 
   componentWillReceiveProps() {

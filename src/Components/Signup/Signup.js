@@ -13,10 +13,9 @@ import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actionCreater from '../../reducers/action';
+import * as actionCreater from '../../redux/action';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
-// import NumberFormat from 'react-number-format';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -181,24 +180,25 @@ class Signup extends Component {
   }
 
   facebookLogin = (res, type) => {
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      let response = result;
-      console.log("registration", result);
-      this.setState({
-        fbIcon: 'fa fa-facebook',
-        fbDisabled: false,
-        gDisabled: false
-      });
-      if (response.error == false) {
-        if (response.result) {
-          sessionStorage.setItem('userId', response.result._id);
-          this.setState({ redirectToReferrer: true });
-        }
-      } else {
-        this.openNotificationWithIcon('warning', response.message);
-      }
+    this.props.actions.FacebookloginData(this.state.facebookInfo);
+    // .then((result) => {
+    //   let response = result;
+    //   console.log("registration", result);
+    //   this.setState({
+    //     fbIcon: 'fa fa-facebook',
+    //     fbDisabled: false,
+    //     gDisabled: false
+    //   });
+    //   if (response.error == false) {
+    //     if (response.result) {
+    //       sessionStorage.setItem('userId', response.result._id);
+    //       this.setState({ redirectToReferrer: true });
+    //     }
+    //   } else {
+    //     this.openNotificationWithIcon('warning', response.message);
+    //   }
 
-    });
+    // });
   }
 
 

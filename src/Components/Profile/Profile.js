@@ -19,12 +19,12 @@ import getUserInfo from '../../Services/getUserInfo';
 import Image from '../Image/Image';
 import ReactFileReader from 'react-file-reader';
 import base64Img from 'base64-img';
-import Loading from 'react-loading-bar'
-import 'react-loading-bar/dist/index.css'
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import ImageLoader from '../Image/Image.js';
-import * as actionCreater from '../../reducers/action';
+import * as actionCreater from '../../';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 

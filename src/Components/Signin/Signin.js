@@ -12,7 +12,7 @@ import FacebookloginData from '../../Services/socialapi'
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actionCreater from '../../reducers/action';
+import * as actionCreater from '../../redux/action';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 
@@ -136,6 +136,7 @@ class Signin extends Component {
     email:values.email,
     password:values.password
   }
+
       this.props.actions.Login(data,this.props.history);
       this.setState({ show: false });
       this.setState({ iconLoading: false });
@@ -143,20 +144,21 @@ class Signin extends Component {
 
   facebookLogin = (res, type) => {
     this.setState({ show: false });
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      this.setState({
-        fbIcon: 'fa fa-facebook',
-        fbDisabled: false,
-        gDisabled: false
-      });
-      this.setState({ show: true });
-      let response = result;
-      console.log(response)
-      if (response.error == false) {
-        sessionStorage.setItem('userId', response.result._id);
-        this.setState({ redirectToReferrer: true });
-      }
-    });
+    this.props.actions.FacebookloginData(this.state.facebookInfo)
+    // .then((result) => {
+    //   this.setState({
+    //     fbIcon: 'fa fa-facebook',
+    //     fbDisabled: false,
+    //     gDisabled: false
+    //   });
+    //   this.setState({ show: true });
+    //   let response = result;
+    //   console.log(response)
+    //   if (response.error == false) {
+    //     sessionStorage.setItem('userId', response.result._id);
+    //     this.setState({ redirectToReferrer: true });
+    //   }
+    // });
   }
 
   // notification show
