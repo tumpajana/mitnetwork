@@ -13,8 +13,9 @@ import { browserHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actions from '../../reducers/action';
-// import NumberFormat from 'react-number-format';
+import * as actionCreater from '../../redux/action';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -179,24 +180,25 @@ class Signup extends Component {
   }
 
   facebookLogin = (res, type) => {
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      let response = result;
-      console.log("registration", result);
-      this.setState({
-        fbIcon: 'fa fa-facebook',
-        fbDisabled: false,
-        gDisabled: false
-      });
-      if (response.error == false) {
-        if (response.result) {
-          sessionStorage.setItem('userId', response.result._id);
-          this.setState({ redirectToReferrer: true });
-        }
-      } else {
-        this.openNotificationWithIcon('warning', response.message);
-      }
+    this.props.actions.FacebookloginData(this.state.facebookInfo);
+    // .then((result) => {
+    //   let response = result;
+    //   console.log("registration", result);
+    //   this.setState({
+    //     fbIcon: 'fa fa-facebook',
+    //     fbDisabled: false,
+    //     gDisabled: false
+    //   });
+    //   if (response.error == false) {
+    //     if (response.result) {
+    //       sessionStorage.setItem('userId', response.result._id);
+    //       this.setState({ redirectToReferrer: true });
+    //     }
+    //   } else {
+    //     this.openNotificationWithIcon('warning', response.message);
+    //   }
 
-    });
+    // });
   }
 
 
@@ -408,6 +410,13 @@ class Signup extends Component {
     );
   }
 }
-Form.create()(Signup);
-
-export default Form.create()(Signup);
+const mapStateToProps = (state) => {
+  return state
+}
+function mapDispatchToProps(dispatch, state) {
+  return ({
+      actions: bindActionCreators(actionCreater, dispatch)
+  })
+}
+const WrappedNewProject = Form.create()(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);

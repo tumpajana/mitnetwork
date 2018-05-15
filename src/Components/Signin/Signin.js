@@ -12,7 +12,9 @@ import FacebookloginData from '../../Services/socialapi'
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actions from '../../reducers/action';
+import * as actionCreater from '../../redux/action';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -141,20 +143,21 @@ class Signin extends Component {
 
   facebookLogin = (res, type) => {
     this.setState({ show: false });
-    FacebookloginData(this.state.facebookInfo).then((result) => {
-      this.setState({
-        fbIcon: 'fa fa-facebook',
-        fbDisabled: false,
-        gDisabled: false
-      });
-      this.setState({ show: true });
-      let response = result;
-      console.log(response)
-      if (response.error == false) {
-        sessionStorage.setItem('userId', response.result._id);
-        this.setState({ redirectToReferrer: true });
-      }
-    });
+    this.props.actions.FacebookloginData(this.state.facebookInfo)
+    // .then((result) => {
+    //   this.setState({
+    //     fbIcon: 'fa fa-facebook',
+    //     fbDisabled: false,
+    //     gDisabled: false
+    //   });
+    //   this.setState({ show: true });
+    //   let response = result;
+    //   console.log(response)
+    //   if (response.error == false) {
+    //     sessionStorage.setItem('userId', response.result._id);
+    //     this.setState({ redirectToReferrer: true });
+    //   }
+    // });
   }
 
   // notification show
@@ -313,8 +316,15 @@ class Signin extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return state
+}
+function mapDispatchToProps(dispatch, state) {
+  return ({
+      actions: bindActionCreators(actionCreater, dispatch)
+  })
+}
+const WrappedNewProject = Form.create()(Signin);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);
 
-Form.create()(Signin);
-
-export default Form.create()(Signin);
 

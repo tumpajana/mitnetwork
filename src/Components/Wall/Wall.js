@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import Avatar, { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Header from '../Header/Header.js';
@@ -31,14 +30,14 @@ import LightboxExample from "../../Components/Photogallery";
 import ImageLoader from '../Image/Image';
 import Data_Store from './../../redux';
 import getUserInfo from '../../Services/getUserInfo';
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import { connect } from 'react-redux';
-import { wallActions } from '../../actions';
+import * as actionCreater from '../../redux/action';
 import getCities from '../../Services/getCities';
 
-// const socket = io('http://mitapi.memeinfotech.com:5000');
+// const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
 
 const { TextArea } = Input;
 
@@ -118,7 +117,7 @@ class ActualWall extends Component {
   componentDidMount() {
     //get post
     console.log(this.props);
-    this.props.dispatch(wallActions.getAll());
+    // this.props.dispatch(wallActions.getAll());
   }
 
   componentWillReceiveProps() {
@@ -165,9 +164,9 @@ class ActualWall extends Component {
       // debugger;
       console.log(result);
 
-      let _base=this
-      setTimeout(function(){
-         _base.setState({ show: false });
+      let _base = this
+      setTimeout(function () {
+        _base.setState({ show: false });
         _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
       }, 2000);
       _base.setState({ fileNew: [] })
