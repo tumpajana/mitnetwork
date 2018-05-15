@@ -33,8 +33,10 @@ import getUserInfo from '../../Services/getUserInfo';
 import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import { connect } from 'react-redux';
 import * as actionCreater from '../../Redux/Action';
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+
 import {wall} from '../../Redux/Reducers/WallAction';
 import getCities from '../../Services/getCities';
 
@@ -672,19 +674,28 @@ class ActualWall extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  console.log("redux state", state);
-  const { wall } = state;
-  console.log("Posts", wall);
-  return {
-    wall
-  };
+// function mapStateToProps(state) {
+//   console.log("redux state", state);
+//   const { wall } = state;
+//   console.log("Posts", wall);
+//   return {
+//     wall
+//   };
+// }
+
+
+// const Wall = connect(mapStateToProps)(ActualWall);
+// export default Wall;
+const mapStateToProps = (state) => {
+  return state
 }
-
-
-const Wall = connect(mapStateToProps)(ActualWall);
+function mapDispatchToProps(dispatch, state) {
+  return ({
+      actions: bindActionCreators(actionCreater, dispatch)
+  })
+}
+const Wall = connect(mapStateToProps,mapDispatchToProps)(ActualWall);
 export default Wall;
-
 
 
 

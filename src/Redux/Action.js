@@ -15,6 +15,7 @@ export function Login(data,path) {
     console.log(data)
     console.log(APIURL)
     let BaseURL = APIURL + 'user/login';
+    return (dispatch) => {
         fetch(BaseURL, {
             headers: {
                 'Accept': 'application/json',
@@ -39,12 +40,14 @@ export function Login(data,path) {
             openNotification('warning', 'Login failed');
         });
     }
+}
 
 // registration api
 export function Register(data,path) {
     console.log(data)
     console.log(APIURL)
     let BaseURL = APIURL + 'user/registration';
+    return (dispatch) => {
         fetch(BaseURL, {
             headers: {
                 'Accept': 'application/json',
@@ -69,6 +72,7 @@ export function Register(data,path) {
         .catch((error) => {
             openNotification('warning', 'Registration failed');
         });
+    }
     }
 
 // wallpost api
