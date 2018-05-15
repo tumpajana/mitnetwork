@@ -34,10 +34,11 @@ import io from 'socket.io-client';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import { connect } from 'react-redux';
-import * as actionCreater from '../../redux/action';
+import * as actionCreater from '../../Redux/Action';
+import {wall} from '../../Redux/Reducers/WallAction';
 import getCities from '../../Services/getCities';
 
-// const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
+const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
 
 const { TextArea } = Input;
 
@@ -108,9 +109,12 @@ class ActualWall extends Component {
       _base.renderUser(result);
     })
 
-    // socket.on('getUserInfo', function (postData) {
-    //   console.log(postData);
-    // });
+    socket.on('connect', function () {
+      socket.on('postUploded', function (postData) {
+        console.log(postData);
+      });
+
+    });
 
   }
 
@@ -796,5 +800,3 @@ class ImageTemplate extends Component {
     return (<ImageLoader src={this.props.src} />);
   }
 }
-
-

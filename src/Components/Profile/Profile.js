@@ -24,7 +24,7 @@ import 'react-loading-bar/dist/index.css';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import ImageLoader from '../Image/Image.js';
-import * as actionCreater from '../../';
+import * as actionCreater from '../../Redux/Action';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 
@@ -185,35 +185,35 @@ class Profile extends Component {
       qualification: this.state.user.qualification,
       designation: this.state.user.designation,
     }
-    this.props.actions.updateData(userData)
-    // .then((result) => {
-    //   let response = result;
-    //   console.log(response);
-    //   if (response.error == false) {
-    //     Data_Store.dispatch({
-    //       type: 'ProfileData',
-    //       value: response.user
-    //     })
-    //     let _base = this
-    //     setTimeout(function () {
-    //       _base.setState({ show: false });
-    //       _base.openNotificationWithIcon('success', response.message);
-    //     }, 2000);
-    //     this.setState({ iconLoading: false });
-    //   } else {
-    //     let _base = this
-    //     setTimeout(function () {
-    //       _base.openNotificationWithIcon('error', response.message);
-    //     }, 2000);
-    //   }
-    //   this.setState({ visible: false });
-    // }, (error) => {
-    //   let _base = this
-    //   setTimeout(function () {
-    //     _base.openNotificationWithIcon('error', 'Connection error');
-    //   }, 2000);
-    //   this.setState({ iconLoading: false });
-    // });
+    updateData(userData)
+    .then((result) => {
+      let response = result;
+      console.log(response);
+      if (response.error == false) {
+        Data_Store.dispatch({
+          type: 'ProfileData',
+          value: response.user
+        })
+        let _base = this
+        setTimeout(function () {
+          _base.setState({ show: false });
+          _base.openNotificationWithIcon('success', response.message);
+        }, 2000);
+        this.setState({ iconLoading: false });
+      } else {
+        let _base = this
+        setTimeout(function () {
+          _base.openNotificationWithIcon('error', response.message);
+        }, 2000);
+      }
+      this.setState({ visible: false });
+    }, (error) => {
+      let _base = this
+      setTimeout(function () {
+        _base.openNotificationWithIcon('error', 'Connection error');
+      }, 2000);
+      this.setState({ iconLoading: false });
+    });
   }
 
 
@@ -614,16 +614,16 @@ class Profile extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return state
-}
-function mapDispatchToProps(dispatch, state) {
-  return ({
-      actions: bindActionCreators(actionCreater, dispatch)
-  })
-}
+// const mapStateToProps = (state) => {
+//   return state
+// }
+// function mapDispatchToProps(dispatch, state) {
+//   return ({
+//       actions: bindActionCreators(actionCreater, dispatch)
+//   })
+// }
 // const WrappedNewProject = Form.create()(Signin);
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+// export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 
-// export default Profile
+export default Profile

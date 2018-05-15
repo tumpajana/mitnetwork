@@ -12,7 +12,7 @@ import FacebookloginData from '../../Services/socialapi'
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
-import * as actionCreater from '../../redux/action';
+import * as actionCreater from '../../Redux/Action';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 
