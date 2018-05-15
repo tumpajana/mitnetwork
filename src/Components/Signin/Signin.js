@@ -134,7 +134,7 @@ class Signin extends Component {
     email:values.email,
     password:values.password
   }
-      actions.Login(data,this.props.history);
+      actions.Login(data,this.props.history)
       this.setState({ show: false });
       this.setState({ iconLoading: false });
   }

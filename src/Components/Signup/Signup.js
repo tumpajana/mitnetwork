@@ -175,7 +175,7 @@ class Signup extends Component {
       phoneNumber: values.phoneNumber,
     }
     console.log(data);
-        actions.Register(data);
+        actions.Register(data,this.props.history);
   }
 
   facebookLogin = (res, type) => {
