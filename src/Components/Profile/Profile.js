@@ -185,35 +185,9 @@ class Profile extends Component {
       qualification: this.state.user.qualification,
       designation: this.state.user.designation,
     }
-    updateData(userData)
-    .then((result) => {
-      let response = result;
-      console.log(response);
-      if (response.error == false) {
-        Data_Store.dispatch({
-          type: 'ProfileData',
-          value: response.user
-        })
-        let _base = this
-        setTimeout(function () {
-          _base.setState({ show: false });
-          _base.openNotificationWithIcon('success', response.message);
-        }, 2000);
-        this.setState({ iconLoading: false });
-      } else {
-        let _base = this
-        setTimeout(function () {
-          _base.openNotificationWithIcon('error', response.message);
-        }, 2000);
-      }
-      this.setState({ visible: false });
-    }, (error) => {
-      let _base = this
-      setTimeout(function () {
-        _base.openNotificationWithIcon('error', 'Connection error');
-      }, 2000);
-      this.setState({ iconLoading: false });
-    });
+    this.props.actions.updateData(userData)
+    this.setState({ show: false });
+    this.setState({ iconLoading: false });
   }
 
 
@@ -226,21 +200,6 @@ class Profile extends Component {
     this.setState({ visible: false });
     this.setState({ hideText: false });
   }
-
-
-
-  edit = () => {
-    console.log('Dispaly data');
-  }
-
-  // notification show
-  openNotificationWithIcon = (type, content) => {
-    notification[type]({
-      message: type,
-      description: content,
-      duration: 1,
-    });
-  };
 
   // image file selected
   profilePicUpload = (e) => {
@@ -338,22 +297,23 @@ class Profile extends Component {
       imageId: data
     }
     let _base = this
-    updateData(userinfo).then((result) => {
-      console.log(result);
-      if (result.error == false) {
-        Data_Store.dispatch({
-          type: 'ProfileData',
-          value: result.user
-        })
-        _base.openNotificationWithIcon('success', 'Profile picture updated');
-      } else {
-        _base.openNotificationWithIcon('error', result.message);
-      }
-      _base.handleCancelEdit();
-    }, function (error) {
-      _base.openNotificationWithIcon('error', 'Profile picture not updated');
-      _base.handleCancelEdit();
-    });
+    this.props.actions.updateData(userinfo)
+    // .then((result) => {
+    //   console.log(result);
+    //   if (result.error == false) {
+    //     Data_Store.dispatch({
+    //       type: 'ProfileData',
+    //       value: result.user
+    //     })
+    //     _base.openNotificationWithIcon('success', 'Profile picture updated');
+    //   } else {
+    //     _base.openNotificationWithIcon('error', result.message);
+    //   }
+    //   _base.handleCancelEdit();
+    // }, function (error) {
+    //   _base.openNotificationWithIcon('error', 'Profile picture not updated');
+    //   _base.handleCancelEdit();
+    // });
   }
 
   render() {
@@ -614,16 +574,16 @@ class Profile extends Component {
     );
   }
 }
-// const mapStateToProps = (state) => {
-//   return state
-// }
-// function mapDispatchToProps(dispatch, state) {
-//   return ({
-//       actions: bindActionCreators(actionCreater, dispatch)
-//   })
-// }
-// const WrappedNewProject = Form.create()(Signin);
-// export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+const mapStateToProps = (state) => {
+  return state
+}
+function mapDispatchToProps(dispatch, state) {
+  return ({
+      actions: bindActionCreators(actionCreater, dispatch)
+  })
+}
+const WrappedNewProject = Form.create()(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 
-export default Profile
+// export default Profile

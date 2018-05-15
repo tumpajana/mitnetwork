@@ -118,198 +118,205 @@ export function WallGet(pagenumber) {
         });
 }
 
-// // update user api
-// export function updateData(userData) {
-//     console.log(userData)
-//     console.log(APIURL)
-//     let BaseURL = APIURL + 'user/update';
-//     return (dispatch) => {
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'PUT',
-//         body: JSON.stringify(userData)
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
-//         })
-//         .catch((error) => {
-//         });
-// }
-// }
+// update user api
+export function updateData(userData) {
+    console.log(userData)
+    console.log(APIURL)
+    let BaseURL = APIURL + 'user/update';
+    return (dispatch) => {
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'PUT',
+        body: JSON.stringify(userData)
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+                openNotification('success', 'User successfully done');
+            }
+        })
+        .catch((error) => {
+            openNotification('success', 'User not updated successfully');
+        });
+}
+}
 
-// // // UPDATE  ACTION
-// // function updateApi(list) {
-// //     return {
-// //         type: "UPDATAEDATA_DONE",
-// //         list
+// UPDATE  ACTION
+function updateApi(list) {
+    return {
+        type: "UPDATAEDATA_DONE",
+        list
 
-// //     }
-// // }
+    }
+}
 
-// // facebook login api
-// export function FacebookloginData(FacebookData) {
-//     console.log(FacebookData)
-//     console.log(APIURL)
-//     let BaseURL = APIURL + 'user/socialRegistration';
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'POST',
-//         body: JSON.stringify(FacebookData)
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
+// facebook login api
+export function FacebookloginData(FacebookData) {
+    console.log(FacebookData)
+    console.log(APIURL)
+    let BaseURL = APIURL + 'user/socialRegistration';
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(FacebookData)
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+            }
 
-//         })
-//         .catch((error) => {
-//         });
-// }
+        })
+        .catch((error) => {
+        });
+}
 
-// // profile pic api 
-// export function profilePic(filedata) {
-//     console.log(filedata)
-//     console.log(APIURL)
-//     let BaseURL = APIURL + 'file/upload';
-//     return (dispatch) => {
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             //     // 'Content-Type': 'application/json'
-//         },
-//         method: 'POST',
-//         body: filedata
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
+// profile pic api 
+export function profilePic(filedata) {
+    console.log(filedata)
+    console.log(APIURL)
+    let BaseURL = APIURL + 'file/upload';
+    return (dispatch) => {
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+         // 'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: filedata
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+                openNotification('success', 'Profile picture updated');
+            }
+            else{
+                openNotification('warning', 'Profile picture not updated');
+            }
 
-//         })
-//         .catch((error) => {
-//         });
-// }
-// }
+        })
+        .catch((error) => {
+            openNotification('warning', 'Profile picture not updated');
+        });
+}
+}
 
-// // // UPDATE  ACTION
-// // function profilepicApi(list) {
-// //     return {
-// //         type: "_DONE",
-// //         list
+// // PROFILEPIC  ACTION
+function profilepicApi(list) {
+    return {
+        type: "PROFILEPIC_DONE",
+        list
 
-// //     }
-// // }
+    }
+}
 
-// // get user profile api
-// export function getUserProfile(id) {
-//     console.log(APIURL)
-//     let BaseURL = APIURL + 'user/getSingle?userId=' + id;
-//     return (dispatch) => {
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'GET'
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
+// get user profile api
+export function getUserProfile(id) {
+    console.log(APIURL)
+    let BaseURL = APIURL + 'user/getSingle?userId=' + id;
+    return (dispatch) => {
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'GET'
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+            }
 
-//         })
-//         .catch((error) => {
-//         });
-// }
-// }
-// // // GET USER PROFILE  ACTION
-// // function updateApi(list) {
-// //     return {
-// //         type: "UPDATAEDAT_DONE",
-// //         list
+        })
+        .catch((error) => {
+        });
+}
+}
+// // GET USER PROFILE  ACTION
+function getuserprofileapi(list) {
+    return {
+        type: "GETUSERPROFILE_DONE",
+        list
 
-// //     }
-// // }
+    }
+}
 
-// // post like api
-// export function postLike(filedata) {
-//     console.log(filedata)
-//     console.log(APIURL)
-//     let BaseURL = APIURL + 'post/like';
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'PUT',
-//         body: JSON.stringify(filedata)
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
+// post like api
+export function postLike(filedata) {
+    console.log(filedata)
+    console.log(APIURL)
+    let BaseURL = APIURL + 'post/like';
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'PUT',
+        body: JSON.stringify(filedata)
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+            }
 
-//         })
-//         .catch((error) => {
-//         });
-// }
+        })
+        .catch((error) => {
+        });
+}
 
-// // comment post api
-// export function commentPost(commentData) {
-//     console.log(commentData);
-//     let BaseURL = APIURL + 'post/comment';
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'PUT',
-//         body: JSON.stringify(commentData)
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
+// comment post api
+export function commentPost(commentData) {
+    console.log(commentData);
+    let BaseURL = APIURL + 'post/comment';
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'PUT',
+        body: JSON.stringify(commentData)
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+            }
 
-//         })
-//         .catch((error) => {
-//         });
-// }
+        })
+        .catch((error) => {
+        });
+}
 
 
-// // post comment get api
-// export function getPostComments(postid) {
-//     console.log(postid);
-//     let BaseURL = APIURL + 'post/getCommentByPostId?postId=' + postid;
-//     fetch(BaseURL, {
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'GET',
-//     })
-//         .then((response) => response.json())
-//         .then((responseJSON) => {
-//             console.log(responseJSON)
-//             if (!responseJSON.error) {
-//             }
+// post comment get api
+export function getPostComments(postid) {
+    console.log(postid);
+    let BaseURL = APIURL + 'post/getCommentByPostId?postId=' + postid;
+    fetch(BaseURL, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'GET',
+    })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON)
+            if (!responseJSON.error) {
+            }
 
-//         })
-//         .catch((error) => {
-//         });
-// }
+        })
+        .catch((error) => {
+        });
+}
 

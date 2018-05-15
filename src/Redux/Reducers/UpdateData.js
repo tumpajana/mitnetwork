@@ -1,14 +1,14 @@
-// import { createStore, applyMiddleware } from 'redux';
-// import * as actionCreators from '../action';
+import { createStore, applyMiddleware } from 'redux';
+import * as actionCreators from '../Action';
 
-// // REDUCER FOR  CLIENT CREATION
-// export function updateData(state = {}, action) {
-//  switch (action.type) {
+// REDUCER FOR  CLIENT CREATION
+export function updateData(state = {}, action) {
+ switch (action.type) {
 
-//         case 'UPDATAEDAT_DONE':
-//             return action.response   //returning client created data
-//             break;
-//         default:
-//             return state
-//     }
-// }
+        case 'UPDATAEDATA_DONE':
+            return action.response   //returning client created data
+            break;
+        default:
+            return state
+    }
+}
