@@ -22,9 +22,6 @@ app.use(expressValidator());
 app.use(bodyParser.json());
 
 
-//var io = require('socket.io')(server);
-
-
 
 const userRoute = require('./mitServer/user.controller');
 const uploadRoute = require('./mitServer/upload/file.controller');

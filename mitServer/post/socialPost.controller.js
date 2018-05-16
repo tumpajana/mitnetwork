@@ -34,10 +34,9 @@ var returnRouter = function (io) {
                 response.status(500).json(postResponse);
             } else {
                 console.log(result);
-                // if (result) {
-                    console.log('Post Uploded Succesfully')
-                    io.emit('postUploded', result);
-                // }
+                console.log('Post Uploded Succesfully')    //for socket
+                io.emit('postUploded', result);
+
                 postResponse.error = false;
                 postResponse.user = result;
                 postResponse.message = ` Post  is uploded  successfully.`;
@@ -111,6 +110,8 @@ var returnRouter = function (io) {
                 commentesponse.message = `Error :` + error.message;
                 commentesponse.status(500).json(commentesponse);
             } else {
+                console.log('Comment Uploded Succesfully')    //for socket
+                io.emit('comment', result);
                 commentesponse.error = false;
                 commentesponse.result = result;
                 commentesponse.message = `Success`;

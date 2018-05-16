@@ -37,10 +37,10 @@ import * as actionCreater from '../../Redux/Action';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 
-import {wall} from '../../Redux/Reducers/WallAction';
+import { wall } from '../../Redux/Reducers/WallAction';
 import getCities from '../../Services/getCities';
 
-const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:8888');
+const socket = io('http://ec2-52-27-118-19.us-west-2.compute.amazonaws.com:5000');
 
 const { TextArea } = Input;
 
@@ -111,13 +111,12 @@ class ActualWall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on('connect', function () {
-      socket.on('postUploded', function (postData) {
-        console.log(postData);
-      });
-
+    socket.on("postUploded", function (data) {   // SOCKET CONNECT FOR POST
+      console.log("Got Post Data", data);
     });
-
+    socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
+      console.log("Got Comment Data", comment);
+    });
   }
 
   componentDidMount() {
@@ -164,13 +163,13 @@ class ActualWall extends Component {
 
   // actual api call wrapper to create a post of any type
   createPost = (postData) => {
-    // debugger;
-    this.setState({ show: true });
-    WallPost(postData).then((result) => {
-      // debugger;
-      console.log(result);
 
+    this.setState({ show: true });
+
+    WallPost(postData).then((result) => {
+      console.log(result);
       let _base = this
+
       setTimeout(function () {
         _base.setState({ show: false });
         _base.openNotificationWithIcon('success', " Post Uploaded Successfuly!");
@@ -691,10 +690,10 @@ const mapStateToProps = (state) => {
 }
 function mapDispatchToProps(dispatch, state) {
   return ({
-      actions: bindActionCreators(actionCreater, dispatch)
+    actions: bindActionCreators(actionCreater, dispatch)
   })
 }
-const Wall = connect(mapStateToProps,mapDispatchToProps)(ActualWall);
+const Wall = connect(mapStateToProps, mapDispatchToProps)(ActualWall);
 export default Wall;
 
 
