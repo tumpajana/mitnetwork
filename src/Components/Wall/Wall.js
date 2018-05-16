@@ -111,8 +111,11 @@ class ActualWall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on("postUploded", function (data) {
+    socket.on("postUploded", function (data) {   // SOCKET CONNECT FOR POST
       console.log("Got Post Data", data);
+    });
+    socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
+      console.log("Got Comment Data", comment);
     });
   }
 
