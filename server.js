@@ -7,18 +7,19 @@ var expressValidator = require('express-validator');
 var cors = require('cors');
 var app = express();
 var http = require('http');
+var server = http.createServer(app);
+var server1 = app.listen(8888);
 
 //middleware
 app.use(cors());
 app.use(expressValidator());
 // app.use (multer());
 //body-parser
-app.use(bodyParser.json())
-const server = http.createServer(app);
+app.use(bodyParser.json());
 
 
-var io = require('socket.io')(server);
-
+var io = require('socket.io')(server1);
+io.set('origins', 'http://localhost:3000');
 // put const here
 const userRoute = require('./mitServer/user.controller');
 const uploadRoute = require('./mitServer/upload/file.controller');
