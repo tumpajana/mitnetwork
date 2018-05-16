@@ -7,8 +7,12 @@ var expressValidator = require('express-validator');
 var cors = require('cors');
 var app = express();
 var http = require('http');
-var server = http.createServer(app);
-var server1 = app.listen(8888);
+var server = http.Server(app);
+var server1 = require('http').createServer();
+var io = require('socket.io')(server);
+server1.listen(8888);
+
+
 
 //middleware
 app.use(cors());
@@ -18,9 +22,10 @@ app.use(expressValidator());
 app.use(bodyParser.json());
 
 
-var io = require('socket.io')(server1);
-io.set('origins', 'http://localhost:3000');
-// put const here
+//var io = require('socket.io')(server);
+
+
+
 const userRoute = require('./mitServer/user.controller');
 const uploadRoute = require('./mitServer/upload/file.controller');
 const postRoute = require('./mitServer/post/socialPost.controller')(io);
@@ -39,9 +44,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
      });
  });
 
- io.use((socket)=>{
-    console.log("using "+socket.id)
- })
+//  io.use((socket)=>{
+//     console.log("using "+socket.id)
+//  })
  //socet disconnected
 
 //on successful connection
@@ -69,6 +74,6 @@ app.use('/post', postRoute);
 
 
 // port listen at
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('server started at port number :' + port);
 });
