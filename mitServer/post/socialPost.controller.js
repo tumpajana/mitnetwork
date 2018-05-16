@@ -9,7 +9,7 @@ var post = require('./socialPost.model');
 
 
 //  Api for post
-const returnRouter = function (io) {
+var returnRouter = function (io) {
 
     router.post('/socialPost', (request, response) => {
         console.log("post upload ");

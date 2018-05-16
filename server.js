@@ -17,9 +17,9 @@ app.use(bodyParser.json())
 const server = http.createServer(app);
 
 
-var io = require('socket.io')(server);
+var io = require('socket.io')(server,{origins:'*:*'});
 
-// put const here
+// put const here,
 const userRoute = require('./mitServer/user.controller');
 const uploadRoute = require('./mitServer/upload/file.controller');
 const postRoute = require('./mitServer/post/socialPost.controller')(io);
@@ -38,9 +38,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
      });
  });
 
- io.use((socket)=>{
-    console.log("using "+socket.id)
- })
+//  io.use((socket)=>{
+//     console.log("using "+socket.id)
+//  })
  //socet disconnected
 
 //on successful connection
