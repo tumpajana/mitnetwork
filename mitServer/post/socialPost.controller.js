@@ -34,10 +34,10 @@ const returnRouter = function (io) {
                 response.status(500).json(postResponse);
             } else {
                 console.log(result);
-                if (result) {
+                // if (result) {
                     console.log('Post Uploded Succesfully')
                     io.emit('postUploded', result);
-                }
+                // }
                 postResponse.error = false;
                 postResponse.user = result;
                 postResponse.message = ` Post  is uploded  successfully.`;
