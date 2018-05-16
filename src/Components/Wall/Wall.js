@@ -77,6 +77,7 @@ class ActualWall extends Component {
       totalPost: 0,
       totalPostList: [],
       iconLoading: false,
+      addNewPostButton:false,
       // enablePost: false,
       message: '',
       avatar: sessionStorage.getItem("avatar")
@@ -111,9 +112,7 @@ class ActualWall extends Component {
       _base.renderUser(result);
     })
 
-    socket.on("postUploded", function (data) {   // SOCKET CONNECT FOR POST
-      console.log("Got Post Data", data);
-    });
+  
     socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
       console.log("Got Comment Data", comment);
     });
@@ -122,12 +121,26 @@ class ActualWall extends Component {
   componentDidMount() {
     //get post
     console.log(this.props);
+this.socketConnectForPost()
+    // socket.on("postUploded", function (data) {   
+    //   console.log("....Got Post Data.....", data);
+    // });
     // this.props.dispatch(wallActions.getAll());
   }
 
-  componentWillReceiveProps() {
-    console.log(this.props);
+  componentWillReceiveProps(props) {
+    console.log(props);
+  
   }
+  // SOCKET CONNECT FOR POST
+  socketConnectForPost=()=>{
+    socket.on('postUploded', (data) => {
+      console.log('......NEW POST ADDED.......',data)
+      let _base=this
+      _base.props.actions.singlePost(data)
+      _base.setState({addNewPostButton:true})
+    })
+}
 
   renderUser = (result) => {
     this.setState({ userInfo: result });
@@ -168,6 +181,7 @@ class ActualWall extends Component {
 
     WallPost(postData).then((result) => {
       console.log(result);
+      
       let _base = this
 
       setTimeout(function () {
@@ -187,7 +201,7 @@ class ActualWall extends Component {
       _base.setState({ showPreviewIcon: false })
       _base.setState({ imageUploadList: [] });
       _base.setState({ videoUploadList: [] });
-      // this.getPosts();
+      this.getPosts();
     })
   }
 
@@ -431,8 +445,8 @@ class ActualWall extends Component {
 
   // ON MOVING TOP OF POSTS
   leavingBottom() {
-    // let x = this.state.pageNumber;
-    // this.setState({ pageNumber: x - 1 })
+    let x = this.state.pageNumber;
+    this.setState({ pageNumber: x - 1 })
   }
 
   // notification show
@@ -561,6 +575,10 @@ class ActualWall extends Component {
               </div>
             </div>
           </div>
+          {this.state.addNewPostButton==true?<div className="topBtnscroll">
+          <Button><Icon type="plus" /> 1 new post</Button>
+          </div>:''}
+          
         </div>
         {/* wall view section end */}
 
@@ -662,7 +680,7 @@ class ActualWall extends Component {
 
         })
         }
-        {/*this.getAllpost(); */}
+        {/* this.getAllpost() */}
         <div>
           <Waypoint onEnter={() => { console.log('last end'); }} onLeave={() => { console.log('Waypoint left') }} />
 

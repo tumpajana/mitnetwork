@@ -157,6 +157,8 @@ var returnRouter = function (io) {
                 likeResponse.message = `Error :` + error.message;
                 response.status(500).json(likeResponse);
             } else {
+                console.log('Comment/post Likes ')    //for socket
+                io.emit('like', result);
                 likeResponse.error = false;
                 likeResponse.result = result;
                 likeResponse.message = `Success`;

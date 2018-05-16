@@ -4,6 +4,7 @@ import * as actionCreators from '../Action';
 
 
 export function wall(state = [], action) {
+  console.log(action)
   switch (action.type) {
     case wallConstants.GETALL_REQUEST:
       return {
@@ -16,6 +17,10 @@ export function wall(state = [], action) {
       return { 
         error: action.error
       };
+      // case wallConstants.SINGLE_POST:
+      // return action.post
+
+      
     default:
       return state
   }

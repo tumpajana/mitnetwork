@@ -1,6 +1,7 @@
 import { APIURL } from '../urlconfig';
 import { push } from 'react-router-redux';
 import { Button, notification } from 'antd';
+import { Socket } from 'dgram';
 
 
 const openNotification = (type, content) => {
@@ -97,6 +98,20 @@ export function wallPost(postData) {
         })
         .catch((error) => {
         });
+}
+export function singlePost(postData){
+    console.log(postData)
+    return (dispatch) => {
+        dispatch(addPost(postData));
+    }
+}
+// ADD NEW POST  ACTION
+function addPost(post) {
+    return {
+        type: "SINGLE_POST",
+        post
+
+    }
 }
 
 // wallpost get api
@@ -213,7 +228,7 @@ export function profilePic(filedata) {
 }
 }
 
-// // PROFILEPIC  ACTION
+// // PROFILEPIC  ACTIONdispatch(member(responseJSON.result.members));
 function profilepicApi(list) {
     return {
         type: "PROFILEPIC_DONE",

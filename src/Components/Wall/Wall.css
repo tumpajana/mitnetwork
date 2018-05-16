@@ -657,3 +657,34 @@ video.videoWall {
 .upload-list-inline .ant-upload-animate-leave {
   animation-name: uploadAnimateInlineOut;
 } */
+
+
+.postarticlesec {
+    padding-top: 3em;
+    position: relative;
+}
+.topBtnscroll {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 4em;
+}
+.topBtnscroll button {
+    height: 39px;
+    outline:none;
+    background: #6b4eba;
+    color:#fff;
+    border: none;
+    font-size: 12px;
+    margin-top: 1em;
+}
+.topBtnscroll button:focus {
+    color:#fff;
+    outline:none;
+    background: #6b4eba;
+}
+.topBtnscroll button:hover {
+    outline:none;
+    color:#fff;
+    background: #6b4eba;
+}
