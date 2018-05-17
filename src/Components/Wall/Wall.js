@@ -113,15 +113,13 @@ class ActualWall extends Component {
     })
 
 
-    socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
-      console.log("Got Comment Data", comment);
-    });
+   
   }
 
   componentDidMount() {
-    //get post
     console.log(this.props);
     this.socketConnectForPost()
+    this.socketConnectForComment()  
   }
 
   componentWillReceiveProps(props) {
@@ -140,7 +138,12 @@ class ActualWall extends Component {
       _base.setState({ addNewPostButton: true })
     })
   }
-
+  // SOCKET CONNECT FOR COMMENT
+  socketConnectForComment = () => {
+    socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
+      console.log(".......Got Comment Data....", comment);
+    });
+  }
   renderUser = (result) => {
     this.setState({ userInfo: result });
     this.setState({ avatar: sessionStorage.getItem("avatar") });
