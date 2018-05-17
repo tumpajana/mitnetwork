@@ -59,7 +59,7 @@ class ActualWall extends Component {
         title: '',
         content: ''
       },
-      postList: this.props.wall,
+      postList:[],
       comments: {
         comment: '',
         postid: ''
@@ -77,7 +77,7 @@ class ActualWall extends Component {
       totalPost: 0,
       totalPostList: [],
       iconLoading: false,
-      addNewPostButton:false,
+      addNewPostButton: false,
       // enablePost: false,
       message: '',
       avatar: sessionStorage.getItem("avatar")
@@ -112,7 +112,7 @@ class ActualWall extends Component {
       _base.renderUser(result);
     })
 
-  
+
     socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
       console.log("Got Comment Data", comment);
     });
@@ -121,26 +121,25 @@ class ActualWall extends Component {
   componentDidMount() {
     //get post
     console.log(this.props);
-this.socketConnectForPost()
-    // socket.on("postUploded", function (data) {   
-    //   console.log("....Got Post Data.....", data);
-    // });
-    // this.props.dispatch(wallActions.getAll());
+    this.socketConnectForPost()
   }
 
   componentWillReceiveProps(props) {
     console.log(props);
-  
+    console.log(props.getWall)
+    console.log(this.state.postList)
+    console.log('heyy')
+
   }
   // SOCKET CONNECT FOR POST
-  socketConnectForPost=()=>{
+  socketConnectForPost = () => {
     socket.on('postUploded', (data) => {
-      console.log('......NEW POST ADDED.......',data)
-      let _base=this
+      console.log('......NEW POST ADDED.......', data)
+      let _base = this
       _base.props.actions.singlePost(data)
-      _base.setState({addNewPostButton:true})
+      _base.setState({ addNewPostButton: true })
     })
-}
+  }
 
   renderUser = (result) => {
     this.setState({ userInfo: result });
@@ -181,7 +180,7 @@ this.socketConnectForPost()
 
     WallPost(postData).then((result) => {
       console.log(result);
-      
+
       let _base = this
 
       setTimeout(function () {
@@ -201,37 +200,38 @@ this.socketConnectForPost()
       _base.setState({ showPreviewIcon: false })
       _base.setState({ imageUploadList: [] });
       _base.setState({ videoUploadList: [] });
-      this.getPosts();
     })
   }
 
   //get all post
-  getPosts(pageNumber) {
+  getPosts() {
+    this.props.actions.WallGet(this.state.pageNumber)
+    console.log(this.state.pageNumber)
+    // WallGet(pageNumber).then((result) => {
+    //   // debugger;
+    //   console.log(result);
+    //   if (result.result.length != 0) {
+    //     let posts = this.state.postList;
+    //     this.setState({ postList: posts.concat(result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })) });
+    //     // this.setState({ totalPost: result.total });
+    //     // result.result.forEach(element => {
+    //     //   let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
+    //     //   this.state.totalPostList.push(element)
+    //     // });
+    //     // console.log('api callpost  list', this.state.totalPostList)
+    //     // this.setState({ postList: this.state.totalPostList })
+    //     // this.setState({ spinner: false })
+    //     console.log(this.state.postList)
+    //     this.setState({ message: '' })
+    //   }
+    //   else {
+    //     this.setState({ spinner: false });
+    //     this.setState({ message: "No Post For Today" });
+    //   }
 
-    WallGet(pageNumber).then((result) => {
-      // debugger;
-      // console.log(result);
-      if (result.result.length != 0) {
-        let posts = this.state.postList;
-        this.setState({ postList: posts.concat(result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })) });
-        // this.setState({ totalPost: result.total });
-        // result.result.forEach(element => {
-        //   let x = result.result.filter((element) => { return (element.userId != null || element.userId != undefined) })
-        //   this.state.totalPostList.push(element)
-        // });
-        // console.log('api callpost  list', this.state.totalPostList)
-        // this.setState({ postList: this.state.totalPostList })
-        // this.setState({ spinner: false })
-        this.setState({ message: '' })
-      }
-      else {
-        this.setState({ spinner: false });
-        this.setState({ message: "No Post For Today" });
-      }
-
-    }, error => {
-      this.setState({})
-    });
+    // }, error => {
+    //   this.setState({})
+    // });
   }
 
   //post title 
@@ -575,16 +575,16 @@ this.socketConnectForPost()
               </div>
             </div>
           </div>
-          {this.state.addNewPostButton==true?<div className="topBtnscroll">
-          <Button><Icon type="plus" /> 1 new post</Button>
-          </div>:''}
-          
+          {this.state.addNewPostButton == true ? <div className="topBtnscroll">
+            <Button><Icon type="plus" /> 1 new post</Button>
+          </div> : ''}
+
         </div>
         {/* wall view section end */}
 
         {/* posted blog html start */}
         <span>{this.state.message}</span>
-        {this.props.wall.map((item, pIndex) => {
+        {this.props.getWall.map((item, pIndex) => {
           return <div key={item._id}>
             <div className="postedpartcard">
               <div className="mitpic">
@@ -682,9 +682,9 @@ this.socketConnectForPost()
         }
         {/* this.getAllpost() */}
         <div>
-          <Waypoint onEnter={() => { console.log('last end'); }} onLeave={() => { console.log('Waypoint left') }} />
+          <Waypoint onEnter={() => { console.log('last end');  this.getPosts(1) }} onLeave={() => { console.log('Waypoint left') }} />
 
-          <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} />
+          {/* <Icon type="loading" spinning={this.state.spinner.toString()} style={{ fontSize: 40 }} /> */}
         </div>
       </div>
     );

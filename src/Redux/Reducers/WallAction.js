@@ -4,7 +4,7 @@ import * as actionCreators from '../Action';
 
 
 export function wall(state = [], action) {
-  console.log(action)
+
   switch (action.type) {
     case wallConstants.GETALL_REQUEST:
       return {
@@ -14,13 +14,14 @@ export function wall(state = [], action) {
       return action.users.result
 
     case wallConstants.GETALL_FAILURE:
-      return { 
+      return {
         error: action.error
       };
-      // case wallConstants.SINGLE_POST:
-      // return action.post
-
-      
+    case 'SINGLE_POST':
+      console.log(action.socketPost)
+      let singlePostArray = [];
+      singlePostArray.push(action.socketPost);   // FOR SOCKET
+      return singlePostArray.concat(state);
     default:
       return state
   }

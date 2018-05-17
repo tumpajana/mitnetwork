@@ -106,35 +106,43 @@ export function singlePost(postData){
     }
 }
 // ADD NEW POST  ACTION
-function addPost(post) {
+function addPost(socketPost) {
     return {
         type: "SINGLE_POST",
-        post
-
+        socketPost
     }
 }
 
-// wallpost get api
+
+// GET ALL WALL POST
 export function WallGet(pagenumber) {
     console.log(pagenumber)
     console.log(APIURL)
-    let BaseURL = APIURL + "post/getAllPost?page=" + pagenumber;
-    fetch(BaseURL, {
-        headers: {
-            'Accept': 'application/json',
+    return (dispatch) => {
+        fetch(APIURL + "post/getAllPost?page=" + pagenumber,
+            {
+                headers: {
+                    'Accept': 'application/json',
             'Content-Type': 'application/json'
-        },
-        method: 'GET',
-    })
-        .then((response) => response.json())
-        .then((responseJSON) => {
-            console.log(responseJSON)
-            if (!responseJSON.error) {
-            }
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(getAllPost(responseJSON.result))
+            })
+            .catch((error) => {
+                dispatch(getAllPost([]))
+            });
 
-        })
-        .catch((error) => {
-        });
+    }
+}
+// GET ALL POST  ACTION
+function getAllPost(list) {
+    return {
+        type: "Wall_LIST",
+        list
+    }
 }
 
 // update user api
