@@ -9,7 +9,18 @@ const postSchema = mongoose.Schema({
         userId:{
             type:Schema.ObjectId,
             ref: 'user'
-        }
+        },
+        createdBydate: {
+            type: Date,
+            default: Date.now 
+        },
+        updatedByDate: {
+            type: Date,
+            default: Date.now
+        },
+        postId:{
+            type:String
+        },
     }]
     
     ,

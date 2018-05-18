@@ -100,13 +100,12 @@ var returnRouter = function (io) {
     //  Api for comment
     router.put('/comment', (request, response) => {
         let commentesponse = {};
-        // console.log(io)
 
         let userId = request.body.userId;
         let comment = request.body.comment;
+        let postId = request.body.postId
         console.log(userId);
-        // console.log(io)
-        post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: { comment: comment, userId: userId } } },{new:true}).populate('comments.userId').exec(function (error, result) {
+        post.findOneAndUpdate({ _id:postId }, { $push: { comments: { comment: comment, userId: userId,postId: postId} } },{new:true}).populate('comments.userId').exec(function (error, result) {
             if (error) {
                 commentesponse.error = true;
                 commentesponse.message = `Error :` + error.message;
@@ -128,7 +127,7 @@ var returnRouter = function (io) {
         // var perPage = 5, page = request.param('page') > 0 ? request.param('page') : 0;
         let getResponse = {};
         let postId = request.query.postId;
-        post.findOne({ _id: postId }).populate('comments.userId').exec(function (error, result) {
+        post.findOne({ _id: postId }).populate('comments.userId').sort({ 'comments.createdBydate': 'descending'}).exec(function (error, result) {
             // .sort({ createdDate: 'descending' })
             // .limit({comments:'perPage'})
             // .skip(perPage * page)
