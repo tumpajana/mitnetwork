@@ -36,9 +36,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/mitNetwork');
  io.on('connection', function(socket){
      console.log('Socket Connected'+ socket.id);
    //
-     socket.on('post',function(data){
-        io.to(socket.id).emit('post');
-     });
  });
 
 //  io.use((socket)=>{

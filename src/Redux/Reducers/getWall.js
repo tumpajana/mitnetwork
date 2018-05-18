@@ -9,14 +9,19 @@ export function getWall(state = [], action) {
         case 'Wall_LIST':
             return action.list
             break;
-        case 'SINGLE_POST':
-            console.log(action)
-            console.log(action.socketPost)
-            console.log('socket')
-            console.log(state);
-            let singlePostArray = [];
-            singlePostArray.push(action.socketPost);
-            return singlePostArray.concat(state);
+        // case 'SINGLE_POST':
+        //     console.log(action)
+        //     console.log(action.socketPost)
+        //     console.log('.......socket......')
+        //     let singlePostArray = [];
+        //     singlePostArray.push(action.socketPost);
+        //     return singlePostArray.concat(state);
+        //     break;
+        //     case 'SINGLE_COMMENT':
+        //     console.log(action.socketcomment)
+        //     console.log('.......socket......')  
+        //     let singleArrayComment =[];
+        //     singleArrayComment.push(action.socketcomment)
         default:
             return state
     }

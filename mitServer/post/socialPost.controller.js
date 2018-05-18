@@ -100,11 +100,13 @@ var returnRouter = function (io) {
     //  Api for comment
     router.put('/comment', (request, response) => {
         let commentesponse = {};
+        // console.log(io)
 
         let userId = request.body.userId;
         let comment = request.body.comment;
         console.log(userId);
-        post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: { comment: comment, userId: userId } } }).populate('comments.userId').exec(function (error, result) {
+        // console.log(io)
+        post.findOneAndUpdate({ _id: request.body.postId }, { $push: { comments: { comment: comment, userId: userId } } },{new:true}).populate('comments.userId').exec(function (error, result) {
             if (error) {
                 commentesponse.error = true;
                 commentesponse.message = `Error :` + error.message;

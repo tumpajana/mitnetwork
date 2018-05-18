@@ -140,8 +140,10 @@ class ActualWall extends Component {
   }
   // SOCKET CONNECT FOR COMMENT
   socketConnectForComment = () => {
-    socket.on("comment", function (comment) {    // SOCKET CONNECT FOR COMMENT
+    socket.on('comment', (comment)=> {    // SOCKET CONNECT FOR COMMENT
       console.log(".......Got Comment Data....", comment);
+      // let _base = this
+      // _base.props.actions.singleComment(comment)
     });
   }
   renderUser = (result) => {
@@ -337,6 +339,7 @@ class ActualWall extends Component {
   getComments(id) {
     getPostComments(id).then((result) => {
       console.log(result);
+
       this.setState({ showcomment: true })
     })
   }

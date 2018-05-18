@@ -99,6 +99,7 @@ export function wallPost(postData) {
         .catch((error) => {
         });
 }
+// get Socket post data
 export function singlePost(postData){
     console.log(postData)
     return (dispatch) => {
@@ -144,6 +145,21 @@ function getAllPost(list) {
         list
     }
 }
+// get Socket post data
+export function singleComment(data){
+    console.log(data)
+    return (dispatch) => {
+        dispatch(getSingleComment(data));
+    }
+}
+
+//  Comment  ACTION
+function getSingleComment(socketcomment) {
+    return {
+        type: "SINGLE_COMMENT",
+        socketcomment
+    }
+}
 
 // update user api
 export function updateData(userData) {
@@ -172,14 +188,6 @@ export function updateData(userData) {
 }
 }
 
-// UPDATE  ACTION
-function updateApi(list) {
-    return {
-        type: "UPDATAEDATA_DONE",
-        list
-
-    }
-}
 
 // facebook login api
 export function FacebookloginData(FacebookData) {
@@ -236,14 +244,6 @@ export function profilePic(filedata) {
 }
 }
 
-// // PROFILEPIC  ACTIONdispatch(member(responseJSON.result.members));
-function profilepicApi(list) {
-    return {
-        type: "PROFILEPIC_DONE",
-        list
-
-    }
-}
 
 // get user profile api
 export function getUserProfile(id) {
@@ -267,14 +267,6 @@ export function getUserProfile(id) {
         .catch((error) => {
         });
 }
-}
-// // GET USER PROFILE  ACTION
-function getuserprofileapi(list) {
-    return {
-        type: "GETUSERPROFILE_DONE",
-        list
-
-    }
 }
 
 // post like api

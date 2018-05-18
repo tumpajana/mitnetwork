@@ -17,11 +17,6 @@ export function wall(state = [], action) {
       return {
         error: action.error
       };
-    case 'SINGLE_POST':
-      console.log(action.socketPost)
-      let singlePostArray = [];
-      singlePostArray.push(action.socketPost);   // FOR SOCKET
-      return singlePostArray.concat(state);
     default:
       return state
   }
